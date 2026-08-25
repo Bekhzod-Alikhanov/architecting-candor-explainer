@@ -1,6 +1,8 @@
 import { Hero } from './modules/hero/Hero'
 import { Pincer } from './modules/pincer/Pincer'
 import { RouteTheRecord } from './modules/route/RouteTheRecord'
+import { Architecture } from './modules/architecture/Architecture'
+import { Calibrate } from './modules/calibrate/Calibrate'
 import { Colophon } from './modules/colophon/Colophon'
 
 export function App() {
@@ -13,6 +15,8 @@ export function App() {
         <Hero />
         <Pincer />
         <RouteTheRecord />
+        <Architecture />
+        <Calibrate />
         <Colophon />
       </main>
     </>

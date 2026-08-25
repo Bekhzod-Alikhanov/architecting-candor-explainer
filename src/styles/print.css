@@ -17,14 +17,17 @@
 
   html,
   body {
-    background: #fff;
-    color: #000;
+    background: var(--color-paper);
+    color: var(--color-ink);
   }
 
   /* Everything except the checklist is removed rather than hidden, so no blank
-     pages are produced by invisible-but-still-laid-out content. */
+     pages are produced by invisible-but-still-laid-out content.
+     A deferred section that has not mounted yet sits inside a wrapper div, so
+     matching on `section` alone let those placeholders print as extra pages.
+     This matches on "neither is, nor contains, the checklist" instead. */
   .skip-link,
-  main > section:not(#gc) {
+  main > *:not(#gc):not(:has(#checklist)) {
     display: none !important;
   }
 
@@ -47,7 +50,7 @@
 
   /* The document object becomes an actual document. */
   #checklist.doc-object {
-    background: #fff;
+    background: var(--color-paper);
     border: 0;
     border-radius: 0;
     box-shadow: none;
@@ -64,7 +67,7 @@
 
   #checklist,
   #checklist * {
-    color: #000 !important;
+    color: var(--color-ink) !important;
   }
 
   /* Controls do not print. */
@@ -75,7 +78,7 @@
   #checklist .cl__head {
     display: block;
     padding-block-end: 1.8mm;
-    border-block-end: 0.4pt solid #000;
+    border-block-end: 0.4pt solid var(--color-ink);
     margin-block-end: 2.2mm;
   }
 
@@ -109,13 +112,13 @@
   #checklist .clg__title {
     font-size: 7.6pt;
     padding-block-end: 0.7mm;
-    border-block-end: 0.4pt solid #000;
+    border-block-end: 0.4pt solid var(--color-ink);
     break-after: avoid;
   }
 
   #checklist .clg__n {
-    background: #000;
-    color: #fff !important;
+    background: var(--color-ink);
+    color: var(--color-paper) !important;
     font-size: 6.2pt;
     padding: 0.3mm 0.9mm;
   }
@@ -135,7 +138,7 @@
     margin-block-start: 0.6mm;
     inline-size: 2.4mm;
     block-size: 2.4mm;
-    border: 0.4pt solid #000;
+    border: 0.4pt solid var(--color-ink);
   }
 
   #checklist .cli__text {
@@ -146,7 +149,7 @@
   #checklist .cli__owner {
     font-size: 5.6pt;
     padding: 0.2mm 0.7mm;
-    border: 0.4pt solid #000;
+    border: 0.4pt solid var(--color-ink);
   }
 
   /* The printed artifact is the checklist. The reasoning behind each item stays
@@ -158,7 +161,7 @@
   #checklist .cl__foot {
     margin-block-start: 2.2mm;
     padding-block-start: 1.2mm;
-    border-block-start: 0.4pt solid #000;
+    border-block-start: 0.4pt solid var(--color-ink);
     gap: 0.8mm;
     break-inside: avoid;
   }

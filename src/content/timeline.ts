@@ -148,6 +148,8 @@ export const timelineCopy = {
   releaseLabel: 'Over to you',
   releaseBody:
     'The whole line is drawn. Select any entry to read what it changed, in either order.',
+  scaffoldLabel: 'Guided walk through the reclassification of AI as a product',
+  entriesLabel: 'Reclassification entries',
 } as const
 
 /**

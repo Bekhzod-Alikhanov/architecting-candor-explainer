@@ -94,38 +94,37 @@ export function Architecture() {
         steps={architectureSteps}
         current={step}
         onChange={onStep}
-        label="Guided walk through the one-way valve"
-        hint="Every object, every destination."
+        label={copy.scaffoldLabel}
+        hint={copy.scaffoldHint}
         className="arch__scaffold"
       />
 
       {/* The objects. */}
       <div className="arch__tray">
         <p className="arch__trayLabel">{copy.objectsLabel}</p>
-        <ul className="arch__objects" role="radiogroup" aria-label={copy.chooseObject}>
+        <div className="arch__objects" role="radiogroup" aria-label={copy.chooseObject}>
           {objects.map((o) => (
-            <li key={o.id}>
-              <button
-                type="button"
-                role="radio"
-                aria-checked={o.id === selectedId}
-                className="obj"
-                data-kind={o.kind}
-                data-selected={o.id === selectedId}
-                data-refused={
-                  o.id === selectedId && result && !result.allowed ? String(pulse) : undefined
-                }
-                onClick={() => {
-                  setSelectedId(o.id)
-                  setResult(null)
-                }}
-              >
-                <span className="obj__home">{nodeName(o.home)}</span>
-                <span className="obj__label">{o.label}</span>
-              </button>
-            </li>
+            <button
+              key={o.id}
+              type="button"
+              role="radio"
+              aria-checked={o.id === selectedId}
+              className="obj"
+              data-kind={o.kind}
+              data-selected={o.id === selectedId}
+              data-refused={
+                o.id === selectedId && result && !result.allowed ? String(pulse) : undefined
+              }
+              onClick={() => {
+                setSelectedId(o.id)
+                setResult(null)
+              }}
+            >
+              <span className="obj__home">{nodeName(o.home)}</span>
+              <span className="obj__label">{o.label}</span>
+            </button>
           ))}
-        </ul>
+        </div>
         <p className="arch__objText">{selected.text}</p>
       </div>
 
@@ -152,7 +151,7 @@ export function Architecture() {
                     data-last={result?.to === 'one-overwrite' ? 'refused' : undefined}
                   >
                     <span className="arch__overwriteName">{overwrite.name}</span>
-                    <span className="arch__overwriteSub">Try to overwrite it</span>
+                    <span className="arch__overwriteSub">{copy.overwriteAction}</span>
                     <span className="arch__overwriteStatus">{overwrite.status}</span>
                   </button>
                 ) : null}
@@ -170,7 +169,7 @@ export function Architecture() {
         </div>
 
         {/* The arrows. Each one explains itself. */}
-        <ul className="arch__arrows" aria-label="Permitted flows">
+        <ul className="arch__arrows" aria-label={copy.arrowsLabel}>
           {arrows.map((a) => (
             <li key={a.id}>
               <details className="arrow">
@@ -193,7 +192,7 @@ export function Architecture() {
           ))}
         </ul>
 
-        <p className="arch__outwardLabel">Surfaces outside the architecture</p>
+        <p className="arch__outwardLabel">{copy.outwardLabel}</p>
         <div className="arch__outward">
           {outward.map((n) => (
             <ChannelBox
@@ -228,15 +227,12 @@ export function Architecture() {
             {result.authority ? <p className="valve__authority">{result.authority}</p> : null}
             {result.closesLoop ? (
               <p className="valve__loop">
-                <span aria-hidden="true">↻</span> The loop is closed. The monitoring that missed
-                this incident now carries a standing test against it.
+                <span aria-hidden="true">↻</span> {copy.loopNote}
               </p>
             ) : null}
           </>
         ) : (
-          <p className="valve__idle">
-            The valve is idle. Select an object above, then choose a destination.
-          </p>
+          <p className="valve__idle">{copy.valveIdle}</p>
         )}
       </div>
 
@@ -302,7 +298,7 @@ function ChannelBox({
         type="button"
         className="cbox__hit"
         onClick={onAttempt}
-        aria-label={`Send the selected object to ${node.name}`}
+        aria-label={`${copy.sendTo} ${node.name}`}
       >
         <span className="cbox__name">{node.name}</span>
         <span className="cbox__sub">{node.sub}</span>
@@ -310,7 +306,7 @@ function ChannelBox({
       <p className="cbox__body">{node.body}</p>
       <p className="cbox__status">{node.status}</p>
       {node.authority ? <p className="cbox__authority">{node.authority}</p> : null}
-      {isHome ? <p className="cbox__home">Home of the selected object</p> : null}
+      {isHome ? <p className="cbox__home">{copy.homeNote}</p> : null}
       {children}
     </div>
   )

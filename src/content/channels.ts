@@ -434,6 +434,16 @@ export const architectureCopy = {
   chooseTarget: 'Now choose a destination',
   refusedBadge: 'Refused',
   allowedBadge: 'Permitted',
+  scaffoldLabel: 'Guided walk through the one-way valve',
+  scaffoldHint: 'Every object, every destination.',
+  arrowsLabel: 'Permitted flows',
+  valveIdle: 'The valve is idle. Select an object above, then choose a destination.',
+  loopNote:
+    'The loop is closed. The monitoring that missed this incident now carries a standing test against it.',
+  overwriteAction: 'Try to overwrite it',
+  outwardLabel: 'Surfaces outside the architecture',
+  homeNote: 'Home of the selected object',
+  sendTo: 'Send the selected object to',
 } as const
 
 export const architectureSteps = [

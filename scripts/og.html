@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>og</title>
+    <style>
+      /* TOKENS_INJECTED_HERE — render-og.mjs lifts these from
+         src/styles/tokens.css so the card cannot drift from the site. */
+
+      @font-face {
+        font-family: 'IBM Plex Mono';
+        font-weight: 400;
+        src: url('/fonts/ibm-plex-mono-latin-400-normal.woff2') format('woff2');
+      }
+      @font-face {
+        font-family: 'IBM Plex Mono';
+        font-weight: 500;
+        src: url('/fonts/ibm-plex-mono-latin-500-normal.woff2') format('woff2');
+      }
+      @font-face {
+        font-family: 'IBM Plex Sans';
+        font-weight: 600;
+        src: url('/fonts/ibm-plex-sans-latin-600-normal.woff2') format('woff2');
+      }
+      @font-face {
+        font-family: 'Spectral';
+        font-weight: 500;
+        src: url('/fonts/spectral-latin-500-normal.woff2') format('woff2');
+      }
+      @font-face {
+        font-family: 'Spectral';
+        font-weight: 400;
+        src: url('/fonts/spectral-latin-400-normal.woff2') format('woff2');
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        width: 2400px;
+        height: 1260px;
+        overflow: hidden;
+      }
+
+      body {
+        background: var(--color-ground);
+        color: var(--color-doc);
+        font-family: 'IBM Plex Sans', sans-serif;
+        padding: 96px 112px;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .rubric {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        padding-bottom: 28px;
+        border-bottom: 2px solid
+          color-mix(in srgb, var(--color-doc) 18%, var(--color-ground));
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 28px;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: color-mix(in srgb, var(--color-doc) 52%, var(--color-ground));
+      }
+
+      h1 {
+        margin-top: 56px;
+        font-family: 'Spectral', serif;
+        font-weight: 500;
+        font-size: 156px;
+        line-height: 0.98;
+        letter-spacing: -0.028em;
+        max-width: 22ch;
+      }
+
+      /* The double reading: one record, two document systems, one seam. */
+      .split {
+        margin-top: auto;
+        display: grid;
+        grid-template-columns: 1fr 12px 1fr;
+        gap: 0;
+        align-items: stretch;
+        border: 2px solid color-mix(in srgb, var(--color-doc) 16%, var(--color-ground));
+        border-radius: 6px;
+        background: color-mix(in srgb, var(--color-ground) 74%, var(--color-redact));
+        min-height: 430px;
+      }
+
+      .pane {
+        padding: 36px 40px;
+        min-width: 0;
+      }
+
+      .paneLabel {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 24px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: color-mix(in srgb, var(--color-instrument) 78%, var(--color-doc));
+      }
+
+      .paneLabel::before {
+        content: '';
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+        background: var(--color-instrument);
+      }
+
+      dl {
+        margin-top: 30px;
+        display: grid;
+        grid-template-columns: auto 1fr;
+        gap: 12px 40px;
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 32px;
+        font-variant-numeric: tabular-nums;
+      }
+
+      dt {
+        color: color-mix(in srgb, var(--color-doc) 48%, var(--color-ground));
+      }
+
+      dd.load {
+        color: color-mix(in srgb, var(--color-instrument) 78%, var(--color-doc));
+        box-shadow: inset 4px 0 0 var(--color-instrument);
+        padding-left: 16px;
+        margin-left: -16px;
+      }
+
+      /* The seam: a ticked gutter between two document systems. */
+      .seam {
+        position: relative;
+        background: color-mix(in srgb, var(--color-doc) 48%, var(--color-ground));
+      }
+
+      .seam::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 26px;
+        background-image: repeating-linear-gradient(
+          to bottom,
+          color-mix(in srgb, var(--color-doc) 48%, var(--color-ground)) 0 3px,
+          transparent 3px 34px
+        );
+      }
+
+      .exhibitWrap {
+        padding: 36px 40px;
+      }
+
+      .exhibit {
+        height: 100%;
+        background: var(--color-doc);
+        color: var(--color-ground);
+        border-radius: 4px;
+        padding: 34px 38px;
+        display: flex;
+        flex-direction: column;
+        box-shadow:
+          0 4px 10px rgb(0 0 0 / 0.3),
+          0 24px 60px rgb(0 0 0 / 0.28);
+      }
+
+      .exhibitHead {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        padding-bottom: 18px;
+        border-bottom: 2px solid
+          color-mix(in srgb, var(--color-doc) 74%, var(--color-ground));
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 26px;
+        letter-spacing: 0.16em;
+        color: var(--color-stamp);
+      }
+
+      .exhibitBody {
+        margin-top: 26px;
+        font-family: 'Spectral', serif;
+        font-size: 36px;
+        line-height: 1.44;
+      }
+
+      .legend {
+        margin-top: auto;
+        align-self: flex-end;
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 22px;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--color-stamp);
+        border: 2px solid color-mix(in srgb, var(--color-stamp) 45%, transparent);
+        border-radius: 4px;
+        padding: 6px 12px;
+      }
+
+      .foot {
+        margin-top: 40px;
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 26px;
+        letter-spacing: 0.06em;
+        color: color-mix(in srgb, var(--color-doc) 56%, var(--color-ground));
+      }
+
+      .foot b {
+        color: var(--color-doc);
+        font-weight: 500;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="rubric">
+      <span>Arcadia Impact · AI Governance Taskforce</span>
+      <span>August 2026</span>
+    </div>
+
+    <h1>The record gets written either way.</h1>
+
+    <div class="split">
+      <div class="pane">
+        <p class="paneLabel">Channel One · ordinary course</p>
+        <dl>
+          <dt>timestamp</dt>
+          <dd class="load">2026-07-14T14:22:07.331Z</dd>
+          <dt>clf_confidence</dt>
+          <dd class="load">0.31</dd>
+          <dt>deploy_threshold</dt>
+          <dd class="load">0.60</dd>
+          <dt>guardrail</dt>
+          <dd class="load">fired +1.842s</dd>
+          <dt>store</dt>
+          <dd>append-only</dd>
+        </dl>
+      </div>
+
+      <div class="seam"></div>
+
+      <div class="exhibitWrap">
+        <div class="exhibit">
+          <div class="exhibitHead">
+            <span>Exhibit 14</span>
+            <span>ARC-000412</span>
+          </div>
+          <p class="exhibitBody">
+            “The classifier scored that output at 0.31 against a deployment threshold of 0.60.
+            The guardrail activated 1.842 seconds after the output had already been served.”
+          </p>
+          <span class="legend">Confidential</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="foot">
+      <span><b>Architecting Candor</b> · Products Liability and AI Incident Knowledge Governance</span>
+      <span>Simulated record</span>
+    </div>
+  </body>
+</html>

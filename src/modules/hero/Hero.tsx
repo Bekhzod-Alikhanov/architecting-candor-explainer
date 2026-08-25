@@ -70,7 +70,7 @@ export function Hero() {
         <p className="hero__standfirst">
           {wide
             ? r.standfirst
-            : r.standfirst.replace(' Drag the seam.', ' Both readings are shown in full below.')}
+            : r.standfirst.replace(r.dragInstruction, r.standfirstStacked)}
         </p>
 
         <div className="hero__split" data-stacked={!wide}>
@@ -98,7 +98,7 @@ export function Hero() {
                   split: {
                     value: split,
                     onChange: setSplit,
-                    label: 'Divide the record between the engineering reading and the exhibit reading',
+                    label: r.seamLabel,
                   },
                 }
               : {})}

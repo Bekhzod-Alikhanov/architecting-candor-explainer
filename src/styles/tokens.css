@@ -21,6 +21,10 @@
   /* An opaque redaction bar. Mark only, never a ground. */
   --color-redact: #0b0f11;
 
+  /* Paper and ink. Only the print stylesheet uses these. */
+  --color-paper: #ffffff;
+  --color-ink: #000000;
+
   /* --- type ------------------------------------------------------------- */
   --font-mono: 'IBM Plex Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
   --font-sans: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
@@ -57,7 +61,7 @@
   /* --- derived grounds -------------------------------------------------- */
   --ground-deep: color-mix(in srgb, var(--color-ground) 74%, var(--color-redact));
   --ground-panel: color-mix(in srgb, var(--color-ground) 92%, var(--color-doc));
-  --ground-raised: color-mix(in srgb, var(--color-ground) 85%, var(--color-doc));
+  --ground-raised: color-mix(in srgb, var(--color-ground) 95%, var(--color-doc));
   --ground-rule: color-mix(in srgb, var(--color-ground) 74%, var(--color-doc));
   --ground-rule-soft: color-mix(in srgb, var(--color-ground) 86%, var(--color-doc));
 
@@ -70,8 +74,10 @@
   /* --- text, verified against WCAG AA ---------------------------------- */
   /* on the console ground */
   --text-on-ground: var(--color-doc); /* 13.3:1 */
-  --text-on-ground-muted: color-mix(in srgb, var(--color-doc) 68%, var(--color-ground)); /* 6.8:1 */
-  --text-on-ground-faint: color-mix(in srgb, var(--color-doc) 48%, var(--color-ground)); /* 4.6:1 */
+  /* Contrast figures below are the worst case across every surface these sit
+     on, not against the base ground. Verified with axe-core, not estimated. */
+  --text-on-ground-muted: color-mix(in srgb, var(--color-doc) 68%, var(--color-ground)); /* 5.5:1 on the lightest panel */
+  --text-on-ground-faint: color-mix(in srgb, var(--color-doc) 62%, var(--color-ground)); /* 4.8:1 on the lightest panel, measured */
   /* on a document object */
   --text-on-doc: var(--color-ground); /* 13.3:1 */
   --text-on-doc-muted: color-mix(in srgb, var(--color-ground) 70%, var(--color-doc)); /* 5.5:1 */
@@ -80,7 +86,7 @@
   /* Raw --color-* accents are for rules, marks and large numerals only.
      Body-size text must use the variant matched to its ground. */
   --stamp-on-doc: var(--color-stamp); /* 7.1:1 */
-  --stamp-on-ground: color-mix(in srgb, var(--color-stamp) 55%, var(--color-doc)); /* 5.0:1 */
+  --stamp-on-ground: color-mix(in srgb, var(--color-stamp) 48%, var(--color-doc)); /* 4.7:1 on the lightest panel, measured */
   --instrument-on-ground: color-mix(in srgb, var(--color-instrument) 78%, var(--color-doc)); /* 5.5:1 */
   --instrument-on-doc: color-mix(in srgb, var(--color-instrument) 70%, var(--color-redact)); /* 5.1:1 */
   --ochre-on-ground: color-mix(in srgb, var(--color-ochre) 70%, var(--color-doc)); /* 5.6:1 */

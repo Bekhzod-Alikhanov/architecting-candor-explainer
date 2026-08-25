@@ -115,8 +115,8 @@ export function Calibrate() {
         steps={calibrateSteps}
         current={step}
         onChange={onStep}
-        label="Guided walk through calibrating the telemetry tripwire"
-        hint="Every band, and the tier control."
+        label={copy.scaffoldLabel}
+        hint={copy.scaffoldHint}
         className="cal__scaffold"
       />
 
@@ -229,24 +229,11 @@ export function Calibrate() {
           </p>
 
           <ul className="cal__legend">
-            <li>
-              <span className="lg lg--signal" aria-hidden="true" /> genuine signal
-            </li>
-            <li>
-              <span className="lg lg--near" aria-hidden="true" /> near miss
-            </li>
-            <li>
-              <span className="lg lg--noise" aria-hidden="true" /> ordinary traffic
-            </li>
-            <li>
-              <span className="lg lg--esc" aria-hidden="true" /> escalated
-            </li>
-            <li>
-              <span className="lg lg--log" aria-hidden="true" /> logged only
-            </li>
-            <li>
-              <span className="lg lg--un" aria-hidden="true" /> not captured
-            </li>
+            {(['signal', 'near', 'noise', 'esc', 'log', 'un'] as const).map((k, i) => (
+              <li key={k}>
+                <span className={`lg lg--${k}`} aria-hidden="true" /> {copy.legend[i]}
+              </li>
+            ))}
           </ul>
 
           <div className="cal__readouts" aria-live="polite">

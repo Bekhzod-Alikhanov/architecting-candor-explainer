@@ -12,19 +12,9 @@
  * never rests on hue alone.
  */
 
+import { provenance } from '../content/ui'
+
 export type ProvKind = 'simulated' | 'illustrative' | 'paper'
-
-const LABEL: Record<ProvKind, string> = {
-  simulated: 'Simulated',
-  illustrative: 'Illustrative',
-  paper: 'From the paper',
-}
-
-const EXPLAIN: Record<ProvKind, string> = {
-  simulated: 'Synthetic data written for this page. Not drawn from any real firm, product or matter.',
-  illustrative: 'The paper does not supply a value here. This number is illustrative only.',
-  paper: 'Traceable to Architecting Candor.',
-}
 
 export interface ProvProps {
   readonly kind: ProvKind
@@ -36,11 +26,11 @@ export interface ProvProps {
 }
 
 export function Prov({ kind, cite, label, className = '' }: ProvProps) {
-  const text = label ?? LABEL[kind]
+  const text = label ?? provenance[kind].label
   return (
     <span
       className={`prov prov--${kind} ${className}`.trim()}
-      title={EXPLAIN[kind]}
+      title={provenance[kind].explain}
     >
       <Glyph kind={kind} />
       <span>

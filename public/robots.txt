@@ -1,0 +1,7 @@
+# Architecting Candor — companion explainer.
+# A dated snapshot pinned to the August 2026 paper. Crawl it freely.
+
+User-agent: *
+Allow: /
+
+Sitemap: https://architecting-candor.vercel.app/sitemap.xml

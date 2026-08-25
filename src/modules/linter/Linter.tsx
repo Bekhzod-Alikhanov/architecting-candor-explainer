@@ -135,7 +135,13 @@ export function Linter({ standalone = false }: { readonly standalone?: boolean }
       {/* The template is the real remedy. The linter only catches what the
           template would have prevented. */}
       <div className="tmpl">
-        <h3 className="tmpl__heading">{template.heading}</h3>
+        {/* On the standalone route the page's own h1 is directly above this, so
+            an h3 would skip a level. Inside section 08 there is an h2 already. */}
+        {standalone ? (
+          <h2 className="tmpl__heading">{template.heading}</h2>
+        ) : (
+          <h3 className="tmpl__heading">{template.heading}</h3>
+        )}
         <p className="tmpl__lead">{template.lead}</p>
         <dl className="tmpl__fields">
           {template.fields.map((f) => (

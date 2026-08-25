@@ -97,6 +97,9 @@ export const statuteCopy = {
   intactTitle: 'All four in force.',
   intactBody:
     'This is the configuration the paper asks for. It is narrow: it protects a defined process, leaves the underlying facts reachable, and buys candour with predictability rather than with secrecy.',
+  partialTitleSuffix: 'removed.',
+  partialBody:
+    'The protection is only as strong as its weakest element. A firm plans around whichever one is missing, and the candour the statute was meant to buy is priced accordingly.',
 } as const
 
 export const statuteArgues = {

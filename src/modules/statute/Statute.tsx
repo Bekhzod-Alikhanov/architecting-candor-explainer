@@ -94,14 +94,14 @@ export function Statute() {
                       ? copy.allOffTitle
                       : intact
                         ? copy.intactTitle
-                        : `${off.size} of ${protections.length} removed.`}
+                        : `${off.size} of ${protections.length} ${copy.partialTitleSuffix}`}
                   </p>
                   <p className="prot__summaryBody">
                     {allOff
                       ? copy.allOffBody
                       : intact
                         ? copy.intactBody
-                        : 'The protection is only as strong as its weakest element. A firm plans around whichever one is missing, and the candour the statute was meant to buy is priced accordingly.'}
+                        : copy.partialBody}
                   </p>
                 </div>
               </div>

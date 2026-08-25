@@ -308,8 +308,10 @@
   box-shadow: inset 3px 0 0 var(--color-instrument);
 }
 
+/* Not yet reached. Signalled with a dashed edge rather than with opacity,
+   because dimming text is how a state indicator becomes a contrast failure. */
 .tl__entry[data-drawn='false'] {
-  opacity: 0.45;
+  border-style: dashed;
 }
 
 .tl__entryDate {

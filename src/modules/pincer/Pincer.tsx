@@ -77,7 +77,7 @@ export function Pincer() {
           steps={timelineSteps}
           current={step}
           onChange={setStep}
-          label="Guided walk through the reclassification of AI as a product"
+          label={timelineCopy.scaffoldLabel}
           hint={timelineCopy.advanceHint}
           className="tl__scaffold"
         />
@@ -104,7 +104,7 @@ export function Pincer() {
 
         {/* The entry list is the keyboard path into the chart, and the chart's
             text equivalent. */}
-        <ul className="tl__list" aria-label="Reclassification entries">
+        <ul className="tl__list" aria-label={timelineCopy.entriesLabel}>
           {entries.map((e, i) => (
             <li key={e.id}>
               <button

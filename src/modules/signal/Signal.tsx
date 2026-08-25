@@ -57,7 +57,7 @@ export function Signal() {
         </div>
 
         <div className="decay">
-          <ol className="decay__track" aria-label="Handoffs">
+          <ol className="decay__track" aria-label={translation.trackLabel}>
             {handoffs.map((h, i) => (
               <li key={h.id}>
                 <button
@@ -115,7 +115,7 @@ export function Signal() {
               </button>
               {stage > 0 ? (
                 <button type="button" className="btn" onClick={() => setStage(0)}>
-                  Back to the observation
+                  {translation.restartLabel}
                 </button>
               ) : null}
             </div>
@@ -159,7 +159,7 @@ export function Signal() {
               {harmed
                 ? deviance.harmBody
                 : recurrences === 0
-                  ? 'The anomaly has been observed once and the threshold still holds. Press the button.'
+                  ? deviance.initial
                   : deviance.steps[recurrences - 1]}
             </p>
           </div>

@@ -152,6 +152,14 @@ export const regimeCopy = {
   lessonLabel: 'The design lesson',
   targetLabel: 'The proposal',
   targetNote: 'Not a precedent. This is what the precedents are being read toward.',
+  regimeColumn: 'Regime',
+  separatedTitle: 'Recipient separated from enforcer',
+  separatedMark: 'separated',
+  captionTemplate: 'Comparative safety-reporting regimes.',
+  /** Which columns the table can be sorted by. */
+  sortable: ['name', 'recipient', 'enforcer', 'source'] as const,
+  emptyBefore: 'No regime in the paper maps to',
+  emptyAfter: 'alone. The proposal below still does — that is the point of the row.',
 } as const
 
 export const regimeArgues = {

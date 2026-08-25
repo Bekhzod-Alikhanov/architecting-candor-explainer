@@ -96,7 +96,7 @@ export function RouteTheRecord() {
     setHasRun(false)
     setShowReveal(false)
     setStep(0)
-    setAnnouncement('Deck reset. Three instrumentation records remain in Channel One.')
+    setAnnouncement(routeCopy.resetAnnouncement)
   }, [])
 
   /** Keyboard: 1–4 route the selection, Backspace returns it, arrows move it. */
@@ -162,7 +162,7 @@ export function RouteTheRecord() {
         steps={routeSteps}
         current={step}
         onChange={setStep}
-        label="Guided walk through routing the incident record"
+        label={routeCopy.scaffoldLabel}
         hint={routeCopy.keyboardHint}
         className="rt__scaffold"
       />
@@ -186,7 +186,7 @@ export function RouteTheRecord() {
                 className="rt__cards"
                 role="listbox"
                 tabIndex={0}
-                aria-label="Unrouted artifacts. Use the arrow keys to select, then press 1 to 4 to route."
+                aria-label={routeCopy.listboxLabel}
                 {...(selectedId && assignment[selectedId] === undefined
                   ? { 'aria-activedescendant': `card-${selectedId}` }
                   : {})}
@@ -207,14 +207,11 @@ export function RouteTheRecord() {
                 ))}
               </ul>
             ) : (
-              <p className="rt__queueDone">
-                All {deck.length} routed. Run the document request, or select a card in a channel
-                below and press 1 to 4 to move it.
-              </p>
+              <p className="rt__queueDone">{routeCopy.queueDone}</p>
             )}
           </div>
 
-          <div className="rt__bins" role="group" aria-label="Channels">
+          <div className="rt__bins" role="group" aria-label={routeCopy.binsLabel}>
             {bins.map((b, i) => {
               const held = deck.filter((a) => assignment[a.id] === b.id)
               return (
@@ -319,8 +316,7 @@ export function RouteTheRecord() {
         </button>
         {!complete ? (
           <span className="rt__actionsHint">
-            {unrouted.length} still unrouted. Every artifact needs a destination, including the
-            ones you would rather not think about.
+            {unrouted.length} {routeCopy.actionsHint}
           </span>
         ) : null}
         {hasRun && !showReveal ? (

@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { strategies, outcomes } from '../../content/grading'
+import { strategies, outcomes, routeCopy } from '../../content/grading'
 import { gradeStrategy, type Grade } from '../../lib/grade'
 
 /**
@@ -35,8 +35,8 @@ export function Reveal({ readerGrade, readerRouted, total }: RevealProps) {
       ? [
           {
             id: 'yours',
-            name: 'Your routing',
-            claim: 'Graded by exactly the same function as the four above.',
+            name: routeCopy.yourRoutingName,
+            claim: routeCopy.yourRoutingClaim,
             lesson: '',
             grade: readerGrade,
             isReader: true,

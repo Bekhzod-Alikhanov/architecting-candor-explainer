@@ -42,7 +42,6 @@ export const meta = {
   description:
     'AI firms are compelled to document safety incidents and compelled to produce those documents in discovery. An operable walkthrough of the three-channel Safety Translation Layer proposed in Architecting Candor (Arcadia Impact, August 2026).',
   canonical: 'https://architecting-candor.vercel.app/',
-  themeColour: '#162127',
   ogAlt:
     'One incident record shown twice: as a line of engineering telemetry and as a stamped discovery exhibit, divided by a vertical seam.',
 } as const

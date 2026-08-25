@@ -22,7 +22,7 @@ import './regimes.css'
  * choice corresponds to.
  */
 
-type SortKey = 'name' | 'recipient' | 'enforcer' | 'source'
+type SortKey = (typeof copy.sortable)[number]
 
 export function Regimes() {
   const [filter, setFilter] = useState<ChannelMap | 'all'>('all')
@@ -80,10 +80,11 @@ export function Regimes() {
             value={sort}
             onChange={(e) => setSort(e.target.value as SortKey)}
           >
-            <option value="name">Regime</option>
-            <option value="recipient">Who receives the report</option>
-            <option value="enforcer">Who holds enforcement authority</option>
-            <option value="source">Source of protection</option>
+            {copy.sortable.map((k) => (
+              <option value={k} key={k}>
+                {k === 'name' ? copy.regimeColumn : columns.find((c) => c.id === k)?.label}
+              </option>
+            ))}
           </select>
         </div>
       </div>
@@ -91,11 +92,12 @@ export function Regimes() {
       <div className="reg__tableWrap">
         <table className="reg__table">
           <caption className="sr-only">
-            Comparative safety-reporting regimes, filtered to {filter === 'all' ? 'all channels' : channelNames[filter]}, sorted by {sort}.
+            {copy.captionTemplate} Filtered to{' '}
+            {filter === 'all' ? copy.filterAll.toLowerCase() : channelNames[filter]}, sorted by {sort}.
           </caption>
           <thead>
             <tr>
-              <th scope="col">Regime</th>
+              <th scope="col">{copy.regimeColumn}</th>
               {columns.map((c) => (
                 <th scope="col" key={c.id}>
                   {c.label}
@@ -126,8 +128,7 @@ export function Regimes() {
 
       {rows.length === 0 ? (
         <p className="reg__empty">
-          No regime in the paper maps to {channelNames[filter as ChannelMap]} alone. The proposal
-          below still does — that is the point of the row.
+          {copy.emptyBefore} {channelNames[filter as ChannelMap]} {copy.emptyAfter}
         </p>
       ) : null}
 
@@ -159,33 +160,34 @@ function RegimeRow({
 }) {
   return (
     <tr className="reg__row" data-open={open} data-proposed={regime.proposed}>
-      <th scope="row" data-label="Regime">
+      <th scope="row" data-label={copy.regimeColumn}>
         <button type="button" className="reg__rowBtn" onClick={onOpen} aria-expanded={open}>
           <span className="reg__rowName">{regime.name}</span>
           <span className="reg__rowDomain">{regime.domain}</span>
         </button>
       </th>
-      <td data-label="Who receives the report">
-        {regime.recipient}
-        {regime.separated ? (
-          <span className="reg__sep" title="Recipient separated from enforcer">
-            separated
-          </span>
-        ) : null}
-      </td>
-      <td data-label="Who holds enforcement authority">{regime.enforcer}</td>
-      <td data-label="What is protected">{regime.protects}</td>
-      <td data-label="What remains discoverable">{regime.discoverable}</td>
-      <td data-label="Source of protection">{regime.source}</td>
-      <td data-label="Which channel it maps to">
-        <span className="reg__maps">
-          {regime.maps.map((m) => (
-            <span className="reg__map" key={m} data-ch={m}>
-              {m === 'one' ? '1' : m === 'two' ? '2' : '3'}
+      {columns.map((c) => (
+        <td key={c.id} data-label={c.label}>
+          {c.id === 'maps' ? (
+            <span className="reg__maps">
+              {regime.maps.map((m) => (
+                <span className="reg__map" key={m} data-ch={m}>
+                  {m === 'one' ? '1' : m === 'two' ? '2' : '3'}
+                </span>
+              ))}
             </span>
-          ))}
-        </span>
-      </td>
+          ) : (
+            <>
+              {String(regime[c.id as keyof typeof regime] ?? '')}
+              {c.id === 'recipient' && regime.separated ? (
+                <span className="reg__sep" title={copy.separatedTitle}>
+                  {copy.separatedMark}
+                </span>
+              ) : null}
+            </>
+          )}
+        </td>
+      ))}
     </tr>
   )
 }

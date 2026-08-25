@@ -117,6 +117,8 @@ export const translation = {
     'Hansen adds the relational half. Weak ties are effective for locating knowledge, but transferring knowledge that is complex, tacit or hard to codify needs stronger and more recurrent working relationships. AI incident knowledge has exactly those properties, and the connections between front-line engineering, legal, compliance, executives and the board are frequently episodic. The signals that most need contextual explanation travel through the channel least able to carry it.',
   ],
   stepLabel: 'Advance the handoff',
+  restartLabel: 'Back to the observation',
+  trackLabel: 'Handoffs',
   fieldsLabel: 'What arrives',
   droppedLabel: 'What was left behind',
 } as const
@@ -129,6 +131,7 @@ export const deviance = {
     'Vaughan’s study of the Challenger disaster described how an anomaly accepted once becomes a precedent, and repeated success gradually expands the boundary of what an organisation treats as acceptable. The mechanism is statistical before it is cultural: each uneventful recurrence is read as evidence that the anomaly is benign.',
     'Rasmussen named the resulting drift a systematic migration of organisational behaviour toward the boundaries of safe behaviour under competitive pressure. AI development intensifies the pattern. Models are updated frequently, generate anomalies at scale, and behave probabilistically, which makes a genuine warning easier to classify as acceptable random variance.',
   ],
+  initial: 'The anomaly has been observed once and the threshold still holds. Press the button.',
   runLabel: 'Another uneventful recurrence',
   resetLabel: 'Reset',
   observedLabel: 'Uneventful recurrences',

@@ -82,6 +82,11 @@ export const memo = {
     /** The caption is the argument. */
     caption:
       'The firm does not get to choose which reading applies. It wrote the left column automatically and it will be handed the right one by opposing counsel.',
+
+    /** Shown instead of the drag instruction where the two readings stack. */
+    standfirstStacked: 'Both readings are shown in full below.',
+    dragInstruction: 'Drag the seam.',
+    seamLabel: 'Divide the record between the engineering reading and the exhibit reading',
   },
 
   /** What the reader is about to do. */

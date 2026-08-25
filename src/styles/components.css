@@ -190,7 +190,7 @@
 }
 
 .btn--primary {
-  background: var(--tint-instrument);
+  background: color-mix(in srgb, var(--color-instrument) 12%, var(--ground-deep));
   border-color: color-mix(in srgb, var(--color-instrument) 50%, transparent);
   color: var(--instrument-on-ground);
 }
@@ -227,4 +227,12 @@
 
 .argues__body + .argues__body {
   margin-block-start: 0.85em;
+}
+
+/* A deferred section carries its own number and title, so the page reads as an
+   ordered sequence before its chunk has arrived. */
+.deferred__note {
+  font-family: var(--font-mono);
+  font-size: var(--text-cs-sm);
+  color: var(--text-on-ground-faint);
 }

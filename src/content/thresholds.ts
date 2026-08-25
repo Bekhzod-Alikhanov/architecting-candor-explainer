@@ -135,6 +135,16 @@ export const calibrateCopy = {
   recommendedShown: 'Showing the paper’s recommended shape',
   reset: 'Back to my settings',
   levelLabel: 'Trip level',
+  scaffoldLabel: 'Guided walk through calibrating the telemetry tripwire',
+  scaffoldHint: 'Every band, and the tier control.',
+  legend: [
+    'genuine signal',
+    'near miss',
+    'ordinary traffic',
+    'escalated',
+    'logged only',
+    'not captured',
+  ],
 } as const
 
 export const readouts = {

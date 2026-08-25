@@ -488,8 +488,13 @@
   color: var(--text-on-ground-muted);
 }
 
-.board__row[data-zero='true'] {
-  opacity: 0.45;
+/* A zero row is de-emphasised by colour, not by opacity: the count and the
+   empty bar already say it is zero, and dimming the label below 4.5:1 would
+   trade a legible readout for a decorative one. */
+.board__row[data-zero='true'] .board__label,
+.board__row[data-zero='true'] .board__glyph,
+.board__row[data-zero='true'] .board__n {
+  color: var(--text-on-ground-faint);
 }
 
 .board__row[data-adverse='true'] .board__label,

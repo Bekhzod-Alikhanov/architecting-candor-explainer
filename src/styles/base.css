@@ -51,14 +51,23 @@ ol {
   list-style: none;
 }
 
+/* Tailwind's preflight sets text-decoration: inherit on anchors, which leaves a
+   prose link distinguished by colour alone. Put the underline back explicitly,
+   and take it off the controls that are anchors only incidentally. */
 a {
   color: inherit;
-  text-decoration-color: color-mix(in srgb, currentColor 40%, transparent);
+  text-decoration-line: underline;
+  text-decoration-color: color-mix(in srgb, currentColor 50%, transparent);
   text-underline-offset: 0.2em;
 }
 
 a:hover {
   text-decoration-color: currentColor;
+}
+
+a.btn,
+a.hero__cta {
+  text-decoration-line: none;
 }
 
 button {

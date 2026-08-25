@@ -1,0 +1,176 @@
+/* ============================================================================
+   08 — The implementation checklist.
+   On screen it is a document object. Printed, it is the only thing on the page:
+   see src/styles/print.css.
+   ========================================================================= */
+
+.cl {
+  margin-block-start: clamp(1.5rem, 3.5vw, 2.25rem);
+  padding: clamp(1.1rem, 3vw, 2rem);
+}
+
+.cl__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: start;
+  justify-content: space-between;
+  gap: 1rem 2rem;
+  padding-block-end: 1rem;
+  border-block-end: 1px solid var(--doc-rule);
+}
+
+.cl__title {
+  font-family: var(--font-doc);
+  font-weight: 500;
+  font-size: clamp(1.35rem, 3vw, 1.9rem);
+  line-height: 1.18;
+  letter-spacing: -0.012em;
+  max-width: 34ch;
+}
+
+.cl__subtitle {
+  margin-block-start: 0.4rem;
+  max-width: 62ch;
+  font-family: var(--font-mono);
+  font-size: var(--text-cs-xs);
+  line-height: 1.6;
+  color: var(--text-on-doc-muted);
+}
+
+.cl__actions {
+  display: grid;
+  gap: 0.4rem;
+  justify-items: start;
+}
+
+/* The button sits on a document object, so it takes the document palette. */
+.cl__actions .btn--primary {
+  background: var(--color-stamp);
+  border-color: var(--color-stamp);
+  color: var(--color-doc);
+}
+
+.cl__actions .btn--primary:hover {
+  background: color-mix(in srgb, var(--color-stamp) 84%, var(--color-redact));
+  border-color: color-mix(in srgb, var(--color-stamp) 84%, var(--color-redact));
+  color: var(--color-doc);
+}
+
+.cl__printNote {
+  font-family: var(--font-mono);
+  font-size: var(--text-cs-xs);
+  color: var(--text-on-doc-muted);
+}
+
+.cl__groups {
+  margin-block-start: 1.25rem;
+  display: grid;
+  gap: 1.25rem;
+}
+
+@media (min-width: 62rem) {
+  .cl__groups {
+    grid-template-columns: 1fr 1fr;
+    column-gap: 2.25rem;
+  }
+}
+
+.clg__title {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: var(--text-cs-lg);
+  line-height: 1.25;
+  color: var(--text-on-doc);
+  padding-block-end: 0.45rem;
+  border-block-end: 1px solid var(--doc-rule);
+}
+
+.clg__n {
+  font-family: var(--font-mono);
+  font-size: var(--text-cs-xs);
+  letter-spacing: 0.1em;
+  color: var(--color-doc);
+  background: var(--color-stamp);
+  padding: 0.3em 0.42em;
+  border-radius: 2px;
+  flex: 0 0 auto;
+}
+
+.clg__items {
+  margin-block-start: 0.6rem;
+  display: grid;
+  gap: 0.5rem;
+}
+
+.cli {
+  display: grid;
+  grid-template-columns: 0.95rem minmax(0, 1fr);
+  gap: 0.55rem;
+  align-items: start;
+}
+
+/* A real tick box, because this is a checklist someone will work through. */
+.cli__box {
+  margin-block-start: 0.28rem;
+  inline-size: 0.85rem;
+  block-size: 0.85rem;
+  border: 1px solid var(--text-on-doc-muted);
+  border-radius: 1px;
+}
+
+.cli__body {
+  display: grid;
+  gap: 0.2rem;
+  min-width: 0;
+}
+
+.cli__text {
+  font-size: var(--text-cs-sm);
+  line-height: 1.5;
+  color: var(--text-on-doc);
+}
+
+.cli__owner {
+  justify-self: start;
+  font-family: var(--font-mono);
+  font-size: var(--text-cs-xs);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--stamp-on-doc);
+  border: 1px solid color-mix(in srgb, var(--color-stamp) 40%, transparent);
+  border-radius: 2px;
+  padding: 0.1em 0.35em;
+}
+
+.cli__note {
+  font-family: var(--font-doc);
+  font-style: italic;
+  font-size: var(--text-ds-sm);
+  line-height: 1.45;
+  color: var(--text-on-doc-muted);
+}
+
+.cl__foot {
+  margin-block-start: 1.5rem;
+  padding-block-start: 0.9rem;
+  border-block-start: 1px solid var(--doc-rule);
+  display: grid;
+  gap: 0.5rem;
+}
+
+.cl__cite {
+  font-family: var(--font-mono);
+  font-size: var(--text-cs-xs);
+  line-height: 1.55;
+  color: var(--text-on-doc-muted);
+}
+
+.cl__disclaimer {
+  font-family: var(--font-mono);
+  font-size: var(--text-cs-xs);
+  line-height: 1.55;
+  color: var(--stamp-on-doc);
+}

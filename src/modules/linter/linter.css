@@ -1,0 +1,410 @@
+/* ============================================================================
+   08 — The incident ticket linter.
+   ========================================================================= */
+
+.lint {
+  margin-block-start: clamp(1.5rem, 3.5vw, 2.25rem);
+}
+
+/* The privacy claim goes first, because it is the precondition for using the
+   tool at all. */
+.lint__privacy {
+  border: 1px solid color-mix(in srgb, var(--color-instrument) 40%, transparent);
+  border-inline-start: 3px solid var(--color-instrument);
+  border-radius: 3px;
+  background: var(--tint-instrument);
+  padding: clamp(0.85rem, 2vw, 1.2rem);
+}
+
+.lint__privacyTitle {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: var(--text-cs-lg);
+  color: var(--instrument-on-ground);
+}
+
+.lint__privacyBody {
+  margin-block-start: 0.4rem;
+  max-width: 84ch;
+  font-size: var(--text-cs-sm);
+  line-height: 1.6;
+  color: var(--text-on-ground-muted);
+}
+
+.lint__grid {
+  margin-block-start: 1rem;
+  display: grid;
+  gap: 1rem;
+  align-items: start;
+}
+
+@media (min-width: 68rem) {
+  .lint__grid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+}
+
+.lint__inputHead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem 1rem;
+}
+
+.lint__label {
+  font-family: var(--font-mono);
+  font-size: var(--text-cs-xs);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-on-ground-faint);
+}
+
+.lint__inputActions {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.lint__input {
+  margin-block-start: 0.5rem;
+  width: 100%;
+  resize: vertical;
+  padding: 0.85rem;
+  background: var(--ground-deep);
+  color: var(--text-on-ground);
+  border: 1px solid var(--ground-rule);
+  border-radius: 3px;
+  font-family: var(--font-mono);
+  font-size: var(--text-cs-sm);
+  line-height: 1.65;
+}
+
+.lint__input::placeholder {
+  color: var(--text-on-ground-faint);
+}
+
+.lint__input:focus-visible {
+  outline: 2px solid var(--color-instrument);
+  outline-offset: 2px;
+}
+
+.lint__annotatedLabel,
+.lint__flagsLabel {
+  margin-block-start: 1rem;
+  font-family: var(--font-mono);
+  font-size: var(--text-cs-xs);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-on-ground-faint);
+}
+
+.lint__annotated {
+  margin-block-start: 0.5rem;
+  padding: 0.85rem;
+  border: 1px dashed var(--ground-rule);
+  border-radius: 3px;
+  font-family: var(--font-mono);
+  font-size: var(--text-cs-sm);
+  line-height: 1.8;
+  color: var(--text-on-ground-muted);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+/* Each category gets its own mark treatment. Hue alone never carries it: the
+   underline style differs too, and every flag is listed in text below. */
+.lint__mark {
+  background: transparent;
+  color: var(--color-doc);
+  padding: 0.05em 0.15em;
+  border-radius: 2px;
+  text-decoration-line: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+}
+
+.lint__mark[data-cat='fault'] {
+  background: color-mix(in srgb, var(--color-stamp) 30%, transparent);
+  text-decoration-style: solid;
+  text-decoration-color: var(--color-stamp);
+}
+
+.lint__mark[data-cat='harm'] {
+  background: color-mix(in srgb, var(--color-stamp) 20%, transparent);
+  text-decoration-style: double;
+  text-decoration-color: var(--color-stamp);
+}
+
+.lint__mark[data-cat='causal'] {
+  background: color-mix(in srgb, var(--color-ochre) 26%, transparent);
+  text-decoration-style: wavy;
+  text-decoration-color: var(--color-ochre);
+}
+
+.lint__mark[data-cat='counterfactual'] {
+  background: color-mix(in srgb, var(--color-ochre) 20%, transparent);
+  text-decoration-style: dashed;
+  text-decoration-color: var(--color-ochre);
+}
+
+.lint__mark[data-cat='legal'] {
+  background: var(--color-redact);
+  color: var(--color-doc);
+  text-decoration-style: solid;
+  text-decoration-color: var(--stamp-on-ground);
+}
+
+/* --- the tally and the flags -------------------------------------------- */
+
+.lint__count {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.5rem 0.9rem;
+  min-block-size: 3rem;
+}
+
+.lint__countN {
+  font-family: var(--font-mono);
+  font-size: clamp(2.25rem, 6vw, 3.25rem);
+  font-weight: 500;
+  line-height: 1;
+  color: var(--stamp-on-ground);
+}
+
+.lint__countLabel {
+  max-width: 26ch;
+  font-size: var(--text-cs-sm);
+  line-height: 1.4;
+  color: var(--text-on-ground-muted);
+}
+
+.lint__empty,
+.lint__clean {
+  font-size: var(--text-cs-md);
+  line-height: 1.6;
+  max-width: 52ch;
+}
+
+.lint__empty {
+  font-family: var(--font-mono);
+  font-size: var(--text-cs-sm);
+  color: var(--text-on-ground-faint);
+}
+
+.lint__clean {
+  font-family: var(--font-doc);
+  font-size: var(--text-ds-base);
+  color: var(--instrument-on-ground);
+}
+
+.lint__tally {
+  margin-block-start: 0.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.lint__tally li {
+  font-family: var(--font-mono);
+  font-size: var(--text-cs-xs);
+  padding: 0.25rem 0.5rem;
+  border: 1px solid var(--ground-rule);
+  border-radius: 2px;
+  color: var(--text-on-ground-muted);
+}
+
+.lint__tally li span {
+  color: var(--color-doc);
+  margin-inline-end: 0.25rem;
+}
+
+.lint__tally li[data-cat='legal'] {
+  border-color: var(--color-stamp);
+}
+
+.lint__flags {
+  margin-block-start: 0.6rem;
+  display: grid;
+  gap: 0.5rem;
+}
+
+.flag {
+  border: 1px solid var(--ground-rule-soft);
+  border-inline-start: 3px solid var(--color-stamp);
+  border-radius: 2px;
+  background: var(--ground-panel);
+  padding: 0.7rem 0.8rem;
+}
+
+.flag[data-cat='causal'],
+.flag[data-cat='counterfactual'] {
+  border-inline-start-color: var(--color-ochre);
+}
+
+.flag__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.4rem 0.7rem;
+}
+
+.flag__phrase {
+  font-family: var(--font-mono);
+  font-size: var(--text-cs-md);
+  color: var(--color-doc);
+  background: var(--ground-deep);
+  padding: 0.1em 0.35em;
+  border-radius: 2px;
+}
+
+.flag__cat {
+  font-family: var(--font-mono);
+  font-size: var(--text-cs-xs);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--stamp-on-ground);
+}
+
+.flag[data-cat='causal'] .flag__cat,
+.flag[data-cat='counterfactual'] .flag__cat {
+  color: var(--ochre-on-ground);
+}
+
+.flag__count {
+  margin-inline-start: auto;
+  font-family: var(--font-mono);
+  font-size: var(--text-cs-xs);
+  color: var(--text-on-ground-faint);
+}
+
+.flag__hazard {
+  margin-block-start: 0.5rem;
+  font-size: var(--text-cs-sm);
+  line-height: 1.6;
+  color: var(--text-on-ground-muted);
+}
+
+.flag__note {
+  margin-block-start: 0.5rem;
+  padding: 0.5rem 0.6rem;
+  border: 1px dashed var(--ground-rule);
+  border-radius: 2px;
+  font-size: var(--text-cs-xs);
+  line-height: 1.55;
+  color: var(--text-on-ground-faint);
+}
+
+.flag__subLabel {
+  margin-block-start: 0.6rem;
+  font-family: var(--font-mono);
+  font-size: var(--text-cs-xs);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--instrument-on-ground);
+}
+
+.flag__sub {
+  margin-block-start: 0.25rem;
+  font-family: var(--font-doc);
+  font-size: var(--text-ds-base);
+  line-height: 1.55;
+  color: var(--text-on-ground);
+}
+
+/* --- the templated ticket ------------------------------------------------ */
+
+.tmpl {
+  margin-block-start: clamp(1.5rem, 3.5vw, 2.25rem);
+  border: 1px solid var(--ground-rule);
+  border-radius: 3px;
+  background: var(--ground-panel);
+  padding: clamp(0.9rem, 2.2vw, 1.35rem);
+}
+
+.tmpl__heading {
+  font-family: var(--font-doc);
+  font-weight: 500;
+  font-size: clamp(1.2rem, 2.6vw, 1.6rem);
+  line-height: 1.2;
+}
+
+.tmpl__lead {
+  margin-block-start: 0.5rem;
+  max-width: 80ch;
+  font-size: var(--text-cs-md);
+  line-height: 1.65;
+  color: var(--text-on-ground-muted);
+}
+
+.tmpl__fields {
+  margin-block-start: 1rem;
+  display: grid;
+  gap: 0.35rem;
+}
+
+.tmpl__field {
+  display: grid;
+  gap: 0.15rem;
+  padding-block-start: 0.45rem;
+  border-block-start: 1px solid var(--ground-rule-soft);
+}
+
+@media (min-width: 52rem) {
+  .tmpl__field {
+    grid-template-columns: minmax(0, 20rem) minmax(0, 1fr);
+    gap: 1rem;
+    align-items: baseline;
+  }
+}
+
+.tmpl__field dt {
+  font-size: var(--text-cs-md);
+  color: var(--text-on-ground);
+}
+
+.tmpl__field dd {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: var(--text-cs-xs);
+  color: var(--instrument-on-ground);
+  overflow-wrap: anywhere;
+}
+
+.tmpl__cite {
+  margin-block-start: 1rem;
+  font-family: var(--font-mono);
+  font-size: var(--text-cs-xs);
+  letter-spacing: 0.08em;
+  color: var(--text-on-ground-faint);
+}
+
+/* --- the standalone /linter page ----------------------------------------- */
+
+.solo {
+  min-block-size: 100dvh;
+  padding-block: clamp(1.5rem, 4vw, 3rem) clamp(3rem, 8vw, 5rem);
+}
+
+.solo__rubric {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem 1.5rem;
+  padding-block-end: 0.75rem;
+  border-block-end: 1px solid var(--ground-rule-soft);
+  font-family: var(--font-mono);
+  font-size: var(--text-cs-xs);
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--text-on-ground-faint);
+}
+
+.solo__rubric a {
+  color: var(--instrument-on-ground);
+}
+
+.solo__head {
+  margin-block-start: clamp(1.5rem, 4vw, 2.5rem);
+}

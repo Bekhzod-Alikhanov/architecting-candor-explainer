@@ -117,6 +117,12 @@ try {
 
   await c.send('Page.enable')
 
+  // --print-media applies the print stylesheet to the live layout, so what the
+  // print rules actually do can be measured with --eval.
+  if (flags.includes('--print-media')) {
+    await c.send('Emulation.setEmulatedMedia', { media: 'print' })
+  }
+
   // --rm emulates prefers-reduced-motion: reduce, so the setting can be
   // verified rather than assumed.
   if (flags.includes('--rm')) {
@@ -176,6 +182,22 @@ try {
       returnByValue: true,
     })
     await sleep(500)
+  }
+
+  // --pdf renders through the print stylesheet instead of taking a screenshot,
+  // so "prints cleanly to one page" can be checked rather than assumed.
+  if (flags.includes('--pdf')) {
+    const { data: pdf } = await c.send('Page.printToPDF', {
+      printBackground: true,
+      preferCSSPageSize: true,
+    })
+    const buf = Buffer.from(pdf, 'base64')
+    writeFileSync(out, buf)
+    // Count pages from the PDF's own page objects.
+    const pages = (buf.toString('latin1').match(/\/Type\s*\/Page[^s]/g) || []).length
+    console.log(`${out}  ${buf.length} bytes  pages=${pages}`)
+    ws.close()
+    process.exit(pages === 1 ? 0 : 3)
   }
 
   const { data } = await c.send('Page.captureScreenshot', {

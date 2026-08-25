@@ -6,6 +6,7 @@ import { Calibrate } from './modules/calibrate/Calibrate'
 import { Signal } from './modules/signal/Signal'
 import { Regimes } from './modules/regimes/Regimes'
 import { Statute } from './modules/statute/Statute'
+import { TakeItToYourGC } from './modules/gc/TakeItToYourGC'
 import { Colophon } from './modules/colophon/Colophon'
 
 export function App() {
@@ -23,6 +24,7 @@ export function App() {
         <Calibrate />
         <Regimes />
         <Statute />
+        <TakeItToYourGC />
         <Colophon />
       </main>
     </>

@@ -115,6 +115,12 @@ pnpm preview &
 node scripts/audit-a11y.mjs http://localhost:4173
 ```
 
+```bash
+node scripts/check-keyboard.mjs http://localhost:4173
+```
+
+`check-keyboard.mjs` drives all eighteen interactives with genuine key events dispatched through the DevTools Protocol — not synthesised React events — and asserts each instrument's own state actually changed. It mounts every deferred section first, walking any placeholder that a stepped scroll skipped.
+
 `audit-a11y.mjs` forces every deferred section to mount and drives each interactive into a used state before scanning, because an untouched instrument hides most of its own markup. It currently reports **no axe-core violations** across WCAG 2.0/2.1 A and AA plus best-practice rules.
 
 Every interactive is fully keyboard operable. `prefers-reduced-motion` collapses all durations to 1ms and turns the valve's push-back into an immediate state change with the reason text appearing at once — the information is never carried by the animation. Nothing is distinguished by colour alone: the four routing bins, the discovery outcomes, the channel identities and the linter categories all carry a label and a second visual channel.

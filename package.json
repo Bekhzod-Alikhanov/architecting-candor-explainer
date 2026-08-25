@@ -13,7 +13,9 @@
     "check:valve": "jiti scripts/check-valve.ts",
     "check": "pnpm check:grading && pnpm check:valve && pnpm check:tripwire && pnpm check:linter",
     "check:tripwire": "jiti scripts/check-tripwire.ts",
-    "check:linter": "jiti scripts/check-linter.ts"
+    "check:linter": "jiti scripts/check-linter.ts",
+    "check:keyboard": "node scripts/check-keyboard.mjs",
+    "audit:a11y": "node scripts/audit-a11y.mjs"
   },
   "dependencies": {
     "d3-array": "^3.2.4",

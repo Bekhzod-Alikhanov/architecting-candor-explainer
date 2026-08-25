@@ -3,10 +3,9 @@
   "framework": "vite",
   "buildCommand": "pnpm build",
   "outputDirectory": "dist",
-  "cleanUrls": true,
   "rewrites": [
     {
-      "source": "/((?!assets/|fonts/|og\\.png|favicon\\.svg|robots\\.txt|sitemap\\.xml).*)",
+      "source": "/(.*)",
       "destination": "/index.html"
     }
   ],

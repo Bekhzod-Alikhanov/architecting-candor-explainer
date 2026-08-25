@@ -1,0 +1,205 @@
+/* ============================================================================
+   THE SEAM — the signature.
+   Not a divider. The one-way valve. Facts cross inward; causal conclusions,
+   fault characterisations and litigation assessments do not cross outward.
+   It appears only where a boundary exists in the argument: 00, 03, 04, 08.
+   ========================================================================= */
+
+.seam {
+  --seam-glow: transparent;
+  position: relative;
+  flex: 0 0 auto;
+  align-self: stretch;
+  width: var(--seam-width);
+  min-height: 100%;
+  background: var(--seam-colour);
+  transition:
+    background var(--dur-base) var(--ease-out),
+    box-shadow var(--dur-base) var(--ease-out);
+  box-shadow: 0 0 0 0 var(--seam-glow);
+}
+
+/* The tick marks. A bound gutter between two document systems, or the
+   sprocket edge between two microfilm frames. */
+.seam::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  translate: -50% 0;
+  width: 9px;
+  pointer-events: none;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    var(--seam-colour) 0 1px,
+    transparent 1px 13px
+  );
+  opacity: 1;
+}
+
+/* --- states -------------------------------------------------------------- */
+
+/* Accepting an inward flow. */
+.seam[data-state='live'] {
+  background: var(--seam-live);
+  --seam-glow: color-mix(in srgb, var(--color-instrument) 26%, transparent);
+  box-shadow: 0 0 0 4px var(--seam-glow);
+}
+
+.seam[data-state='live']::before {
+  background-image: repeating-linear-gradient(
+    to bottom,
+    var(--seam-live) 0 1px,
+    transparent 1px 13px
+  );
+}
+
+/* Refusing an outward flow. */
+.seam[data-state='refuse'] {
+  background: var(--seam-refuse);
+  --seam-glow: color-mix(in srgb, var(--color-stamp) 34%, transparent);
+  box-shadow: 0 0 0 5px var(--seam-glow);
+}
+
+.seam[data-state='refuse']::before {
+  background-image: repeating-linear-gradient(
+    to bottom,
+    var(--seam-refuse) 0 2px,
+    transparent 2px 9px
+  );
+  opacity: 1;
+}
+
+/* --- draggable variant, used in the hero -------------------------------- */
+
+.seam--draggable {
+  width: max(var(--seam-width), 12px);
+  background: transparent;
+  cursor: col-resize;
+  touch-action: none;
+}
+
+.seam--draggable::after {
+  content: '';
+  position: absolute;
+  inset-block: 0;
+  left: 50%;
+  translate: -50% 0;
+  width: var(--seam-width);
+  background: var(--seam-colour);
+  transition: background var(--dur-base) var(--ease-out);
+}
+
+.seam--draggable[data-state='live']::after {
+  background: var(--seam-live);
+}
+
+.seam--draggable[data-state='refuse']::after {
+  background: var(--seam-refuse);
+}
+
+/* The grip. Reads as a physical handle on a bound gutter. */
+.seam__grip {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  width: 11px;
+  height: 46px;
+  border-radius: 6px;
+  background: var(--ground-raised);
+  border: 1px solid var(--ground-rule);
+  display: grid;
+  place-items: center;
+  gap: 3px;
+  grid-auto-rows: 1px;
+  z-index: 2;
+}
+
+.seam__grip span {
+  display: block;
+  width: 3px;
+  height: 1px;
+  background: var(--text-on-ground-faint);
+}
+
+.seam--draggable:hover .seam__grip,
+.seam--draggable:focus-visible .seam__grip {
+  border-color: var(--color-instrument);
+}
+
+/* --- the refusal reason, surfaced in the seam itself -------------------- */
+
+.seam__reason {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  z-index: 5;
+  width: max-content;
+  max-width: min(30ch, 68vw);
+  padding: 0.55rem 0.7rem;
+  background: var(--color-stamp);
+  color: var(--color-doc);
+  font-family: var(--font-mono);
+  font-size: var(--text-cs-xs);
+  line-height: 1.45;
+  letter-spacing: 0.01em;
+  border-radius: 2px;
+  box-shadow: var(--lift-doc);
+  pointer-events: none;
+}
+
+/* --- horizontal orientation, for stacked layouts ----------------------- */
+
+.seam--horizontal {
+  width: auto;
+  min-height: 0;
+  height: var(--seam-width);
+  align-self: auto;
+}
+
+.seam--horizontal::before {
+  inset-inline: 0;
+  top: 50%;
+  bottom: auto;
+  left: auto;
+  translate: 0 -50%;
+  width: auto;
+  height: 9px;
+  background-image: repeating-linear-gradient(
+    to right,
+    var(--seam-colour) 0 1px,
+    transparent 1px 13px
+  );
+}
+
+.seam--horizontal.seam--draggable {
+  height: max(var(--seam-width), 12px);
+  width: auto;
+  cursor: row-resize;
+}
+
+.seam--horizontal.seam--draggable::after {
+  inset-block: auto;
+  inset-inline: 0;
+  top: 50%;
+  left: auto;
+  translate: 0 -50%;
+  height: var(--seam-width);
+  width: auto;
+}
+
+.seam--horizontal .seam__grip {
+  width: 46px;
+  height: 11px;
+  grid-auto-rows: auto;
+  grid-auto-flow: column;
+  grid-auto-columns: 1px;
+}
+
+.seam--horizontal .seam__grip span {
+  width: 1px;
+  height: 3px;
+}

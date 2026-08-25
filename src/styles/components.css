@@ -1,0 +1,230 @@
+/* ============================================================================
+   Shared section furniture: the stamped section head, the scaffold stepper,
+   and the labelled block that closes each interactive.
+   ========================================================================= */
+
+/* --- section head -------------------------------------------------------- */
+
+.sect {
+  padding-block: clamp(3rem, 8vw, 6rem);
+  scroll-margin-top: 1rem;
+}
+
+.sect + .sect {
+  border-block-start: 1px solid var(--ground-rule-soft);
+}
+
+.sect-head {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+}
+
+/* The section number as a stamp impression: document colour on stamp ink. */
+.sect-num {
+  font-family: var(--font-mono);
+  font-size: var(--text-cs-lg);
+  font-weight: 500;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.08em;
+  color: var(--color-doc);
+  background: var(--color-stamp);
+  padding: 0.34em 0.5em 0.3em;
+  border-radius: 2px;
+}
+
+.sect-eyebrow {
+  font-family: var(--font-mono);
+  font-size: var(--text-cs-sm);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-on-ground-muted);
+}
+
+.sect-bates {
+  margin-inline-start: auto;
+}
+
+.sect-headline {
+  font-family: var(--font-doc);
+  font-weight: 500;
+  font-size: clamp(1.75rem, 4.2vw, 2.9rem);
+  line-height: 1.08;
+  letter-spacing: -0.018em;
+  margin-block-start: 1.1rem;
+  max-width: 22ch;
+  text-wrap: balance;
+}
+
+.sect-standfirst {
+  margin-block-start: 1rem;
+  max-width: 62ch;
+  font-size: var(--text-cs-lg);
+  line-height: 1.62;
+  color: var(--text-on-ground-muted);
+}
+
+/* --- the scaffold stepper ------------------------------------------------
+   Every heavy instrument runs guided steps first, moving the instrument's own
+   state, then explicitly hands over control. Nobody faces a blank instrument.
+   ---------------------------------------------------------------------- */
+
+.scaffold {
+  border: 1px solid var(--ground-rule);
+  border-radius: 3px;
+  background: var(--ground-panel);
+  padding: clamp(0.9rem, 2.2vw, 1.25rem);
+  display: grid;
+  gap: 0.75rem;
+}
+
+.scaffold__meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  font-family: var(--font-mono);
+  font-size: var(--text-cs-xs);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-on-ground-faint);
+}
+
+.scaffold__meta[data-released='true'] {
+  color: var(--instrument-on-ground);
+}
+
+.scaffold__heading {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: var(--text-cs-xl);
+  line-height: 1.22;
+  letter-spacing: -0.012em;
+}
+
+.scaffold__body {
+  font-size: var(--text-cs-md);
+  line-height: 1.62;
+  color: var(--text-on-ground-muted);
+  max-width: 62ch;
+}
+
+.scaffold__controls {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-block-start: 0.25rem;
+}
+
+.scaffold__dots {
+  display: flex;
+  gap: 0.3rem;
+  margin-inline-end: auto;
+}
+
+/* Dots carry a number in their accessible name, and the current one is marked
+   by size and ring as well as by fill. */
+.scaffold__dot {
+  width: 1.4rem;
+  height: 1.4rem;
+  display: grid;
+  place-items: center;
+  border-radius: 2px;
+  border: 1px solid var(--ground-rule);
+  background: transparent;
+  font-family: var(--font-mono);
+  font-size: var(--text-cs-xs);
+  font-variant-numeric: tabular-nums;
+  color: var(--text-on-ground-faint);
+  transition:
+    background var(--dur-fast) var(--ease-out),
+    color var(--dur-fast) var(--ease-out),
+    border-color var(--dur-fast) var(--ease-out);
+}
+
+.scaffold__dot:hover {
+  border-color: var(--instrument-on-ground);
+  color: var(--instrument-on-ground);
+}
+
+.scaffold__dot[aria-current='step'] {
+  background: var(--color-instrument);
+  border-color: var(--color-instrument);
+  color: var(--color-ground);
+  font-weight: 500;
+}
+
+.scaffold__dot[data-done='true']:not([aria-current='step']) {
+  border-color: color-mix(in srgb, var(--color-instrument) 45%, transparent);
+  color: var(--instrument-on-ground);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-family: var(--font-mono);
+  font-size: var(--text-cs-sm);
+  letter-spacing: 0.05em;
+  color: var(--text-on-ground);
+  border: 1px solid var(--ground-rule);
+  border-radius: 2px;
+  padding: 0.5rem 0.8rem;
+  background: var(--ground-raised);
+  transition:
+    background var(--dur-fast) var(--ease-out),
+    border-color var(--dur-fast) var(--ease-out),
+    color var(--dur-fast) var(--ease-out);
+}
+
+.btn:hover:not(:disabled) {
+  border-color: var(--color-instrument);
+  color: var(--instrument-on-ground);
+}
+
+.btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.btn--primary {
+  background: var(--tint-instrument);
+  border-color: color-mix(in srgb, var(--color-instrument) 50%, transparent);
+  color: var(--instrument-on-ground);
+}
+
+/* --- the argument block --------------------------------------------------
+   The paper's voice, so it is set as a document object rather than as console
+   furniture. Never "Figure 3: channel routing".
+   ---------------------------------------------------------------------- */
+
+.argues {
+  margin-block-start: clamp(1.75rem, 4vw, 2.75rem);
+  padding: clamp(1.25rem, 3vw, 2rem) clamp(1.25rem, 3.2vw, 2.25rem);
+  max-width: 70ch;
+}
+
+.argues__label {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: var(--text-cs-xs);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--stamp-on-doc);
+  padding-block-end: 0.6rem;
+  margin-block-end: 0.9rem;
+  border-block-end: 1px solid var(--doc-rule);
+}
+
+.argues__body {
+  font-family: var(--font-doc);
+  font-size: var(--text-ds-base);
+  line-height: 1.65;
+  color: var(--text-on-doc);
+}
+
+.argues__body + .argues__body {
+  margin-block-start: 0.85em;
+}

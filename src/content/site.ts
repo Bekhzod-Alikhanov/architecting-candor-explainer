@@ -38,7 +38,7 @@ export const paper = {
 
 export const meta = {
   /** Reads as an argument, not a label. */
-  title: 'Architecting Candor — the record is written either way',
+  title: 'Architecting Candor — the record gets written either way',
   description:
     'AI firms are compelled to document safety incidents and compelled to produce those documents in discovery. An operable walkthrough of the three-channel Safety Translation Layer proposed in Architecting Candor (Arcadia Impact, August 2026).',
   canonical: 'https://architecting-candor.vercel.app/',

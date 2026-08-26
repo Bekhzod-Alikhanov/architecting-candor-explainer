@@ -159,7 +159,7 @@ export const timelineCopy = {
 export const timelineSteps = [
   {
     heading: 'Start where counsel’s instincts were formed',
-    body: 'In 1991 a court declined to treat software’s informational content as a product. The boundary sits near the top of the chart, and the territory beneath it — where a firm’s internal records are central evidence of defect — is almost empty.',
+    body: 'In 1991 a court declined to treat software’s informational content as a product. The line starts near the top of the chart, on the side where almost nothing about a software system was a product. Nothing is hatched yet, because the boundary has not moved.',
   },
   {
     heading: 'Three decades of cases ending early',
@@ -167,7 +167,7 @@ export const timelineSteps = [
   },
   {
     heading: 'Design becomes analysable as defect',
-    body: 'In 2023 a court allowed claims that platform design features can be analysed as product defects. Watch the line drop, and watch the territory below it grow. That territory now includes recommendation logic, age gates, guardrails and deployment configuration.',
+    body: 'In 2023 a court allowed claims that platform design features can be analysed as product defects. Watch the line drop, and watch the hatched ground it has crossed open up behind it. That ground now includes recommendation logic, age gates, guardrails and deployment configuration.',
   },
   {
     heading: 'Generative AI crosses',

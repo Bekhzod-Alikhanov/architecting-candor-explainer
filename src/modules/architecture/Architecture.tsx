@@ -64,13 +64,22 @@ export function Architecture() {
     }
   }, [])
 
+  /** Which object is mid-drag, and which destination it is hovering over. */
+  const [dragId, setDragId] = useState<string | null>(null)
+  const [overNode, setOverNode] = useState<NodeId | null>(null)
+
   const attempt = useCallback(
-    (to: NodeId) => {
-      const r = resolveFlow(selectedId, to)
+    // A drop names its own object; a click uses whatever is selected.
+    (to: NodeId, objectId?: string) => {
+      const id = objectId ?? selectedId
+      if (objectId) setSelectedId(objectId)
+      const r = resolveFlow(id, to)
       setResult(r)
       setLog((prev) => [{ ...r, seq: prev.length + 1 }, ...prev])
       // Re-trigger the push-back animation even on a repeated identical attempt.
       setPulse((n) => n + 1)
+      setDragId(null)
+      setOverNode(null)
     },
     [selectedId],
   )
@@ -115,6 +124,18 @@ export function Architecture() {
               data-refused={
                 o.id === selectedId && result && !result.allowed ? String(pulse) : undefined
               }
+              draggable
+              onDragStart={(e) => {
+                e.dataTransfer.setData('text/plain', o.id)
+                e.dataTransfer.effectAllowed = 'move'
+                setDragId(o.id)
+                setSelectedId(o.id)
+                setResult(null)
+              }}
+              onDragEnd={() => {
+                setDragId(null)
+                setOverNode(null)
+              }}
               onClick={() => {
                 setSelectedId(o.id)
                 setResult(null)
@@ -141,6 +162,10 @@ export function Architecture() {
                 node={n}
                 isHome={selected.home === n.id}
                 onAttempt={() => attempt(n.id)}
+                onDropObject={(objectId) => attempt(n.id, objectId)}
+                isOver={overNode === n.id}
+                onOver={() => setOverNode(n.id)}
+                onLeave={() => setOverNode((c) => (c === n.id ? null : c))}
                 lastResult={result?.to === n.id ? result : null}
               >
                 {n.id === 'one' ? (
@@ -149,6 +174,22 @@ export function Architecture() {
                     className="arch__overwrite"
                     onClick={() => attempt('one-overwrite')}
                     data-last={result?.to === 'one-overwrite' ? 'refused' : undefined}
+                    data-over={overNode === 'one-overwrite' ? 'true' : undefined}
+                    onDragOver={(e) => {
+                      e.preventDefault()
+                      e.stopPropagation()
+                      e.dataTransfer.dropEffect = 'move'
+                      setOverNode('one-overwrite')
+                    }}
+                    onDragLeave={() => setOverNode((c) => (c === 'one-overwrite' ? null : c))}
+                    onDrop={(e) => {
+                      e.preventDefault()
+                      e.stopPropagation()
+                      const id = e.dataTransfer.getData('text/plain') || dragId
+                      if (id) attempt('one-overwrite', id)
+                      setOverNode(null)
+                      setDragId(null)
+                    }}
                   >
                     <span className="arch__overwriteName">{overwrite.name}</span>
                     <span className="arch__overwriteSub">{copy.overwriteAction}</span>
@@ -200,6 +241,10 @@ export function Architecture() {
               node={n}
               isHome={false}
               onAttempt={() => attempt(n.id)}
+              onDropObject={(objectId) => attempt(n.id, objectId)}
+              isOver={overNode === n.id}
+              onOver={() => setOverNode(n.id)}
+              onLeave={() => setOverNode((c) => (c === n.id ? null : c))}
               lastResult={result?.to === n.id ? result : null}
             />
           ))}
@@ -277,12 +322,20 @@ function ChannelBox({
   node,
   isHome,
   onAttempt,
+  onDropObject,
+  isOver,
+  onOver,
+  onLeave,
   lastResult,
   children,
 }: {
   readonly node: (typeof nodes)[number]
   readonly isHome: boolean
   readonly onAttempt: () => void
+  readonly onDropObject: (objectId: string) => void
+  readonly isOver: boolean
+  readonly onOver: () => void
+  readonly onLeave: () => void
   readonly lastResult: ValveResult | null
   readonly children?: React.ReactNode
 }) {
@@ -292,7 +345,20 @@ function ChannelBox({
       data-node={node.id}
       data-side={node.side}
       data-home={isHome}
+      data-over={isOver ? 'true' : undefined}
       data-last={lastResult ? (lastResult.allowed ? 'allowed' : 'refused') : undefined}
+      onDragOver={(e) => {
+        e.preventDefault()
+        e.dataTransfer.dropEffect = 'move'
+        onOver()
+      }}
+      onDragLeave={onLeave}
+      onDrop={(e) => {
+        e.preventDefault()
+        const id = e.dataTransfer.getData('text/plain')
+        if (id) onDropObject(id)
+        onLeave()
+      }}
     >
       <button
         type="button"

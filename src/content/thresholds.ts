@@ -135,6 +135,10 @@ export const calibrateCopy = {
   recommendedShown: 'Showing the paper’s recommended shape',
   reset: 'Back to my settings',
   levelLabel: 'Trip level',
+  shareLabel: 'Copy a link to this configuration',
+  shareCopied: 'Link copied',
+  shareNote:
+    'The stream is generated from a fixed seed, so anyone opening your link sees the same quarter of events against your bands and reads the same four numbers.',
   scaffoldLabel: 'Guided walk through calibrating the telemetry tripwire',
   scaffoldHint: 'Every band, and the tier control.',
   legend: [
@@ -166,7 +170,7 @@ export const readouts = {
   defensibility: {
     label: 'Privilege defensibility',
     sub: 'a qualitative reading, not a score',
-    note: 'How a court is likely to read the trigger, on the reasoning of the cybersecurity discovery disputes.',
+    note: 'How the trigger reads against the reasoning of the cybersecurity discovery disputes.',
   },
 } as const
 

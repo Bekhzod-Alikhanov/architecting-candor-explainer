@@ -93,7 +93,7 @@ export const memo = {
   onward: {
     label: 'What follows',
     body:
-      'Nine sections. The first three set out the bind. The fourth hands you the mechanism and asks you to run it. Nothing here is legal advice.',
+      'Ten sections, numbered because the argument is a sequence. The first three set out the bind. The fourth hands you the mechanism and asks you to run it. Nothing here is legal advice.',
     cta: 'Begin with the pincer',
   },
 } as const

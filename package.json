@@ -15,7 +15,8 @@
     "check:tripwire": "jiti scripts/check-tripwire.ts",
     "check:linter": "jiti scripts/check-linter.ts",
     "check:keyboard": "node scripts/check-keyboard.mjs",
-    "audit:a11y": "node scripts/audit-a11y.mjs"
+    "audit:a11y": "node scripts/audit-a11y.mjs",
+    "read:aloud": "jiti scripts/read-aloud.ts"
   },
   "dependencies": {
     "d3-array": "^3.2.4",

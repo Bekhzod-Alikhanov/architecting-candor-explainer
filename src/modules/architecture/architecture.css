@@ -606,3 +606,20 @@
   max-width: 22ch;
   text-align: center;
 }
+
+/* Objects are draggable as well as selectable, so section 04 and section 03
+   share one interaction grammar: pick a thing up, put it somewhere, and let
+   the valve answer. */
+.obj {
+  cursor: grab;
+}
+
+.obj:active {
+  cursor: grabbing;
+}
+
+.arch__overwrite[data-over='true'] {
+  border-style: solid;
+  border-color: var(--color-stamp);
+  background: var(--tint-stamp);
+}

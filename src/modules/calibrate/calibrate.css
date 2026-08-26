@@ -485,3 +485,14 @@
   font-size: var(--text-cs-xs);
   color: var(--stamp-on-ground);
 }
+
+/* The shared-configuration note sits under the actions, because the claim it
+   makes — that a link reproduces the numbers exactly — is the reason the
+   control is worth having. */
+.cal__shareNote {
+  margin-block-start: 0.6rem;
+  font-size: var(--text-cs-xs);
+  line-height: 1.55;
+  color: var(--text-on-ground-faint);
+  max-width: 52ch;
+}

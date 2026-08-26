@@ -93,7 +93,7 @@ export const handoffs: readonly Handoff[] = [
       'The stakes now differ, not just the vocabulary. What counsel needs from this record is not what product needed from it, and the record has already lost what would have answered either question.',
     fields: ['a potential incident on a user-facing feature', 'an open prior finding'],
     dropped:
-      'The operational specifics that would let anyone decide whether this is one event or a pattern. What remains is a characterisation, which is the one thing the paper says should never have been the travelling form.',
+      'The operational specifics that would let anyone decide whether this is one event or a pattern. What remains is a characterisation, and a characterisation is exactly what the paper says should never be the thing that travels.',
   },
   {
     id: 'board',
@@ -167,7 +167,7 @@ export const recording = {
 export const anchor = {
   figure: 'Fewer than 5%',
   lead: 'of cybersecurity incidents had a formal written report requested by counsel.',
-  body: 'One forensic investigator interviewed by Schwarcz, Wolff and Woods gave that estimate, and gave the reason: a written report would have to document the failures. Cybersecurity is this paper’s empirical proxy for AI, because it is the closest industry analog in litigation exposure and documentation culture. This is not a prediction about what suppression might do. It is a measurement of what the counsel-driven strategy already produced in the industry that adopted it first.',
+  body: 'One forensic investigator interviewed by Schwarcz, Wolff and Woods gave that estimate, and gave the reason: a written report would have to document the failures. Cybersecurity is this paper’s empirical proxy for AI, because it is the closest industry analog in litigation exposure and documentation culture. This is not a prediction about what suppression might do. It is what practitioners in the industry that adopted the strategy first report that it produced.',
   cite: 'Schwarcz, Wolff & Woods (2023), p. 450 · paper §2.1.3',
 } as const
 

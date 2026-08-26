@@ -850,3 +850,62 @@
   line-height: 1.6;
   color: var(--text-on-ground-muted);
 }
+
+/* --- the best run --------------------------------------------------------
+   Component state only. It exists to make a second attempt tempting, not to
+   keep a record, so it is deliberately modest next to the two scoreboards.
+   ---------------------------------------------------------------------- */
+
+.bestrun {
+  margin-block-start: 1rem;
+  border: 1px solid var(--ground-rule);
+  border-inline-start: 3px solid var(--color-instrument);
+  border-radius: 3px;
+  background: var(--ground-panel);
+  padding: 0.8rem 0.9rem;
+  max-width: 62ch;
+}
+
+.bestrun__label {
+  font-family: var(--font-mono);
+  font-size: var(--text-cs-xs);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-on-ground-faint);
+}
+
+.bestrun__figures {
+  margin-block-start: 0.4rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.3rem;
+  font-family: var(--font-mono);
+  font-size: var(--text-cs-sm);
+  color: var(--text-on-ground-muted);
+}
+
+.bestrun__figures [data-figure] {
+  font-size: var(--text-cs-xl);
+  color: var(--color-doc);
+}
+
+.bestrun__sep {
+  color: var(--ground-rule);
+  margin-inline: 0.35rem;
+}
+
+.bestrun__verdict {
+  margin-block-start: 0.4rem;
+  font-family: var(--font-doc);
+  font-size: var(--text-ds-base);
+  line-height: 1.5;
+  color: var(--instrument-on-ground);
+}
+
+.bestrun__note {
+  margin-block-start: 0.4rem;
+  font-size: var(--text-cs-xs);
+  line-height: 1.5;
+  color: var(--text-on-ground-faint);
+}

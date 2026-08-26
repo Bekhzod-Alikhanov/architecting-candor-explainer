@@ -8,7 +8,15 @@ import { Scoreboards } from './Scoreboards'
 import { Ledger } from './Ledger'
 import { Reveal } from './Reveal'
 import { deck, bins, scenario, type Bin } from '../../content/artifacts'
-import { routeCopy, routeSteps, routeArgues, runLabel, replayLabel, revealLabel } from '../../content/grading'
+import {
+  routeCopy,
+  routeSteps,
+  routeArgues,
+  runLabel,
+  replayLabel,
+  revealLabel,
+  bestRun,
+} from '../../content/grading'
 import { grade, type Assignment } from '../../lib/grade'
 import './route.css'
 
@@ -48,6 +56,12 @@ export function RouteTheRecord() {
   const [dragId, setDragId] = useState<string | null>(null)
   const [overBin, setOverBin] = useState<Bin | null>(null)
   const [announcement, setAnnouncement] = useState('')
+  /**
+   * The reader's best run, in component state only. A run beats another on the
+   * record an engineer could still reconstruct, then on adverse outcomes, then
+   * on warnings — which is the order the two scoreboards are meant to be read in.
+   */
+  const [best, setBest] = useState<BestRun | null>(null)
 
   const unrouted = useMemo(() => deck.filter((a) => assignment[a.id] === undefined), [assignment])
   const routedCount = deck.length - unrouted.length
@@ -98,6 +112,17 @@ export function RouteTheRecord() {
     setStep(0)
     setAnnouncement(routeCopy.resetAnnouncement)
   }, [])
+
+  const runRequest = useCallback(() => {
+    setHasRun(true)
+    const run: BestRun = {
+      remediation: result.remediationScore,
+      total: result.remediationTotal,
+      adverse: result.adverseCount,
+      flags: result.flagCount,
+    }
+    setBest((prev) => (prev === null || beats(run, prev) ? run : prev))
+  }, [result])
 
   /** Keyboard: 1–4 route the selection, Backspace returns it, arrows move it. */
   const onKeyDown = useCallback(
@@ -309,7 +334,7 @@ export function RouteTheRecord() {
         <button
           type="button"
           className="btn btn--primary"
-          onClick={() => setHasRun(true)}
+          onClick={runRequest}
           disabled={!complete}
         >
           {hasRun ? replayLabel : runLabel}
@@ -331,6 +356,30 @@ export function RouteTheRecord() {
         ) : null}
       </div>
 
+      {best ? (
+        <div className="bestrun" aria-live="polite">
+          <p className="bestrun__label">{bestRun.label}</p>
+          <p className="bestrun__figures">
+            <span data-figure>
+              {best.remediation}/{best.total}
+            </span>{' '}
+            {bestRun.remediation}
+            <span className="bestrun__sep" aria-hidden="true">
+              ·
+            </span>
+            <span data-figure>{best.adverse}</span> {bestRun.adverse}
+            <span className="bestrun__sep" aria-hidden="true">
+              ·
+            </span>
+            <span data-figure>{best.flags}</span> {bestRun.warnings}
+          </p>
+          <p className="bestrun__verdict">
+            {sameAs(currentRun(result), best) ? bestRun.atBest : bestRun.behind}
+          </p>
+          <p className="bestrun__note">{bestRun.note}</p>
+        </div>
+      ) : null}
+
       {hasRun ? <Ledger grade={result} /> : null}
 
       {showReveal ? (
@@ -342,4 +391,31 @@ export function RouteTheRecord() {
       {hasRun ? <ArguesBlock label={routeArgues.label} body={routeArgues.body} /> : null}
     </section>
   )
+}
+
+interface BestRun {
+  readonly remediation: number
+  readonly total: number
+  readonly adverse: number
+  readonly flags: number
+}
+
+function currentRun(g: ReturnType<typeof grade>): BestRun {
+  return {
+    remediation: g.remediationScore,
+    total: g.remediationTotal,
+    adverse: g.adverseCount,
+    flags: g.flagCount,
+  }
+}
+
+/** More of the record recoverable wins; then fewer adverse outcomes; then fewer warnings. */
+function beats(a: BestRun, b: BestRun): boolean {
+  if (a.remediation !== b.remediation) return a.remediation > b.remediation
+  if (a.adverse !== b.adverse) return a.adverse < b.adverse
+  return a.flags < b.flags
+}
+
+function sameAs(a: BestRun, b: BestRun): boolean {
+  return a.remediation === b.remediation && a.adverse === b.adverse && a.flags === b.flags
 }

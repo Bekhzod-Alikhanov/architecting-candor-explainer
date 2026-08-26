@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { SectionHead } from '../../components/SectionHead'
 import { Scaffold } from '../../components/Scaffold'
 import { ArguesBlock } from '../../components/ArguesBlock'
@@ -15,6 +15,7 @@ import {
   type DimensionId,
 } from '../../content/thresholds'
 import { evaluate, type Settings } from '../../lib/tripwire'
+import { settingsFromLocation, writeSettingsToLocation } from '../../lib/calibration-url'
 import './calibrate.css'
 
 /**
@@ -47,13 +48,25 @@ const INITIAL: Settings = {
 }
 
 export function Calibrate() {
-  const [settings, setSettings] = useState<Settings>(INITIAL)
+  // A shared link carries a whole configuration. The stream is seeded, so the
+  // reader who opens it sees the same quarter of events and the same readouts.
+  const [settings, setSettings] = useState<Settings>(
+    () => (typeof window === 'undefined' ? INITIAL : settingsFromLocation(window.location.search) ?? INITIAL),
+  )
+  const [copied, setCopied] = useState(false)
   const [step, setStep] = useState(0)
   const [touches, setTouches] = useState(0)
   const [showingRecommended, setShowingRecommended] = useState(false)
   const beforeRecommended = useRef<Settings | null>(null)
 
   const readout = useMemo(() => evaluate(settings), [settings])
+
+  // Reflect the configuration in the address bar, replacing rather than
+  // pushing so the back button still leaves the page.
+  useEffect(() => {
+    writeSettingsToLocation(settings)
+    setCopied(false)
+  }, [settings])
 
   // The paper's shape stays locked until the reader has actually explored.
   const unlocked = touches >= 4 || step >= STEP_SETTINGS.length - 1
@@ -207,7 +220,24 @@ export function Calibrate() {
               {showingRecommended ? copy.reset : copy.showRecommended}
             </button>
             {!unlocked ? <span className="cal__lockHint">{copy.showRecommendedLocked}</span> : null}
+            <button
+              type="button"
+              className="btn"
+              onClick={async () => {
+                try {
+                  await navigator.clipboard.writeText(window.location.href)
+                  setCopied(true)
+                } catch {
+                  // Clipboard access can be refused; selecting the address bar
+                  // is the fallback, and the URL is already correct there.
+                  setCopied(false)
+                }
+              }}
+            >
+              {copied ? copy.shareCopied : copy.shareLabel}
+            </button>
           </div>
+          <p className="cal__shareNote">{copy.shareNote}</p>
 
           {showingRecommended ? (
             <p className="cal__recNote">

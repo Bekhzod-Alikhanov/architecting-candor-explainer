@@ -159,7 +159,7 @@ export const strategies: readonly Strategy[] = [
     name: 'Write everything into one system',
     claim: 'Full transparency. One record, everything in it, nothing hidden.',
     lesson:
-      'Remediation is at its best, and so is exposure. Fault language and counsel’s assessments sit in discoverable tickets, and the privilege that would have protected candid analysis is waived by where it was written.',
+      'Remediation is at its maximum. So is exposure. Fault language and counsel’s assessments sit in discoverable tickets, and the privilege that would have protected candid analysis is waived by where it was written.',
     assign: () => 'one',
   },
   {
@@ -195,6 +195,24 @@ export const routeCopy = {
   yourRoutingClaim: 'Graded by exactly the same function as the four above.',
   loopNote:
     'The loop is closed. The monitoring that missed this incident now carries a standing test against it.',
+} as const
+
+/**
+ * The reader's best run, kept in component state only. Nothing is persisted:
+ * reload the page and it is gone, which is the right scope for a scoreboard
+ * that exists to encourage a second attempt rather than to keep a record.
+ */
+export const bestRun = {
+  label: 'Your best run',
+  none: 'Run the document request once and this will start keeping score.',
+  current: 'This run',
+  atBest: 'This is your best so far. Re-route and try to beat it.',
+  behind: 'Your current routing is behind your best. The figures above are the better run.',
+  remediation: 'recoverable',
+  adverse: 'adverse',
+  warnings: 'warnings',
+  note:
+    'Ranked on the record an engineer could still reconstruct, then on adverse discovery outcomes, then on warnings. Kept in this tab only.',
 } as const
 
 export const routeSteps = [

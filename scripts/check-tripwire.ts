@@ -12,6 +12,7 @@
 
 import { evaluate, generateStream, type Settings } from '../src/lib/tripwire'
 import { dimensions, recommended, stream } from '../src/content/thresholds'
+import { encodeSettings, decodeSettings, settingsFromLocation } from '../src/lib/calibration-url'
 import type { DimensionId } from '../src/content/thresholds'
 
 const levelsAt = (v: number) =>
@@ -107,6 +108,27 @@ check(
   'The stream must be deterministic: two evaluations of the same settings disagreed.',
 )
 check(events.length === stream.count, `Expected ${stream.count} events, generated ${events.length}.`)
+
+// --- a configuration has to survive the address bar ------------------------
+const shared = settings({})
+const encoded = encodeSettings(shared)
+const decoded = decodeSettings(encoded)
+check(decoded !== null, `A configuration must survive encoding. "${encoded}" did not decode.`)
+if (decoded) {
+  check(
+    JSON.stringify(evaluate(decoded)) === JSON.stringify(evaluate(shared)),
+    'A shared link must reproduce the readouts exactly. The decoded configuration gave different numbers.',
+  )
+}
+check(
+  settingsFromLocation(`?cal=${encoded}`) !== null,
+  'A configuration must be readable back out of a query string.',
+)
+// Malformed input must fall back rather than throw or half-apply.
+for (const bad of ['', 'nonsense', '1-2-3.1.22', '62-58-48-58-54-62-46', '62-58-48-58-54-62-999.1.22']) {
+  check(decodeSettings(bad) === null, `Malformed configuration "${bad}" should decode to null.`)
+}
+console.log(`shareable configuration: ${encoded}`)
 
 console.log('')
 if (failures.length) {

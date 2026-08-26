@@ -254,7 +254,7 @@ export const objects: readonly FlowObject[] = [
     defaultRefusal: {
       title: 'The valve refuses.',
       reason:
-        'The liability assessment is the single most protected thing in the architecture, and the only thing it depends on legal protection to exist at all.',
+        'The liability assessment is the most protected thing in the architecture, and the only thing in it that depends on legal protection to exist at all.',
     },
   },
   {

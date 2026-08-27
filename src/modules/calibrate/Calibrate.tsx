@@ -14,6 +14,7 @@ import {
   calibrateArgues,
   type DimensionId,
 } from '../../content/thresholds'
+import { a11y } from '../../content/ui'
 import { evaluate, type Settings } from '../../lib/tripwire'
 import { settingsFromLocation, writeSettingsToLocation } from '../../lib/calibration-url'
 import './calibrate.css'
@@ -140,8 +141,8 @@ export function Calibrate() {
         {/* The controls. */}
         <div className="cal__controls">
           <div className="cal__controlsHead">
-            <p className="cal__panelLabel">Threshold bands</p>
-            <Prov kind="illustrative" label="Illustrative values" />
+            <p className="cal__panelLabel">{copy.bandsLabel}</p>
+            <Prov kind="illustrative" label={copy.bandsProv} />
           </div>
 
           <ul className="cal__sliders">
@@ -166,7 +167,7 @@ export function Calibrate() {
                     step={1}
                     value={level}
                     aria-describedby={`hint-${d.id}`}
-                    aria-valuetext={`${copy.levelLabel} ${level} of 100, illustrative reading ${d.unit(level)}`}
+                    aria-valuetext={a11y.bandValue(copy.levelLabel, level, d.unit(level))}
                     onChange={(e) => setLevel(d.id, Number(e.target.value))}
                   />
                   <p className="slider__hint" id={`hint-${d.id}`}>
@@ -244,7 +245,7 @@ export function Calibrate() {
 
           {showingRecommended ? (
             <p className="cal__recNote">
-              <Prov kind="paper" cite="§3.2.2" label="Shape from the paper" />
+              <Prov kind="paper" cite="§3.2.2" label={copy.recommendedProv} />
               {recommended.note}
             </p>
           ) : null}

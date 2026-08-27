@@ -233,10 +233,60 @@
     white-space: nowrap;
   }
 
+  /* The mark is a button. It keeps the chip's own type and colour so nothing
+   about the visible label changes; only its reachability does. */
+  .prov__trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4em;
+    font: inherit;
+    letter-spacing: inherit;
+    text-transform: inherit;
+    color: inherit;
+    background: none;
+    border: 0;
+    margin: 0;
+    padding: 0;
+    cursor: help;
+  }
+
   /* The citation trailing a provenance mark. Slightly recessive, because the
    mark itself is the thing a reader is scanning for. */
   .prov__cite {
     opacity: 0.8;
+  }
+
+  /* The explanation. Renders in the top layer, so it inherits the chip's
+   uppercase nowrap type and has to undo all of it. */
+  .prov__pop {
+    max-inline-size: min(38ch, calc(100vw - 2rem));
+    padding: 0.7rem 0.8rem;
+    border: 1px solid var(--ground-rule);
+    border-radius: var(--radius-panel);
+    background: var(--ground-raised);
+    color: var(--text-on-ground);
+    box-shadow: var(--lift-doc-sm);
+    font-family: var(--font-mono);
+    font-size: var(--text-cs-xs);
+    font-weight: 400;
+    line-height: 1.6;
+    letter-spacing: normal;
+    text-transform: none;
+    white-space: normal;
+  }
+
+  /* Anchored to the button that opened it, using the implicit anchor a
+   popovertarget invoker establishes — so no per-instance anchor-name is
+   needed. Where anchor positioning is unsupported the UA centres the popover,
+   which is a perfectly readable fallback for one sentence. */
+  @supports (position-area: block-end) {
+    .prov__pop:popover-open {
+      position-area: block-end span-inline-start;
+      position-try-fallbacks:
+        block-start span-inline-start,
+        block-end span-inline-end;
+      margin: 0.4rem 0 0 0;
+    }
   }
 
   /* Synthetic data. Hatched, so it reads as simulated without relying on hue. */

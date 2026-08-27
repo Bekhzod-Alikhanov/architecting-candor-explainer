@@ -1,4 +1,5 @@
 import { useCallback } from 'react'
+import { a11y, scaffold } from '../content/ui'
 
 /**
  * The scaffold stepper.
@@ -55,11 +56,7 @@ export function Scaffold({ steps, current, onChange, label, hint, className = ''
       onKeyDown={onKeyDown}
     >
       <div className="scaffold__meta" data-released={released}>
-        <span>
-          {released
-            ? 'Released'
-            : `Step ${String(current + 1).padStart(2, '0')} of ${String(last).padStart(2, '0')}`}
-        </span>
+        <span>{released ? scaffold.released : a11y.stepOf(current + 1, last)}</span>
         {released && hint ? <span>{hint}</span> : null}
       </div>
 
@@ -78,7 +75,7 @@ export function Scaffold({ steps, current, onChange, label, hint, className = ''
               className="scaffold__dot"
               data-done={i < current}
               {...(i === current ? { 'aria-current': 'step' as const } : {})}
-              aria-label={`Step ${i + 1}: ${s.heading}`}
+              aria-label={a11y.stepDot(i + 1, s.heading)}
               onClick={() => onChange(i)}
             >
               {i + 1}
@@ -92,7 +89,7 @@ export function Scaffold({ steps, current, onChange, label, hint, className = ''
           onClick={() => onChange(current - 1)}
           disabled={current === 0}
         >
-          <span aria-hidden="true">←</span> Back
+          <span aria-hidden="true">←</span> {scaffold.back}
         </button>
         <button
           type="button"
@@ -100,7 +97,7 @@ export function Scaffold({ steps, current, onChange, label, hint, className = ''
           onClick={() => onChange(current + 1)}
           disabled={released}
         >
-          Next <span aria-hidden="true">→</span>
+          {scaffold.next} <span aria-hidden="true">→</span>
         </button>
       </div>
     </div>

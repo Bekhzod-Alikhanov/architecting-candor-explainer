@@ -39,6 +39,7 @@ export const axis = {
   bottomLabel: 'A product',
   bottomNote:
     'Internal records become the central evidence of defect, notice and feasible alternative design.',
+  pendingLabel: 'Not yet in force',
   bandLabel: 'The ground the boundary has crossed',
   bandNote:
     'Hatched: everything the line has passed over. Design choices that were once unreachable by a products claim now sit inside it, and the records describing them come with.',

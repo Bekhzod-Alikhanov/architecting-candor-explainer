@@ -17,6 +17,7 @@ import {
   revealLabel,
   bestRun,
 } from '../../content/grading'
+import { a11y } from '../../content/ui'
 import { grade, type Assignment } from '../../lib/grade'
 import './route.css'
 
@@ -99,7 +100,7 @@ export function RouteTheRecord() {
       return next
     })
     setSelectedId(id)
-    setAnnouncement(`${artifact?.kind ?? 'Artifact'} returned to the queue.`)
+    setAnnouncement(a11y.returnedAnnouncement(artifact?.kind ?? 'Artifact'))
     setHasRun(false)
     setShowReveal(false)
   }, [])
@@ -173,7 +174,7 @@ export function RouteTheRecord() {
       <div className="rt__scenario">
         <div className="rt__scenarioHead">
           <h3 className="rt__scenarioTitle">{scenario.heading}</h3>
-          <Prov kind="simulated" label="Simulated incident" />
+          <Prov kind="simulated" label={routeCopy.scenarioProv} />
         </div>
         <ul className="rt__scenarioLines">
           {scenario.lines.map((l) => (
@@ -270,7 +271,7 @@ export function RouteTheRecord() {
                       if (selectedId) route(selectedId, b.id)
                     }}
                     disabled={!selectedId}
-                    aria-label={`Route the selected artifact to ${b.name}. Keyboard shortcut ${i + 1}.`}
+                    aria-label={a11y.routeToBin(b.name, i + 1)}
                   >
                     <span className="bin__key" aria-hidden="true">
                       {b.n}
@@ -293,7 +294,7 @@ export function RouteTheRecord() {
                           type="button"
                           className="chip__select"
                           onClick={() => setSelectedId(a.id)}
-                          aria-label={`Select ${a.kind}, currently in ${b.name}`}
+                          aria-label={a11y.selectCard(a.kind, b.name)}
                         >
                           {a.kind}
                         </button>
@@ -301,7 +302,7 @@ export function RouteTheRecord() {
                           type="button"
                           className="chip__remove"
                           onClick={() => unroute(a.id)}
-                          aria-label={`Return ${a.kind} to the queue`}
+                          aria-label={a11y.returnToQueue(a.kind)}
                         >
                           <span aria-hidden="true">×</span>
                         </button>
@@ -355,7 +356,7 @@ export function RouteTheRecord() {
         ) : null}
         {routedCount > 3 ? (
           <button type="button" className="btn" onClick={reset}>
-            Reset the deck
+            {routeCopy.resetLabel}
           </button>
         ) : null}
       </div>

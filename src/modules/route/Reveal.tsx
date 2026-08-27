@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { strategies, outcomes, routeCopy } from '../../content/grading'
+import { strategies, outcomes, routeCopy, revealStats } from '../../content/grading'
 import { gradeStrategy, type Grade } from '../../lib/grade'
 
 /**
@@ -57,28 +57,28 @@ export function Reveal({ readerGrade, readerRouted, total }: RevealProps) {
 
               <dl className="scol__stats">
                 <div className="scol__stat" data-good={c.remediationScore === c.remediationTotal}>
-                  <dt>Remediation</dt>
+                  <dt>{revealStats.remediation}</dt>
                   <dd data-figure>
                     {c.remediationScore}/{c.remediationTotal}
                   </dd>
                 </div>
                 <div className="scol__stat" data-bad={c.adverseCount > 0}>
-                  <dt>Adverse outcomes</dt>
+                  <dt>{revealStats.adverse}</dt>
                   <dd data-figure>{c.adverseCount}</dd>
                 </div>
                 <div className="scol__stat">
-                  <dt>Produced</dt>
+                  <dt>{revealStats.produced}</dt>
                   <dd data-figure>{c.counts.produced}</dd>
                 </div>
                 <div className="scol__stat">
-                  <dt>Withheld</dt>
+                  <dt>{revealStats.withheld}</dt>
                   <dd data-figure>{c.counts.withheld}</dd>
                 </div>
                 {/* Without this, writing everything into one system looks costless:
                     it scores 7/7 with no adverse outcome, and its real price is
                     the fault language and waived privilege sitting in the flags. */}
                 <div className="scol__stat" data-bad={c.flagCount > 4}>
-                  <dt>Warnings</dt>
+                  <dt>{revealStats.warnings}</dt>
                   <dd data-figure>{c.flagCount}</dd>
                 </div>
               </dl>

@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Seam } from '../../components/Seam'
 import { Prov } from '../../components/Provenance'
 import { useMediaQuery } from '../../lib/useMediaQuery'
-import { memo as content, rubric } from '../../content/hero'
+import { memo as content, rubric, exhibitLegend } from '../../content/hero'
 import { bates, disclaimer } from '../../content/site'
 import './hero.css'
 
@@ -116,7 +116,7 @@ export function Hero() {
               <p className="hero__exhibitPurpose">{r.exhibitPurpose}</p>
               <div className="hero__exhibitFoot">
                 <span>{r.exhibitLegend}</span>
-                <span className="hero__legend">Confidential</span>
+                <span className="hero__legend">{exhibitLegend}</span>
               </div>
             </div>
           </div>

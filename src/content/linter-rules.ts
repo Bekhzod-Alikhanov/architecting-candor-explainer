@@ -215,6 +215,7 @@ export const linterCopy = {
   privacyTitle: 'This runs entirely in your browser.',
   privacyBody:
     'The text you paste is never transmitted. There is no server to send it to: the rules are compiled into the page, the matching happens in your tab, and the page makes no network requests after it loads. You can check that in your own devtools, and you should, because nobody sensible pastes a real incident ticket into something that phones home.',
+  masthead: 'Architecting Candor · the incident ticket linter',
   inputLabel: 'Your ticket',
   placeholder: 'Paste an incident ticket, a postmortem, or a Slack message.',
   loadSample: 'Load an example',

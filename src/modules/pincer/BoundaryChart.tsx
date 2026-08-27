@@ -2,6 +2,7 @@ import { useId } from 'react'
 import { scaleLinear } from 'd3-scale'
 import { area as d3area, line as d3line, curveStepAfter } from 'd3-shape'
 import { axis, type TimelineEntry } from '../../content/timeline'
+import { a11y } from '../../content/ui'
 
 /**
  * The reclassification boundary.
@@ -106,9 +107,11 @@ export function BoundaryChart({ entries, current, onSelect, vertical }: Boundary
       className="bchart"
       viewBox={`0 0 ${w} ${h}`}
       role="img"
-      aria-label={`The product classification boundary from ${axis.from} to 2027. ${
-        activeEntry ? `Currently showing ${activeEntry.date}: ${activeEntry.title}.` : ''
-      } The full sequence is listed below the chart.`}
+      aria-label={a11y.boundarySummary(
+        axis.from,
+        Math.floor(axis.to),
+        activeEntry ? `${activeEntry.date}: ${activeEntry.title}` : null,
+      )}
       preserveAspectRatio="xMidYMid meet"
     >
       <defs>

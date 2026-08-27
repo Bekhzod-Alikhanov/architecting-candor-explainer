@@ -126,7 +126,7 @@ export function Pincer() {
           <article className="tl__detail doc-object doc-object--scanned on-doc" aria-live="polite">
             <header className="tl__detailHead">
               <span className="tl__detailDate">{entry.date}</span>
-              {entry.future ? <span className="tl__pending">Not yet in force</span> : null}
+              {entry.future ? <span className="tl__pending">{axis.pendingLabel}</span> : null}
             </header>
             <h4 className="tl__detailTitle">{entry.title}</h4>
             <p className="tl__authority">{entry.authority}</p>

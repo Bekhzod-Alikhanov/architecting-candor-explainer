@@ -18,6 +18,7 @@
     "check:linter": "jiti scripts/check-linter.ts",
     "check:keyboard": "node scripts/check-keyboard.mjs",
     "audit:a11y": "node scripts/audit-a11y.mjs",
+    "check:lighthouse": "node scripts/lighthouse.mjs",
     "read:aloud": "jiti scripts/read-aloud.ts",
     "og": "node scripts/render-og.mjs"
   },

@@ -3,6 +3,10 @@
    ========================================================================= */
 
 @layer app-modules {
+  .reg__scaffold {
+    margin-block-start: clamp(1.1rem, 3vw, 1.6rem);
+  }
+
   .reg__note {
     margin-block-start: 1rem;
     max-width: 74ch;

@@ -5,7 +5,11 @@
   "outputDirectory": "dist",
   "rewrites": [
     {
-      "source": "/(.*)",
+      "source": "/linter",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/linter/",
       "destination": "/index.html"
     }
   ],

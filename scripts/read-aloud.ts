@@ -94,6 +94,56 @@ for (const [label, mod] of MODULES) {
   console.log(out.join('\n\n'))
 }
 
+/*
+ * The accessible names, rendered.
+ *
+ * These are functions, so the walker above skips them — and for a long time
+ * that meant the strings a screen-reader user actually hears were the only
+ * prose on the site nobody had ever read aloud. Each is called here with
+ * representative arguments. The interpolated values are examples; the sentence
+ * around them is the thing to judge.
+ */
+const spoken: readonly [string, string][] = [
+  ['scaffold · step dot', ui.a11y.stepDot(2, 'Start with what you did not choose to write')],
+  ['scaffold · position', ui.a11y.stepOf(2, 3)],
+  ['seam · value', ui.a11y.seamValue(62)],
+  ['03 · route to a channel', ui.a11y.routeToBin('Channel Two — counsel-directed', 2)],
+  [
+    '03 · select a routed card',
+    ui.a11y.selectCard('red-team finding', 'Channel One — discoverable'),
+  ],
+  ['03 · return a card', ui.a11y.returnToQueue('red-team finding')],
+  ['03 · return announced', ui.a11y.returnedAnnouncement('Red-team finding')],
+  [
+    '01 · the boundary chart',
+    ui.a11y.boundarySummary(1989, 2027, '21 May 2025: Garcia v. Character Technologies'),
+  ],
+  [
+    '05 · a threshold slider',
+    ui.a11y.bandValue(thresholds.calibrateCopy.levelLabel, 58, 'severity 3 and above'),
+  ],
+  [
+    '05 · the stream chart',
+    ui.a11y.streamSummary({
+      events: new Array(thresholds.stream.count),
+      escalations: 31,
+      nearMissCaptured: 47,
+      nearMissTotal: 55,
+      signalsMissed: 0,
+      signalTotal: 27,
+    }),
+  ],
+]
+
+console.log(`\n${'='.repeat(78)}`)
+console.log('—  · ACCESSIBLE NAMES, AS A SCREEN READER SPEAKS THEM')
+console.log(`${'='.repeat(78)}\n`)
+for (const [where, text] of spoken) {
+  strings += 1
+  words += text.split(/\s+/).length
+  console.log(`${where}\n  ${text}\n`)
+}
+
 console.log(`\n${'─'.repeat(78)}`)
 console.log(
   `${strings} passages · roughly ${words} words · about ${Math.round(words / 150)} minutes aloud`,

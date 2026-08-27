@@ -115,6 +115,15 @@ export const stream = {
   quarterLabel: 'one quarter of production traffic',
 } as const
 
+/** Axis and band labels on the stream chart. */
+export const streamChart = {
+  review: 'review',
+  logging: 'logging',
+  over: 'over',
+  under: 'under',
+  span: 'one quarter →',
+} as const
+
 export const calibrateCopy = {
   section: '05',
   eyebrow: 'Calibrate the tripwire',
@@ -124,6 +133,9 @@ export const calibrateCopy = {
   streamLabel: 'Simulated event stream',
   streamNote:
     'Generated in your browser from a fixed seed, so the same settings always give the same numbers.',
+  bandsLabel: 'Threshold bands',
+  bandsProv: 'Illustrative values',
+  recommendedProv: 'Shape from the paper',
   tierLabel: 'Tiered structure',
   tierOn: 'Logging tier active',
   tierOff: 'Logging tier collapsed',

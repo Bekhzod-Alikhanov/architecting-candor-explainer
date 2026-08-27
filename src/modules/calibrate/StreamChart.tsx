@@ -1,5 +1,6 @@
 import { useId } from 'react'
-import { dimensions } from '../../content/thresholds'
+import { dimensions, streamChart } from '../../content/thresholds'
+import { a11y } from '../../content/ui'
 import type { Readout, Settings } from '../../lib/tripwire'
 
 /**
@@ -45,7 +46,7 @@ export function StreamChart({ readout, settings }: StreamChartProps) {
       viewBox={`0 0 ${W} ${H}`}
       preserveAspectRatio="xMidYMid meet"
       role="img"
-      aria-label={`Simulated quarter of ${readout.events.length} events plotted against your bands. ${readout.escalations} escalated to counsel, ${readout.nearMissCaptured} of ${readout.nearMissTotal} near misses captured, ${readout.signalsMissed} of ${readout.signalTotal} signals missed. The figures are repeated below the chart.`}
+      aria-label={a11y.streamSummary(readout)}
     >
       <defs>
         <clipPath id={`clip-${uid}`}>
@@ -109,26 +110,26 @@ export function StreamChart({ readout, settings }: StreamChartProps) {
       {/* The review band. Everything above it engages counsel. */}
       <line x1={PAD.left} y1={reviewY} x2={W - PAD.right} y2={reviewY} className="stream__review" />
       <text x={PAD.left - 8} y={reviewY + 4} className="stream__axisLabel" textAnchor="end">
-        review
+        {streamChart.review}
       </text>
 
       {settings.loggingTier ? (
         <>
           <line x1={PAD.left} y1={logY} x2={W - PAD.right} y2={logY} className="stream__log" />
           <text x={PAD.left - 8} y={logY + 4} className="stream__axisLabel" textAnchor="end">
-            logging
+            {streamChart.logging}
           </text>
         </>
       ) : null}
 
       <text x={PAD.left - 8} y={PAD.top + 8} className="stream__axisLabel" textAnchor="end">
-        over
+        {streamChart.over}
       </text>
       <text x={PAD.left - 8} y={H - PAD.bottom} className="stream__axisLabel" textAnchor="end">
-        under
+        {streamChart.under}
       </text>
       <text x={PAD.left} y={H - 6} className="stream__axisLabel">
-        one quarter →
+        {streamChart.span}
       </text>
     </svg>
   )

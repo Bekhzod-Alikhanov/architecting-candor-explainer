@@ -1,5 +1,5 @@
 import { SectionHead } from '../../components/SectionHead'
-import { paper, about, contribution, disclaimer } from '../../content/site'
+import { paper, about, contribution, disclaimer, colophonCopy, section } from '../../content/site'
 import './colophon.css'
 
 /**
@@ -9,12 +9,20 @@ import './colophon.css'
  * dated snapshot, illustrative interactives, and a legal landscape that moves
  * faster than the page does.
  */
+/** §09's number, title and Bates sequence all come from the section register. */
+const paperSection = section('paper')
+
 export function Colophon() {
   const corresponding = paper.authors.find((a) => 'corresponding' in a && a.corresponding)
 
   return (
     <section className="sect page" id="paper" aria-labelledby="paper-title">
-      <SectionHead n="09" eyebrow="The paper" seq={10} titleId="paper-title" />
+      <SectionHead
+        n={paperSection.n}
+        eyebrow={paperSection.title}
+        seq={paperSection.seq}
+        titleId="paper-title"
+      />
 
       <div className="colo">
         <div className="colo__cite doc-object doc-object--scanned on-doc">
@@ -26,7 +34,7 @@ export function Colophon() {
               <li key={a.name}>
                 {a.name}
                 {'corresponding' in a && a.corresponding ? (
-                  <span className="colo__star" title="Corresponding author">
+                  <span className="colo__star" title={colophonCopy.correspondingLabel}>
                     {' '}
                     ✳
                   </span>
@@ -41,22 +49,22 @@ export function Colophon() {
 
           {corresponding && 'email' in corresponding && corresponding.email ? (
             <p className="colo__corresponding">
-              Corresponding author: {corresponding.name},{' '}
+              {colophonCopy.correspondingLabel}: {corresponding.name},{' '}
               <a href={`mailto:${corresponding.email}`}>{corresponding.email}</a>
             </p>
           ) : null}
 
           <div className="colo__links">
             <a className="btn btn--primary" href={paper.paperUrl} rel="noreferrer">
-              Read the paper <span aria-hidden="true">↗</span>
+              {colophonCopy.readPaper} <span aria-hidden="true">↗</span>
             </a>
             <a className="btn" href={paper.researchPage} rel="noreferrer">
-              Arcadia Impact research <span aria-hidden="true">↗</span>
+              {colophonCopy.researchLink} <span aria-hidden="true">↗</span>
             </a>
           </div>
 
           <div className="colo__citation">
-            <span className="colo__citationLabel">Cite as</span>
+            <span className="colo__citationLabel">{colophonCopy.citeLabel}</span>
             <p>{paper.citation}</p>
           </div>
         </div>

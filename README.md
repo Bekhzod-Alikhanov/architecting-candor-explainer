@@ -23,12 +23,30 @@ Requires **pnpm** and **Node 24**. There is no backend, no database, no API key 
 | `pnpm typecheck` | TypeScript, strict, no emit |
 | `pnpm check` | All four content-integrity suites (below) |
 | `pnpm og` | Regenerate `public/og.png` and `public/favicon.svg` |
+| `pnpm read:aloud` | Assemble every user-facing string into one document for the tone check |
+
+These three drive a real headless browser, so they need the production build already
+being served — run `pnpm build && pnpm preview` in another shell first. They are
+deliberately *not* part of `pnpm check`, which stays server-free.
+
+| Command | What it does |
+|---|---|
+| `pnpm check:lighthouse` | Performance and accessibility, gated at 95, on mobile **and** desktop |
+| `pnpm check:keyboard` | Drives all 18 interactives with real key events |
+| `pnpm audit:a11y` | axe-core over every section, with all deferred content force-mounted |
 
 ---
 
 ## Editing the content
 
-**All prose, case data, artifact text, rules and thresholds live in `src/content/`. Nothing substantive lives in a component.** An author can rewrite any sentence on the site without opening a `.tsx` file.
+**All prose, case data, artifact text, rules and thresholds live in `src/content/`. Nothing substantive lives in a component.** An author can rewrite any sentence on the site without opening a `.tsx` file. Grepping the components for a capitalised English phrase returns nothing, and that is the intended state.
+
+That includes the strings a reader never sees on screen. The accessible names —
+what a screen reader speaks for the seam, the sliders, the two charts and every
+control in Route the Record — live in the `a11y` block of `src/content/ui.ts` as
+functions taking their interpolations. They are prose someone hears, so they go
+through `pnpm read:aloud` with everything else rather than hiding in a template
+literal inside a component.
 
 | File | Section |
 |---|---|

@@ -12,6 +12,7 @@
  * never rests on hue alone.
  */
 
+import { useId } from 'react'
 import { provenance } from '../content/ui'
 
 export type ProvKind = 'simulated' | 'illustrative' | 'paper'
@@ -26,13 +27,35 @@ export interface ProvProps {
 }
 
 export function Prov({ kind, cite, label, className = '' }: ProvProps) {
+  const uid = useId()
+  const popId = `prov-${uid}`
   const text = label ?? provenance[kind].label
   return (
-    <span className={`prov prov--${kind} ${className}`.trim()} title={provenance[kind].explain}>
-      <Glyph kind={kind} />
-      <span>
-        {text}
-        {cite ? <span className="prov__cite">{` · ${cite}`}</span> : null}
+    <span className={`prov prov--${kind} ${className}`.trim()}>
+      {/*
+        A real button, not a `title`. The explanation of what SIMULATED or
+        ILLUSTRATIVE means is a content-integrity requirement, and a `title`
+        delivered it to a mouse and to nothing else: touch users got a label
+        with no definition anywhere on the page. The native popover gives
+        Escape-to-close, light dismiss and focus handling for free, and
+        aria-describedby carries the same text to a screen reader whether or
+        not the popover is ever opened — a referenced element contributes its
+        description even while hidden.
+      */}
+      <button
+        type="button"
+        className="prov__trigger"
+        popoverTarget={popId}
+        aria-describedby={popId}
+      >
+        <Glyph kind={kind} />
+        <span>
+          {text}
+          {cite ? <span className="prov__cite">{` · ${cite}`}</span> : null}
+        </span>
+      </button>
+      <span popover="auto" id={popId} className="prov__pop">
+        {provenance[kind].explain}
       </span>
     </span>
   )

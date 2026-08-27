@@ -12,7 +12,7 @@ export function LinterPage() {
   return (
     <main className="solo page">
       <div className="solo__rubric">
-        <span>Architecting Candor · the incident ticket linter</span>
+        <span>{copy.masthead}</span>
         <a href="/">{copy.backToSite} →</a>
       </div>
 

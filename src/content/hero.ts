@@ -23,6 +23,9 @@ export const rubric = {
   season: 'Summer 2026',
 } as const
 
+/** The stamp in the corner of the exhibit, which is a legal marking. */
+export const exhibitLegend = 'Confidential'
+
 export const memo = {
   section: '00',
   eyebrow: 'The memo',

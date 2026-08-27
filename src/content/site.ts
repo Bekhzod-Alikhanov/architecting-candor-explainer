@@ -101,6 +101,34 @@ export const sections = [
 export type SectionId = (typeof sections)[number]['id']
 
 /**
+ * Look up a section by id, with its sequence number.
+ *
+ * The register above is the single source of truth for a section's number,
+ * title and Bates sequence. App.tsx used to repeat all three inline for every
+ * deferred section, which meant the placeholder a reader sees while a section
+ * loads was the one piece of prose on the site that lived in a component.
+ */
+export function section(id: SectionId): {
+  readonly id: SectionId
+  readonly n: string
+  readonly title: string
+  readonly seq: number
+} {
+  const i = sections.findIndex((s) => s.id === id)
+  const found = sections[i]
+  if (!found) throw new Error(`Unknown section id: ${id}`)
+  return { ...found, seq: i + 1 }
+}
+
+/** Colophon furniture. */
+export const colophonCopy = {
+  correspondingLabel: 'Corresponding author',
+  citeLabel: 'Cite as',
+  readPaper: 'Read the paper',
+  researchLink: 'Arcadia Impact research',
+} as const
+
+/**
  * Bates-style production numbers. The section numbering is chain of custody:
  * an append-only production in which nothing has been removed.
  */

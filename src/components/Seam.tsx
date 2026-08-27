@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
+import { a11y } from '../content/ui'
 
 /**
  * THE SEAM — the signature element.
@@ -136,7 +137,7 @@ export function Seam({
             'aria-valuenow': Math.round(split.value * 100),
             'aria-valuemin': Math.round(min * 100),
             'aria-valuemax': Math.round(max * 100),
-            'aria-valuetext': `${Math.round(split.value * 100)}% to the engineering record`,
+            'aria-valuetext': a11y.seamValue(Math.round(split.value * 100)),
             onPointerDown,
             onKeyDown,
           }

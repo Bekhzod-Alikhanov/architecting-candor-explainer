@@ -159,6 +159,8 @@ export const regimeCopy = {
   captionTemplate: 'Comparative safety-reporting regimes.',
   /** Which columns the table can be sorted by. */
   sortable: ['name', 'recipient', 'enforcer', 'source'] as const,
+  scaffoldLabel: 'Guided walk through the four regimes',
+  scaffoldHint: 'Filter, sort and open any row.',
   emptyBefore: 'No regime in the paper maps to',
   emptyAfter: 'alone. The proposal below still does — that is the point of the row.',
 } as const
@@ -170,3 +172,34 @@ export const regimeArgues = {
     'One difference matters more than any similarity. Every regime above rests on a statute; the Safety Translation Layer rests on privilege doctrine, which is forum-specific and which no court has yet applied to this device. That is the gap section 07 asks Congress to close, and until it does, a firm building this architecture is relying on the durability of a common-law protection rather than on a rule written for the purpose.',
   ],
 } as const
+
+/**
+ * The guided walk.
+ *
+ * Every other heavy interactive on the site opens with one, and the comparator
+ * opened cold: a reader arrived at a four-row table with a filter and a sort
+ * and no reason to touch either. Each step moves the comparator's own state and
+ * makes one argument with it; the last releases control.
+ */
+export const regimeSteps = [
+  {
+    heading: 'Four regimes that already ran this experiment',
+    body: 'Three the paper tabulates, and a fourth it cites as the model for its statutory ask. None of them is an analogy: each is a working regime in which a protected reporting channel exists, and each has been tested against real litigation.',
+  },
+  {
+    heading: 'Sort by who receives the report',
+    body: 'The recipient is the structural choice, not a detail of drafting. Every one of these regimes routes the candid record to a party that is not the defendant, and that is what makes the protection hold up rather than read as self-serving.',
+  },
+  {
+    heading: 'Now show only the channel that needs a statute',
+    body: 'Filtered to Channel Two. This is the whole legal exposure of the architecture: Channels One and Three need no protection at all, because facts and remediation were always meant to be reachable. Only the counsel-directed channel depends on a privilege holding.',
+  },
+  {
+    heading: 'The row with no statute',
+    body: 'The Safety Translation Layer sits in the same shape as the four above it and is the only one without a statute behind it. That is the ask in §07, and it is also why the paper is careful to say the architecture can be built under existing law today.',
+  },
+  {
+    heading: 'Over to you',
+    body: 'Filter by channel, sort by any column, and open any row. The question worth asking is which of these four you would cite first if you had to explain the protected channel to your own general counsel.',
+  },
+] as const

@@ -39,6 +39,7 @@ const KEYS = {
   Enter: { code: 'Enter', vk: 13, text: '\r' },
   ' ': { code: 'Space', vk: 32, text: ' ' },
   Tab: { code: 'Tab', vk: 9 },
+  Escape: { code: 'Escape', vk: 27 },
   1: { code: 'Digit1', vk: 49, text: '1' },
   2: { code: 'Digit2', vk: 50, text: '2' },
   4: { code: 'Digit4', vk: 52, text: '4' },
@@ -346,6 +347,46 @@ try {
     ['Tab'],
     `document.activeElement.className`,
   )
+
+  // The provenance mark's explanation used to hang off a `title`, which reached
+  // a mouse and nothing else. It is a real popover now, so both halves of that
+  // have to keep working: Enter opens it and Escape closes it.
+  await test(
+    'provenance popover opens',
+    '.prov__trigger',
+    ['Enter'],
+    `document.querySelector('.prov__pop').matches(':popover-open')`,
+  )
+  await test(
+    'provenance popover closes',
+    '.prov__trigger',
+    ['Escape'],
+    `document.querySelector('.prov__pop').matches(':popover-open')`,
+  )
+
+  // Structural, for the same reason the listbox check below is: a `title`
+  // regression would leave the label looking identical and silently drop the
+  // explanation for every touch and screen-reader user.
+  const prov = await evaluate(`(() => {
+    const t = document.querySelector('.prov__trigger')
+    const p = document.querySelector('.prov__pop')
+    if (!t || !p) return { missing: true }
+    return {
+      tag: t.tagName,
+      targets: t.getAttribute('popovertarget') === p.id,
+      describes: t.getAttribute('aria-describedby') === p.id,
+      popover: p.getAttribute('popover'),
+      stillUsesTitle: t.hasAttribute('title') || !!t.closest('[title]'),
+      explained: p.textContent.trim().length > 20,
+    }
+  })()`)
+  console.log('provenance mark:', JSON.stringify(prov))
+  if (prov.missing) failures.push('provenance mark: no .prov__trigger / .prov__pop found')
+  if (prov.tag !== 'BUTTON') failures.push(`provenance mark: trigger is ${prov.tag}, not a button`)
+  if (!prov.targets) failures.push('provenance mark: popovertarget does not name the popover')
+  if (!prov.describes) failures.push('provenance mark: aria-describedby does not name the popover')
+  if (prov.stillUsesTitle) failures.push('provenance mark: regressed to a title attribute')
+  if (!prov.explained) failures.push('provenance mark: the popover carries no explanation')
 
   console.log(`${'\nInteractive'.padEnd(28) + 'Result'.padEnd(16)}before → after`)
   console.log('─'.repeat(96))

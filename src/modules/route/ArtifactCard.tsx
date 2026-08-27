@@ -61,7 +61,7 @@ export function ArtifactCard({
         <span className="acard__kind">{artifact.kind}</span>
         {artifact.autoCaptured ? (
           <span className="acard__auto" title={routeCopy.autoTitle}>
-            auto
+            {routeCopy.autoBadge}
           </span>
         ) : null}
       </div>

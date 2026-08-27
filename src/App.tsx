@@ -4,6 +4,8 @@ import { Pincer } from './modules/pincer/Pincer'
 import { Colophon } from './modules/colophon/Colophon'
 import { Deferred } from './components/Deferred'
 import { TakeItToYourGC } from './modules/gc/TakeItToYourGC'
+import { section } from './content/site'
+import { skipLink } from './content/ui'
 
 /**
  * The nine sections, in order, because the argument is a sequence.
@@ -44,33 +46,33 @@ export function App() {
   return (
     <>
       <a className="skip-link" href="#memo">
-        Skip to content
+        {skipLink}
       </a>
       <main>
         <Hero />
         <Pincer />
 
-        <Deferred id="signal" n="02" title="Where the signal dies" seq={3}>
+        <Deferred {...section('signal')}>
           <Signal />
         </Deferred>
 
-        <Deferred id="route" n="03" title="Route the record" seq={4}>
+        <Deferred {...section('route')}>
           <RouteTheRecord />
         </Deferred>
 
-        <Deferred id="architecture" n="04" title="The architecture, operable" seq={5}>
+        <Deferred {...section('architecture')}>
           <Architecture />
         </Deferred>
 
-        <Deferred id="calibrate" n="05" title="Calibrate the tripwire" seq={6}>
+        <Deferred {...section('calibrate')}>
           <Calibrate />
         </Deferred>
 
-        <Deferred id="regimes" n="06" title="Four regimes, one logic" seq={7}>
+        <Deferred {...section('regimes')}>
           <Regimes />
         </Deferred>
 
-        <Deferred id="ask" n="07" title="The ask" seq={8}>
+        <Deferred {...section('ask')}>
           <Statute />
         </Deferred>
 

@@ -1,0 +1,123 @@
+/* ============================================================================
+   404 — the only page on the site that is not part of the argument.
+
+   It has its own stylesheet rather than loading the app's, because pointing it
+   at src/index.css produced a second 33KB copy of the entire site's CSS for a
+   page a reader reaches by accident. Colour still comes from the token layer,
+   so this file contains no raw values of its own.
+   ========================================================================= */
+
+@import "tailwindcss";
+
+@layer app-tokens, app-base, app-components;
+
+@import "./fonts.css";
+@import "./tokens.css";
+
+@layer app-base {
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    margin: 0;
+    min-block-size: 100vh;
+    display: grid;
+    place-items: center;
+    background-color: var(--color-ground);
+    color: var(--text-on-ground);
+    font-family: var(--font-sans);
+    font-size: var(--text-cs-md);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-instrument);
+    outline-offset: 2px;
+  }
+
+  a {
+    color: inherit;
+  }
+}
+
+@layer app-components {
+  .nf {
+    width: 100%;
+    max-width: var(--page-max);
+    margin-inline: auto;
+    padding-inline: var(--page-gutter);
+    padding-block: clamp(2rem, 8vh, 5rem);
+  }
+
+  .nf__bates {
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: var(--text-cs-xs);
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    font-variant-numeric: tabular-nums;
+    text-transform: uppercase;
+    color: var(--stamp-on-ground);
+  }
+
+  .nf__title {
+    margin: 0.6rem 0 0;
+    font-family: var(--font-doc);
+    font-weight: 500;
+    font-size: clamp(2rem, 6vw, 3.25rem);
+    line-height: 1.1;
+    letter-spacing: -0.018em;
+    text-wrap: balance;
+  }
+
+  .nf__body {
+    margin: 1rem 0 0;
+    max-width: var(--measure-console);
+    color: var(--text-on-ground-muted);
+    text-wrap: pretty;
+  }
+
+  .nf__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin: 1.6rem 0 0;
+  }
+
+  /* The two buttons, matched to the site's own so the page does not read as a
+     different property. Kept here rather than imported, because pulling in
+     components.css would drag the whole site's CSS back in. */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-family: var(--font-mono);
+    font-size: var(--text-cs-sm);
+    letter-spacing: 0.05em;
+    color: var(--text-on-ground);
+    background: transparent;
+    border: 1px solid var(--ground-rule);
+    border-radius: var(--radius-mark);
+    padding: 0.5em 0.85em;
+    text-decoration: none;
+  }
+
+  .btn:hover {
+    border-color: var(--instrument-on-ground);
+    color: var(--instrument-on-ground);
+  }
+
+  .btn--primary {
+    background: var(--color-stamp);
+    border-color: var(--color-stamp);
+    color: var(--color-doc);
+  }
+
+  .btn--primary:hover {
+    background: color-mix(in oklab, var(--color-stamp) 84%, var(--color-redact));
+    border-color: color-mix(in oklab, var(--color-stamp) 84%, var(--color-redact));
+    color: var(--color-doc);
+  }
+}

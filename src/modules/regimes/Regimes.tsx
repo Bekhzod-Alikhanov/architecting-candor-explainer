@@ -1,6 +1,7 @@
-import { useMemo, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { SectionHead } from '../../components/SectionHead'
 import { ArguesBlock } from '../../components/ArguesBlock'
+import { Scaffold } from '../../components/Scaffold'
 import {
   regimes,
   target,
@@ -8,6 +9,7 @@ import {
   channelNames,
   regimeCopy as copy,
   regimeArgues,
+  regimeSteps,
   type ChannelMap,
   type Regime,
 } from '../../content/regimes'
@@ -28,6 +30,26 @@ export function Regimes() {
   const [filter, setFilter] = useState<ChannelMap | 'all'>('all')
   const [sort, setSort] = useState<SortKey>('name')
   const [openId, setOpenId] = useState<string>(regimes[0]!.id)
+  const [step, setStep] = useState(0)
+
+  /**
+   * Each step drives the comparator, in the same controlled pattern the other
+   * interactives use. The last entry sets nothing: it releases control, leaving
+   * whatever the reader is looking at in place.
+   */
+  const onStep = useCallback((i: number) => {
+    setStep(i)
+    const preset = [
+      { filter: 'all', sort: 'name', open: regimes[0]!.id },
+      { filter: 'all', sort: 'recipient', open: regimes[0]!.id },
+      { filter: 'two', sort: 'recipient', open: regimes[0]!.id },
+      { filter: 'all', sort: 'name', open: target.id },
+    ][i]
+    if (!preset) return
+    setFilter(preset.filter as ChannelMap | 'all')
+    setSort(preset.sort as SortKey)
+    setOpenId(preset.open)
+  }, [])
 
   const rows = useMemo(() => {
     const filtered = regimes.filter((r) => filter === 'all' || r.maps.includes(filter))
@@ -45,6 +67,15 @@ export function Regimes() {
         titleId="reg-title"
         headline={copy.headline}
         standfirst={copy.standfirst}
+      />
+
+      <Scaffold
+        steps={regimeSteps}
+        current={step}
+        onChange={onStep}
+        label={copy.scaffoldLabel}
+        hint={copy.scaffoldHint}
+        className="reg__scaffold"
       />
 
       <p className="reg__note">{copy.note}</p>

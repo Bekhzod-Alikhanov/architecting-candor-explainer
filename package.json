@@ -2,6 +2,7 @@
   "name": "architecting-candor",
   "private": true,
   "version": "1.0.0",
+  "license": "MIT AND CC-BY-4.0",
   "type": "module",
   "scripts": {
     "dev": "vite",

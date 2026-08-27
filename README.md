@@ -188,3 +188,21 @@ The site is a dated snapshot pinned to the August 2026 paper. The paper describe
 The interactives are illustrative reconstructions. The incident they follow did not happen, the artifacts were written for this page, and the event stream is generated in the browser from a fixed seed. None of it is drawn from any real firm, product or matter.
 
 Nothing on the site is legal advice. Firms should consult counsel before relying on any legal principle described.
+
+---
+
+## Licence
+
+Two licences, because this repository holds two different things.
+
+| What | Licence |
+|---|---|
+| Software — components, modules, `lib/`, `styles/`, `scripts/`, build config | [MIT](LICENSE) |
+| Written content — everything in `src/content/`, `docs/` and this README | [CC BY 4.0](LICENSE-CONTENT.md) |
+
+Reusing the content? Credit the paper rather than this site — the citation is in
+[LICENSE-CONTENT.md](LICENSE-CONTENT.md).
+
+Neither licence covers *Architecting Candor* itself. This is a companion to the
+paper, not a copy of it; the paper is published separately and carries its own
+terms. And no licence grant makes any of this legal advice.

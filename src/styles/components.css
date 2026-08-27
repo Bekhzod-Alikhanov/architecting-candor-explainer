@@ -215,6 +215,70 @@
     font-weight: 600;
   }
 
+  /* --- the narrow-viewport jump control -----------------------------------
+   Everything below 82rem — every phone and most tablets — otherwise has no way
+   to reach a section except scrolling the whole argument.
+
+   It MUST be display:none at wide width, not merely invisible: SectionNav
+   returns a fragment, so this is a second child of .shell, and left in flow it
+   would take the grid's content track and push the sections into a third
+   column.
+   ---------------------------------------------------------------------- */
+
+  .snavJump__btn {
+    position: fixed;
+    inset-block-end: clamp(0.9rem, 3vw, 1.5rem);
+    inset-inline-end: clamp(0.9rem, 3vw, 1.5rem);
+    z-index: 40;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5em;
+    font-family: var(--font-mono);
+    font-size: var(--text-cs-xs);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-on-ground);
+    background: var(--ground-raised);
+    border: 1px solid var(--ground-rule);
+    border-radius: var(--radius-panel);
+    padding: 0.7em 0.95em;
+    box-shadow: var(--lift-doc-sm);
+    cursor: pointer;
+  }
+
+  .snavJump__btn:hover {
+    border-color: var(--instrument-on-ground);
+    color: var(--instrument-on-ground);
+  }
+
+  .snavJump__panel {
+    max-inline-size: min(24rem, calc(100vw - 2rem));
+    max-block-size: min(70vh, 34rem);
+    overflow-y: auto;
+    padding: 0.9rem 1rem 1rem;
+    background: var(--ground-panel);
+    color: var(--text-on-ground);
+    border: 1px solid var(--ground-rule);
+    border-radius: var(--radius-panel);
+    box-shadow: var(--lift-doc);
+  }
+
+  /* Anchored above the button where anchor positioning exists; the UA centres
+     it otherwise, which is fine for a list on a small screen. */
+  @supports (position-area: block-start) {
+    .snavJump__panel:popover-open {
+      position-area: block-start span-inline-start;
+      position-try-fallbacks: block-end span-inline-start;
+      margin: 0 0 0.5rem;
+    }
+  }
+
+  @media (min-width: 82rem) {
+    .snavJump {
+      display: none;
+    }
+  }
+
   /* --- the scaffold stepper ------------------------------------------------
    Every heavy instrument runs guided steps first, moving the instrument's own
    state, then explicitly hands over control. Nobody faces a blank instrument.

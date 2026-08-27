@@ -167,7 +167,7 @@ try {
       await wait(500)
     }
     window.scrollTo(0, 0); await wait(200)
-    return { sections: document.querySelectorAll('main > section').length,
+    return { sections: document.querySelectorAll('.shell__flow > section, main > section').length,
              deferred: document.querySelectorAll('[aria-busy="true"]').length }
   })()`)
   console.log(`\nmounted ${mounted.sections} sections, ${mounted.deferred} still deferred`)
@@ -387,6 +387,48 @@ try {
   if (!prov.describes) failures.push('provenance mark: aria-describedby does not name the popover')
   if (prov.stillUsesTitle) failures.push('provenance mark: regressed to a title attribute')
   if (!prov.explained) failures.push('provenance mark: the popover carries no explanation')
+
+  // The section jump control exists only below 82rem, so it gets its own
+  // viewport. Everything above was driven at 1440, where it is display:none.
+  await send('Emulation.setDeviceMetricsOverride', {
+    width: 390,
+    height: 800,
+    deviceScaleFactor: 1,
+    mobile: true,
+  })
+  await send('Page.reload', {})
+  await sleep(2000)
+
+  await test(
+    'section jump opens',
+    '.snavJump__btn',
+    ['Enter'],
+    `document.querySelector('.snavJump__panel').matches(':popover-open')`,
+  )
+  await test(
+    'section jump closes',
+    '.snavJump__btn',
+    ['Escape'],
+    `document.querySelector('.snavJump__panel').matches(':popover-open')`,
+  )
+
+  const jump = await evaluate(`(() => {
+    const b = document.querySelector('.snavJump__btn')
+    const p = document.querySelector('.snavJump__panel')
+    if (!b || !p) return { missing: true }
+    return {
+      targets: b.getAttribute('popovertarget') === p.id,
+      named: !!b.getAttribute('aria-label'),
+      links: p.querySelectorAll('a[href^="#"]').length,
+      reachable: b.getBoundingClientRect().width > 0,
+    }
+  })()`)
+  console.log('section jump:', JSON.stringify(jump))
+  if (jump.missing) failures.push('section jump: control not found at 390px')
+  if (!jump.targets) failures.push('section jump: popovertarget does not name the panel')
+  if (!jump.named) failures.push('section jump: button has no accessible name')
+  if (jump.links !== 10) failures.push(`section jump: ${jump.links} links, expected 10`)
+  if (!jump.reachable) failures.push('section jump: button is not visible at 390px')
 
   console.log(`${'\nInteractive'.padEnd(28) + 'Result'.padEnd(16)}before → after`)
   console.log('─'.repeat(96))

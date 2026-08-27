@@ -128,6 +128,9 @@ export function section(id: SectionId): {
 export const navCopy = {
   label: 'Sections',
   title: 'The argument',
+  /** The narrow-viewport control that opens the same list. */
+  jumpLabel: 'Jump to a section',
+  jumpShort: 'Sections',
 } as const
 
 /** Colophon furniture. */

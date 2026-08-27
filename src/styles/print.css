@@ -37,6 +37,7 @@
      sheet. scripts/shot.mjs --print-media --pdf is what catches that. */
     .skip-link,
     .snav,
+    .snavJump,
     .shell__flow > *:not(#gc) {
       display: none;
     }

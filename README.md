@@ -32,7 +32,7 @@ deliberately *not* part of `pnpm check`, which stays server-free.
 | Command | What it does |
 |---|---|
 | `pnpm check:lighthouse` | Performance and accessibility, gated at 95, on mobile **and** desktop |
-| `pnpm check:keyboard` | Drives all 18 interactives with real key events |
+| `pnpm check:keyboard` | Drives all 22 interactives with real key events, at 1440 and again at 390 |
 | `pnpm audit:a11y` | axe-core over every section, with all deferred content force-mounted |
 
 ---
@@ -91,12 +91,23 @@ pnpm check
 
 ---
 
+## Getting around
+
+Ten numbered sections. On viewports from 82rem up a rail sits in the left track
+of the shell and marks the section you are in; below that the same list opens
+from a floating control in the corner. Both are built from the `sections`
+register in `src/content/site.ts`, and both navigate with plain anchors, so
+scroll behaviour and reduced-motion handling come from the platform.
+
+`/linter` is a second entry point with no rail: it is the incident ticket linter
+on its own page, so the tool can be shared without the rest of the argument.
+
 ## Architecture
 
 ```
 src/
   content/      All prose and data. Edit here.
-  components/   Seam, Scaffold, ArguesBlock, SectionHead, Provenance, Deferred
+  components/   Seam, Scaffold, ArguesBlock, SectionHead, SectionNav, Provenance, Deferred
   modules/      One directory per section
   lib/          grade.ts, valve.ts, tripwire.ts, lint.ts, prng.ts, countdown.ts
   styles/       tokens.css, base.css, seam.css, components.css, print.css

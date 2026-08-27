@@ -208,3 +208,42 @@ The reader can tell at a glance which of the three they are looking at, on the s
 The two-register conceit, the seam-as-valve, the semantic tier colouring where the review tier wears counsel's ink, the two unreconciled type scales, and the Plex/Spectral pairing all survive. None of them would transfer to another paper, which is the test. What was generic in pass one — a modular scale, a token layer, Framer Motion, self-hosted fonts — is competence rather than design, and is not claimed as design here.
 
 **One thing deliberately left risky.** The page will look like two document systems that do not belong together. That is not a defect to be smoothed out in review; it is the paper's entire subject, and smoothing it is the one change that would make this site ordinary.
+
+---
+
+# Pass three — the widescreen revision
+
+Passes one and two designed a 1280px column. That was wrong for the machines
+people actually read on: a 1440 laptop lost 80px of margin each side, a 1920
+display lost 320px, and inside the column the section intro used 570px of 1180.
+The site read as a narrow ribbon of prose on a large dark field.
+
+The conceit did not change. Two document systems, one seam, the same palette and
+the same two unreconciled type scales. What changed is the frame.
+
+**Width goes to structure, not to measure.** 74ch is already the top of
+comfortable, so widening the text columns would have traded one complaint for a
+worse one. `--content-max` is 108rem, and the recovered width pays for a section
+rail, wider instruments, and a second track beside each section intro.
+
+**The rail.** Ten numbered sections and, before this, no way to move between
+them except scrolling. It sits in what used to be empty margin, and below 82rem
+— where that track does not exist — the same ten sections open from a floating
+control instead. Its data is the `sections` register in `src/content/site.ts`,
+which had existed unused since Phase 1.
+
+**Two intro arrangements.** `.sect-headline` was capped at 22ch, which broke
+every headline after two or three words and was most of the narrowness. At 30ch,
+with a two-track intro: sections with a companion put their scaffold beside the
+lead; sections without one put the deck beside the headline, which is what a
+masthead does.
+
+**Density.** Console body went 13px → 15px → 16px → 17px across three passes.
+Section padding was up to 6rem at each end, so 12rem of nothing sat between one
+argument and the next; it is now capped at 4rem.
+
+**Prose.** 46 paragraphs of 50+ words became 16, almost entirely by splitting
+rather than cutting — 42 words were removed in total, both times a sentence
+restated in full later in the same section. The measurement that drove this is
+in the close-out audit: about half the site's word count is instrument text a
+reader scans rather than reads, so the total was never the number that mattered.

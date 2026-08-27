@@ -169,28 +169,30 @@ export function RouteTheRecord() {
         titleId="route-title"
         headline={routeCopy.headline}
         standfirst={routeCopy.standfirst}
-      />
-
-      <div className="rt__scenario">
-        <div className="rt__scenarioHead">
-          <h3 className="rt__scenarioTitle">{scenario.heading}</h3>
-          <Prov kind="simulated" label={routeCopy.scenarioProv} />
-        </div>
-        <ul className="rt__scenarioLines">
-          {scenario.lines.map((l) => (
-            <li key={l.slice(0, 20)}>{l}</li>
-          ))}
-        </ul>
-        <p className="rt__scenarioNote">{scenario.note}</p>
-      </div>
-
-      <Scaffold
-        steps={routeSteps}
-        current={step}
-        onChange={setStep}
-        label={routeCopy.scaffoldLabel}
-        hint={routeCopy.keyboardHint}
-        className="rt__scaffold"
+        leadBelow={
+          <div className="rt__scenario">
+            <div className="rt__scenarioHead">
+              <h3 className="rt__scenarioTitle">{scenario.heading}</h3>
+              <Prov kind="simulated" label={routeCopy.scenarioProv} />
+            </div>
+            <ul className="rt__scenarioLines">
+              {scenario.lines.map((l) => (
+                <li key={l.slice(0, 20)}>{l}</li>
+              ))}
+            </ul>
+            <p className="rt__scenarioNote">{scenario.note}</p>
+          </div>
+        }
+        aside={
+          <Scaffold
+            steps={routeSteps}
+            current={step}
+            onChange={setStep}
+            label={routeCopy.scaffoldLabel}
+            hint={routeCopy.keyboardHint}
+            className="rt__scaffold"
+          />
+        }
       />
 
       {/* eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions */}

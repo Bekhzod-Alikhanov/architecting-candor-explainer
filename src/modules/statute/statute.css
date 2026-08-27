@@ -59,6 +59,35 @@
     color: var(--stamp-on-ground);
   }
 
+  /* Wide viewports: the numbered principle sits beside its text rather than
+     above it, and principle 02's interactive spans underneath both. Declared
+     after the base rules it overrides. */
+  @media (min-width: 78rem) {
+    .prin__item {
+      display: grid;
+      grid-template-columns: minmax(0, 24rem) minmax(0, 1fr);
+      column-gap: clamp(2rem, 3.5vw, 4rem);
+      align-items: start;
+    }
+
+    .prin__item > * {
+      grid-column: 1 / -1;
+    }
+
+    .prin__item > .prin__head {
+      grid-column: 1;
+    }
+
+    .prin__item > .prin__body,
+    .prin__item > .prin__cite {
+      grid-column: 2;
+    }
+
+    .prin__item > .prin__body {
+      margin-block-start: 0;
+    }
+  }
+
   /* --- the four protections ------------------------------------------------ */
 
   .prot {

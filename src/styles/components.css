@@ -7,7 +7,7 @@
   /* --- section head -------------------------------------------------------- */
 
   .sect {
-    padding-block: clamp(3rem, 8vw, 6rem);
+    padding-block: var(--space-section);
     scroll-margin-top: 1rem;
   }
 
@@ -50,11 +50,14 @@
   .sect-headline {
     font-family: var(--font-doc);
     font-weight: 500;
-    font-size: clamp(1.75rem, 4.2vw, 2.9rem);
-    line-height: 1.08;
-    letter-spacing: -0.018em;
+    /* Was capped at 22ch, which broke every headline after two or three words
+       and made the page read as a narrow ribbon. 30ch is still a headline
+       measure; it just stops fighting the width the page now has. */
+    font-size: clamp(2rem, 3.5vw, 3.5rem);
+    line-height: 1.06;
+    letter-spacing: -0.02em;
     margin-block-start: 1.1rem;
-    max-width: 22ch;
+    max-width: 30ch;
     text-wrap: balance;
   }
 
@@ -62,8 +65,154 @@
     margin-block-start: 1rem;
     max-width: 62ch;
     font-size: var(--text-cs-lg);
-    line-height: 1.62;
+    line-height: 1.6;
     color: var(--text-on-ground-muted);
+    text-wrap: pretty;
+  }
+
+  /* --- the section intro grid ---------------------------------------------
+   See the note in src/components/SectionHead.tsx for why there are two
+   arrangements. Below 78rem both are a single column in DOM order, which is
+   exactly what the page did before.
+   ---------------------------------------------------------------------- */
+  .sect-intro {
+    display: grid;
+  }
+
+  /* Narrow: both extra slots simply follow the deck, which is where each of
+   these blocks sat before the intro became a grid. */
+  .sect-intro__aside,
+  .sect-intro__leadBelow {
+    margin-block-start: var(--space-block);
+  }
+
+  @media (min-width: 78rem) {
+    .sect-intro__aside {
+      margin-block-start: 0;
+    }
+
+    /* With a companion: lead in the left track, companion in the right, both
+       top-aligned. The lead keeps its own internal stack. */
+    .sect-intro[data-aside="true"] {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 34rem);
+      column-gap: clamp(2rem, 4vw, 4.5rem);
+      align-items: start;
+    }
+
+    /* No companion: the deck sits beside the headline instead of under it, so
+       the lead itself becomes the two-track grid. Bottom-aligned, because a
+       deck hanging from the top of a three-line headline reads as orphaned. */
+    .sect-intro[data-aside="false"] > .sect-intro__lead {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 34rem);
+      column-gap: clamp(2rem, 4vw, 4.5rem);
+      align-items: end;
+    }
+
+    .sect-intro[data-aside="false"] > .sect-intro__lead > .sect-standfirst {
+      margin-block-start: 0;
+      padding-block-end: 0.35rem;
+    }
+  }
+
+  /* --- the section rail ----------------------------------------------------
+   Hidden below 82rem, where the shell is not a grid and there is no track for
+   it to sit in. Narrow screens keep the arrangement they already had, which is
+   also the arrangement that has been verified at 360px.
+   ---------------------------------------------------------------------- */
+
+  .snav {
+    display: none;
+  }
+
+  @media (min-width: 82rem) {
+    .snav {
+      display: block;
+      /* Fill the row so the sticky child below has somewhere to travel. The
+         shell sets align-items: start for the flow's sake. */
+      align-self: stretch;
+    }
+
+    .snav__inner {
+      position: sticky;
+      top: var(--space-block);
+      padding-block: 0.2rem;
+      border-inline-start: 1px solid var(--ground-rule-soft);
+      padding-inline-start: 0.9rem;
+    }
+  }
+
+  .snav__title {
+    font-family: var(--font-mono);
+    font-size: var(--text-cs-xs);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--text-on-ground-faint);
+    margin: 0 0 0.7rem;
+  }
+
+  .snav__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.1rem;
+  }
+
+  .snav__link {
+    display: grid;
+    grid-template-columns: 1.9em minmax(0, 1fr);
+    gap: 0.5em;
+    align-items: baseline;
+    padding: 0.32rem 0.4rem;
+    margin-inline-start: -0.4rem;
+    border-radius: var(--radius-mark);
+    text-decoration: none;
+    color: var(--text-on-ground-muted);
+    transition:
+      color var(--dur-fast) var(--ease-out),
+      background var(--dur-fast) var(--ease-out);
+  }
+
+  .snav__link:hover {
+    color: var(--text-on-ground);
+    background: var(--ground-panel);
+  }
+
+  /* Current is marked by colour, weight AND the number's fill, so it never
+     rests on hue alone. */
+  .snav__link[data-current="true"] {
+    color: var(--text-on-ground);
+    background: var(--ground-panel);
+  }
+
+  .snav__n {
+    font-family: var(--font-mono);
+    font-size: var(--text-cs-xs);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.06em;
+    color: var(--text-on-ground-faint);
+    text-align: end;
+  }
+
+  .snav__link[data-current="true"] .snav__n {
+    /* Redact ink, not ground: ground on full-strength instrument is 4.3:1 at
+       13px, which axe caught. Redact on the same fill is 5.06:1. */
+    color: var(--color-redact);
+    background: var(--color-instrument);
+    border-radius: var(--radius-hair);
+    text-align: center;
+    font-weight: 500;
+  }
+
+  .snav__label {
+    font-family: var(--font-sans);
+    font-size: var(--text-cs-sm);
+    line-height: 1.35;
+  }
+
+  .snav__link[data-current="true"] .snav__label {
+    font-weight: 600;
   }
 
   /* --- the scaffold stepper ------------------------------------------------
@@ -82,6 +231,15 @@
        62ch while Back and Next floated a screen-width away from the sentence
        they advance, which read as an unfinished panel rather than a card. */
     max-width: 78ch;
+  }
+
+  /* In the intro's right track the scaffold fills the column instead, because
+     there the column is already the measure. Declared after .scaffold so the
+     override follows the rule it overrides. */
+  @media (min-width: 78rem) {
+    .sect-intro__aside > .scaffold {
+      max-width: none;
+    }
   }
 
   .scaffold__meta {
@@ -157,7 +315,10 @@
   .scaffold__dot[aria-current="step"] {
     background: var(--color-instrument);
     border-color: var(--color-instrument);
-    color: var(--color-ground);
+    /* Same pairing, same reason as .snav__n above: ground ink on this fill is
+       4.3:1 at 13px. axe flagged only the rail because it reports one node per
+       violation type, but the fault was identical here. */
+    color: var(--color-redact);
     font-weight: 500;
   }
 

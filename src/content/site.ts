@@ -120,6 +120,12 @@ export function section(id: SectionId): {
   return { ...found, seq: i + 1 }
 }
 
+/** The section rail. */
+export const navCopy = {
+  label: 'Sections',
+  title: 'The argument',
+} as const
+
 /** Colophon furniture. */
 export const colophonCopy = {
   correspondingLabel: 'Corresponding author',

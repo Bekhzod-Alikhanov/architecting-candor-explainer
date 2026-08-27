@@ -97,15 +97,16 @@ export function Architecture() {
         titleId="arch-title"
         headline={copy.headline}
         standfirst={copy.standfirst}
-      />
-
-      <Scaffold
-        steps={architectureSteps}
-        current={step}
-        onChange={onStep}
-        label={copy.scaffoldLabel}
-        hint={copy.scaffoldHint}
-        className="arch__scaffold"
+        aside={
+          <Scaffold
+            steps={architectureSteps}
+            current={step}
+            onChange={onStep}
+            label={copy.scaffoldLabel}
+            hint={copy.scaffoldHint}
+            className="arch__scaffold"
+          />
+        }
       />
 
       {/* The objects. */}

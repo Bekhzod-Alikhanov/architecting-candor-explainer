@@ -126,15 +126,16 @@ export function Calibrate() {
         titleId="cal-title"
         headline={copy.headline}
         standfirst={copy.standfirst}
-      />
-
-      <Scaffold
-        steps={calibrateSteps}
-        current={step}
-        onChange={onStep}
-        label={copy.scaffoldLabel}
-        hint={copy.scaffoldHint}
-        className="cal__scaffold"
+        aside={
+          <Scaffold
+            steps={calibrateSteps}
+            current={step}
+            onChange={onStep}
+            label={copy.scaffoldLabel}
+            hint={copy.scaffoldHint}
+            className="cal__scaffold"
+          />
+        }
       />
 
       <div className="cal">

@@ -136,7 +136,11 @@ try {
     await wait(300)
 
     return {
-      sections: document.querySelectorAll('main > section').length,
+      // Direct children of the flow, not 'main > section': the rail took the
+      // shell's other track, so the sections moved inside .shell__flow and the
+      // old selector reported 0. Not '.sect' either — the hero is .hero, so
+      // that undercounted by one.
+      sections: document.querySelectorAll('.shell__flow > section, main > section').length,
       busy: document.querySelectorAll('[aria-busy="true"]').length,
       flags: document.querySelectorAll('.flag').length,
       verdicts: document.querySelectorAll('.ledger__item').length,

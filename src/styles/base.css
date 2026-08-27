@@ -338,9 +338,40 @@
 
   .page {
     width: 100%;
-    max-width: var(--page-max);
+    max-width: var(--content-max);
     margin-inline: auto;
     padding-inline: var(--page-gutter);
+  }
+
+  /* --- the shell -----------------------------------------------------------
+   Narrow and mid widths keep the original arrangement: every section is its
+   own centred container, and there is no rail.
+
+   From 90rem up, one grid centres the whole document and takes a fixed track
+   on the left for the section rail. Sections stop centring themselves — the
+   .page override below turns their max-width and gutters off — so the rail and
+   the content share a single alignment rather than two competing ones.
+   ---------------------------------------------------------------------- */
+  .shell {
+    display: block;
+  }
+
+  @media (min-width: 82rem) {
+    .shell {
+      display: grid;
+      grid-template-columns: var(--rail-w) minmax(0, 1fr);
+      column-gap: clamp(1.75rem, 3vw, 3.5rem);
+      align-items: start;
+      max-width: var(--content-max);
+      margin-inline: auto;
+      padding-inline: var(--page-gutter);
+    }
+
+    .shell .page {
+      max-width: none;
+      margin-inline: 0;
+      padding-inline: 0;
+    }
   }
 
   .measure-console {

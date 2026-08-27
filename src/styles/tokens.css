@@ -30,24 +30,26 @@
   --font-sans: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
   --font-doc: 'Spectral', Palatino, 'Palatino Linotype', Georgia, serif;
 
-  /* Console scale — tight and tabular, but not cramped: the smallest step
-     is 12px, which is the floor for a caption a reader has to act on. */
-  --text-cs-xs: 0.75rem;
-  --text-cs-sm: 0.8125rem;
-  --text-cs-base: 0.875rem;
-  --text-cs-md: 0.9375rem;
-  --text-cs-lg: 1.0625rem;
-  --text-cs-xl: 1.375rem;
-  --text-cs-2xl: 1.875rem;
+  /* Console scale. Tight and tabular, but body text is 16px: this is a page
+     someone reads for twenty minutes, not a dashboard they glance at. The
+     smallest step is 13px, which is the floor for a caption a reader must act
+     on. */
+  --text-cs-xs: 0.8125rem;
+  --text-cs-sm: 0.875rem;
+  --text-cs-base: 0.9375rem;
+  --text-cs-md: 1rem;
+  --text-cs-lg: 1.125rem;
+  --text-cs-xl: 1.5rem;
+  --text-cs-2xl: 2rem;
 
   /* Document scale — wider, longer measure. Deliberately not reconciled
      with the console scale. The two systems do not agree on type either. */
-  --text-ds-sm: 0.875rem;
-  --text-ds-base: 1.0625rem;
-  --text-ds-lg: 1.25rem;
-  --text-ds-xl: 1.625rem;
-  --text-ds-2xl: 2.25rem;
-  --text-ds-3xl: 3.25rem;
+  --text-ds-sm: 0.9375rem;
+  --text-ds-base: 1.125rem;
+  --text-ds-lg: 1.3125rem;
+  --text-ds-xl: 1.75rem;
+  --text-ds-2xl: 2.5rem;
+  --text-ds-3xl: 3.5rem;
 
   /* --- corner radius --------------------------------------------------- */
   /* Three steps, by what the thing is rather than by how big it is.
@@ -120,8 +122,22 @@
   /* --- measure ---------------------------------------------------------- */
   --measure-console: 74ch;
   --measure-doc: 62ch;
-  --page-max: 1280px;
-  --page-gutter: clamp(1rem, 4vw, 3rem);
+
+  /* The frame.
+
+     --content-max was 1280px, which left a 1440 laptop with 80px of dead
+     margin each side and a 1920 display with 320px. Text measures are not the
+     thing to widen — 74ch is already the top of comfortable — so the extra
+     width goes to the things that actually want it: the instruments, and a
+     navigation rail in what used to be empty margin. */
+  --content-max: 108rem;
+  --page-gutter: clamp(1rem, 3vw, 3.5rem);
+  --rail-w: 13.5rem;
+
+  /* Vertical rhythm. Sections used to carry up to 6rem of padding at each end,
+     so 12rem of nothing sat between one argument and the next. */
+  --space-section: clamp(2.25rem, 4.4vw, 4rem);
+  --space-block: clamp(1.15rem, 2.2vw, 1.9rem);
 
   /* --- elevation. Document objects sit ON the ground, so they cast. -----
      Five short steps rather than three long ones. A document laid on a desk

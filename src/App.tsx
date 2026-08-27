@@ -4,6 +4,7 @@ import { Pincer } from './modules/pincer/Pincer'
 import { Colophon } from './modules/colophon/Colophon'
 import { Deferred } from './components/Deferred'
 import { TakeItToYourGC } from './modules/gc/TakeItToYourGC'
+import { SectionNav } from './components/SectionNav'
 import { section } from './content/site'
 import { skipLink } from './content/ui'
 
@@ -48,37 +49,41 @@ export function App() {
       <a className="skip-link" href="#memo">
         {skipLink}
       </a>
-      <main>
-        <Hero />
-        <Pincer />
+      <main className="shell">
+        <SectionNav />
 
-        <Deferred {...section('signal')}>
-          <Signal />
-        </Deferred>
+        <div className="shell__flow">
+          <Hero />
+          <Pincer />
 
-        <Deferred {...section('route')}>
-          <RouteTheRecord />
-        </Deferred>
+          <Deferred {...section('signal')}>
+            <Signal />
+          </Deferred>
 
-        <Deferred {...section('architecture')}>
-          <Architecture />
-        </Deferred>
+          <Deferred {...section('route')}>
+            <RouteTheRecord />
+          </Deferred>
 
-        <Deferred {...section('calibrate')}>
-          <Calibrate />
-        </Deferred>
+          <Deferred {...section('architecture')}>
+            <Architecture />
+          </Deferred>
 
-        <Deferred {...section('regimes')}>
-          <Regimes />
-        </Deferred>
+          <Deferred {...section('calibrate')}>
+            <Calibrate />
+          </Deferred>
 
-        <Deferred {...section('ask')}>
-          <Statute />
-        </Deferred>
+          <Deferred {...section('regimes')}>
+            <Regimes />
+          </Deferred>
 
-        <TakeItToYourGC />
+          <Deferred {...section('ask')}>
+            <Statute />
+          </Deferred>
 
-        <Colophon />
+          <TakeItToYourGC />
+
+          <Colophon />
+        </div>
       </main>
     </>
   )

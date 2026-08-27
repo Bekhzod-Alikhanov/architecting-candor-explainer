@@ -27,12 +27,23 @@
     /* Everything except §08 is removed rather than hidden, so no blank pages are
      produced by invisible-but-still-laid-out content. Deferred sections sit
      inside wrapper divs, and matching on `section` alone let those wrappers
-     print as extra pages; matching every child of main except #gc removes the
-     wrappers too. §08 is rendered eagerly precisely so this selector has
-     something to keep — see the note in src/App.tsx. */
+     print as extra pages; matching every child of the flow except #gc removes
+     the wrappers too. §08 is rendered eagerly precisely so this selector has
+     something to keep — see the note in src/App.tsx.
+
+     This matches inside .shell__flow, not `main >`. When the section rail was
+     added, the sections stopped being children of main and `main > *:not(#gc)`
+     matched the wrapper that CONTAINS the checklist, which printed a blank
+     sheet. scripts/shot.mjs --print-media --pdf is what catches that. */
     .skip-link,
-    main > *:not(#gc) {
+    .snav,
+    .shell__flow > *:not(#gc) {
       display: none;
+    }
+
+    /* The shell is a grid on wide viewports; print has one column. */
+    .shell {
+      display: block;
     }
 
     #gc > *:not(#checklist) {

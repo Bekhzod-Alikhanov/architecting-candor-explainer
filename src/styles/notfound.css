@@ -45,7 +45,7 @@
 @layer app-components {
   .nf {
     width: 100%;
-    max-width: var(--page-max);
+    max-width: var(--content-max);
     margin-inline: auto;
     padding-inline: var(--page-gutter);
     padding-block: clamp(2rem, 8vh, 5rem);

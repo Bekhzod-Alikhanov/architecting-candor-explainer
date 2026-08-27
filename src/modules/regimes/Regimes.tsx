@@ -67,15 +67,16 @@ export function Regimes() {
         titleId="reg-title"
         headline={copy.headline}
         standfirst={copy.standfirst}
-      />
-
-      <Scaffold
-        steps={regimeSteps}
-        current={step}
-        onChange={onStep}
-        label={copy.scaffoldLabel}
-        hint={copy.scaffoldHint}
-        className="reg__scaffold"
+        aside={
+          <Scaffold
+            steps={regimeSteps}
+            current={step}
+            onChange={onStep}
+            label={copy.scaffoldLabel}
+            hint={copy.scaffoldHint}
+            className="reg__scaffold"
+          />
+        }
       />
 
       <p className="reg__note">{copy.note}</p>

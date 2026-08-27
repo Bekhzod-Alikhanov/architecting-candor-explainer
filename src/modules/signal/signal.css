@@ -60,6 +60,39 @@
     }
   }
 
+  /* On wide viewports the mechanism's name sits beside its explanation rather
+     than above it, and the instrument spans underneath both. §02 is the most
+     prose-heavy section on the site; stacked, it was a 700px column of text in
+     1500px of ground. */
+  @media (min-width: 78rem) {
+    .mech {
+      display: grid;
+      grid-template-columns: minmax(0, 24rem) minmax(0, 1fr);
+      column-gap: clamp(2rem, 3.5vw, 4rem);
+      align-items: start;
+    }
+
+    .mech > * {
+      grid-column: 1 / -1;
+    }
+
+    .mech > .mech__head {
+      grid-column: 1;
+    }
+
+    .mech > .mech__body {
+      grid-column: 2;
+      margin-block-start: 0;
+    }
+
+    /* The third mechanism nests its body inside .mech__split, which carries its
+       own two-track layout. With no sibling body to sit beside, its head has
+       nothing to pair with, so it spans instead of stranding a column. */
+    .mech:not(:has(> .mech__body)) > .mech__head {
+      grid-column: 1 / -1;
+    }
+  }
+
   /* --- translation loss ---------------------------------------------------- */
 
   .decay {

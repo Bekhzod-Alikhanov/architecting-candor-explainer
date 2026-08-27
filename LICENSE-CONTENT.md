@@ -20,7 +20,9 @@ Everything a reader reads, wherever it lives:
 
 The **software** — components, modules, libraries, styles, build configuration
 and the verification scripts in `scripts/` — is MIT licensed instead. See
-[LICENSE](LICENSE).
+[LICENSE](LICENSE), which holds the standard MIT text and nothing else so that
+automated licence detection recognises it; the scope split is described here and
+in the README rather than inside that file.
 
 ## Attribution
 

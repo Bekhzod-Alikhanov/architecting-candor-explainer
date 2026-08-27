@@ -21,7 +21,13 @@ export function SectionHead({ n, eyebrow, seq, titleId, headline, standfirst }: 
         <span className="sect-num" aria-hidden="true">
           {n}
         </span>
-        <span className="sect-eyebrow">{eyebrow}</span>
+        {/* Where a section has no headline — §09 opens straight into the
+            citation card — the eyebrow carries the id instead, so a section's
+            aria-labelledby always resolves to an element that exists. Without
+            this, §09 had no accessible name at all. */}
+        <span className="sect-eyebrow" {...(titleId && !headline ? { id: titleId } : {})}>
+          {eyebrow}
+        </span>
         <span className="bates sect-bates">{bates(seq)}</span>
       </div>
       {headline ? (

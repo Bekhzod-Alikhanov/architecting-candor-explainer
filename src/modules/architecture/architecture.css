@@ -2,624 +2,626 @@
    04 — The architecture, operable.
    ========================================================================= */
 
-.arch__scaffold {
-  margin-block-start: clamp(1.5rem, 3.5vw, 2.25rem);
-}
-
-/* --- the object tray ----------------------------------------------------- */
-
-.arch__tray {
-  margin-block-start: 1rem;
-  border: 1px solid var(--ground-rule);
-  border-radius: 3px;
-  background: var(--ground-panel);
-  padding: clamp(0.85rem, 2vw, 1.2rem);
-}
-
-.arch__trayLabel,
-.arch__targetsLabel,
-.arch__outwardLabel {
-  font-family: var(--font-mono);
-  font-size: var(--text-cs-xs);
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--text-on-ground-faint);
-}
-
-.arch__targetsLabel span {
-  color: var(--instrument-on-ground);
-  margin-inline-start: 0.75rem;
-  letter-spacing: 0.08em;
-  text-transform: none;
-}
-
-.arch__objects {
-  margin-block-start: 0.7rem;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.4rem;
-}
-
-.obj {
-  display: grid;
-  gap: 0.1rem;
-  text-align: start;
-  padding: 0.45rem 0.6rem;
-  border: 1px solid var(--ground-rule);
-  border-radius: 2px;
-  background: var(--ground-deep);
-  transition:
-    border-color var(--dur-fast) var(--ease-out),
-    background var(--dur-fast) var(--ease-out);
-}
-
-.obj:hover {
-  border-color: var(--instrument-on-ground);
-}
-
-.obj[data-selected="true"] {
-  border-color: var(--color-instrument);
-  background: var(--ground-raised);
-  box-shadow: inset 3px 0 0 var(--color-instrument);
-}
-
-/* A conclusion looks like counsel's work even in the tray, so the reader can
-   see which objects are the dangerous ones before trying to move them. */
-.obj[data-kind="conclusion"] {
-  border-inline-start: 3px solid var(--color-stamp);
-}
-
-.obj[data-kind="conclusion"][data-selected="true"] {
-  box-shadow: inset 3px 0 0 var(--color-stamp);
-  border-color: var(--color-stamp);
-}
-
-.obj__home {
-  font-family: var(--font-mono);
-  font-size: var(--text-cs-xs);
-  letter-spacing: 0.08em;
-  color: var(--text-on-ground-faint);
-}
-
-.obj__label {
-  font-size: var(--text-cs-md);
-  line-height: 1.3;
-  color: var(--text-on-ground);
-}
-
-/* The physical push-back. Keyed on a counter so a repeated refusal replays. */
-.obj[data-refused] {
-  animation: obj-refuse var(--dur-refuse) var(--ease-refuse);
-}
-
-@keyframes obj-refuse {
-  0% {
-    translate: 0 0;
-  }
-  30% {
-    translate: -9px 0;
-  }
-  55% {
-    translate: 5px 0;
-  }
-  75% {
-    translate: -2px 0;
-  }
-  100% {
-    translate: 0 0;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .obj[data-refused] {
-    animation: none;
-    outline: 2px solid var(--color-stamp);
-    outline-offset: 2px;
-  }
-}
-
-.arch__objText {
-  margin-block-start: 0.8rem;
-  padding: 0.65rem 0.8rem;
-  border: 1px dashed var(--ground-rule);
-  border-radius: 2px;
-  font-family: var(--font-mono);
-  font-size: var(--text-cs-sm);
-  line-height: 1.6;
-  color: var(--text-on-ground-muted);
-  overflow-wrap: anywhere;
-}
-
-/* --- the machine --------------------------------------------------------- */
-
-.arch__machine {
-  margin-block-start: 1rem;
-  border: 1px solid var(--ground-rule);
-  border-radius: 3px;
-  background: var(--ground-deep);
-  padding: clamp(0.85rem, 2vw, 1.25rem);
-}
-
-.arch__channels {
-  margin-block-start: 0.75rem;
-  display: grid;
-  gap: 0.6rem;
-}
-
-@media (min-width: 62rem) {
-  .arch__channels {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 0;
+@layer app-modules {
+  .arch__scaffold {
+    margin-block-start: clamp(1.5rem, 3.5vw, 2.25rem);
   }
 
-  .arch__slot {
+  /* --- the object tray ----------------------------------------------------- */
+
+  .arch__tray {
+    margin-block-start: 1rem;
+    border: 1px solid var(--ground-rule);
+    border-radius: var(--radius-panel);
+    background: var(--ground-panel);
+    padding: clamp(0.85rem, 2vw, 1.2rem);
+  }
+
+  .arch__trayLabel,
+  .arch__targetsLabel,
+  .arch__outwardLabel {
+    font-family: var(--font-mono);
+    font-size: var(--text-cs-xs);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--text-on-ground-faint);
+  }
+
+  .arch__targetsLabel span {
+    color: var(--instrument-on-ground);
+    margin-inline-start: 0.75rem;
+    letter-spacing: 0.08em;
+    text-transform: none;
+  }
+
+  .arch__objects {
+    margin-block-start: 0.7rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .obj {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
-    align-items: stretch;
+    gap: 0.1rem;
+    text-align: start;
+    padding: 0.45rem 0.6rem;
+    border: 1px solid var(--ground-rule);
+    border-radius: var(--radius-mark);
+    background: var(--ground-deep);
+    transition:
+      border-color var(--dur-fast) var(--ease-out),
+      background var(--dur-fast) var(--ease-out);
   }
 
-  .arch__slot:last-child {
-    grid-template-columns: minmax(0, 1fr);
+  .obj:hover {
+    border-color: var(--instrument-on-ground);
   }
 
-  .arch__seam {
-    margin-inline: 0.85rem;
+  .obj[data-selected="true"] {
+    border-color: var(--color-instrument);
+    background: var(--ground-raised);
+    box-shadow: inset 3px 0 0 var(--color-instrument);
   }
-}
 
-@media (max-width: 61.99rem) {
-  .arch__seam {
+  /* A conclusion looks like counsel's work even in the tray, so the reader can
+   see which objects are the dangerous ones before trying to move them. */
+  .obj[data-kind="conclusion"] {
+    border-inline-start: 3px solid var(--color-stamp);
+  }
+
+  .obj[data-kind="conclusion"][data-selected="true"] {
+    box-shadow: inset 3px 0 0 var(--color-stamp);
+    border-color: var(--color-stamp);
+  }
+
+  .obj__home {
+    font-family: var(--font-mono);
+    font-size: var(--text-cs-xs);
+    letter-spacing: 0.08em;
+    color: var(--text-on-ground-faint);
+  }
+
+  .obj__label {
+    font-size: var(--text-cs-md);
+    line-height: 1.3;
+    color: var(--text-on-ground);
+  }
+
+  /* The physical push-back. Keyed on a counter so a repeated refusal replays. */
+  .obj[data-refused] {
+    animation: obj-refuse var(--dur-refuse) var(--ease-refuse);
+  }
+
+  @keyframes obj-refuse {
+    0% {
+      translate: 0 0;
+    }
+    30% {
+      translate: -9px 0;
+    }
+    55% {
+      translate: 5px 0;
+    }
+    75% {
+      translate: -2px 0;
+    }
+    100% {
+      translate: 0 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .obj[data-refused] {
+      animation: none;
+      outline: 2px solid var(--color-stamp);
+      outline-offset: 2px;
+    }
+  }
+
+  .arch__objText {
+    margin-block-start: 0.8rem;
+    padding: 0.65rem 0.8rem;
+    border: 1px dashed var(--ground-rule);
+    border-radius: var(--radius-mark);
+    font-family: var(--font-mono);
+    font-size: var(--text-cs-sm);
+    line-height: 1.6;
+    color: var(--text-on-ground-muted);
+    overflow-wrap: anywhere;
+  }
+
+  /* --- the machine --------------------------------------------------------- */
+
+  .arch__machine {
+    margin-block-start: 1rem;
+    border: 1px solid var(--ground-rule);
+    border-radius: var(--radius-panel);
+    background: var(--ground-deep);
+    padding: clamp(0.85rem, 2vw, 1.25rem);
+  }
+
+  .arch__channels {
+    margin-block-start: 0.75rem;
+    display: grid;
+    gap: 0.6rem;
+  }
+
+  @media (min-width: 62rem) {
+    .arch__channels {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0;
+    }
+
+    .arch__slot {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: stretch;
+    }
+
+    .arch__slot:last-child {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .arch__seam {
+      margin-inline: 0.85rem;
+    }
+  }
+
+  @media (max-width: 61.99rem) {
+    .arch__seam {
+      display: none;
+    }
+  }
+
+  /* --- a node -------------------------------------------------------------- */
+
+  .cbox {
+    border: 1px solid var(--ground-rule);
+    border-radius: var(--radius-panel);
+    background: var(--ground-panel);
+    padding: 0.8rem;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    transition: border-color var(--dur-base) var(--ease-out);
+  }
+
+  .cbox[data-node="one"] {
+    border-inline-start: 3px solid var(--color-instrument);
+  }
+
+  .cbox[data-node="two"] {
+    border-inline-start: 3px solid var(--color-stamp);
+  }
+
+  .cbox[data-node="three"] {
+    border-inline-start: 3px dashed var(--color-instrument);
+  }
+
+  .cbox[data-side="outward"] {
+    background: var(--ground-deep);
+    border-style: dashed;
+  }
+
+  .cbox[data-last="allowed"] {
+    border-color: var(--color-instrument);
+    box-shadow: 0 0 0 2px var(--tint-instrument);
+  }
+
+  .cbox[data-last="refused"] {
+    border-color: var(--color-stamp);
+    box-shadow: 0 0 0 2px var(--tint-stamp);
+  }
+
+  .cbox__hit {
+    text-align: start;
+    display: grid;
+    gap: 0.1rem;
+    width: 100%;
+  }
+
+  .cbox__name {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: var(--text-cs-lg);
+    line-height: 1.2;
+  }
+
+  .cbox__sub {
+    font-family: var(--font-mono);
+    font-size: var(--text-cs-xs);
+    letter-spacing: 0.08em;
+    color: var(--text-on-ground-faint);
+  }
+
+  .cbox__body {
+    margin-block-start: 0.6rem;
+    font-size: var(--text-cs-sm);
+    line-height: 1.55;
+    color: var(--text-on-ground-muted);
+  }
+
+  .cbox__status {
+    margin-block-start: auto;
+    padding-block-start: 0.7rem;
+    font-family: var(--font-mono);
+    font-size: var(--text-cs-xs);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--instrument-on-ground);
+  }
+
+  .cbox[data-node="two"] .cbox__status,
+  .cbox[data-node="one-overwrite"] .cbox__status,
+  .cbox[data-side="outward"] .cbox__status {
+    color: var(--stamp-on-ground);
+  }
+
+  .cbox__authority {
+    margin-block-start: 0.25rem;
+    font-family: var(--font-mono);
+    font-size: var(--text-cs-xs);
+    color: var(--text-on-ground-faint);
+  }
+
+  .cbox__home {
+    margin-block-start: 0.5rem;
+    font-family: var(--font-mono);
+    font-size: var(--text-cs-xs);
+    letter-spacing: 0.08em;
+    color: var(--instrument-on-ground);
+  }
+
+  /* --- the append-only sub-zone inside Channel One ------------------------- */
+
+  .arch__overwrite {
+    margin-block-start: 0.7rem;
+    display: grid;
+    gap: 0.12rem;
+    text-align: start;
+    width: 100%;
+    padding: 0.55rem 0.65rem;
+    border: 1px dashed var(--stamp-on-ground);
+    border-radius: var(--radius-mark);
+    background: color-mix(in oklab, var(--color-redact) 30%, transparent);
+    transition: border-color var(--dur-fast) var(--ease-out);
+  }
+
+  .arch__overwrite:hover {
+    border-color: var(--color-stamp);
+  }
+
+  .arch__overwrite[data-last="refused"] {
+    border-style: solid;
+    border-color: var(--color-stamp);
+    background: var(--tint-stamp);
+  }
+
+  .arch__overwriteName {
+    font-family: var(--font-mono);
+    font-size: var(--text-cs-sm);
+    color: var(--text-on-ground);
+  }
+
+  .arch__overwriteSub {
+    font-family: var(--font-mono);
+    font-size: var(--text-cs-xs);
+    color: var(--stamp-on-ground);
+  }
+
+  .arch__overwriteStatus {
+    font-family: var(--font-mono);
+    font-size: var(--text-cs-xs);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-on-ground-faint);
+  }
+
+  /* --- the arrows, each explaining itself ---------------------------------- */
+
+  .arch__arrows {
+    margin-block-start: 1rem;
+    display: grid;
+    gap: 0.35rem;
+  }
+
+  @media (min-width: 62rem) {
+    .arch__arrows {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .arrow {
+    border: 1px solid var(--ground-rule-soft);
+    border-radius: var(--radius-mark);
+    background: var(--ground-panel);
+  }
+
+  .arrow__summary {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.4rem 0.8rem;
+    padding: 0.5rem 0.65rem;
+    cursor: pointer;
+    font-family: var(--font-mono);
+    font-size: var(--text-cs-xs);
+    list-style: none;
+  }
+
+  .arrow__summary::-webkit-details-marker {
     display: none;
   }
-}
 
-/* --- a node -------------------------------------------------------------- */
-
-.cbox {
-  border: 1px solid var(--ground-rule);
-  border-radius: 3px;
-  background: var(--ground-panel);
-  padding: 0.8rem;
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-  transition: border-color var(--dur-base) var(--ease-out);
-}
-
-.cbox[data-node="one"] {
-  border-inline-start: 3px solid var(--color-instrument);
-}
-
-.cbox[data-node="two"] {
-  border-inline-start: 3px solid var(--color-stamp);
-}
-
-.cbox[data-node="three"] {
-  border-inline-start: 3px dashed var(--color-instrument);
-}
-
-.cbox[data-side="outward"] {
-  background: var(--ground-deep);
-  border-style: dashed;
-}
-
-.cbox[data-last="allowed"] {
-  border-color: var(--color-instrument);
-  box-shadow: 0 0 0 2px var(--tint-instrument);
-}
-
-.cbox[data-last="refused"] {
-  border-color: var(--color-stamp);
-  box-shadow: 0 0 0 2px var(--tint-stamp);
-}
-
-.cbox__hit {
-  text-align: start;
-  display: grid;
-  gap: 0.1rem;
-  width: 100%;
-}
-
-.cbox__name {
-  font-family: var(--font-sans);
-  font-weight: 600;
-  font-size: var(--text-cs-lg);
-  line-height: 1.2;
-}
-
-.cbox__sub {
-  font-family: var(--font-mono);
-  font-size: var(--text-cs-xs);
-  letter-spacing: 0.08em;
-  color: var(--text-on-ground-faint);
-}
-
-.cbox__body {
-  margin-block-start: 0.6rem;
-  font-size: var(--text-cs-sm);
-  line-height: 1.55;
-  color: var(--text-on-ground-muted);
-}
-
-.cbox__status {
-  margin-block-start: auto;
-  padding-block-start: 0.7rem;
-  font-family: var(--font-mono);
-  font-size: var(--text-cs-xs);
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--instrument-on-ground);
-}
-
-.cbox[data-node="two"] .cbox__status,
-.cbox[data-node="one-overwrite"] .cbox__status,
-.cbox[data-side="outward"] .cbox__status {
-  color: var(--stamp-on-ground);
-}
-
-.cbox__authority {
-  margin-block-start: 0.25rem;
-  font-family: var(--font-mono);
-  font-size: var(--text-cs-xs);
-  color: var(--text-on-ground-faint);
-}
-
-.cbox__home {
-  margin-block-start: 0.5rem;
-  font-family: var(--font-mono);
-  font-size: var(--text-cs-xs);
-  letter-spacing: 0.08em;
-  color: var(--instrument-on-ground);
-}
-
-/* --- the append-only sub-zone inside Channel One ------------------------- */
-
-.arch__overwrite {
-  margin-block-start: 0.7rem;
-  display: grid;
-  gap: 0.12rem;
-  text-align: start;
-  width: 100%;
-  padding: 0.55rem 0.65rem;
-  border: 1px dashed var(--stamp-on-ground);
-  border-radius: 2px;
-  background: color-mix(in srgb, var(--color-redact) 30%, transparent);
-  transition: border-color var(--dur-fast) var(--ease-out);
-}
-
-.arch__overwrite:hover {
-  border-color: var(--color-stamp);
-}
-
-.arch__overwrite[data-last="refused"] {
-  border-style: solid;
-  border-color: var(--color-stamp);
-  background: var(--tint-stamp);
-}
-
-.arch__overwriteName {
-  font-family: var(--font-mono);
-  font-size: var(--text-cs-sm);
-  color: var(--text-on-ground);
-}
-
-.arch__overwriteSub {
-  font-family: var(--font-mono);
-  font-size: var(--text-cs-xs);
-  color: var(--stamp-on-ground);
-}
-
-.arch__overwriteStatus {
-  font-family: var(--font-mono);
-  font-size: var(--text-cs-xs);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--text-on-ground-faint);
-}
-
-/* --- the arrows, each explaining itself ---------------------------------- */
-
-.arch__arrows {
-  margin-block-start: 1rem;
-  display: grid;
-  gap: 0.35rem;
-}
-
-@media (min-width: 62rem) {
-  .arch__arrows {
-    grid-template-columns: 1fr 1fr;
+  .arrow__summary::before {
+    content: "▸";
+    color: var(--instrument-on-ground);
   }
-}
 
-.arrow {
-  border: 1px solid var(--ground-rule-soft);
-  border-radius: 2px;
-  background: var(--ground-panel);
-}
+  .arrow[open] .arrow__summary::before {
+    content: "▾";
+  }
 
-.arrow__summary {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 0.4rem 0.8rem;
-  padding: 0.5rem 0.65rem;
-  cursor: pointer;
-  font-family: var(--font-mono);
-  font-size: var(--text-cs-xs);
-  list-style: none;
-}
+  .arrow__route {
+    color: var(--text-on-ground);
+  }
 
-.arrow__summary::-webkit-details-marker {
-  display: none;
-}
+  .arrow__label {
+    color: var(--instrument-on-ground);
+    letter-spacing: 0.08em;
+  }
 
-.arrow__summary::before {
-  content: "▸";
-  color: var(--instrument-on-ground);
-}
+  .arrow__body {
+    padding: 0 0.65rem 0.7rem;
+    max-width: 74ch;
+  }
 
-.arrow[open] .arrow__summary::before {
-  content: "▾";
-}
+  .arrow__title {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: var(--text-cs-md);
+  }
 
-.arrow__route {
-  color: var(--text-on-ground);
-}
+  .arrow__reason {
+    margin-block-start: 0.35rem;
+    font-size: var(--text-cs-sm);
+    line-height: 1.6;
+    color: var(--text-on-ground-muted);
+  }
 
-.arrow__label {
-  color: var(--instrument-on-ground);
-  letter-spacing: 0.08em;
-}
+  .arrow__authority {
+    margin-block-start: 0.4rem;
+    font-family: var(--font-mono);
+    font-size: var(--text-cs-xs);
+    color: var(--stamp-on-ground);
+  }
 
-.arrow__body {
-  padding: 0 0.65rem 0.7rem;
-  max-width: 74ch;
-}
+  /* --- outward surfaces ---------------------------------------------------- */
 
-.arrow__title {
-  font-family: var(--font-sans);
-  font-weight: 600;
-  font-size: var(--text-cs-md);
-}
+  .arch__outwardLabel {
+    margin-block-start: 1.1rem;
+  }
 
-.arrow__reason {
-  margin-block-start: 0.35rem;
-  font-size: var(--text-cs-sm);
-  line-height: 1.6;
-  color: var(--text-on-ground-muted);
-}
-
-.arrow__authority {
-  margin-block-start: 0.4rem;
-  font-family: var(--font-mono);
-  font-size: var(--text-cs-xs);
-  color: var(--stamp-on-ground);
-}
-
-/* --- outward surfaces ---------------------------------------------------- */
-
-.arch__outwardLabel {
-  margin-block-start: 1.1rem;
-}
-
-.arch__outward {
-  margin-block-start: 0.5rem;
-  display: grid;
-  gap: 0.5rem;
-}
-
-@media (min-width: 48rem) {
   .arch__outward {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    margin-block-start: 0.5rem;
+    display: grid;
+    gap: 0.5rem;
   }
-}
 
-/* --- the valve's answer -------------------------------------------------- */
+  @media (min-width: 48rem) {
+    .arch__outward {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
 
-.valve {
-  margin-block-start: 1rem;
-  border: 1px solid var(--ground-rule);
-  border-radius: 3px;
-  padding: clamp(0.9rem, 2.2vw, 1.35rem);
-  background: var(--ground-panel);
-  transition:
-    border-color var(--dur-base) var(--ease-out),
-    background var(--dur-base) var(--ease-out);
-}
+  /* --- the valve's answer -------------------------------------------------- */
 
-.valve[data-state="refused"] {
-  border-color: var(--color-stamp);
-  background: color-mix(in srgb, var(--color-stamp) 10%, var(--ground-panel));
-}
+  .valve {
+    margin-block-start: 1rem;
+    border: 1px solid var(--ground-rule);
+    border-radius: var(--radius-panel);
+    padding: clamp(0.9rem, 2.2vw, 1.35rem);
+    background: var(--ground-panel);
+    transition:
+      border-color var(--dur-base) var(--ease-out),
+      background var(--dur-base) var(--ease-out);
+  }
 
-.valve[data-state="allowed"] {
-  border-color: var(--color-instrument);
-  background: color-mix(in srgb, var(--color-instrument) 8%, var(--ground-panel));
-}
+  .valve[data-state="refused"] {
+    border-color: var(--color-stamp);
+    background: color-mix(in oklab, var(--color-stamp) 10%, var(--ground-panel));
+  }
 
-.valve__idle {
-  font-family: var(--font-mono);
-  font-size: var(--text-cs-sm);
-  color: var(--text-on-ground-faint);
-}
+  .valve[data-state="allowed"] {
+    border-color: var(--color-instrument);
+    background: color-mix(in oklab, var(--color-instrument) 8%, var(--ground-panel));
+  }
 
-.valve__head {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.5rem 0.9rem;
-}
+  .valve__idle {
+    font-family: var(--font-mono);
+    font-size: var(--text-cs-sm);
+    color: var(--text-on-ground-faint);
+  }
 
-.valve__badge {
-  font-family: var(--font-mono);
-  font-size: var(--text-cs-xs);
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  padding: 0.2em 0.5em;
-  border-radius: 2px;
-  border: 1px solid currentColor;
-}
+  .valve__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem 0.9rem;
+  }
 
-.valve[data-state="refused"] .valve__badge {
-  color: var(--stamp-on-ground);
-}
+  .valve__badge {
+    font-family: var(--font-mono);
+    font-size: var(--text-cs-xs);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 0.2em 0.5em;
+    border-radius: var(--radius-mark);
+    border: 1px solid currentColor;
+  }
 
-.valve[data-state="allowed"] .valve__badge {
-  color: var(--instrument-on-ground);
-}
+  .valve[data-state="refused"] .valve__badge {
+    color: var(--stamp-on-ground);
+  }
 
-.valve__route {
-  font-family: var(--font-mono);
-  font-size: var(--text-cs-sm);
-  color: var(--text-on-ground-muted);
-}
+  .valve[data-state="allowed"] .valve__badge {
+    color: var(--instrument-on-ground);
+  }
 
-.valve__title {
-  margin-block-start: 0.65rem;
-  font-family: var(--font-sans);
-  font-weight: 600;
-  font-size: var(--text-cs-xl);
-  letter-spacing: -0.01em;
-}
+  .valve__route {
+    font-family: var(--font-mono);
+    font-size: var(--text-cs-sm);
+    color: var(--text-on-ground-muted);
+  }
 
-.valve__reason {
-  margin-block-start: 0.4rem;
-  max-width: 76ch;
-  font-family: var(--font-doc);
-  font-size: var(--text-ds-base);
-  line-height: 1.6;
-  color: var(--text-on-ground);
-}
+  .valve__title {
+    margin-block-start: 0.65rem;
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: var(--text-cs-xl);
+    letter-spacing: -0.01em;
+  }
 
-.valve__authority {
-  margin-block-start: 0.55rem;
-  font-family: var(--font-mono);
-  font-size: var(--text-cs-xs);
-  letter-spacing: 0.05em;
-  color: var(--stamp-on-ground);
-}
+  .valve__reason {
+    margin-block-start: 0.4rem;
+    max-width: 76ch;
+    font-family: var(--font-doc);
+    font-size: var(--text-ds-base);
+    line-height: 1.6;
+    color: var(--text-on-ground);
+  }
 
-.valve__loop {
-  margin-block-start: 0.8rem;
-  padding: 0.55rem 0.7rem;
-  border-inline-start: 3px solid var(--color-instrument);
-  background: var(--tint-instrument);
-  border-radius: 2px;
-  font-size: var(--text-cs-sm);
-  line-height: 1.55;
-  color: var(--instrument-on-ground);
-}
+  .valve__authority {
+    margin-block-start: 0.55rem;
+    font-family: var(--font-mono);
+    font-size: var(--text-cs-xs);
+    letter-spacing: 0.05em;
+    color: var(--stamp-on-ground);
+  }
 
-/* --- the plain statements ------------------------------------------------ */
+  .valve__loop {
+    margin-block-start: 0.8rem;
+    padding: 0.55rem 0.7rem;
+    border-inline-start: 3px solid var(--color-instrument);
+    background: var(--tint-instrument);
+    border-radius: var(--radius-mark);
+    font-size: var(--text-cs-sm);
+    line-height: 1.55;
+    color: var(--instrument-on-ground);
+  }
 
-.arch__plainly {
-  margin-block-start: 1.25rem;
-  display: grid;
-  gap: 0.45rem;
-  max-width: 82ch;
-}
+  /* --- the plain statements ------------------------------------------------ */
 
-.arch__plainly li {
-  padding-inline-start: 1rem;
-  border-inline-start: 2px solid var(--color-stamp);
-  font-family: var(--font-doc);
-  font-size: var(--text-ds-base);
-  line-height: 1.5;
-  color: var(--text-on-ground);
-}
+  .arch__plainly {
+    margin-block-start: 1.25rem;
+    display: grid;
+    gap: 0.45rem;
+    max-width: 82ch;
+  }
 
-/* --- the attempt log ----------------------------------------------------- */
+  .arch__plainly li {
+    padding-inline-start: 1rem;
+    border-inline-start: 2px solid var(--color-stamp);
+    font-family: var(--font-doc);
+    font-size: var(--text-ds-base);
+    line-height: 1.5;
+    color: var(--text-on-ground);
+  }
 
-.arch__log {
-  margin-block-start: 1.5rem;
-  border: 1px solid var(--ground-rule);
-  border-radius: 3px;
-  background: var(--ground-deep);
-  padding: clamp(0.8rem, 2vw, 1.1rem);
-}
+  /* --- the attempt log ----------------------------------------------------- */
 
-.arch__logHead {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 0.35rem 1.25rem;
-  padding-block-end: 0.6rem;
-  border-block-end: 1px solid var(--ground-rule-soft);
-}
+  .arch__log {
+    margin-block-start: 1.5rem;
+    border: 1px solid var(--ground-rule);
+    border-radius: var(--radius-panel);
+    background: var(--ground-deep);
+    padding: clamp(0.8rem, 2vw, 1.1rem);
+  }
 
-.arch__logTitle {
-  font-family: var(--font-mono);
-  font-size: var(--text-cs-sm);
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--text-on-ground-muted);
-}
+  .arch__logHead {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.35rem 1.25rem;
+    padding-block-end: 0.6rem;
+    border-block-end: 1px solid var(--ground-rule-soft);
+  }
 
-.arch__logNote,
-.arch__logEmpty {
-  font-family: var(--font-mono);
-  font-size: var(--text-cs-xs);
-  color: var(--text-on-ground-faint);
-}
+  .arch__logTitle {
+    font-family: var(--font-mono);
+    font-size: var(--text-cs-sm);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-on-ground-muted);
+  }
 
-.arch__logEmpty {
-  padding-block: 0.9rem;
-}
+  .arch__logNote,
+  .arch__logEmpty {
+    font-family: var(--font-mono);
+    font-size: var(--text-cs-xs);
+    color: var(--text-on-ground-faint);
+  }
 
-.arch__logList {
-  margin-block-start: 0.6rem;
-  display: grid;
-  gap: 0.15rem;
-  max-block-size: 15rem;
-  overflow-y: auto;
-}
+  .arch__logEmpty {
+    padding-block: 0.9rem;
+  }
 
-.arch__logItem {
-  display: grid;
-  grid-template-columns: 3ch 6rem minmax(0, 1fr);
-  gap: 0.75rem;
-  align-items: baseline;
-  font-family: var(--font-mono);
-  font-size: var(--text-cs-xs);
-  color: var(--text-on-ground-muted);
-  padding-block: 0.15rem;
-}
+  .arch__logList {
+    margin-block-start: 0.6rem;
+    display: grid;
+    gap: 0.15rem;
+    max-block-size: 15rem;
+    overflow-y: auto;
+  }
 
-.arch__logSeq {
-  color: var(--text-on-ground-faint);
-}
+  .arch__logItem {
+    display: grid;
+    grid-template-columns: 3ch 6rem minmax(0, 1fr);
+    gap: 0.75rem;
+    align-items: baseline;
+    font-family: var(--font-mono);
+    font-size: var(--text-cs-xs);
+    color: var(--text-on-ground-muted);
+    padding-block: 0.15rem;
+  }
 
-.arch__logItem[data-allowed="true"] .arch__logVerdict {
-  color: var(--instrument-on-ground);
-}
+  .arch__logSeq {
+    color: var(--text-on-ground-faint);
+  }
 
-.arch__logItem[data-allowed="false"] .arch__logVerdict {
-  color: var(--stamp-on-ground);
-}
+  .arch__logItem[data-allowed="true"] .arch__logVerdict {
+    color: var(--instrument-on-ground);
+  }
 
-/* The refusal marker sits at the head of the seam rather than its centre, so
+  .arch__logItem[data-allowed="false"] .arch__logVerdict {
+    color: var(--stamp-on-ground);
+  }
+
+  /* The refusal marker sits at the head of the seam rather than its centre, so
    it never covers the channel description the reader needs to read. */
-.arch__seam .seam__reason {
-  top: 2.25rem;
-  translate: -50% 0;
-  max-width: 22ch;
-  text-align: center;
-}
+  .arch__seam .seam__reason {
+    top: 2.25rem;
+    translate: -50% 0;
+    max-width: 22ch;
+    text-align: center;
+  }
 
-/* Objects are draggable as well as selectable, so section 04 and section 03
+  /* Objects are draggable as well as selectable, so section 04 and section 03
    share one interaction grammar: pick a thing up, put it somewhere, and let
    the valve answer. */
-.obj {
-  cursor: grab;
-}
+  .obj {
+    cursor: grab;
+  }
 
-.obj:active {
-  cursor: grabbing;
-}
+  .obj:active {
+    cursor: grabbing;
+  }
 
-.arch__overwrite[data-over="true"] {
-  border-style: solid;
-  border-color: var(--color-stamp);
-  background: var(--tint-stamp);
+  .arch__overwrite[data-over="true"] {
+    border-style: solid;
+    border-color: var(--color-stamp);
+    background: var(--tint-stamp);
+  }
 }

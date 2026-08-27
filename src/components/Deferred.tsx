@@ -56,21 +56,13 @@ export function Deferred({ id, n, title, seq, children }: DeferredProps) {
     }
     window.addEventListener('hashchange', onHash)
 
-    // Printing has to mount everything. The print stylesheet renders the
-    // implementation checklist, which lives in a deferred section, so a reader
-    // pressing Ctrl+P from the top of the page would otherwise get a blank
-    // sheet. beforeprint covers the browser dialog; the print media query
-    // covers headless rendering, which does not fire it.
-    const mountNow = () => setMounted(true)
-    const printMq = window.matchMedia('print')
-    window.addEventListener('beforeprint', mountNow)
-    printMq.addEventListener('change', mountNow)
-
+    // No print handling here. Mounting a lazy section on `beforeprint` cannot
+    // work — the event is synchronous and the import is not — so the only
+    // printable section, §08, is rendered eagerly in App.tsx instead. Every
+    // section this component defers is removed by the print stylesheet.
     return () => {
       io.disconnect()
       window.removeEventListener('hashchange', onHash)
-      window.removeEventListener('beforeprint', mountNow)
-      printMq.removeEventListener('change', mountNow)
     }
   }, [mounted, id])
 

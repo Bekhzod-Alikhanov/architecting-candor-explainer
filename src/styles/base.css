@@ -3,295 +3,335 @@
    No raw colour values. Everything references the token layer.
    ========================================================================= */
 
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
-
-html {
-  -webkit-text-size-adjust: 100%;
-  scroll-behavior: smooth;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
+@layer app-base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
   }
-}
 
-body {
-  margin: 0;
-  /* The page ground is the console. Always. Document objects sit on it.
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+
+  body {
+    margin: 0;
+    /* The page ground is the console. Always. Document objects sit on it.
      See docs/design-plan.md, pass two, finding 1. */
-  background: var(--color-ground);
-  color: var(--text-on-ground);
-  font-family: var(--font-sans);
-  font-size: var(--text-cs-md);
-  line-height: 1.6;
-  -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
-}
+    background-color: var(--color-ground);
+    /* A scanner artifact, not a decorative texture: the console ground went
+       through the same reprographic pipeline as the documents, so it carries
+       the same grain. The faintness is baked into the SVG's own opacity rather
+       than applied to an overlay, because an overlay either sits above the
+       content and depresses text contrast, or sits below the background that
+       body propagates to the canvas and never paints at all. Tiled here, it is
+       covered completely by every opaque panel, so no computed contrast on the
+       page changes. Suppressed in print, where it would only be dirt. */
+    background-image: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='180'%20height='180'%3E%3Cfilter%20id='n'%3E%3CfeTurbulence%20type='fractalNoise'%20baseFrequency='0.9'%20numOctaves='4'%20stitchTiles='stitch'/%3E%3CfeColorMatrix%20type='saturate'%20values='0'/%3E%3C/filter%3E%3Crect%20width='180'%20height='180'%20filter='url%28%23n%29'%20opacity='0.055'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+    color: var(--text-on-ground);
+    font-family: var(--font-sans);
+    font-size: var(--text-cs-md);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
 
-h1,
-h2,
-h3,
-h4,
-p,
-figure,
-blockquote,
-ul,
-ol {
-  margin: 0;
-}
+  /* Prose gets `pretty`, which stops the orphaned last word; headings get
+     `balance`, which evens the ragged edge on the two- and three-line titles
+     this site is full of. Both degrade to normal wrapping where unsupported. */
+  p,
+  li,
+  dd,
+  blockquote,
+  figcaption {
+    text-wrap: pretty;
+  }
 
-ul,
-ol {
-  padding: 0;
-  list-style: none;
-}
+  h1,
+  h2,
+  h3,
+  h4,
+  p,
+  figure,
+  blockquote,
+  ul,
+  ol {
+    text-wrap: balance;
+    margin: 0;
+  }
 
-/* Tailwind's preflight sets text-decoration: inherit on anchors, which leaves a
+  ul,
+  ol {
+    padding: 0;
+    list-style: none;
+  }
+
+  /* Tailwind's preflight sets text-decoration: inherit on anchors, which leaves a
    prose link distinguished by colour alone. Put the underline back explicitly,
    and take it off the controls that are anchors only incidentally. */
-a {
-  color: inherit;
-  text-decoration-line: underline;
-  text-decoration-color: color-mix(in srgb, currentColor 50%, transparent);
-  text-underline-offset: 0.2em;
-}
+  a {
+    color: inherit;
+    text-decoration-line: underline;
+    text-decoration-color: color-mix(in oklab, currentColor 50%, transparent);
+    text-underline-offset: 0.2em;
+  }
 
-a:hover {
-  text-decoration-color: currentColor;
-}
+  a:hover {
+    text-decoration-color: currentColor;
+  }
 
-a.btn,
-a.hero__cta {
-  text-decoration-line: none;
-}
+  a.btn,
+  a.hero__cta {
+    text-decoration-line: none;
+  }
 
-button {
-  font: inherit;
-  color: inherit;
-  background: none;
-  border: 0;
-  padding: 0;
-  cursor: pointer;
-}
+  button {
+    font: inherit;
+    color: inherit;
+    background: none;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+  }
 
-svg {
-  display: block;
-}
+  svg {
+    display: block;
+  }
 
-img {
-  max-width: 100%;
-  height: auto;
-}
+  img {
+    max-width: 100%;
+    height: auto;
+  }
 
-/* --- focus: visible everywhere, on both grounds -------------------------- */
+  /* --- focus: visible everywhere, on both grounds -------------------------- */
 
-:focus-visible {
-  outline: 2px solid var(--color-instrument);
-  outline-offset: 2px;
-  border-radius: 1px;
-}
+  :focus-visible {
+    outline: 2px solid var(--color-instrument);
+    outline-offset: 2px;
+    border-radius: var(--radius-hair);
+  }
 
-.on-doc :focus-visible {
-  outline-color: var(--instrument-on-doc);
-}
+  .on-doc :focus-visible {
+    outline-color: var(--instrument-on-doc);
+  }
 
-::selection {
-  background: var(--tint-instrument);
-}
+  ::selection {
+    background: var(--tint-instrument);
+  }
 
-/* --- the two registers --------------------------------------------------- */
+  /* --- the two registers --------------------------------------------------- */
 
-/* The engineering console: monospace, tabular, lowercase, dense. */
-.reg-console {
-  font-family: var(--font-mono);
-  font-variant-numeric: tabular-nums;
-  font-feature-settings: "zero" 1;
-  letter-spacing: -0.005em;
-}
+  /* The engineering console: monospace, tabular, lowercase, dense. */
+  .reg-console {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: "zero" 1;
+    letter-spacing: -0.005em;
+  }
 
-/* Every figure in the console register is tabular, without exception. */
-.reg-console [data-figure],
-.tabular {
-  font-variant-numeric: tabular-nums;
-}
+  /* Every figure in the console register is tabular, without exception. */
+  .reg-console [data-figure],
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
 
-/* The legal document: serif, quoted, wide-margined, sentence case. */
-.reg-doc {
-  font-family: var(--font-doc);
-  font-size: var(--text-ds-base);
-  line-height: 1.62;
-}
+  /* The legal document: serif, quoted, wide-margined, sentence case. */
+  .reg-doc {
+    font-family: var(--font-doc);
+    font-size: var(--text-ds-base);
+    line-height: 1.62;
+  }
 
-/* --- the document object ------------------------------------------------
+  /* --- the document object ------------------------------------------------
    The exhibit surface is never a page background. It appears only as a
    bounded, edged, stamped object sitting on the console ground.
    ---------------------------------------------------------------------- */
 
-.doc-object {
-  background: var(--color-doc);
-  color: var(--text-on-doc);
-  border: 1px solid var(--doc-rule);
-  border-radius: 2px;
-  box-shadow: var(--lift-doc);
-  position: relative;
-}
+  .doc-object {
+    background: var(--color-doc);
+    color: var(--text-on-doc);
+    border: 1px solid var(--doc-rule);
+    border-radius: var(--radius-mark);
+    box-shadow: var(--lift-doc);
+    position: relative;
+  }
 
-.doc-object--flat {
-  box-shadow: var(--lift-doc-sm);
-}
+  .doc-object--flat {
+    box-shadow: var(--lift-doc-sm);
+  }
 
-/* The faint horizontal banding of a page scanned on a flatbed, plus the
+  /* The faint horizontal banding of a page scanned on a flatbed, plus the
    shadow a bound edge throws along the gutter. */
-.doc-object--scanned::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  border-radius: inherit;
-  background:
-    linear-gradient(
-      to right,
-      color-mix(in srgb, var(--color-ground) 11%, transparent),
-      transparent 3.5rem
-    ),
-    repeating-linear-gradient(
-      to bottom,
-      transparent 0 3px,
-      color-mix(in srgb, var(--color-ground) 6%, transparent) 3px 4px
-    );
-}
+  .doc-object--scanned::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    border-radius: inherit;
+    background:
+      linear-gradient(
+        to right,
+        color-mix(in oklab, var(--color-ground) 11%, transparent),
+        transparent 3.5rem
+      ),
+      repeating-linear-gradient(
+        to bottom,
+        transparent 0 3px,
+        color-mix(in oklab, var(--color-ground) 6%, transparent) 3px 4px
+      );
+  }
 
-/* --- Bates production stamp ---------------------------------------------
+  /* --- Bates production stamp ---------------------------------------------
    The section numbering is chain of custody, not ornament.
    ---------------------------------------------------------------------- */
 
-.bates {
-  font-family: var(--font-mono);
-  font-size: var(--text-cs-xs);
-  font-weight: 500;
-  letter-spacing: 0.14em;
-  font-variant-numeric: tabular-nums;
-  color: var(--stamp-on-ground);
-  text-transform: uppercase;
-}
+  .bates {
+    font-family: var(--font-mono);
+    font-size: var(--text-cs-xs);
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    font-variant-numeric: tabular-nums;
+    color: var(--stamp-on-ground);
+    text-transform: uppercase;
+  }
 
-.on-doc .bates,
-.doc-object .bates {
-  color: var(--stamp-on-doc);
-}
+  .on-doc .bates,
+  .doc-object .bates {
+    color: var(--stamp-on-doc);
+  }
 
-/* --- provenance marks ---------------------------------------------------
+  /* Pushes the stamp to the far edge of a flex row, the way a production stamp
+   sits in the corner of a page. */
+  .bates--push {
+    margin-inline-start: auto;
+  }
+
+  /* --- provenance marks ---------------------------------------------------
    Three states, so a reader can tell at a glance which they are looking at,
    on the screen that shows it. Required by the content integrity rules.
    ---------------------------------------------------------------------- */
 
-.prov {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4em;
-  font-family: var(--font-mono);
-  font-size: var(--text-cs-xs);
-  font-weight: 500;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  padding: 0.25em 0.5em;
-  border-radius: 2px;
-  white-space: nowrap;
-}
+  .prov {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4em;
+    font-family: var(--font-mono);
+    font-size: var(--text-cs-xs);
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.25em 0.5em;
+    border-radius: var(--radius-mark);
+    white-space: nowrap;
+  }
 
-/* Synthetic data. Hatched, so it reads as simulated without relying on hue. */
-.prov--simulated {
-  color: var(--ochre-on-ground);
-  border: 1px solid color-mix(in srgb, var(--color-ochre) 55%, transparent);
-  background-image: repeating-linear-gradient(-45deg, var(--tint-ochre) 0 4px, transparent 4px 8px);
-}
+  /* The citation trailing a provenance mark. Slightly recessive, because the
+   mark itself is the thing a reader is scanning for. */
+  .prov__cite {
+    opacity: 0.8;
+  }
 
-/* A value the paper does not supply. Outlined, no fill. */
-.prov--illustrative {
-  color: var(--text-on-ground-muted);
-  border: 1px dashed var(--ground-rule);
-  background: none;
-}
+  /* Synthetic data. Hatched, so it reads as simulated without relying on hue. */
+  .prov--simulated {
+    color: var(--ochre-on-ground);
+    border: 1px solid color-mix(in oklab, var(--color-ochre) 55%, transparent);
+    background-image: repeating-linear-gradient(
+      -45deg,
+      var(--tint-ochre) 0 4px,
+      transparent 4px 8px
+    );
+  }
 
-/* Traceable to the source. Solid, stamped, carries a section reference. */
-.prov--paper {
-  color: var(--color-doc);
-  background: var(--stamp-on-doc);
-  border: 1px solid transparent;
-}
+  /* A value the paper does not supply. Outlined, no fill. */
+  .prov--illustrative {
+    color: var(--text-on-ground-muted);
+    border: 1px dashed var(--ground-rule);
+    background: none;
+  }
 
-.on-doc .prov--simulated {
-  color: var(--ochre-on-doc);
-}
+  /* Traceable to the source. Solid, stamped, carries a section reference. */
+  .prov--paper {
+    color: var(--color-doc);
+    background: var(--stamp-on-doc);
+    border: 1px solid transparent;
+  }
 
-.on-doc .prov--illustrative {
-  color: var(--text-on-doc-muted);
-  border-color: var(--doc-rule);
-}
+  .on-doc .prov--simulated {
+    color: var(--ochre-on-doc);
+  }
 
-/* --- redaction ---------------------------------------------------------- */
+  .on-doc .prov--illustrative {
+    color: var(--text-on-doc-muted);
+    border-color: var(--doc-rule);
+  }
 
-.redacted {
-  background: var(--color-redact);
-  color: transparent;
-  border-radius: 1px;
-  user-select: none;
-  box-decoration-break: clone;
-  padding: 0 0.15em;
-}
+  /* --- redaction ---------------------------------------------------------- */
 
-/* --- layout ------------------------------------------------------------- */
+  .redacted {
+    background: var(--color-redact);
+    color: transparent;
+    border-radius: var(--radius-hair);
+    user-select: none;
+    box-decoration-break: clone;
+    padding: 0 0.15em;
+  }
 
-.page {
-  width: 100%;
-  max-width: var(--page-max);
-  margin-inline: auto;
-  padding-inline: var(--page-gutter);
-}
+  /* --- layout ------------------------------------------------------------- */
 
-.measure-console {
-  max-width: var(--measure-console);
-}
+  .page {
+    width: 100%;
+    max-width: var(--page-max);
+    margin-inline: auto;
+    padding-inline: var(--page-gutter);
+  }
 
-.measure-doc {
-  max-width: var(--measure-doc);
-}
+  .measure-console {
+    max-width: var(--measure-console);
+  }
 
-/* --- screen-reader only ------------------------------------------------- */
+  .measure-doc {
+    max-width: var(--measure-doc);
+  }
 
-.sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip-path: inset(50%);
-  white-space: nowrap;
-  border: 0;
-}
+  /* --- screen-reader only ------------------------------------------------- */
 
-/* --- skip link ---------------------------------------------------------- */
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border: 0;
+  }
 
-.skip-link {
-  position: absolute;
-  left: 0.5rem;
-  top: -3rem;
-  z-index: 100;
-  padding: 0.5rem 0.75rem;
-  background: var(--color-doc);
-  color: var(--text-on-doc);
-  font-family: var(--font-mono);
-  font-size: var(--text-cs-sm);
-  border-radius: 2px;
-  transition: top var(--dur-fast) var(--ease-out);
-}
+  /* --- skip link ---------------------------------------------------------- */
 
-.skip-link:focus {
-  top: 0.5rem;
+  .skip-link {
+    position: absolute;
+    left: 0.5rem;
+    top: -3rem;
+    z-index: 100;
+    padding: 0.5rem 0.75rem;
+    background: var(--color-doc);
+    color: var(--text-on-doc);
+    font-family: var(--font-mono);
+    font-size: var(--text-cs-sm);
+    border-radius: var(--radius-mark);
+    transition: top var(--dur-fast) var(--ease-out);
+  }
+
+  .skip-link:focus {
+    top: 0.5rem;
+  }
 }

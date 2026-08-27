@@ -2,559 +2,561 @@
    01 — The pincer, and the reclassification boundary.
    ========================================================================= */
 
-/* --- the two forces ------------------------------------------------------ */
+@layer app-modules {
+  /* --- the two forces ------------------------------------------------------ */
 
-.forces {
-  display: grid;
-  gap: clamp(1rem, 2.5vw, 1.75rem);
-  margin-block-start: clamp(2rem, 5vw, 3rem);
-}
-
-@media (min-width: 56rem) {
   .forces {
-    grid-template-columns: 1fr 1fr;
+    display: grid;
+    gap: clamp(1rem, 2.5vw, 1.75rem);
+    margin-block-start: clamp(2rem, 5vw, 3rem);
   }
-}
 
-.force {
-  border: 1px solid var(--ground-rule);
-  border-radius: 3px;
-  background: var(--ground-panel);
-  padding: clamp(1.1rem, 2.6vw, 1.6rem);
-  display: flex;
-  flex-direction: column;
-}
+  @media (min-width: 56rem) {
+    .forces {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
 
-/* The two forces pull opposite ways, and the rule that opens each says which. */
-.force[data-force="document"] {
-  box-shadow: inset 3px 0 0 var(--color-instrument);
-}
+  .force {
+    border: 1px solid var(--ground-rule);
+    border-radius: var(--radius-panel);
+    background: var(--ground-panel);
+    padding: clamp(1.1rem, 2.6vw, 1.6rem);
+    display: flex;
+    flex-direction: column;
+  }
 
-.force[data-force="produce"] {
-  box-shadow: inset 3px 0 0 var(--color-stamp);
-}
+  /* The two forces pull opposite ways, and the rule that opens each says which. */
+  .force[data-force="document"] {
+    box-shadow: inset 3px 0 0 var(--color-instrument);
+  }
 
-.force__kicker {
-  font-family: var(--font-mono);
-  font-size: var(--text-cs-xs);
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--text-on-ground-faint);
-}
+  .force[data-force="produce"] {
+    box-shadow: inset 3px 0 0 var(--color-stamp);
+  }
 
-.force__title {
-  margin-block-start: 0.35rem;
-  font-family: var(--font-sans);
-  font-weight: 600;
-  font-size: var(--text-cs-2xl);
-  line-height: 1.15;
-  letter-spacing: -0.015em;
-}
+  .force__kicker {
+    font-family: var(--font-mono);
+    font-size: var(--text-cs-xs);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--text-on-ground-faint);
+  }
 
-.force[data-force="document"] .force__title {
-  color: var(--instrument-on-ground);
-}
+  .force__title {
+    margin-block-start: 0.35rem;
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: var(--text-cs-2xl);
+    line-height: 1.15;
+    letter-spacing: -0.015em;
+  }
 
-.force[data-force="produce"] .force__title {
-  color: var(--stamp-on-ground);
-}
+  .force[data-force="document"] .force__title {
+    color: var(--instrument-on-ground);
+  }
 
-.force__lead {
-  margin-block-start: 0.6rem;
-  font-size: var(--text-cs-md);
-  line-height: 1.6;
-  color: var(--text-on-ground-muted);
-}
+  .force[data-force="produce"] .force__title {
+    color: var(--stamp-on-ground);
+  }
 
-.force__items {
-  margin-block-start: 1.1rem;
-  display: grid;
-  gap: 0.85rem;
-}
+  .force__lead {
+    margin-block-start: 0.6rem;
+    font-size: var(--text-cs-md);
+    line-height: 1.6;
+    color: var(--text-on-ground-muted);
+  }
 
-.force__items li {
-  display: grid;
-  gap: 0.2rem;
-  padding-block-start: 0.85rem;
-  border-block-start: 1px solid var(--ground-rule-soft);
-}
+  .force__items {
+    margin-block-start: 1.1rem;
+    display: grid;
+    gap: 0.85rem;
+  }
 
-.force__authority {
-  font-family: var(--font-mono);
-  font-size: var(--text-cs-xs);
-  letter-spacing: 0.05em;
-  color: var(--text-on-ground);
-}
+  .force__items li {
+    display: grid;
+    gap: 0.2rem;
+    padding-block-start: 0.85rem;
+    border-block-start: 1px solid var(--ground-rule-soft);
+  }
 
-.force__text {
-  font-size: var(--text-cs-md);
-  line-height: 1.55;
-  color: var(--text-on-ground-muted);
-}
+  .force__authority {
+    font-family: var(--font-mono);
+    font-size: var(--text-cs-xs);
+    letter-spacing: 0.05em;
+    color: var(--text-on-ground);
+  }
 
-.force__consequence {
-  margin-block-start: auto;
-  padding-block-start: 1.1rem;
-  font-family: var(--font-doc);
-  font-size: var(--text-ds-sm);
-  line-height: 1.55;
-  color: var(--text-on-ground);
-}
+  .force__text {
+    font-size: var(--text-cs-md);
+    line-height: 1.55;
+    color: var(--text-on-ground-muted);
+  }
 
-/* --- the bind ------------------------------------------------------------ */
+  .force__consequence {
+    margin-block-start: auto;
+    padding-block-start: 1.1rem;
+    font-family: var(--font-doc);
+    font-size: var(--text-ds-sm);
+    line-height: 1.55;
+    color: var(--text-on-ground);
+  }
 
-.bind {
-  margin-block-start: clamp(1.25rem, 3vw, 1.75rem);
-  padding: clamp(1.1rem, 2.8vw, 1.75rem) clamp(1.25rem, 3vw, 2rem);
-  max-width: 74ch;
-}
+  /* --- the bind ------------------------------------------------------------ */
 
-.bind__label {
-  display: block;
-  font-family: var(--font-mono);
-  font-size: var(--text-cs-xs);
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--stamp-on-doc);
-}
+  .bind {
+    margin-block-start: clamp(1.25rem, 3vw, 1.75rem);
+    padding: clamp(1.1rem, 2.8vw, 1.75rem) clamp(1.25rem, 3vw, 2rem);
+    max-width: 74ch;
+  }
 
-.bind__body {
-  margin-block-start: 0.65rem;
-  font-family: var(--font-doc);
-  font-size: var(--text-ds-base);
-  line-height: 1.62;
-}
+  .bind__label {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: var(--text-cs-xs);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--stamp-on-doc);
+  }
 
-.bind__cite {
-  display: block;
-  margin-block-start: 0.9rem;
-  font-family: var(--font-mono);
-  font-size: var(--text-cs-xs);
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--text-on-doc-muted);
-}
+  .bind__body {
+    margin-block-start: 0.65rem;
+    font-family: var(--font-doc);
+    font-size: var(--text-ds-base);
+    line-height: 1.62;
+  }
 
-/* --- the timeline -------------------------------------------------------- */
+  .bind__cite {
+    display: block;
+    margin-block-start: 0.9rem;
+    font-family: var(--font-mono);
+    font-size: var(--text-cs-xs);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-on-doc-muted);
+  }
 
-.tl {
-  margin-block-start: clamp(3rem, 7vw, 5rem);
-}
+  /* --- the timeline -------------------------------------------------------- */
 
-.tl__heading {
-  font-family: var(--font-doc);
-  font-weight: 500;
-  font-size: clamp(1.5rem, 3.4vw, 2.15rem);
-  line-height: 1.14;
-  letter-spacing: -0.015em;
-  max-width: 20ch;
-  text-wrap: balance;
-}
+  .tl {
+    margin-block-start: clamp(3rem, 7vw, 5rem);
+  }
 
-.tl__standfirst {
-  margin-block-start: 0.8rem;
-  max-width: 64ch;
-  font-size: var(--text-cs-md);
-  line-height: 1.62;
-  color: var(--text-on-ground-muted);
-}
+  .tl__heading {
+    font-family: var(--font-doc);
+    font-weight: 500;
+    font-size: clamp(1.5rem, 3.4vw, 2.15rem);
+    line-height: 1.14;
+    letter-spacing: -0.015em;
+    max-width: 20ch;
+    text-wrap: balance;
+  }
 
-.tl__scaffold {
-  margin-block-start: 1.5rem;
-}
+  .tl__standfirst {
+    margin-block-start: 0.8rem;
+    max-width: 64ch;
+    font-size: var(--text-cs-md);
+    line-height: 1.62;
+    color: var(--text-on-ground-muted);
+  }
 
-.tl__chart {
-  margin-block-start: 1.25rem;
-  border: 1px solid var(--ground-rule);
-  border-radius: 3px;
-  background: var(--ground-deep);
-  padding: clamp(0.75rem, 2vw, 1.25rem);
-}
+  .tl__scaffold {
+    margin-block-start: 1.5rem;
+  }
 
-.bchart {
-  width: 100%;
-  height: auto;
-  overflow: visible;
-}
+  .tl__chart {
+    margin-block-start: 1.25rem;
+    border: 1px solid var(--ground-rule);
+    border-radius: var(--radius-panel);
+    background: var(--ground-deep);
+    padding: clamp(0.75rem, 2vw, 1.25rem);
+  }
 
-.bchart__area {
-  transition: d var(--dur-slow) var(--ease-out);
-}
+  .bchart {
+    width: 100%;
+    height: auto;
+    overflow: visible;
+  }
 
-.bchart__line {
-  stroke: var(--color-instrument);
-  stroke-width: 2.5;
-  stroke-linejoin: round;
-}
+  .bchart__area {
+    transition: d var(--dur-slow) var(--ease-out);
+  }
 
-.bchart__span {
-  stroke: var(--instrument-on-ground);
-  stroke-width: 2.5;
-  stroke-dasharray: 2 4;
-  stroke-linecap: round;
-  opacity: 0.85;
-}
+  .bchart__line {
+    stroke: var(--color-instrument);
+    stroke-width: 2.5;
+    stroke-linejoin: round;
+  }
 
-.bchart__region {
-  font-family: var(--font-mono);
-  font-size: 13px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  fill: var(--text-on-ground-faint);
-}
+  .bchart__span {
+    stroke: var(--instrument-on-ground);
+    stroke-width: 2.5;
+    stroke-dasharray: 2 4;
+    stroke-linecap: round;
+    opacity: 0.85;
+  }
 
-.bchart__region--product {
-  fill: var(--instrument-on-ground);
-}
+  .bchart__region {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    fill: var(--text-on-ground-faint);
+  }
 
-.bchart__node {
-  cursor: pointer;
-}
+  .bchart__region--product {
+    fill: var(--instrument-on-ground);
+  }
 
-.bchart__dot {
-  fill: var(--color-ground);
-  stroke: var(--color-instrument);
-  stroke-width: 2.5;
-  transition: fill var(--dur-fast) var(--ease-out);
-}
+  .bchart__node {
+    cursor: pointer;
+  }
 
-.bchart__node[data-current="true"] .bchart__dot {
-  fill: var(--color-instrument);
-}
+  .bchart__dot {
+    fill: var(--color-ground);
+    stroke: var(--color-instrument);
+    stroke-width: 2.5;
+    transition: fill var(--dur-fast) var(--ease-out);
+  }
 
-/* Not yet in force: hollow with a dashed ring, so status is not carried by
+  .bchart__node[data-current="true"] .bchart__dot {
+    fill: var(--color-instrument);
+  }
+
+  /* Not yet in force: hollow with a dashed ring, so status is not carried by
    colour alone. */
-.bchart__node[data-future="true"] .bchart__dot {
-  stroke-dasharray: 3 2.5;
-}
+  .bchart__node[data-future="true"] .bchart__dot {
+    stroke-dasharray: 3 2.5;
+  }
 
-.bchart__halo {
-  fill: none;
-  stroke: var(--color-instrument);
-  stroke-width: 1.5;
-  opacity: 0.5;
-}
+  .bchart__halo {
+    fill: none;
+    stroke: var(--color-instrument);
+    stroke-width: 1.5;
+    opacity: 0.5;
+  }
 
-.bchart__date {
-  font-family: var(--font-mono);
-  font-size: 12.5px;
-  font-variant-numeric: tabular-nums;
-  fill: var(--text-on-ground-muted);
-}
+  .bchart__date {
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    font-variant-numeric: tabular-nums;
+    fill: var(--text-on-ground-muted);
+  }
 
-.bchart__node[data-current="true"] .bchart__date {
-  fill: var(--color-doc);
-}
+  .bchart__node[data-current="true"] .bchart__date {
+    fill: var(--color-doc);
+  }
 
-.tl__regions {
-  margin-block-start: 0.75rem;
-  padding-block-start: 0.75rem;
-  border-block-start: 1px solid var(--ground-rule-soft);
-  display: grid;
-  gap: 0.5rem;
-  font-size: var(--text-cs-sm);
-  line-height: 1.55;
-  color: var(--text-on-ground-muted);
-}
-
-@media (min-width: 56rem) {
   .tl__regions {
-    grid-template-columns: 1fr 1fr;
-    gap: 1.5rem;
+    margin-block-start: 0.75rem;
+    padding-block-start: 0.75rem;
+    border-block-start: 1px solid var(--ground-rule-soft);
+    display: grid;
+    gap: 0.5rem;
+    font-size: var(--text-cs-sm);
+    line-height: 1.55;
+    color: var(--text-on-ground-muted);
   }
-}
 
-.tl__regions strong {
-  color: var(--text-on-ground);
-  font-weight: 500;
-}
+  @media (min-width: 56rem) {
+    .tl__regions {
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+  }
 
-/* --- the entry list: the keyboard path, and the chart's text equivalent --- */
+  .tl__regions strong {
+    color: var(--text-on-ground);
+    font-weight: 500;
+  }
 
-.tl__list {
-  margin-block-start: 1.25rem;
-  display: grid;
-  gap: 0.35rem;
-}
+  /* --- the entry list: the keyboard path, and the chart's text equivalent --- */
 
-@media (min-width: 56rem) {
   .tl__list {
-    grid-template-columns: repeat(3, 1fr);
+    margin-block-start: 1.25rem;
+    display: grid;
+    gap: 0.35rem;
   }
-}
 
-.tl__entry {
-  width: 100%;
-  text-align: start;
-  display: grid;
-  gap: 0.15rem;
-  padding: 0.6rem 0.7rem;
-  border: 1px solid var(--ground-rule-soft);
-  border-radius: 2px;
-  background: transparent;
-  transition:
-    border-color var(--dur-fast) var(--ease-out),
-    background var(--dur-fast) var(--ease-out);
-}
+  @media (min-width: 56rem) {
+    .tl__list {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
 
-.tl__entry:hover {
-  border-color: var(--instrument-on-ground);
-}
+  .tl__entry {
+    width: 100%;
+    text-align: start;
+    display: grid;
+    gap: 0.15rem;
+    padding: 0.6rem 0.7rem;
+    border: 1px solid var(--ground-rule-soft);
+    border-radius: var(--radius-mark);
+    background: transparent;
+    transition:
+      border-color var(--dur-fast) var(--ease-out),
+      background var(--dur-fast) var(--ease-out);
+  }
 
-/* Selection is carried by fill, border and a left rule, not by colour alone. */
-.tl__entry[data-selected="true"] {
-  border-color: var(--color-instrument);
-  background: var(--tint-instrument);
-  box-shadow: inset 3px 0 0 var(--color-instrument);
-}
+  .tl__entry:hover {
+    border-color: var(--instrument-on-ground);
+  }
 
-/* Not yet reached. Signalled with a dashed edge rather than with opacity,
+  /* Selection is carried by fill, border and a left rule, not by colour alone. */
+  .tl__entry[data-selected="true"] {
+    border-color: var(--color-instrument);
+    background: var(--tint-instrument);
+    box-shadow: inset 3px 0 0 var(--color-instrument);
+  }
+
+  /* Not yet reached. Signalled with a dashed edge rather than with opacity,
    because dimming text is how a state indicator becomes a contrast failure. */
-.tl__entry[data-drawn="false"] {
-  border-style: dashed;
-}
+  .tl__entry[data-drawn="false"] {
+    border-style: dashed;
+  }
 
-.tl__entryDate {
-  font-family: var(--font-mono);
-  font-size: var(--text-cs-xs);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--text-on-ground-faint);
-  font-variant-numeric: tabular-nums;
-}
+  .tl__entryDate {
+    font-family: var(--font-mono);
+    font-size: var(--text-cs-xs);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-on-ground-faint);
+    font-variant-numeric: tabular-nums;
+  }
 
-.tl__entry[data-selected="true"] .tl__entryDate {
-  color: var(--instrument-on-ground);
-}
+  .tl__entry[data-selected="true"] .tl__entryDate {
+    color: var(--instrument-on-ground);
+  }
 
-.tl__entryTitle {
-  font-size: var(--text-cs-md);
-  line-height: 1.4;
-  color: var(--text-on-ground);
-}
+  .tl__entryTitle {
+    font-size: var(--text-cs-md);
+    line-height: 1.4;
+    color: var(--text-on-ground);
+  }
 
-/* --- the entry detail ---------------------------------------------------- */
+  /* --- the entry detail ---------------------------------------------------- */
 
-.tl__detail {
-  margin-block-start: 1.25rem;
-  padding: clamp(1.1rem, 2.8vw, 1.75rem) clamp(1.25rem, 3vw, 2rem);
-  max-width: 78ch;
-}
+  .tl__detail {
+    margin-block-start: 1.25rem;
+    padding: clamp(1.1rem, 2.8vw, 1.75rem) clamp(1.25rem, 3vw, 2rem);
+    max-width: 78ch;
+  }
 
-.tl__detailHead {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 1rem;
-  flex-wrap: wrap;
-}
-
-.tl__detailDate {
-  font-family: var(--font-mono);
-  font-size: var(--text-cs-sm);
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--stamp-on-doc);
-  font-variant-numeric: tabular-nums;
-}
-
-.tl__pending {
-  font-family: var(--font-mono);
-  font-size: var(--text-cs-xs);
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--ochre-on-doc);
-  border: 1px solid color-mix(in srgb, var(--color-ochre) 50%, transparent);
-  padding: 0.2em 0.45em;
-  border-radius: 2px;
-}
-
-.tl__detailTitle {
-  margin-block-start: 0.5rem;
-  font-family: var(--font-doc);
-  font-weight: 500;
-  font-size: var(--text-ds-xl);
-  line-height: 1.2;
-  letter-spacing: -0.01em;
-}
-
-.tl__authority {
-  margin-block-start: 0.5rem;
-  font-family: var(--font-mono);
-  font-size: var(--text-cs-xs);
-  line-height: 1.5;
-  color: var(--text-on-doc-muted);
-}
-
-.tl__field {
-  margin-block-start: 1.25rem;
-  padding-block-start: 0.9rem;
-  border-block-start: 1px solid var(--doc-rule);
-}
-
-.tl__fieldLabel {
-  display: block;
-  font-family: var(--font-mono);
-  font-size: var(--text-cs-xs);
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--text-on-doc-muted);
-}
-
-.tl__field--records .tl__fieldLabel {
-  color: var(--stamp-on-doc);
-}
-
-.tl__fieldBody {
-  margin-block-start: 0.5rem;
-  font-family: var(--font-doc);
-  font-size: var(--text-ds-base);
-  line-height: 1.62;
-}
-
-.tl__field--records {
-  box-shadow: inset 3px 0 0 var(--color-stamp);
-  padding-inline-start: 1rem;
-  margin-inline-start: -1rem;
-}
-
-/* --- the countdown ------------------------------------------------------- */
-
-.countdown {
-  margin-block-start: clamp(2rem, 5vw, 3rem);
-  border: 1px solid color-mix(in srgb, var(--color-stamp) 45%, var(--ground-rule));
-  border-radius: 3px;
-  background: var(--ground-panel);
-  padding: clamp(1.1rem, 3vw, 1.9rem);
-}
-
-.countdown__kicker {
-  font-family: var(--font-mono);
-  font-size: var(--text-cs-sm);
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--text-on-ground-muted);
-}
-
-.countdown__kicker strong {
-  color: var(--stamp-on-ground);
-  font-weight: 500;
-}
-
-.countdown__digits {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 0.35rem 0.65rem;
-  font-family: var(--font-mono);
-  font-variant-numeric: tabular-nums;
-}
-
-.countdown__unit {
-  display: inline-flex;
-  align-items: baseline;
-  gap: 0.35rem;
-}
-
-.countdown__value {
-  font-size: clamp(2.1rem, 7vw, 3.6rem);
-  font-weight: 500;
-  line-height: 1;
-  letter-spacing: -0.02em;
-  color: var(--color-doc);
-}
-
-.countdown__label {
-  font-size: var(--text-cs-xs);
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--text-on-ground-faint);
-}
-
-.countdown__sep {
-  font-size: clamp(1.4rem, 4vw, 2.2rem);
-  color: var(--ground-rule);
-  margin-inline-start: 0.2rem;
-}
-
-.countdown__row {
-  display: grid;
-  gap: 1rem 2.5rem;
-  align-items: end;
-  margin-block-start: 0.9rem;
-}
-
-@media (min-width: 56rem) {
-  .countdown__row {
-    grid-template-columns: auto minmax(20rem, 34ch);
+  .tl__detailHead {
+    display: flex;
+    align-items: baseline;
     justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .tl__detailDate {
+    font-family: var(--font-mono);
+    font-size: var(--text-cs-sm);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--stamp-on-doc);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .tl__pending {
+    font-family: var(--font-mono);
+    font-size: var(--text-cs-xs);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ochre-on-doc);
+    border: 1px solid color-mix(in oklab, var(--color-ochre) 50%, transparent);
+    padding: 0.2em 0.45em;
+    border-radius: var(--radius-mark);
+  }
+
+  .tl__detailTitle {
+    margin-block-start: 0.5rem;
+    font-family: var(--font-doc);
+    font-weight: 500;
+    font-size: var(--text-ds-xl);
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+  }
+
+  .tl__authority {
+    margin-block-start: 0.5rem;
+    font-family: var(--font-mono);
+    font-size: var(--text-cs-xs);
+    line-height: 1.5;
+    color: var(--text-on-doc-muted);
+  }
+
+  .tl__field {
+    margin-block-start: 1.25rem;
+    padding-block-start: 0.9rem;
+    border-block-start: 1px solid var(--doc-rule);
+  }
+
+  .tl__fieldLabel {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: var(--text-cs-xs);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-on-doc-muted);
+  }
+
+  .tl__field--records .tl__fieldLabel {
+    color: var(--stamp-on-doc);
+  }
+
+  .tl__fieldBody {
+    margin-block-start: 0.5rem;
+    font-family: var(--font-doc);
+    font-size: var(--text-ds-base);
+    line-height: 1.62;
+  }
+
+  .tl__field--records {
+    box-shadow: inset 3px 0 0 var(--color-stamp);
+    padding-inline-start: 1rem;
+    margin-inline-start: -1rem;
+  }
+
+  /* --- the countdown ------------------------------------------------------- */
+
+  .countdown {
+    margin-block-start: clamp(2rem, 5vw, 3rem);
+    border: 1px solid color-mix(in oklab, var(--color-stamp) 45%, var(--ground-rule));
+    border-radius: var(--radius-panel);
+    background: var(--ground-panel);
+    padding: clamp(1.1rem, 3vw, 1.9rem);
+  }
+
+  .countdown__kicker {
+    font-family: var(--font-mono);
+    font-size: var(--text-cs-sm);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-on-ground-muted);
+  }
+
+  .countdown__kicker strong {
+    color: var(--stamp-on-ground);
+    font-weight: 500;
+  }
+
+  .countdown__digits {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.35rem 0.65rem;
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .countdown__unit {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.35rem;
+  }
+
+  .countdown__value {
+    font-size: clamp(2.1rem, 7vw, 3.6rem);
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    color: var(--color-doc);
+  }
+
+  .countdown__label {
+    font-size: var(--text-cs-xs);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-on-ground-faint);
+  }
+
+  .countdown__sep {
+    font-size: clamp(1.4rem, 4vw, 2.2rem);
+    color: var(--ground-rule);
+    margin-inline-start: 0.2rem;
+  }
+
+  .countdown__row {
+    display: grid;
+    gap: 1rem 2.5rem;
+    align-items: end;
+    margin-block-start: 0.9rem;
+  }
+
+  @media (min-width: 56rem) {
+    .countdown__row {
+      grid-template-columns: auto minmax(20rem, 34ch);
+      justify-content: space-between;
+    }
+
+    .countdown__scope {
+      margin-block-start: 0;
+      padding-block-start: 0;
+      border-block-start: 0;
+      border-inline-start: 1px solid var(--ground-rule-soft);
+      padding-inline-start: 2rem;
+    }
   }
 
   .countdown__scope {
-    margin-block-start: 0;
-    padding-block-start: 0;
-    border-block-start: 0;
-    border-inline-start: 1px solid var(--ground-rule-soft);
-    padding-inline-start: 2rem;
+    margin-block-start: 1rem;
+    padding-block-start: 0.85rem;
+    border-block-start: 1px solid var(--ground-rule-soft);
+    font-size: var(--text-cs-sm);
+    line-height: 1.55;
+    color: var(--text-on-ground-muted);
+    max-width: 60ch;
   }
-}
 
-.countdown__scope {
-  margin-block-start: 1rem;
-  padding-block-start: 0.85rem;
-  border-block-start: 1px solid var(--ground-rule-soft);
-  font-size: var(--text-cs-sm);
-  line-height: 1.55;
-  color: var(--text-on-ground-muted);
-  max-width: 60ch;
-}
+  .countdown[data-state="in-force"] {
+    border-color: color-mix(in oklab, var(--color-instrument) 50%, var(--ground-rule));
+  }
 
-.countdown[data-state="in-force"] {
-  border-color: color-mix(in srgb, var(--color-instrument) 50%, var(--ground-rule));
-}
+  .countdown__inforce {
+    margin-block-start: 0.75rem;
+    font-family: var(--font-doc);
+    font-size: var(--text-ds-lg);
+    line-height: 1.45;
+    max-width: 52ch;
+  }
 
-.countdown__inforce {
-  margin-block-start: 0.75rem;
-  font-family: var(--font-doc);
-  font-size: var(--text-ds-lg);
-  line-height: 1.45;
-  max-width: 52ch;
-}
+  /* --- chart axis furniture ------------------------------------------------ */
 
-/* --- chart axis furniture ------------------------------------------------ */
+  .bchart__axis {
+    stroke: var(--ground-rule);
+    stroke-width: 1;
+  }
 
-.bchart__axis {
-  stroke: var(--ground-rule);
-  stroke-width: 1;
-}
+  .bchart__tick {
+    stroke: var(--ground-rule);
+    stroke-width: 1;
+  }
 
-.bchart__tick {
-  stroke: var(--ground-rule);
-  stroke-width: 1;
-}
+  .bchart__tickLabel {
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.08em;
+    fill: var(--text-on-ground-faint);
+  }
 
-.bchart__tickLabel {
-  font-family: var(--font-mono);
-  font-size: 11.5px;
-  font-variant-numeric: tabular-nums;
-  letter-spacing: 0.08em;
-  fill: var(--text-on-ground-faint);
-}
+  /* Entries not yet reached: marked on the axis, not in the field. */
+  .bchart__pending {
+    stroke: var(--text-on-ground-faint);
+    stroke-width: 2;
+    opacity: 0.55;
+  }
 
-/* Entries not yet reached: marked on the axis, not in the field. */
-.bchart__pending {
-  stroke: var(--text-on-ground-faint);
-  stroke-width: 2;
-  opacity: 0.55;
-}
+  /* The hatched band gets its own legend line spanning both columns. */
+  .tl__regionBand {
+    grid-column: 1 / -1;
+    padding-block-start: 0.5rem;
+    border-block-start: 1px solid var(--ground-rule-soft);
+  }
 
-/* The hatched band gets its own legend line spanning both columns. */
-.tl__regionBand {
-  grid-column: 1 / -1;
-  padding-block-start: 0.5rem;
-  border-block-start: 1px solid var(--ground-rule-soft);
-}
-
-.tl__regionBand strong {
-  color: var(--instrument-on-ground);
+  .tl__regionBand strong {
+    color: var(--instrument-on-ground);
+  }
 }

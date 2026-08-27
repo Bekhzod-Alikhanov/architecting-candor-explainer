@@ -32,7 +32,7 @@ export function Prov({ kind, cite, label, className = '' }: ProvProps) {
       <Glyph kind={kind} />
       <span>
         {text}
-        {cite ? <span className="opacity-80">{` · ${cite}`}</span> : null}
+        {cite ? <span className="prov__cite">{` · ${cite}`}</span> : null}
       </span>
     </span>
   )

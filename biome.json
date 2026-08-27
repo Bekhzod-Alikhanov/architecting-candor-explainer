@@ -83,7 +83,7 @@
       "linter": {
         "rules": {
           "complexity": {
-            "noImportantStyles": "warn"
+            "noImportantStyles": "error"
           }
         }
       }

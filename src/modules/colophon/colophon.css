@@ -2,214 +2,216 @@
    09 — The paper, and about this page.
    ========================================================================= */
 
-.colo {
-  display: grid;
-  gap: clamp(1.25rem, 3vw, 2rem);
-  margin-block-start: clamp(1.75rem, 4vw, 2.5rem);
-  align-items: start;
-}
-
-@media (min-width: 60rem) {
+@layer app-modules {
   .colo {
-    grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+    display: grid;
+    gap: clamp(1.25rem, 3vw, 2rem);
+    margin-block-start: clamp(1.75rem, 4vw, 2.5rem);
+    align-items: start;
   }
-}
 
-.colo__cite {
-  padding: clamp(1.25rem, 3vw, 2.25rem);
-}
+  @media (min-width: 60rem) {
+    .colo {
+      grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+    }
+  }
 
-.colo__title {
-  font-family: var(--font-doc);
-  font-weight: 500;
-  font-size: clamp(1.9rem, 4.5vw, 2.9rem);
-  line-height: 1.06;
-  letter-spacing: -0.02em;
-}
+  .colo__cite {
+    padding: clamp(1.25rem, 3vw, 2.25rem);
+  }
 
-.colo__subtitle {
-  margin-block-start: 0.4rem;
-  font-family: var(--font-doc);
-  font-style: italic;
-  font-size: var(--text-ds-lg);
-  line-height: 1.3;
-  color: var(--text-on-doc-muted);
-}
+  .colo__title {
+    font-family: var(--font-doc);
+    font-weight: 500;
+    font-size: clamp(1.9rem, 4.5vw, 2.9rem);
+    line-height: 1.06;
+    letter-spacing: -0.02em;
+  }
 
-.colo__authors {
-  margin-block-start: 1.25rem;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.3rem 0.9rem;
-  font-family: var(--font-doc);
-  font-size: var(--text-ds-base);
-}
+  .colo__subtitle {
+    margin-block-start: 0.4rem;
+    font-family: var(--font-doc);
+    font-style: italic;
+    font-size: var(--text-ds-lg);
+    line-height: 1.3;
+    color: var(--text-on-doc-muted);
+  }
 
-.colo__authors li::after {
-  content: " ·";
-  color: var(--text-on-doc-muted);
-}
+  .colo__authors {
+    margin-block-start: 1.25rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.3rem 0.9rem;
+    font-family: var(--font-doc);
+    font-size: var(--text-ds-base);
+  }
 
-.colo__authors li:last-child::after {
-  content: "";
-}
+  .colo__authors li::after {
+    content: " ·";
+    color: var(--text-on-doc-muted);
+  }
 
-.colo__star {
-  color: var(--stamp-on-doc);
-}
+  .colo__authors li:last-child::after {
+    content: "";
+  }
 
-.colo__imprint,
-.colo__corresponding {
-  margin-block-start: 0.85rem;
-  font-family: var(--font-mono);
-  font-size: var(--text-cs-xs);
-  letter-spacing: 0.06em;
-  line-height: 1.6;
-  color: var(--text-on-doc-muted);
-}
+  .colo__star {
+    color: var(--stamp-on-doc);
+  }
 
-.colo__corresponding a {
-  color: var(--stamp-on-doc);
-}
+  .colo__imprint,
+  .colo__corresponding {
+    margin-block-start: 0.85rem;
+    font-family: var(--font-mono);
+    font-size: var(--text-cs-xs);
+    letter-spacing: 0.06em;
+    line-height: 1.6;
+    color: var(--text-on-doc-muted);
+  }
 
-.colo__links {
-  margin-block-start: 1.4rem;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.6rem;
-}
+  .colo__corresponding a {
+    color: var(--stamp-on-doc);
+  }
 
-/* The buttons sit on a document object, so they take the document's palette. */
-.colo__links .btn {
-  background: transparent;
-  border-color: var(--doc-rule);
-  color: var(--text-on-doc);
-}
+  .colo__links {
+    margin-block-start: 1.4rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+  }
 
-.colo__links .btn:hover {
-  border-color: var(--instrument-on-doc);
-  color: var(--instrument-on-doc);
-}
+  /* The buttons sit on a document object, so they take the document's palette. */
+  .colo__links .btn {
+    background: transparent;
+    border-color: var(--doc-rule);
+    color: var(--text-on-doc);
+  }
 
-.colo__links .btn--primary {
-  background: var(--color-stamp);
-  border-color: var(--color-stamp);
-  color: var(--color-doc);
-}
+  .colo__links .btn:hover {
+    border-color: var(--instrument-on-doc);
+    color: var(--instrument-on-doc);
+  }
 
-.colo__links .btn--primary:hover {
-  background: color-mix(in srgb, var(--color-stamp) 84%, var(--color-redact));
-  border-color: color-mix(in srgb, var(--color-stamp) 84%, var(--color-redact));
-  color: var(--color-doc);
-}
+  .colo__links .btn--primary {
+    background: var(--color-stamp);
+    border-color: var(--color-stamp);
+    color: var(--color-doc);
+  }
 
-.colo__citation {
-  margin-block-start: 1.5rem;
-  padding-block-start: 1rem;
-  border-block-start: 1px solid var(--doc-rule);
-}
+  .colo__links .btn--primary:hover {
+    background: color-mix(in oklab, var(--color-stamp) 84%, var(--color-redact));
+    border-color: color-mix(in oklab, var(--color-stamp) 84%, var(--color-redact));
+    color: var(--color-doc);
+  }
 
-.colo__citationLabel {
-  display: block;
-  font-family: var(--font-mono);
-  font-size: var(--text-cs-xs);
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--text-on-doc-muted);
-  margin-block-end: 0.5rem;
-}
+  .colo__citation {
+    margin-block-start: 1.5rem;
+    padding-block-start: 1rem;
+    border-block-start: 1px solid var(--doc-rule);
+  }
 
-.colo__citation p {
-  font-family: var(--font-mono);
-  font-size: var(--text-cs-sm);
-  line-height: 1.65;
-  color: var(--text-on-doc);
-  overflow-wrap: anywhere;
-}
+  .colo__citationLabel {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: var(--text-cs-xs);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--text-on-doc-muted);
+    margin-block-end: 0.5rem;
+  }
 
-/* --- contribution -------------------------------------------------------- */
+  .colo__citation p {
+    font-family: var(--font-mono);
+    font-size: var(--text-cs-sm);
+    line-height: 1.65;
+    color: var(--text-on-doc);
+    overflow-wrap: anywhere;
+  }
 
-.colo__side {
-  border: 1px solid var(--ground-rule);
-  border-radius: 3px;
-  background: var(--ground-panel);
-  padding: clamp(1.1rem, 2.6vw, 1.6rem);
-}
+  /* --- contribution -------------------------------------------------------- */
 
-.colo__sideHead {
-  font-family: var(--font-sans);
-  font-weight: 600;
-  font-size: var(--text-cs-xl);
-  letter-spacing: -0.01em;
-}
+  .colo__side {
+    border: 1px solid var(--ground-rule);
+    border-radius: var(--radius-panel);
+    background: var(--ground-panel);
+    padding: clamp(1.1rem, 2.6vw, 1.6rem);
+  }
 
-.colo__sideNote {
-  margin-block-start: 0.4rem;
-  font-size: var(--text-cs-sm);
-  line-height: 1.55;
-  color: var(--text-on-ground-muted);
-}
+  .colo__sideHead {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: var(--text-cs-xl);
+    letter-spacing: -0.01em;
+  }
 
-.colo__credit {
-  margin-block-start: 1.1rem;
-  display: grid;
-  gap: 0.7rem;
-}
+  .colo__sideNote {
+    margin-block-start: 0.4rem;
+    font-size: var(--text-cs-sm);
+    line-height: 1.55;
+    color: var(--text-on-ground-muted);
+  }
 
-.colo__credit > div {
-  display: grid;
-  gap: 0.15rem;
-  padding-block-start: 0.7rem;
-  border-block-start: 1px solid var(--ground-rule-soft);
-}
+  .colo__credit {
+    margin-block-start: 1.1rem;
+    display: grid;
+    gap: 0.7rem;
+  }
 
-.colo__credit dt {
-  font-family: var(--font-mono);
-  font-size: var(--text-cs-xs);
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--instrument-on-ground);
-}
+  .colo__credit > div {
+    display: grid;
+    gap: 0.15rem;
+    padding-block-start: 0.7rem;
+    border-block-start: 1px solid var(--ground-rule-soft);
+  }
 
-.colo__credit dd {
-  margin: 0;
-  font-size: var(--text-cs-sm);
-  line-height: 1.55;
-  color: var(--text-on-ground-muted);
-}
+  .colo__credit dt {
+    font-family: var(--font-mono);
+    font-size: var(--text-cs-xs);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--instrument-on-ground);
+  }
 
-/* --- about this page ----------------------------------------------------- */
+  .colo__credit dd {
+    margin: 0;
+    font-size: var(--text-cs-sm);
+    line-height: 1.55;
+    color: var(--text-on-ground-muted);
+  }
 
-.colo__about {
-  margin-block-start: clamp(1.5rem, 3.5vw, 2.25rem);
-  padding: clamp(1.25rem, 3vw, 2.25rem);
-  max-width: 76ch;
-}
+  /* --- about this page ----------------------------------------------------- */
 
-.colo__aboutHead {
-  font-family: var(--font-mono);
-  font-size: var(--text-cs-sm);
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--stamp-on-doc);
-  padding-block-end: 0.7rem;
-  border-block-end: 1px solid var(--doc-rule);
-}
+  .colo__about {
+    margin-block-start: clamp(1.5rem, 3.5vw, 2.25rem);
+    padding: clamp(1.25rem, 3vw, 2.25rem);
+    max-width: 76ch;
+  }
 
-.colo__aboutBody {
-  margin-block-start: 0.95rem;
-  font-family: var(--font-doc);
-  font-size: var(--text-ds-base);
-  line-height: 1.65;
-}
+  .colo__aboutHead {
+    font-family: var(--font-mono);
+    font-size: var(--text-cs-sm);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--stamp-on-doc);
+    padding-block-end: 0.7rem;
+    border-block-end: 1px solid var(--doc-rule);
+  }
 
-.colo__disclaimer {
-  margin-block-start: 1.4rem;
-  padding: 0.85rem 1rem;
-  border: 1px solid color-mix(in srgb, var(--color-stamp) 45%, transparent);
-  border-radius: 2px;
-  font-family: var(--font-mono);
-  font-size: var(--text-cs-sm);
-  line-height: 1.6;
-  color: var(--stamp-on-doc);
+  .colo__aboutBody {
+    margin-block-start: 0.95rem;
+    font-family: var(--font-doc);
+    font-size: var(--text-ds-base);
+    line-height: 1.65;
+  }
+
+  .colo__disclaimer {
+    margin-block-start: 1.4rem;
+    padding: 0.85rem 1rem;
+    border: 1px solid color-mix(in oklab, var(--color-stamp) 45%, transparent);
+    border-radius: var(--radius-mark);
+    font-family: var(--font-mono);
+    font-size: var(--text-cs-sm);
+    line-height: 1.6;
+    color: var(--stamp-on-doc);
+  }
 }

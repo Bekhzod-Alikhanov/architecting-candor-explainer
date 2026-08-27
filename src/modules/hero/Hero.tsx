@@ -35,7 +35,7 @@ export function Hero() {
           {content.section}
         </span>
         <span className="hero__eyebrow">{content.eyebrow}</span>
-        <span className="bates ml-auto">{bates(1)}</span>
+        <span className="bates bates--push">{bates(1)}</span>
       </div>
 
       <div className="hero__masthead">

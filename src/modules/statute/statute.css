@@ -2,216 +2,218 @@
    07 — The ask.
    ========================================================================= */
 
-.prin {
-  margin-block-start: clamp(1.75rem, 4vw, 2.5rem);
-  display: grid;
-  gap: clamp(1.5rem, 3.5vw, 2.5rem);
-}
-
-.prin__item {
-  padding-block-start: clamp(1.25rem, 3vw, 1.75rem);
-  border-block-start: 1px solid var(--ground-rule-soft);
-}
-
-.prin__head {
-  display: flex;
-  align-items: baseline;
-  gap: 0.9rem;
-}
-
-.prin__n {
-  font-family: var(--font-mono);
-  font-size: var(--text-cs-lg);
-  font-weight: 500;
-  line-height: 1;
-  font-variant-numeric: tabular-nums;
-  letter-spacing: 0.08em;
-  color: var(--color-doc);
-  background: var(--color-stamp);
-  padding: 0.34em 0.5em 0.3em;
-  border-radius: 2px;
-  flex: 0 0 auto;
-}
-
-.prin__title {
-  font-family: var(--font-doc);
-  font-weight: 500;
-  font-size: clamp(1.25rem, 2.8vw, 1.75rem);
-  line-height: 1.2;
-  letter-spacing: -0.012em;
-  max-width: 32ch;
-  text-wrap: balance;
-}
-
-.prin__body {
-  margin-block-start: 0.85rem;
-  max-width: 72ch;
-  font-size: var(--text-cs-md);
-  line-height: 1.65;
-  color: var(--text-on-ground-muted);
-}
-
-.prin__cite {
-  margin-block-start: 0.6rem;
-  font-family: var(--font-mono);
-  font-size: var(--text-cs-xs);
-  color: var(--stamp-on-ground);
-}
-
-/* --- the four protections ------------------------------------------------ */
-
-.prot {
-  margin-block-start: 1.25rem;
-  border: 1px solid var(--ground-rule);
-  border-radius: 3px;
-  background: var(--ground-deep);
-  padding: clamp(0.85rem, 2vw, 1.2rem);
-}
-
-.prot__lead {
-  font-size: var(--text-cs-sm);
-  line-height: 1.6;
-  color: var(--text-on-ground);
-  max-width: 68ch;
-}
-
-.prot__list {
-  margin-block-start: 0.9rem;
-  display: grid;
-  gap: 0.6rem;
-}
-
-@media (min-width: 56rem) {
-  .prot__list {
-    grid-template-columns: 1fr 1fr;
+@layer app-modules {
+  .prin {
+    margin-block-start: clamp(1.75rem, 4vw, 2.5rem);
+    display: grid;
+    gap: clamp(1.5rem, 3.5vw, 2.5rem);
   }
-}
 
-.prot__item {
-  border: 1px solid var(--ground-rule-soft);
-  border-inline-start: 3px solid var(--color-instrument);
-  border-radius: 2px;
-  background: var(--ground-panel);
-  padding: 0.7rem 0.8rem;
-  transition: border-color var(--dur-base) var(--ease-out);
-}
+  .prin__item {
+    padding-block-start: clamp(1.25rem, 3vw, 1.75rem);
+    border-block-start: 1px solid var(--ground-rule-soft);
+  }
 
-.prot__item[data-off="true"] {
-  border-inline-start-color: var(--color-stamp);
-  background: color-mix(in srgb, var(--color-stamp) 8%, var(--ground-panel));
-}
+  .prin__head {
+    display: flex;
+    align-items: baseline;
+    gap: 0.9rem;
+  }
 
-.prot__toggle {
-  display: flex;
-  align-items: center;
-  gap: 0.55rem;
-  width: 100%;
-}
+  .prin__n {
+    font-family: var(--font-mono);
+    font-size: var(--text-cs-lg);
+    font-weight: 500;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.08em;
+    color: var(--color-doc);
+    background: var(--color-stamp);
+    padding: 0.34em 0.5em 0.3em;
+    border-radius: var(--radius-mark);
+    flex: 0 0 auto;
+  }
 
-.prot__track {
-  inline-size: 30px;
-  block-size: 16px;
-  flex: 0 0 auto;
-  border-radius: 2px;
-  border: 1px solid var(--ground-rule);
-  background: var(--ground-deep);
-  position: relative;
-}
+  .prin__title {
+    font-family: var(--font-doc);
+    font-weight: 500;
+    font-size: clamp(1.25rem, 2.8vw, 1.75rem);
+    line-height: 1.2;
+    letter-spacing: -0.012em;
+    max-width: 32ch;
+    text-wrap: balance;
+  }
 
-.prot__knob {
-  position: absolute;
-  inset-block: 2px;
-  inset-inline-start: 16px;
-  inline-size: 10px;
-  border-radius: 1px;
-  background: var(--color-instrument);
-  transition:
-    inset-inline-start var(--dur-fast) var(--ease-out),
-    background var(--dur-fast) var(--ease-out);
-}
+  .prin__body {
+    margin-block-start: 0.85rem;
+    max-width: 72ch;
+    font-size: var(--text-cs-md);
+    line-height: 1.65;
+    color: var(--text-on-ground-muted);
+  }
 
-.prot__item[data-off="true"] .prot__knob {
-  inset-inline-start: 2px;
-  background: var(--stamp-on-ground);
-}
+  .prin__cite {
+    margin-block-start: 0.6rem;
+    font-family: var(--font-mono);
+    font-size: var(--text-cs-xs);
+    color: var(--stamp-on-ground);
+  }
 
-.prot__name {
-  font-family: var(--font-sans);
-  font-weight: 600;
-  font-size: var(--text-cs-md);
-  color: var(--text-on-ground);
-}
+  /* --- the four protections ------------------------------------------------ */
 
-.prot__state {
-  margin-inline-start: auto;
-  font-family: var(--font-mono);
-  font-size: var(--text-cs-xs);
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--instrument-on-ground);
-}
+  .prot {
+    margin-block-start: 1.25rem;
+    border: 1px solid var(--ground-rule);
+    border-radius: var(--radius-panel);
+    background: var(--ground-deep);
+    padding: clamp(0.85rem, 2vw, 1.2rem);
+  }
 
-.prot__item[data-off="true"] .prot__state {
-  color: var(--stamp-on-ground);
-}
+  .prot__lead {
+    font-size: var(--text-cs-sm);
+    line-height: 1.6;
+    color: var(--text-on-ground);
+    max-width: 68ch;
+  }
 
-.prot__text {
-  margin-block-start: 0.55rem;
-  font-size: var(--text-cs-sm);
-  line-height: 1.6;
-  color: var(--text-on-ground-muted);
-}
+  .prot__list {
+    margin-block-start: 0.9rem;
+    display: grid;
+    gap: 0.6rem;
+  }
 
-.prot__breaksLabel {
-  margin-block-start: 0.5rem;
-  font-family: var(--font-mono);
-  font-size: var(--text-cs-xs);
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--stamp-on-ground);
-}
+  @media (min-width: 56rem) {
+    .prot__list {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
 
-.prot__summary {
-  margin-block-start: 0.9rem;
-  padding: 0.85rem 0.95rem;
-  border-radius: 2px;
-  border: 1px solid var(--ground-rule);
-  border-inline-start: 3px solid var(--ground-rule);
-  transition: border-color var(--dur-base) var(--ease-out);
-}
+  .prot__item {
+    border: 1px solid var(--ground-rule-soft);
+    border-inline-start: 3px solid var(--color-instrument);
+    border-radius: var(--radius-mark);
+    background: var(--ground-panel);
+    padding: 0.7rem 0.8rem;
+    transition: border-color var(--dur-base) var(--ease-out);
+  }
 
-.prot__summary[data-state="intact"] {
-  border-inline-start-color: var(--color-instrument);
-}
+  .prot__item[data-off="true"] {
+    border-inline-start-color: var(--color-stamp);
+    background: color-mix(in oklab, var(--color-stamp) 8%, var(--ground-panel));
+  }
 
-.prot__summary[data-state="partial"] {
-  border-inline-start-color: var(--color-ochre);
-}
+  .prot__toggle {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    width: 100%;
+  }
 
-.prot__summary[data-state="all-off"] {
-  border-inline-start-color: var(--color-stamp);
-  background: color-mix(in srgb, var(--color-stamp) 10%, transparent);
-}
+  .prot__track {
+    inline-size: 30px;
+    block-size: 16px;
+    flex: 0 0 auto;
+    border-radius: var(--radius-mark);
+    border: 1px solid var(--ground-rule);
+    background: var(--ground-deep);
+    position: relative;
+  }
 
-.prot__summaryTitle {
-  font-family: var(--font-sans);
-  font-weight: 600;
-  font-size: var(--text-cs-lg);
-}
+  .prot__knob {
+    position: absolute;
+    inset-block: 2px;
+    inset-inline-start: 16px;
+    inline-size: 10px;
+    border-radius: var(--radius-hair);
+    background: var(--color-instrument);
+    transition:
+      inset-inline-start var(--dur-fast) var(--ease-out),
+      background var(--dur-fast) var(--ease-out);
+  }
 
-.prot__summary[data-state="all-off"] .prot__summaryTitle {
-  color: var(--stamp-on-ground);
-}
+  .prot__item[data-off="true"] .prot__knob {
+    inset-inline-start: 2px;
+    background: var(--stamp-on-ground);
+  }
 
-.prot__summary[data-state="intact"] .prot__summaryTitle {
-  color: var(--instrument-on-ground);
-}
+  .prot__name {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: var(--text-cs-md);
+    color: var(--text-on-ground);
+  }
 
-.prot__summaryBody {
-  margin-block-start: 0.4rem;
-  max-width: 76ch;
-  font-family: var(--font-doc);
-  font-size: var(--text-ds-base);
-  line-height: 1.58;
-  color: var(--text-on-ground);
+  .prot__state {
+    margin-inline-start: auto;
+    font-family: var(--font-mono);
+    font-size: var(--text-cs-xs);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--instrument-on-ground);
+  }
+
+  .prot__item[data-off="true"] .prot__state {
+    color: var(--stamp-on-ground);
+  }
+
+  .prot__text {
+    margin-block-start: 0.55rem;
+    font-size: var(--text-cs-sm);
+    line-height: 1.6;
+    color: var(--text-on-ground-muted);
+  }
+
+  .prot__breaksLabel {
+    margin-block-start: 0.5rem;
+    font-family: var(--font-mono);
+    font-size: var(--text-cs-xs);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--stamp-on-ground);
+  }
+
+  .prot__summary {
+    margin-block-start: 0.9rem;
+    padding: 0.85rem 0.95rem;
+    border-radius: var(--radius-mark);
+    border: 1px solid var(--ground-rule);
+    border-inline-start: 3px solid var(--ground-rule);
+    transition: border-color var(--dur-base) var(--ease-out);
+  }
+
+  .prot__summary[data-state="intact"] {
+    border-inline-start-color: var(--color-instrument);
+  }
+
+  .prot__summary[data-state="partial"] {
+    border-inline-start-color: var(--color-ochre);
+  }
+
+  .prot__summary[data-state="all-off"] {
+    border-inline-start-color: var(--color-stamp);
+    background: color-mix(in oklab, var(--color-stamp) 10%, transparent);
+  }
+
+  .prot__summaryTitle {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: var(--text-cs-lg);
+  }
+
+  .prot__summary[data-state="all-off"] .prot__summaryTitle {
+    color: var(--stamp-on-ground);
+  }
+
+  .prot__summary[data-state="intact"] .prot__summaryTitle {
+    color: var(--instrument-on-ground);
+  }
+
+  .prot__summaryBody {
+    margin-block-start: 0.4rem;
+    max-width: 76ch;
+    font-family: var(--font-doc);
+    font-size: var(--text-ds-base);
+    line-height: 1.58;
+    color: var(--text-on-ground);
+  }
 }

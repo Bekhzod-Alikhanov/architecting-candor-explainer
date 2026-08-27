@@ -1,5 +1,17 @@
 @import "tailwindcss";
 
+/*
+ * Cascade layers, in priority order.
+ *
+ * This exists because module stylesheets are imported from their components,
+ * so Vite injects them in module-graph order and a plain class selector in
+ * print.css silently lost to an identically specific one in a module. Layers
+ * make the ordering explicit and independent of injection order: everything in
+ * app-print beats everything in app-modules regardless of which arrived first.
+ * That is also what lets print.css drop its !important block.
+ */
+@layer app-tokens, app-base, app-components, app-modules, app-print;
+
 @import "./styles/fonts.css";
 @import "./styles/tokens.css";
 @import "./styles/base.css";

@@ -2,328 +2,330 @@
    06 — Four regimes, one logic.
    ========================================================================= */
 
-.reg__note {
-  margin-block-start: 1rem;
-  max-width: 74ch;
-  padding-inline-start: 1rem;
-  border-inline-start: 2px solid var(--color-ochre);
-  font-size: var(--text-cs-sm);
-  line-height: 1.6;
-  color: var(--text-on-ground-muted);
-}
-
-.reg__controls {
-  margin-block-start: 1.5rem;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem 2rem;
-  align-items: end;
-}
-
-.reg__control {
-  display: grid;
-  gap: 0.4rem;
-}
-
-.reg__controlLabel {
-  font-family: var(--font-mono);
-  font-size: var(--text-cs-xs);
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--text-on-ground-faint);
-}
-
-.reg__chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.3rem;
-}
-
-.chipbtn {
-  font-family: var(--font-mono);
-  font-size: var(--text-cs-xs);
-  letter-spacing: 0.05em;
-  padding: 0.4rem 0.65rem;
-  border: 1px solid var(--ground-rule);
-  border-radius: 2px;
-  color: var(--text-on-ground-muted);
-  transition:
-    border-color var(--dur-fast) var(--ease-out),
-    color var(--dur-fast) var(--ease-out),
-    background var(--dur-fast) var(--ease-out);
-}
-
-.chipbtn:hover {
-  border-color: var(--instrument-on-ground);
-  color: var(--instrument-on-ground);
-}
-
-.chipbtn[data-active="true"] {
-  background: var(--tint-instrument);
-  border-color: var(--color-instrument);
-  color: var(--instrument-on-ground);
-}
-
-.reg__select {
-  font-family: var(--font-mono);
-  font-size: var(--text-cs-sm);
-  padding: 0.42rem 0.6rem;
-  background: var(--ground-panel);
-  color: var(--text-on-ground);
-  border: 1px solid var(--ground-rule);
-  border-radius: 2px;
-}
-
-.reg__tableWrap {
-  margin-block-start: 1rem;
-  overflow-x: auto;
-}
-
-.reg__table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: var(--text-cs-sm);
-}
-
-.reg__table thead th {
-  text-align: start;
-  vertical-align: bottom;
-  padding: 0.6rem 0.7rem;
-  font-family: var(--font-mono);
-  font-size: var(--text-cs-xs);
-  font-weight: 400;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--text-on-ground-faint);
-  border-block-end: 1px solid var(--ground-rule);
-}
-
-.reg__row > th,
-.reg__row > td {
-  vertical-align: top;
-  padding: 0.75rem 0.7rem;
-  border-block-end: 1px solid var(--ground-rule-soft);
-  color: var(--text-on-ground-muted);
-  line-height: 1.5;
-  text-align: start;
-  font-weight: 400;
-}
-
-.reg__row[data-open="true"] > th,
-.reg__row[data-open="true"] > td {
-  background: var(--ground-panel);
-}
-
-.reg__rowBtn {
-  display: grid;
-  gap: 0.15rem;
-  text-align: start;
-  width: 100%;
-}
-
-.reg__rowName {
-  font-family: var(--font-sans);
-  font-weight: 600;
-  font-size: var(--text-cs-md);
-  line-height: 1.25;
-  color: var(--text-on-ground);
-}
-
-.reg__row[data-open="true"] .reg__rowName {
-  color: var(--instrument-on-ground);
-}
-
-.reg__rowDomain {
-  font-family: var(--font-mono);
-  font-size: var(--text-cs-xs);
-  color: var(--text-on-ground-faint);
-}
-
-/* Separation of recipient from enforcer is the structural device, so it is
-   marked rather than left to be inferred from two adjacent cells. */
-.reg__sep {
-  display: inline-block;
-  margin-inline-start: 0.4rem;
-  font-family: var(--font-mono);
-  font-size: var(--text-cs-xs);
-  letter-spacing: 0.08em;
-  color: var(--instrument-on-ground);
-  border: 1px solid color-mix(in srgb, var(--color-instrument) 45%, transparent);
-  border-radius: 2px;
-  padding: 0.05em 0.35em;
-}
-
-.reg__maps {
-  display: inline-flex;
-  gap: 0.25rem;
-}
-
-.reg__map {
-  inline-size: 1.35rem;
-  block-size: 1.35rem;
-  display: grid;
-  place-items: center;
-  border-radius: 2px;
-  font-family: var(--font-mono);
-  font-size: var(--text-cs-xs);
-  border: 1px solid var(--ground-rule);
-  color: var(--text-on-ground-muted);
-}
-
-.reg__map[data-ch="one"] {
-  border-color: var(--color-instrument);
-  color: var(--instrument-on-ground);
-}
-
-.reg__map[data-ch="two"] {
-  border-color: var(--color-stamp);
-  color: var(--stamp-on-ground);
-}
-
-.reg__map[data-ch="three"] {
-  border-style: dashed;
-  border-color: var(--color-instrument);
-  color: var(--instrument-on-ground);
-}
-
-/* The proposal is set apart, because it is not a precedent. */
-.reg__targetHead td {
-  padding: 1rem 0.7rem 0.5rem;
-  border-block-start: 2px solid var(--color-stamp);
-  font-size: var(--text-cs-xs);
-  color: var(--text-on-ground-faint);
-}
-
-.reg__targetLabel {
-  display: inline-block;
-  margin-inline-end: 0.6rem;
-  font-family: var(--font-mono);
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--stamp-on-ground);
-}
-
-.reg__empty {
-  margin-block-start: 1rem;
-  font-size: var(--text-cs-sm);
-  line-height: 1.6;
-  color: var(--text-on-ground-muted);
-  max-width: 62ch;
-}
-
-/* --- the design lesson --------------------------------------------------- */
-
-.lesson {
-  margin-block-start: 1.25rem;
-  padding: clamp(1.1rem, 2.8vw, 1.75rem);
-  max-width: 82ch;
-}
-
-.lesson__head {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 0.4rem 1.25rem;
-}
-
-.lesson__domain {
-  font-family: var(--font-mono);
-  font-size: var(--text-cs-xs);
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--stamp-on-doc);
-}
-
-.lesson__cite {
-  font-family: var(--font-mono);
-  font-size: var(--text-cs-xs);
-  color: var(--text-on-doc-muted);
-}
-
-.lesson__name {
-  margin-block-start: 0.45rem;
-  font-family: var(--font-doc);
-  font-weight: 500;
-  font-size: var(--text-ds-xl);
-  line-height: 1.2;
-}
-
-.lesson__label {
-  margin-block-start: 1rem;
-  padding-block-start: 0.75rem;
-  border-block-start: 1px solid var(--doc-rule);
-  font-family: var(--font-mono);
-  font-size: var(--text-cs-xs);
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--text-on-doc-muted);
-}
-
-.lesson__body {
-  margin-block-start: 0.5rem;
-  font-family: var(--font-doc);
-  font-size: var(--text-ds-base);
-  line-height: 1.62;
-}
-
-/* --- narrow screens: the table becomes cards ----------------------------- */
-
-@media (max-width: 67.99rem) {
-  .reg__table,
-  .reg__table thead,
-  .reg__table tbody,
-  .reg__table tr,
-  .reg__table th,
-  .reg__table td {
-    display: block;
+@layer app-modules {
+  .reg__note {
+    margin-block-start: 1rem;
+    max-width: 74ch;
+    padding-inline-start: 1rem;
+    border-inline-start: 2px solid var(--color-ochre);
+    font-size: var(--text-cs-sm);
+    line-height: 1.6;
+    color: var(--text-on-ground-muted);
   }
 
-  .reg__table thead {
-    display: none;
+  .reg__controls {
+    margin-block-start: 1.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem 2rem;
+    align-items: end;
   }
 
-  .reg__row {
-    margin-block-end: 0.6rem;
-    border: 1px solid var(--ground-rule);
-    border-radius: 3px;
-    background: var(--ground-panel);
-    padding: 0.7rem;
+  .reg__control {
+    display: grid;
+    gap: 0.4rem;
   }
 
-  .reg__row[data-open="true"] {
-    border-color: var(--color-instrument);
-  }
-
-  .reg__row > th,
-  .reg__row > td {
-    border-block-end: 0;
-    padding: 0.45rem 0;
-  }
-
-  .reg__row > td + td {
-    border-block-start: 1px solid var(--ground-rule-soft);
-  }
-
-  /* The column header travels with the cell. */
-  .reg__row > td::before {
-    content: attr(data-label);
-    display: block;
-    margin-block-end: 0.2rem;
+  .reg__controlLabel {
     font-family: var(--font-mono);
     font-size: var(--text-cs-xs);
-    letter-spacing: 0.1em;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--text-on-ground-faint);
   }
 
-  .reg__targetHead {
-    border: 0;
-    background: none;
-    padding: 0;
+  .reg__chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.3rem;
   }
 
-  .reg__targetHead td::before {
-    content: none;
+  .chipbtn {
+    font-family: var(--font-mono);
+    font-size: var(--text-cs-xs);
+    letter-spacing: 0.05em;
+    padding: 0.4rem 0.65rem;
+    border: 1px solid var(--ground-rule);
+    border-radius: var(--radius-mark);
+    color: var(--text-on-ground-muted);
+    transition:
+      border-color var(--dur-fast) var(--ease-out),
+      color var(--dur-fast) var(--ease-out),
+      background var(--dur-fast) var(--ease-out);
+  }
+
+  .chipbtn:hover {
+    border-color: var(--instrument-on-ground);
+    color: var(--instrument-on-ground);
+  }
+
+  .chipbtn[data-active="true"] {
+    background: var(--tint-instrument);
+    border-color: var(--color-instrument);
+    color: var(--instrument-on-ground);
+  }
+
+  .reg__select {
+    font-family: var(--font-mono);
+    font-size: var(--text-cs-sm);
+    padding: 0.42rem 0.6rem;
+    background: var(--ground-panel);
+    color: var(--text-on-ground);
+    border: 1px solid var(--ground-rule);
+    border-radius: var(--radius-mark);
+  }
+
+  .reg__tableWrap {
+    margin-block-start: 1rem;
+    overflow-x: auto;
+  }
+
+  .reg__table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--text-cs-sm);
+  }
+
+  .reg__table thead th {
+    text-align: start;
+    vertical-align: bottom;
+    padding: 0.6rem 0.7rem;
+    font-family: var(--font-mono);
+    font-size: var(--text-cs-xs);
+    font-weight: 400;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-on-ground-faint);
+    border-block-end: 1px solid var(--ground-rule);
+  }
+
+  .reg__row > th,
+  .reg__row > td {
+    vertical-align: top;
+    padding: 0.75rem 0.7rem;
+    border-block-end: 1px solid var(--ground-rule-soft);
+    color: var(--text-on-ground-muted);
+    line-height: 1.5;
+    text-align: start;
+    font-weight: 400;
+  }
+
+  .reg__row[data-open="true"] > th,
+  .reg__row[data-open="true"] > td {
+    background: var(--ground-panel);
+  }
+
+  .reg__rowBtn {
+    display: grid;
+    gap: 0.15rem;
+    text-align: start;
+    width: 100%;
+  }
+
+  .reg__rowName {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: var(--text-cs-md);
+    line-height: 1.25;
+    color: var(--text-on-ground);
+  }
+
+  .reg__row[data-open="true"] .reg__rowName {
+    color: var(--instrument-on-ground);
+  }
+
+  .reg__rowDomain {
+    font-family: var(--font-mono);
+    font-size: var(--text-cs-xs);
+    color: var(--text-on-ground-faint);
+  }
+
+  /* Separation of recipient from enforcer is the structural device, so it is
+   marked rather than left to be inferred from two adjacent cells. */
+  .reg__sep {
+    display: inline-block;
+    margin-inline-start: 0.4rem;
+    font-family: var(--font-mono);
+    font-size: var(--text-cs-xs);
+    letter-spacing: 0.08em;
+    color: var(--instrument-on-ground);
+    border: 1px solid color-mix(in oklab, var(--color-instrument) 45%, transparent);
+    border-radius: var(--radius-mark);
+    padding: 0.05em 0.35em;
+  }
+
+  .reg__maps {
+    display: inline-flex;
+    gap: 0.25rem;
+  }
+
+  .reg__map {
+    inline-size: 1.35rem;
+    block-size: 1.35rem;
+    display: grid;
+    place-items: center;
+    border-radius: var(--radius-mark);
+    font-family: var(--font-mono);
+    font-size: var(--text-cs-xs);
+    border: 1px solid var(--ground-rule);
+    color: var(--text-on-ground-muted);
+  }
+
+  .reg__map[data-ch="one"] {
+    border-color: var(--color-instrument);
+    color: var(--instrument-on-ground);
+  }
+
+  .reg__map[data-ch="two"] {
+    border-color: var(--color-stamp);
+    color: var(--stamp-on-ground);
+  }
+
+  .reg__map[data-ch="three"] {
+    border-style: dashed;
+    border-color: var(--color-instrument);
+    color: var(--instrument-on-ground);
+  }
+
+  /* The proposal is set apart, because it is not a precedent. */
+  .reg__targetHead td {
+    padding: 1rem 0.7rem 0.5rem;
+    border-block-start: 2px solid var(--color-stamp);
+    font-size: var(--text-cs-xs);
+    color: var(--text-on-ground-faint);
+  }
+
+  .reg__targetLabel {
+    display: inline-block;
+    margin-inline-end: 0.6rem;
+    font-family: var(--font-mono);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--stamp-on-ground);
+  }
+
+  .reg__empty {
+    margin-block-start: 1rem;
+    font-size: var(--text-cs-sm);
+    line-height: 1.6;
+    color: var(--text-on-ground-muted);
+    max-width: 62ch;
+  }
+
+  /* --- the design lesson --------------------------------------------------- */
+
+  .lesson {
+    margin-block-start: 1.25rem;
+    padding: clamp(1.1rem, 2.8vw, 1.75rem);
+    max-width: 82ch;
+  }
+
+  .lesson__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.4rem 1.25rem;
+  }
+
+  .lesson__domain {
+    font-family: var(--font-mono);
+    font-size: var(--text-cs-xs);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--stamp-on-doc);
+  }
+
+  .lesson__cite {
+    font-family: var(--font-mono);
+    font-size: var(--text-cs-xs);
+    color: var(--text-on-doc-muted);
+  }
+
+  .lesson__name {
+    margin-block-start: 0.45rem;
+    font-family: var(--font-doc);
+    font-weight: 500;
+    font-size: var(--text-ds-xl);
+    line-height: 1.2;
+  }
+
+  .lesson__label {
+    margin-block-start: 1rem;
+    padding-block-start: 0.75rem;
+    border-block-start: 1px solid var(--doc-rule);
+    font-family: var(--font-mono);
+    font-size: var(--text-cs-xs);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-on-doc-muted);
+  }
+
+  .lesson__body {
+    margin-block-start: 0.5rem;
+    font-family: var(--font-doc);
+    font-size: var(--text-ds-base);
+    line-height: 1.62;
+  }
+
+  /* --- narrow screens: the table becomes cards ----------------------------- */
+
+  @media (max-width: 67.99rem) {
+    .reg__table,
+    .reg__table thead,
+    .reg__table tbody,
+    .reg__table tr,
+    .reg__table th,
+    .reg__table td {
+      display: block;
+    }
+
+    .reg__table thead {
+      display: none;
+    }
+
+    .reg__row {
+      margin-block-end: 0.6rem;
+      border: 1px solid var(--ground-rule);
+      border-radius: var(--radius-panel);
+      background: var(--ground-panel);
+      padding: 0.7rem;
+    }
+
+    .reg__row[data-open="true"] {
+      border-color: var(--color-instrument);
+    }
+
+    .reg__row > th,
+    .reg__row > td {
+      border-block-end: 0;
+      padding: 0.45rem 0;
+    }
+
+    .reg__row > td + td {
+      border-block-start: 1px solid var(--ground-rule-soft);
+    }
+
+    /* The column header travels with the cell. */
+    .reg__row > td::before {
+      content: attr(data-label);
+      display: block;
+      margin-block-end: 0.2rem;
+      font-family: var(--font-mono);
+      font-size: var(--text-cs-xs);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-on-ground-faint);
+    }
+
+    .reg__targetHead {
+      border: 0;
+      background: none;
+      padding: 0;
+    }
+
+    .reg__targetHead td::before {
+      content: none;
+    }
   }
 }

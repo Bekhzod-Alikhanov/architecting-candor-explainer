@@ -9,35 +9,36 @@
   /* --- the six source colours ------------------------------------------- */
 
   /* The telemetry dashboard ground. Desaturated slate, blue-green cast. */
-  --color-ground: #162127;
+  --color-ground: oklch(24.01% 0.0193 232.45);
   /* A document photocopied and scanned to grayscale for production. */
-  --color-doc: #e3e8e7;
+  --color-doc: oklch(92.69% 0.0055 183.02);
   /* Bates and exhibit stamp ink: oxidised, dull, red-purple. */
-  --color-stamp: #7a3346;
+  --color-stamp: oklch(42.40% 0.1007 5.64);
   /* The measurement register. Instrument-panel teal, no neon. */
-  --color-instrument: #3e8e96;
+  --color-instrument: oklch(60.05% 0.0783 204.23);
   /* The logging tier, sitting visibly beneath the review tier. */
-  --color-ochre: #8a7332;
+  --color-ochre: oklch(56.39% 0.0886 89.78);
   /* An opaque redaction bar. Mark only, never a ground. */
-  --color-redact: #0b0f11;
+  --color-redact: oklch(16.50% 0.0077 229.46);
 
   /* Paper and ink. Only the print stylesheet uses these. */
-  --color-paper: #ffffff;
-  --color-ink: #000000;
+  --color-paper: oklch(100% 0 0);
+  --color-ink: oklch(0% 0 0);
 
   /* --- type ------------------------------------------------------------- */
   --font-mono: 'IBM Plex Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
   --font-sans: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
   --font-doc: 'Spectral', Palatino, 'Palatino Linotype', Georgia, serif;
 
-  /* Console scale — tight, tabular, dense. */
-  --text-cs-xs: 0.6875rem;
-  --text-cs-sm: 0.75rem;
-  --text-cs-base: 0.8125rem;
-  --text-cs-md: 0.875rem;
-  --text-cs-lg: 1rem;
-  --text-cs-xl: 1.25rem;
-  --text-cs-2xl: 1.75rem;
+  /* Console scale — tight and tabular, but not cramped: the smallest step
+     is 12px, which is the floor for a caption a reader has to act on. */
+  --text-cs-xs: 0.75rem;
+  --text-cs-sm: 0.8125rem;
+  --text-cs-base: 0.875rem;
+  --text-cs-md: 0.9375rem;
+  --text-cs-lg: 1.0625rem;
+  --text-cs-xl: 1.375rem;
+  --text-cs-2xl: 1.875rem;
 
   /* Document scale — wider, longer measure. Deliberately not reconciled
      with the console scale. The two systems do not agree on type either. */
@@ -48,6 +49,13 @@
   --text-ds-2xl: 2.25rem;
   --text-ds-3xl: 3.25rem;
 
+  /* --- corner radius --------------------------------------------------- */
+  /* Three steps, by what the thing is rather than by how big it is.
+     Marks stay near-square because a stamp on paper has no radius. */
+  --radius-hair: 1px;
+  --radius-mark: 4px;
+  --radius-panel: 7px;
+
   /* --- motion ----------------------------------------------------------- */
   /* Refusal must feel physical: overshoot, then settle. */
   --ease-refuse: cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -57,49 +65,55 @@
   --ease-inout: cubic-bezier(0.65, 0, 0.35, 1);
 }
 
+@layer app-tokens {
 :root {
   /* --- derived grounds -------------------------------------------------- */
-  --ground-deep: color-mix(in srgb, var(--color-ground) 74%, var(--color-redact));
-  --ground-panel: color-mix(in srgb, var(--color-ground) 92%, var(--color-doc));
-  --ground-raised: color-mix(in srgb, var(--color-ground) 95%, var(--color-doc));
-  --ground-rule: color-mix(in srgb, var(--color-ground) 74%, var(--color-doc));
-  --ground-rule-soft: color-mix(in srgb, var(--color-ground) 86%, var(--color-doc));
+  --ground-deep: color-mix(in oklab, var(--color-ground) 74%, var(--color-redact));
+  --ground-panel: color-mix(in oklab, var(--color-ground) 92%, var(--color-doc));
+  /* Raised reads LIGHTER than panel: on a dark ground, a lift comes forward.
+     This is the background a selected card and a hovered bin take, which makes
+     it the worst-case surface for every light text token below. */
+  --ground-raised: color-mix(in oklab, var(--color-ground) 90%, var(--color-doc));
+  --ground-rule: color-mix(in oklab, var(--color-ground) 74%, var(--color-doc));
+  --ground-rule-soft: color-mix(in oklab, var(--color-ground) 86%, var(--color-doc));
 
   /* --- derived document objects ----------------------------------------- */
-  --doc-panel: color-mix(in srgb, var(--color-doc) 92%, var(--color-ground));
-  --doc-raised: color-mix(in srgb, var(--color-doc) 55%, white);
-  --doc-rule: color-mix(in srgb, var(--color-doc) 76%, var(--color-ground));
-  --doc-rule-soft: color-mix(in srgb, var(--color-doc) 88%, var(--color-ground));
+  --doc-panel: color-mix(in oklab, var(--color-doc) 92%, var(--color-ground));
+  --doc-raised: color-mix(in oklab, var(--color-doc) 55%, var(--color-paper));
+  --doc-rule: color-mix(in oklab, var(--color-doc) 76%, var(--color-ground));
+  --doc-rule-soft: color-mix(in oklab, var(--color-doc) 88%, var(--color-ground));
 
   /* --- text, verified against WCAG AA ---------------------------------- */
   /* on the console ground */
-  --text-on-ground: var(--color-doc); /* 13.3:1 */
+  --text-on-ground: var(--color-doc); /* 10.6:1 */
   /* Contrast figures below are the worst case across every surface these sit
-     on, not against the base ground. Verified with axe-core, not estimated. */
-  --text-on-ground-muted: color-mix(in srgb, var(--color-doc) 68%, var(--color-ground)); /* 5.5:1 on the lightest panel */
-  --text-on-ground-faint: color-mix(in srgb, var(--color-doc) 62%, var(--color-ground)); /* 4.8:1 on the lightest panel, measured */
+     on, not against the base ground: light text is measured against
+     --ground-raised, dark text against --doc-panel. Computed from the OKLab
+     mix, then confirmed with axe-core against the built page. */
+  --text-on-ground-muted: color-mix(in oklab, var(--color-doc) 72%, var(--color-ground)); /* 5.6:1 */
+  --text-on-ground-faint: color-mix(in oklab, var(--color-doc) 65%, var(--color-ground)); /* 4.7:1 */
   /* on a document object */
-  --text-on-doc: var(--color-ground); /* 13.3:1 */
-  --text-on-doc-muted: color-mix(in srgb, var(--color-ground) 70%, var(--color-doc)); /* 5.5:1 */
+  --text-on-doc: var(--color-ground); /* 11.1:1 */
+  --text-on-doc-muted: color-mix(in oklab, var(--color-ground) 70%, var(--color-doc)); /* 5.1:1 */
 
   /* --- accents, one safe variant per ground ---------------------------- */
   /* Raw --color-* accents are for rules, marks and large numerals only.
      Body-size text must use the variant matched to its ground. */
-  --stamp-on-doc: var(--color-stamp); /* 7.1:1 */
-  --stamp-on-ground: color-mix(in srgb, var(--color-stamp) 48%, var(--color-doc)); /* 4.7:1 on the lightest panel, measured */
-  --instrument-on-ground: color-mix(in srgb, var(--color-instrument) 78%, var(--color-doc)); /* 5.5:1 */
-  --instrument-on-doc: color-mix(in srgb, var(--color-instrument) 70%, var(--color-redact)); /* 5.1:1 */
-  --ochre-on-ground: color-mix(in srgb, var(--color-ochre) 70%, var(--color-doc)); /* 5.6:1 */
-  --ochre-on-doc: color-mix(in srgb, var(--color-ochre) 75%, var(--color-redact)); /* 5.4:1 */
+  --stamp-on-doc: var(--color-stamp); /* 6.0:1 */
+  --stamp-on-ground: color-mix(in oklab, var(--color-stamp) 43%, var(--color-doc)); /* 5.0:1 */
+  --instrument-on-ground: color-mix(in oklab, var(--color-instrument) 70%, var(--color-doc)); /* 5.0:1 */
+  --instrument-on-doc: color-mix(in oklab, var(--color-instrument) 65%, var(--color-redact)); /* 5.0:1 */
+  --ochre-on-ground: color-mix(in oklab, var(--color-ochre) 61%, var(--color-doc)); /* 5.1:1 */
+  --ochre-on-doc: color-mix(in oklab, var(--color-ochre) 73%, var(--color-redact)); /* 4.9:1 */
 
   /* --- tints for fills, bands and hatching ----------------------------- */
-  --tint-instrument: color-mix(in srgb, var(--color-instrument) 16%, transparent);
-  --tint-stamp: color-mix(in srgb, var(--color-stamp) 18%, transparent);
-  --tint-ochre: color-mix(in srgb, var(--color-ochre) 18%, transparent);
+  --tint-instrument: color-mix(in oklab, var(--color-instrument) 16%, transparent);
+  --tint-stamp: color-mix(in oklab, var(--color-stamp) 18%, transparent);
+  --tint-ochre: color-mix(in oklab, var(--color-ochre) 18%, transparent);
 
   /* --- the seam --------------------------------------------------------- */
   --seam-width: 3px;
-  --seam-colour: color-mix(in srgb, var(--color-doc) 48%, var(--color-ground));
+  --seam-colour: color-mix(in oklab, var(--color-doc) 48%, var(--color-ground));
   --seam-live: var(--color-instrument);
   --seam-refuse: var(--color-stamp);
 
@@ -109,14 +123,21 @@
   --page-max: 1280px;
   --page-gutter: clamp(1rem, 4vw, 3rem);
 
-  /* --- elevation. Document objects sit ON the ground, so they cast. ----- */
+  /* --- elevation. Document objects sit ON the ground, so they cast. -----
+     Five short steps rather than three long ones. A document laid on a desk
+     should read as laid down, not floated: the near layers draw the edge, the
+     far layers do the ambient occlusion, and no single layer is dark enough on
+     its own to read as a 2015-era drop shadow. */
   --lift-doc:
-    0 1px 1px color-mix(in srgb, var(--color-redact) 30%, transparent),
-    0 3px 8px color-mix(in srgb, var(--color-redact) 26%, transparent),
-    0 12px 28px color-mix(in srgb, var(--color-redact) 22%, transparent);
+    0 1px 1px color-mix(in oklab, var(--color-redact) 16%, transparent),
+    0 2px 4px color-mix(in oklab, var(--color-redact) 14%, transparent),
+    0 5px 12px color-mix(in oklab, var(--color-redact) 13%, transparent),
+    0 12px 28px color-mix(in oklab, var(--color-redact) 12%, transparent),
+    0 24px 52px color-mix(in oklab, var(--color-redact) 10%, transparent);
   --lift-doc-sm:
-    0 1px 2px color-mix(in srgb, var(--color-redact) 28%, transparent),
-    0 2px 5px color-mix(in srgb, var(--color-redact) 20%, transparent);
+    0 1px 1px color-mix(in oklab, var(--color-redact) 15%, transparent),
+    0 2px 4px color-mix(in oklab, var(--color-redact) 13%, transparent),
+    0 5px 10px color-mix(in oklab, var(--color-redact) 11%, transparent);
 
   /* --- duration --------------------------------------------------------- */
   --dur-fast: 120ms;
@@ -134,4 +155,5 @@
     --dur-slow: 1ms;
     --dur-refuse: 1ms;
   }
+}
 }

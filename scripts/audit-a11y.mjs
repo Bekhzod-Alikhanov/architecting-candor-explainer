@@ -148,10 +148,28 @@ try {
       `${mounted.verdicts} ledger entries, ${mounted.flags} linter flags`,
   )
 
+  // The console ground carries a faint scanner grain as a background-image, and
+  // axe abandons the colour-contrast rule for every element on a page whose
+  // background it cannot flatten to a single colour — 365 nodes here. The grain
+  // is measured at roughly +/-4 of 255 on the darkest surface, and its lightest
+  // speckle is still darker than --ground-raised, which every text token in
+  // src/styles/tokens.css is verified against. So contrast is measured against
+  // the flat ground: that is the surface the tokens were computed for, and it
+  // keeps the rule running instead of silently going undecided.
+  await evaluate(
+    `(() => {
+      const s = document.createElement('style')
+      s.textContent = 'body { background-image: none }'
+      document.head.append(s)
+      return true
+    })()`,
+    false,
+  )
+
   await evaluate(axe, false)
   const results = await evaluate(`(async () => {
     const r = await axe.run(document, {
-      resultTypes: ['violations'],
+      resultTypes: ['violations', 'incomplete'],
       runOnly: { type: 'tag', values: ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'best-practice'] },
     })
     return JSON.stringify({
@@ -159,11 +177,24 @@ try {
         id: v.id, impact: v.impact, help: v.help, n: v.nodes.length,
         nodes: v.nodes.slice(0, 4).map(n => ({ target: n.target.join(' '), summary: (n.failureSummary || '').split('\\n').slice(0,3).join(' ') })),
       })),
+      /* axe returns "incomplete" where it computed nothing conclusive. The
+         colour-contrast rule lands there whenever an element sits on a
+         background-image, because axe cannot flatten one — which is exactly
+         where a bad contrast pair hides on this site, since the provenance
+         marks are hatched. These do not fail the run; they are printed so
+         they get looked at. */
+      incomplete: r.incomplete.map(v => ({
+        id: v.id, help: v.help, n: v.nodes.length,
+        nodes: v.nodes.slice(0, 6).map(n => ({
+          target: n.target.join(' '),
+          summary: (n.any?.[0]?.message || n.none?.[0]?.message || '').slice(0, 140),
+        })),
+      })),
       passes: r.passes?.length ?? 0,
     })
   })()`)
 
-  const { violations } = JSON.parse(results)
+  const { violations, incomplete } = JSON.parse(results)
 
   if (violations.length === 0) {
     console.log('\naxe-core: no violations.\n')
@@ -175,6 +206,16 @@ try {
         console.log(`   ${n.target}`)
         if (n.summary) console.log(`     ${n.summary}`)
       }
+    }
+    console.log('')
+  }
+
+  if (incomplete.length) {
+    console.log(`axe-core could not decide on ${incomplete.length} rule(s) — check by hand:`)
+    for (const v of incomplete) {
+      console.log(`
+  ${v.id} — ${v.help} (${v.n} node${v.n === 1 ? '' : 's'})`)
+      for (const n of v.nodes) console.log(`     ${n.target}${n.summary ? `  ${n.summary}` : ''}`)
     }
     console.log('')
   }

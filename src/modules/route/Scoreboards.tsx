@@ -61,10 +61,10 @@ export function Scoreboards({ grade, routedCount, total }: ScoreboardsProps) {
         )}
 
         <p className="board__live sr-only" aria-live="polite">
-          {routedCount} of {total} routed. {grade.counts.produced} produced,{' '}
-          {grade.counts.withheld} withheld as privileged, {grade.counts.pierced} pierced,{' '}
-          {grade.counts.excluded407} excluded under Rule 407, {grade.counts.spoliation} at
-          spoliation risk, {grade.counts.notCreated} never created.
+          {routedCount} of {total} routed. {grade.counts.produced} produced, {grade.counts.withheld}{' '}
+          withheld as privileged, {grade.counts.pierced} pierced, {grade.counts.excluded407}{' '}
+          excluded under Rule 407, {grade.counts.spoliation} at spoliation risk,{' '}
+          {grade.counts.notCreated} never created.
         </p>
       </section>
 
@@ -89,9 +89,7 @@ export function Scoreboards({ grade, routedCount, total }: ScoreboardsProps) {
               </span>
               <span className="board__fieldBody">
                 <span className="board__fieldLabel">{f.label}</span>
-                {f.consequence ? (
-                  <span className="board__fieldLost">{f.consequence}</span>
-                ) : null}
+                {f.consequence ? <span className="board__fieldLost">{f.consequence}</span> : null}
               </span>
             </li>
           ))}

@@ -91,7 +91,7 @@
   color: var(--text-on-ground-faint);
 }
 
-.scaffold__meta[data-released='true'] {
+.scaffold__meta[data-released="true"] {
   color: var(--instrument-on-ground);
 }
 
@@ -149,14 +149,14 @@
   color: var(--instrument-on-ground);
 }
 
-.scaffold__dot[aria-current='step'] {
+.scaffold__dot[aria-current="step"] {
   background: var(--color-instrument);
   border-color: var(--color-instrument);
   color: var(--color-ground);
   font-weight: 500;
 }
 
-.scaffold__dot[data-done='true']:not([aria-current='step']) {
+.scaffold__dot[data-done="true"]:not([aria-current="step"]) {
   border-color: color-mix(in srgb, var(--color-instrument) 45%, transparent);
   color: var(--instrument-on-ground);
 }

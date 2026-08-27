@@ -134,8 +134,7 @@ export const commencement = {
   passedHeading: 'Now in force',
   passedBody:
     'The Product Liability Directive now applies to products placed on the market or put into service from 9 December 2026.',
-  scope:
-    'Applies to products placed on the market or put into service from this date.',
+  scope: 'Applies to products placed on the market or put into service from this date.',
 } as const
 
 export const timelineCopy = {

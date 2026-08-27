@@ -93,7 +93,8 @@ export function Regimes() {
         <table className="reg__table">
           <caption className="sr-only">
             {copy.captionTemplate} Filtered to{' '}
-            {filter === 'all' ? copy.filterAll.toLowerCase() : channelNames[filter]}, sorted by {sort}.
+            {filter === 'all' ? copy.filterAll.toLowerCase() : channelNames[filter]}, sorted by{' '}
+            {sort}.
           </caption>
           <thead>
             <tr>
@@ -107,7 +108,12 @@ export function Regimes() {
           </thead>
           <tbody>
             {rows.map((r) => (
-              <RegimeRow key={r.id} regime={r} open={openId === r.id} onOpen={() => setOpenId(r.id)} />
+              <RegimeRow
+                key={r.id}
+                regime={r}
+                open={openId === r.id}
+                onOpen={() => setOpenId(r.id)}
+              />
             ))}
           </tbody>
           <tbody className="reg__targetBody">

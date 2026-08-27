@@ -21,7 +21,9 @@ const rows = strategies.map((s) => {
   return { id: s.id, name: s.name, g }
 })
 
-console.log('\nStrategy            prod  with pierce  407 spol  n/c | adverse | remediation | flags')
+console.log(
+  '\nStrategy            prod  with pierce  407 spol  n/c | adverse | remediation | flags',
+)
 console.log('─'.repeat(92))
 for (const r of rows) {
   const c = r.g.counts
@@ -122,7 +124,7 @@ check(empty.remediationScore === 0, 'An empty assignment should reconstruct noth
 console.log('')
 if (failures.length) {
   console.error('FAILED:')
-  for (const f of failures) console.error('  · ' + f)
+  for (const f of failures) console.error(`  · ${f}`)
   process.exit(1)
 }
 console.log(`All ${13 + deck.length} checks passed. The routing game still makes its argument.\n`)

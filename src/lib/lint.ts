@@ -20,6 +20,8 @@ export interface Flag {
 }
 
 export interface Segment {
+  /** Offset in the source text, so a React key need not be an array index. */
+  readonly start: number
   readonly text: string
   readonly flag: Flag | null
 }
@@ -48,7 +50,7 @@ const compiled: readonly Compiled[] = rules
     rule.phrases.map((phrase) => ({
       phrase,
       // Word boundaries on both ends, with the phrase's own spacing preserved.
-      re: new RegExp(`\\b${escape(phrase)}\\b`, 'gi'),
+      re: new RegExp(`\\b${escapeForRegex(phrase)}\\b`, 'gi'),
       category: rule.category,
       substitute: rule.substitute,
       note: rule.note ?? null,
@@ -56,7 +58,7 @@ const compiled: readonly Compiled[] = rules
   )
   .sort((a, b) => b.phrase.length - a.phrase.length)
 
-function escape(s: string): string {
+function escapeForRegex(s: string): string {
   return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
 }
 
@@ -67,8 +69,7 @@ export function lint(text: string): LintResult {
 
   for (const c of compiled) {
     c.re.lastIndex = 0
-    let m: RegExpExecArray | null
-    while ((m = c.re.exec(text)) !== null) {
+    for (const m of text.matchAll(c.re)) {
       const start = m.index
       const end = start + m[0].length
       // Drop anything overlapping a phrase already claimed by a longer rule.
@@ -86,8 +87,6 @@ export function lint(text: string): LintResult {
           note: c.note,
         })
       }
-      // Guard against zero-length matches looping forever.
-      if (m[0].length === 0) c.re.lastIndex += 1
     }
   }
 
@@ -96,11 +95,12 @@ export function lint(text: string): LintResult {
   const segments: Segment[] = []
   let cursor = 0
   for (const f of flags) {
-    if (f.start > cursor) segments.push({ text: text.slice(cursor, f.start), flag: null })
-    segments.push({ text: text.slice(f.start, f.end), flag: f })
+    if (f.start > cursor)
+      segments.push({ start: cursor, text: text.slice(cursor, f.start), flag: null })
+    segments.push({ start: f.start, text: text.slice(f.start, f.end), flag: f })
     cursor = f.end
   }
-  if (cursor < text.length) segments.push({ text: text.slice(cursor), flag: null })
+  if (cursor < text.length) segments.push({ start: cursor, text: text.slice(cursor), flag: null })
 
   const byCategory = categories
     .map((c) => ({

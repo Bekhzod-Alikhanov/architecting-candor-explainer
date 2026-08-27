@@ -58,7 +58,7 @@
   color: var(--instrument-on-ground);
 }
 
-.chipbtn[data-active='true'] {
+.chipbtn[data-active="true"] {
   background: var(--tint-instrument);
   border-color: var(--color-instrument);
   color: var(--instrument-on-ground);
@@ -109,8 +109,8 @@
   font-weight: 400;
 }
 
-.reg__row[data-open='true'] > th,
-.reg__row[data-open='true'] > td {
+.reg__row[data-open="true"] > th,
+.reg__row[data-open="true"] > td {
   background: var(--ground-panel);
 }
 
@@ -129,7 +129,7 @@
   color: var(--text-on-ground);
 }
 
-.reg__row[data-open='true'] .reg__rowName {
+.reg__row[data-open="true"] .reg__rowName {
   color: var(--instrument-on-ground);
 }
 
@@ -170,17 +170,17 @@
   color: var(--text-on-ground-muted);
 }
 
-.reg__map[data-ch='one'] {
+.reg__map[data-ch="one"] {
   border-color: var(--color-instrument);
   color: var(--instrument-on-ground);
 }
 
-.reg__map[data-ch='two'] {
+.reg__map[data-ch="two"] {
   border-color: var(--color-stamp);
   color: var(--stamp-on-ground);
 }
 
-.reg__map[data-ch='three'] {
+.reg__map[data-ch="three"] {
   border-style: dashed;
   border-color: var(--color-instrument);
   color: var(--instrument-on-ground);
@@ -291,7 +291,7 @@
     padding: 0.7rem;
   }
 
-  .reg__row[data-open='true'] {
+  .reg__row[data-open="true"] {
     border-color: var(--color-instrument);
   }
 

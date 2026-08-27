@@ -68,7 +68,7 @@ export function RouteTheRecord() {
   const complete = unrouted.length === 0
   const result = useMemo(() => grade(assignment), [assignment])
 
-  const selected = selectedId ? deck.find((a) => a.id === selectedId) ?? null : null
+  const selected = selectedId ? (deck.find((a) => a.id === selectedId) ?? null) : null
 
   const route = useCallback(
     (id: string, bin: Bin) => {
@@ -209,6 +209,10 @@ export function RouteTheRecord() {
             {unrouted.length > 0 ? (
               <ul
                 className="rt__cards"
+                // A listbox is `<ul role="listbox">` with `<li role="option">` children per
+                // the ARIA authoring practices. The rule's suggested div would lose the list
+                // semantics for no gain, so the diagnostic is suppressed on the next line.
+                // biome-ignore lint/a11y/noNoninteractiveElementToInteractiveRole: ARIA APG listbox
                 role="listbox"
                 tabIndex={0}
                 aria-label={routeCopy.listboxLabel}

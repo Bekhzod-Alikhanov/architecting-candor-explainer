@@ -52,8 +52,7 @@ export const meta = {
  */
 export const disclaimer = {
   short: 'Nothing here is legal advice.',
-  full:
-    'Nothing on this page should be construed as providing legal advice. Firms should consult counsel before relying on any legal principle described here.',
+  full: 'Nothing on this page should be construed as providing legal advice. Firms should consult counsel before relying on any legal principle described here.',
 } as const
 
 /** The "About this page" block. A dated snapshot, and it says so. */
@@ -74,7 +73,10 @@ export const contribution = {
   rows: [
     { role: 'Conceptualization', who: 'Michael A. Celone, Sean McGregor' },
     { role: 'Methodology, Investigation', who: 'All authors' },
-    { role: 'Writing — original draft', who: 'Michael A. Celone (abstract, executive summary, introduction, conclusion); Mosi Secret (Section 1); Eduardo Mignot (Section 2); Noga Bregman (Section 3); Bekhzodkhon Alikhanov (Section 4)' },
+    {
+      role: 'Writing — original draft',
+      who: 'Michael A. Celone (abstract, executive summary, introduction, conclusion); Mosi Secret (Section 1); Eduardo Mignot (Section 2); Noga Bregman (Section 3); Bekhzodkhon Alikhanov (Section 4)',
+    },
     { role: 'Visualization', who: 'Eduardo Mignot (Figure 1), Bekhzodkhon Alikhanov (Table 1)' },
     { role: 'Writing — review & editing', who: 'Michael A. Celone (lead editor)' },
     { role: 'Supervision', who: 'Michael A. Celone, Sean McGregor' },

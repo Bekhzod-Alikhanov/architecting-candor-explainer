@@ -110,7 +110,8 @@ export const handoffs: readonly Handoff[] = [
 
 export const translation = {
   label: 'Translation loss',
-  heading: 'A signal rarely disappears. It is edited, at every handoff, by people acting reasonably.',
+  heading:
+    'A signal rarely disappears. It is edited, at every handoff, by people acting reasonably.',
   body: [
     'Carlile identifies three boundaries that knowledge has to cross inside an organisation, and they get harder in order. At a syntactic boundary a shared lexicon is enough. At a semantic boundary the same term has to be reconciled across different interpretations. At a pragmatic boundary the parties have different stakes, and words like risk, incident and safety imply different actions for engineers, lawyers, product teams and the board.',
     'Røvik describes knowledge transfer as a rule-governed process in which omission is a routine move rather than an act of concealment. Each function keeps what is salient to its own environment. The operational context that made the signal important is what gets left behind.',

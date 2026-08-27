@@ -90,7 +90,8 @@ export const regimes: readonly Regime[] = [
     separated: false,
     protects:
       'Reports, surveys and data compiled for federally funded hazard-identification programmes, against discovery and admission',
-    discoverable: 'The underlying facts, obtained from sources other than the protected compilation',
+    discoverable:
+      'The underlying facts, obtained from sources other than the protected compilation',
     source: 'Federal statute, upheld against constitutional challenge',
     citation: '23 U.S.C. § 409 · Pierce County v. Guillen (2003)',
     maps: ['two'],

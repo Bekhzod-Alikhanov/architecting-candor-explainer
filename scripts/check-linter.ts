@@ -91,7 +91,7 @@ console.log(
 
 if (failures.length) {
   console.error('\nFAILED:')
-  for (const f of failures) console.error('  · ' + f)
+  for (const f of failures) console.error(`  · ${f}`)
   process.exit(1)
 }
 console.log('The linter reads tickets the way §2.2.3 describes.\n')

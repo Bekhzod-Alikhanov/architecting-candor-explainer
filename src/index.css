@@ -1,8 +1,8 @@
-@import 'tailwindcss';
+@import "tailwindcss";
 
-@import './styles/fonts.css';
-@import './styles/tokens.css';
-@import './styles/base.css';
-@import './styles/seam.css';
-@import './styles/components.css';
-@import './styles/print.css';
+@import "./styles/fonts.css";
+@import "./styles/tokens.css";
+@import "./styles/base.css";
+@import "./styles/seam.css";
+@import "./styles/components.css";
+@import "./styles/print.css";

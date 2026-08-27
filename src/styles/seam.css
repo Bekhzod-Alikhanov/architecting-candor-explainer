@@ -22,7 +22,7 @@
 /* The tick marks. A bound gutter between two document systems, or the
    sprocket edge between two microfilm frames. */
 .seam::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   bottom: 0;
@@ -41,13 +41,13 @@
 /* --- states -------------------------------------------------------------- */
 
 /* Accepting an inward flow. */
-.seam[data-state='live'] {
+.seam[data-state="live"] {
   background: var(--seam-live);
   --seam-glow: color-mix(in srgb, var(--color-instrument) 26%, transparent);
   box-shadow: 0 0 0 4px var(--seam-glow);
 }
 
-.seam[data-state='live']::before {
+.seam[data-state="live"]::before {
   background-image: repeating-linear-gradient(
     to bottom,
     var(--seam-live) 0 1px,
@@ -56,13 +56,13 @@
 }
 
 /* Refusing an outward flow. */
-.seam[data-state='refuse'] {
+.seam[data-state="refuse"] {
   background: var(--seam-refuse);
   --seam-glow: color-mix(in srgb, var(--color-stamp) 34%, transparent);
   box-shadow: 0 0 0 5px var(--seam-glow);
 }
 
-.seam[data-state='refuse']::before {
+.seam[data-state="refuse"]::before {
   background-image: repeating-linear-gradient(
     to bottom,
     var(--seam-refuse) 0 2px,
@@ -81,7 +81,7 @@
 }
 
 .seam--draggable::after {
-  content: '';
+  content: "";
   position: absolute;
   inset-block: 0;
   left: 50%;
@@ -91,11 +91,11 @@
   transition: background var(--dur-base) var(--ease-out);
 }
 
-.seam--draggable[data-state='live']::after {
+.seam--draggable[data-state="live"]::after {
   background: var(--seam-live);
 }
 
-.seam--draggable[data-state='refuse']::after {
+.seam--draggable[data-state="refuse"]::after {
   background: var(--seam-refuse);
 }
 

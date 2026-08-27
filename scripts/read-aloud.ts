@@ -88,11 +88,13 @@ for (const [label, mod] of MODULES) {
     walk(v, k, 0, out)
   }
   if (out.length === 0) continue
-  console.log('\n' + '='.repeat(78))
+  console.log(`\n${'='.repeat(78)}`)
   console.log(label.toUpperCase())
-  console.log('='.repeat(78) + '\n')
+  console.log(`${'='.repeat(78)}\n`)
   console.log(out.join('\n\n'))
 }
 
-console.log('\n' + '─'.repeat(78))
-console.log(`${strings} passages · roughly ${words} words · about ${Math.round(words / 150)} minutes aloud`)
+console.log(`\n${'─'.repeat(78)}`)
+console.log(
+  `${strings} passages · roughly ${words} words · about ${Math.round(words / 150)} minutes aloud`,
+)

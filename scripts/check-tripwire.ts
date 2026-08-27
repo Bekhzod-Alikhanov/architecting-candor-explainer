@@ -34,10 +34,13 @@ const row = (name: string, s: Settings) => {
   const r = evaluate(s)
   console.log(
     name.padEnd(34),
-    'escalations=' + String(r.escalations).padStart(3),
-    'nearMiss=' + String(r.nearMissCaptured).padStart(3) + '/' + String(r.nearMissTotal).padStart(3),
-    'missed=' + String(r.signalsMissed).padStart(2) + '/' + String(r.signalTotal).padStart(2),
-    'band=' + r.band,
+    `escalations=${String(r.escalations).padStart(3)}`,
+    'nearMiss=' +
+      String(r.nearMissCaptured).padStart(3) +
+      '/' +
+      String(r.nearMissTotal).padStart(3),
+    `missed=${String(r.signalsMissed).padStart(2)}/${String(r.signalTotal).padStart(2)}`,
+    `band=${r.band}`,
   )
   return r
 }
@@ -74,7 +77,10 @@ check(
   'Bands at maximum must miss more real signals than the recommended shape does.',
 )
 check(timid.escalations === 0, 'Bands at maximum should engage counsel never.')
-check(timid.band === 'none', `Bands at maximum should read as nothing to defend, got "${timid.band}".`)
+check(
+  timid.band === 'none',
+  `Bands at maximum should read as nothing to defend, got "${timid.band}".`,
+)
 
 // --- a channel that opens constantly ---------------------------------------
 check(
@@ -95,10 +101,7 @@ check(
   rec.band === 'strong',
   `The paper's recommended shape should read as pre-committed and quantified, got "${rec.band}".`,
 )
-check(
-  rec.bandCopy.authority.includes('Target'),
-  'The strong band must cite In re Target by name.',
-)
+check(rec.bandCopy.authority.includes('Target'), 'The strong band must cite In re Target by name.')
 
 // --- determinism ------------------------------------------------------------
 const a = evaluate(settings({}))
@@ -107,7 +110,10 @@ check(
   a.escalations === b.escalations && a.signalsMissed === b.signalsMissed,
   'The stream must be deterministic: two evaluations of the same settings disagreed.',
 )
-check(events.length === stream.count, `Expected ${stream.count} events, generated ${events.length}.`)
+check(
+  events.length === stream.count,
+  `Expected ${stream.count} events, generated ${events.length}.`,
+)
 
 // --- a configuration has to survive the address bar ------------------------
 const shared = settings({})
@@ -125,7 +131,13 @@ check(
   'A configuration must be readable back out of a query string.',
 )
 // Malformed input must fall back rather than throw or half-apply.
-for (const bad of ['', 'nonsense', '1-2-3.1.22', '62-58-48-58-54-62-46', '62-58-48-58-54-62-999.1.22']) {
+for (const bad of [
+  '',
+  'nonsense',
+  '1-2-3.1.22',
+  '62-58-48-58-54-62-46',
+  '62-58-48-58-54-62-999.1.22',
+]) {
   check(decodeSettings(bad) === null, `Malformed configuration "${bad}" should decode to null.`)
 }
 console.log(`shareable configuration: ${encoded}`)
@@ -133,7 +145,7 @@ console.log(`shareable configuration: ${encoded}`)
 console.log('')
 if (failures.length) {
   console.error('FAILED:')
-  for (const f of failures) console.error('  · ' + f)
+  for (const f of failures) console.error(`  · ${f}`)
   process.exit(1)
 }
 console.log('The tripwire behaves as the paper describes.\n')

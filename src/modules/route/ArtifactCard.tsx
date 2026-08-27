@@ -1,3 +1,17 @@
+/**
+ * biome-ignore-all lint/a11y/noNoninteractiveElementToInteractiveRole: an option
+ *   inside a listbox is `<li role="option">` per the ARIA authoring practices,
+ *   and that is what this is.
+ * biome-ignore-all lint/a11y/useFocusableInteractive: options in an
+ *   aria-activedescendant listbox must NOT be individually tabbable. Focus stays
+ *   on the container and the active option is named by aria-activedescendant.
+ *   Adding tabindex here would break the pattern rather than improve it.
+ * biome-ignore-all lint/a11y/useKeyWithClickEvents: the keyboard path lives on
+ *   the container for the same reason. Arrow keys move the active option and
+ *   1–4 route it. See RouteTheRecord's onKeyDown, and the listbox assertions in
+ *   scripts/check-keyboard.mjs which fail if any of this is lost again.
+ */
+
 import type { Artifact, Bin } from '../../content/artifacts'
 import { routeCopy } from '../../content/grading'
 

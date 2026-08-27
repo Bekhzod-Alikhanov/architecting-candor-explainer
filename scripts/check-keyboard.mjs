@@ -23,7 +23,9 @@ const BROWSER = [
   'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe',
   '/usr/bin/google-chrome',
   '/usr/bin/chromium',
-].filter(Boolean).find((p) => existsSync(p))
+]
+  .filter(Boolean)
+  .find((p) => existsSync(p))
 if (!BROWSER) {
   console.error('No Chrome or Edge binary found.')
   process.exit(1)
@@ -104,7 +106,8 @@ try {
     if (exceptionDetails)
       throw new Error(
         (exceptionDetails.exception?.description ?? exceptionDetails.text) +
-          ' :: ' + expression.replace(/\s+/g, ' ').slice(0, 110),
+          ' :: ' +
+          expression.replace(/\s+/g, ' ').slice(0, 110),
       )
     return result.value
   }
@@ -194,67 +197,161 @@ try {
     results.push([name, changed ? 'ok' : 'NO CHANGE', String(before), String(after)])
   }
 
+  // The listbox pattern has to be genuinely present. State changing is not
+  // enough on its own: the key handler is delegated to an ancestor, so a
+  // broken listbox would still appear to work.
+  const aria = await evaluate(`(() => {
+    const ul = document.querySelector('#route .rt__cards')
+    const li = document.querySelector('#route .rt__cards .acard')
+    return {
+      listboxRole: ul?.getAttribute('role') ?? null,
+      listboxTabbable: ul?.tabIndex ?? null,
+      optionRole: li?.getAttribute('role') ?? null,
+      activeDescendant: ul?.getAttribute('aria-activedescendant') ?? null,
+    }
+  })()`)
+  console.log('listbox pattern:', JSON.stringify(aria))
+  if (aria.listboxRole !== 'listbox')
+    failures.push(`the card queue has role "${aria.listboxRole}", expected listbox`)
+  if (aria.listboxTabbable !== 0)
+    failures.push(`the card queue is not tabbable (tabIndex ${aria.listboxTabbable})`)
+  if (aria.optionRole !== 'option')
+    failures.push(`cards have role "${aria.optionRole}", expected option`)
+  if (!aria.activeDescendant) failures.push('the card queue has no aria-activedescendant')
+
   // 01 · the reclassification scaffold
-  await test('01 timeline scaffold', '#pincer .scaffold__dot', ['ArrowRight', 'ArrowRight'],
-    `document.querySelector('#pincer .scaffold__meta span').textContent`)
+  await test(
+    '01 timeline scaffold',
+    '#pincer .scaffold__dot',
+    ['ArrowRight', 'ArrowRight'],
+    `document.querySelector('#pincer .scaffold__meta span').textContent`,
+  )
   // 01 · the entry list
-  await test('01 entry list', '#pincer .tl__entry', ['Enter'],
-    `document.querySelector('#pincer .tl__detailTitle').textContent`)
+  await test(
+    '01 entry list',
+    '#pincer .tl__entry',
+    ['Enter'],
+    `document.querySelector('#pincer .tl__detailTitle').textContent`,
+  )
 
   // 02 · the handoff track and the deviance meter
-  await test('02 handoff track', '#signal .decay__track li:nth-child(4) .decay__stop', ['Enter'],
-    `document.querySelector('#signal .decay__boundary span').textContent`)
-  await test('02 deviance meter', '#signal .drift__actions .btn', ['Enter'],
-    `document.querySelector('#signal .drift__count').textContent`)
+  await test(
+    '02 handoff track',
+    '#signal .decay__track li:nth-child(4) .decay__stop',
+    ['Enter'],
+    `document.querySelector('#signal .decay__boundary span').textContent`,
+  )
+  await test(
+    '02 deviance meter',
+    '#signal .drift__actions .btn',
+    ['Enter'],
+    `document.querySelector('#signal .drift__count').textContent`,
+  )
 
   // 03 · route a card from the listbox with a number key
-  await test('03 route by keyboard', '#route .rt__cards', ['ArrowDown', '1'],
-    `document.querySelectorAll('#route .rt__cards .acard').length`)
-  await test('03 bin activation', '#route .bin[data-bin="two"] .bin__head', ['Enter'],
-    `document.querySelectorAll('#route .bin[data-bin="two"] .chip').length`)
+  await test(
+    '03 route by keyboard',
+    '#route .rt__cards',
+    ['ArrowDown', '1'],
+    `document.querySelectorAll('#route .rt__cards .acard').length`,
+  )
+  await test(
+    '03 bin activation',
+    '#route .bin[data-bin="two"] .bin__head',
+    ['Enter'],
+    `document.querySelectorAll('#route .bin[data-bin="two"] .chip').length`,
+  )
 
   // 04 · select an object, then send it somewhere
-  await test('04 object select', '#architecture .obj:nth-child(2)', [' '],
-    `document.querySelector('#architecture .arch__objText').textContent`)
-  await test('04 valve attempt', '#architecture .cbox[data-node="three"] .cbox__hit', ['Enter'],
-    `document.querySelector('#architecture .valve').dataset.state`)
+  await test(
+    '04 object select',
+    '#architecture .obj:nth-child(2)',
+    [' '],
+    `document.querySelector('#architecture .arch__objText').textContent`,
+  )
+  await test(
+    '04 valve attempt',
+    '#architecture .cbox[data-node="three"] .cbox__hit',
+    ['Enter'],
+    `document.querySelector('#architecture .valve').dataset.state`,
+  )
   await evaluate(`(() => { const b = [...document.querySelectorAll('#architecture .obj')]
     .find(x => /completed change/i.test(x.textContent)); if (b) b.click(); return true })()`)
   await sleep(200)
-  await test('04 overwrite refused', '#architecture .arch__overwrite', ['Enter'],
-    `document.querySelector('#architecture .valve__title').textContent`)
-  await test('04 arrow explains itself', '#architecture .arrow__summary', ['Enter'],
-    `document.querySelector('#architecture .arrow').open`)
+  await test(
+    '04 overwrite refused',
+    '#architecture .arch__overwrite',
+    ['Enter'],
+    `document.querySelector('#architecture .valve__title').textContent`,
+  )
+  await test(
+    '04 arrow explains itself',
+    '#architecture .arrow__summary',
+    ['Enter'],
+    `document.querySelector('#architecture .arrow').open`,
+  )
 
   // 05 · a band slider and the tier switch
-  await test('05 band slider', '#calibrate .slider__input', ['ArrowRight', 'ArrowRight'],
-    `document.querySelector('#calibrate .slider__input').value`)
-  await test('05 logging tier', '#calibrate .tier__toggle', [' '],
-    `document.querySelector('#calibrate .tier').dataset.on`)
+  await test(
+    '05 band slider',
+    '#calibrate .slider__input',
+    ['ArrowRight', 'ArrowRight'],
+    `document.querySelector('#calibrate .slider__input').value`,
+  )
+  await test(
+    '05 logging tier',
+    '#calibrate .tier__toggle',
+    [' '],
+    `document.querySelector('#calibrate .tier').dataset.on`,
+  )
 
   // 06 · filter, sort, and open a row
-  await test('06 filter chip', '#regimes .chipbtn:nth-child(4)', ['Enter'],
-    `document.querySelectorAll('#regimes tbody:first-of-type .reg__row').length`)
-  await test('06 sort select', '#regimes .reg__select', ['ArrowDown'],
-    `document.querySelector('#regimes .reg__select').value`)
-  await test('06 open a row', '#regimes .reg__rowBtn', ['Enter'],
-    `document.querySelector('#regimes .lesson__name').textContent`)
+  await test(
+    '06 filter chip',
+    '#regimes .chipbtn:nth-child(4)',
+    ['Enter'],
+    `document.querySelectorAll('#regimes tbody:first-of-type .reg__row').length`,
+  )
+  await test(
+    '06 sort select',
+    '#regimes .reg__select',
+    ['ArrowDown'],
+    `document.querySelector('#regimes .reg__select').value`,
+  )
+  await test(
+    '06 open a row',
+    '#regimes .reg__rowBtn',
+    ['Enter'],
+    `document.querySelector('#regimes .lesson__name').textContent`,
+  )
 
   // 07 · switch a protection off
-  await test('07 protection switch', '#ask .prot__toggle', [' '],
-    `document.querySelector('#ask .prot__summary').dataset.state`)
+  await test(
+    '07 protection switch',
+    '#ask .prot__toggle',
+    [' '],
+    `document.querySelector('#ask .prot__summary').dataset.state`,
+  )
 
   // 08 · the linter and the print control
-  await test('08 load example', '#gc .lint__inputActions .btn', ['Enter'],
-    `document.querySelectorAll('#gc .flag').length`)
-  await test('08 textarea reachable', '#gc .lint__input', ['Tab'],
-    `document.activeElement.className`)
+  await test(
+    '08 load example',
+    '#gc .lint__inputActions .btn',
+    ['Enter'],
+    `document.querySelectorAll('#gc .flag').length`,
+  )
+  await test(
+    '08 textarea reachable',
+    '#gc .lint__input',
+    ['Tab'],
+    `document.activeElement.className`,
+  )
 
-  console.log('\nInteractive'.padEnd(28) + 'Result'.padEnd(16) + 'before → after')
+  console.log(`${'\nInteractive'.padEnd(28) + 'Result'.padEnd(16)}before → after`)
   console.log('─'.repeat(96))
   for (const [name, verdict, before, after] of results) {
     console.log(
-      name.padEnd(28) + verdict.padEnd(16) + `${before.slice(0, 24)} → ${after.slice(0, 24)}`,
+      `${name.padEnd(28) + verdict.padEnd(16)}${before.slice(0, 24)} → ${after.slice(0, 24)}`,
     )
   }
 
@@ -271,7 +368,7 @@ try {
 console.log('')
 if (failures.length) {
   console.error('FAILED:')
-  for (const f of failures) console.error('  · ' + f)
+  for (const f of failures) console.error(`  · ${f}`)
   process.exit(1)
 }
 console.log(`All ${results.length} interactives operable by keyboard.\n`)

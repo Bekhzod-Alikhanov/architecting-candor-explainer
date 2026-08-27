@@ -57,7 +57,7 @@
   border-color: var(--instrument-on-ground);
 }
 
-.obj[data-selected='true'] {
+.obj[data-selected="true"] {
   border-color: var(--color-instrument);
   background: var(--ground-raised);
   box-shadow: inset 3px 0 0 var(--color-instrument);
@@ -65,11 +65,11 @@
 
 /* A conclusion looks like counsel's work even in the tray, so the reader can
    see which objects are the dangerous ones before trying to move them. */
-.obj[data-kind='conclusion'] {
+.obj[data-kind="conclusion"] {
   border-inline-start: 3px solid var(--color-stamp);
 }
 
-.obj[data-kind='conclusion'][data-selected='true'] {
+.obj[data-kind="conclusion"][data-selected="true"] {
   box-shadow: inset 3px 0 0 var(--color-stamp);
   border-color: var(--color-stamp);
 }
@@ -186,29 +186,29 @@
   transition: border-color var(--dur-base) var(--ease-out);
 }
 
-.cbox[data-node='one'] {
+.cbox[data-node="one"] {
   border-inline-start: 3px solid var(--color-instrument);
 }
 
-.cbox[data-node='two'] {
+.cbox[data-node="two"] {
   border-inline-start: 3px solid var(--color-stamp);
 }
 
-.cbox[data-node='three'] {
+.cbox[data-node="three"] {
   border-inline-start: 3px dashed var(--color-instrument);
 }
 
-.cbox[data-side='outward'] {
+.cbox[data-side="outward"] {
   background: var(--ground-deep);
   border-style: dashed;
 }
 
-.cbox[data-last='allowed'] {
+.cbox[data-last="allowed"] {
   border-color: var(--color-instrument);
   box-shadow: 0 0 0 2px var(--tint-instrument);
 }
 
-.cbox[data-last='refused'] {
+.cbox[data-last="refused"] {
   border-color: var(--color-stamp);
   box-shadow: 0 0 0 2px var(--tint-stamp);
 }
@@ -251,9 +251,9 @@
   color: var(--instrument-on-ground);
 }
 
-.cbox[data-node='two'] .cbox__status,
-.cbox[data-node='one-overwrite'] .cbox__status,
-.cbox[data-side='outward'] .cbox__status {
+.cbox[data-node="two"] .cbox__status,
+.cbox[data-node="one-overwrite"] .cbox__status,
+.cbox[data-side="outward"] .cbox__status {
   color: var(--stamp-on-ground);
 }
 
@@ -291,7 +291,7 @@
   border-color: var(--color-stamp);
 }
 
-.arch__overwrite[data-last='refused'] {
+.arch__overwrite[data-last="refused"] {
   border-style: solid;
   border-color: var(--color-stamp);
   background: var(--tint-stamp);
@@ -354,12 +354,12 @@
 }
 
 .arrow__summary::before {
-  content: '▸';
+  content: "▸";
   color: var(--instrument-on-ground);
 }
 
 .arrow[open] .arrow__summary::before {
-  content: '▾';
+  content: "▾";
 }
 
 .arrow__route {
@@ -427,12 +427,12 @@
     background var(--dur-base) var(--ease-out);
 }
 
-.valve[data-state='refused'] {
+.valve[data-state="refused"] {
   border-color: var(--color-stamp);
   background: color-mix(in srgb, var(--color-stamp) 10%, var(--ground-panel));
 }
 
-.valve[data-state='allowed'] {
+.valve[data-state="allowed"] {
   border-color: var(--color-instrument);
   background: color-mix(in srgb, var(--color-instrument) 8%, var(--ground-panel));
 }
@@ -460,11 +460,11 @@
   border: 1px solid currentColor;
 }
 
-.valve[data-state='refused'] .valve__badge {
+.valve[data-state="refused"] .valve__badge {
   color: var(--stamp-on-ground);
 }
 
-.valve[data-state='allowed'] .valve__badge {
+.valve[data-state="allowed"] .valve__badge {
   color: var(--instrument-on-ground);
 }
 
@@ -590,11 +590,11 @@
   color: var(--text-on-ground-faint);
 }
 
-.arch__logItem[data-allowed='true'] .arch__logVerdict {
+.arch__logItem[data-allowed="true"] .arch__logVerdict {
   color: var(--instrument-on-ground);
 }
 
-.arch__logItem[data-allowed='false'] .arch__logVerdict {
+.arch__logItem[data-allowed="false"] .arch__logVerdict {
   color: var(--stamp-on-ground);
 }
 
@@ -618,7 +618,7 @@
   cursor: grabbing;
 }
 
-.arch__overwrite[data-over='true'] {
+.arch__overwrite[data-over="true"] {
   border-style: solid;
   border-color: var(--color-stamp);
   background: var(--tint-stamp);

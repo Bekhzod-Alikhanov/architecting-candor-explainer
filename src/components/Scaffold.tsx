@@ -27,14 +27,7 @@ export interface ScaffoldProps {
   readonly className?: string
 }
 
-export function Scaffold({
-  steps,
-  current,
-  onChange,
-  label,
-  hint,
-  className = '',
-}: ScaffoldProps) {
+export function Scaffold({ steps, current, onChange, label, hint, className = '' }: ScaffoldProps) {
   const last = steps.length - 1
   const released = current >= last
   const step = steps[Math.min(Math.max(current, 0), last)]
@@ -63,7 +56,9 @@ export function Scaffold({
     >
       <div className="scaffold__meta" data-released={released}>
         <span>
-          {released ? 'Released' : `Step ${String(current + 1).padStart(2, '0')} of ${String(last).padStart(2, '0')}`}
+          {released
+            ? 'Released'
+            : `Step ${String(current + 1).padStart(2, '0')} of ${String(last).padStart(2, '0')}`}
         </span>
         {released && hint ? <span>{hint}</span> : null}
       </div>

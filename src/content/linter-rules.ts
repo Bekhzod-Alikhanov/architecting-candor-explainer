@@ -173,14 +173,19 @@ export const rules: readonly Rule[] = [
 /** The field skeleton the paper recommends. Templating is what prevents the prose. */
 export const template = {
   heading: 'The templated ticket',
-  lead:
-    'The discipline is not a matter of writing more carefully. It is a matter of templated fields, because practitioners under-document when documentation is unmandated, unrewarded and separate from the workflow. A ticket built from these fields produces the measurement form without asking an engineer to make a legal characterisation.',
+  lead: 'The discipline is not a matter of writing more carefully. It is a matter of templated fields, because practitioners under-document when documentation is unmandated, unrewarded and separate from the workflow. A ticket built from these fields produces the measurement form without asking an engineer to make a legal characterisation.',
   fields: [
-    { name: 'Observed metric and window', example: 'clf_confidence 0.31 vs threshold 0.60; 7d window' },
+    {
+      name: 'Observed metric and window',
+      example: 'clf_confidence 0.31 vs threshold 0.60; 7d window',
+    },
     { name: 'Implicated model or service', example: 'asst-4.2, policy_version 2026.07.3' },
     { name: 'Affected slice or population', example: 'health_advice_longform' },
     { name: 'Change requested', example: 'lower deploy_threshold on this slice to 0.75' },
-    { name: 'Regression test that demonstrates completion', example: 'no output below confidence 0.35 without prior guardrail activation' },
+    {
+      name: 'Regression test that demonstrates completion',
+      example: 'no output below confidence 0.35 without prior guardrail activation',
+    },
     { name: 'Owner', example: 'platform-safety' },
     { name: 'Release gate', example: 'blocks 2026.08.0' },
   ],

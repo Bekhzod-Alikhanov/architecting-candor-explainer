@@ -110,7 +110,7 @@ img {
 .reg-console {
   font-family: var(--font-mono);
   font-variant-numeric: tabular-nums;
-  font-feature-settings: 'zero' 1;
+  font-feature-settings: "zero" 1;
   letter-spacing: -0.005em;
 }
 
@@ -148,7 +148,7 @@ img {
 /* The faint horizontal banding of a page scanned on a flatbed, plus the
    shadow a bound edge throws along the gutter. */
 .doc-object--scanned::before {
-  content: '';
+  content: "";
   position: absolute;
   inset: 0;
   pointer-events: none;
@@ -208,11 +208,7 @@ img {
 .prov--simulated {
   color: var(--ochre-on-ground);
   border: 1px solid color-mix(in srgb, var(--color-ochre) 55%, transparent);
-  background-image: repeating-linear-gradient(
-    -45deg,
-    var(--tint-ochre) 0 4px,
-    transparent 4px 8px
-  );
+  background-image: repeating-linear-gradient(-45deg, var(--tint-ochre) 0 4px, transparent 4px 8px);
 }
 
 /* A value the paper does not supply. Outlined, no fill. */

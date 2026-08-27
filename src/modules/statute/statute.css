@@ -96,7 +96,7 @@
   transition: border-color var(--dur-base) var(--ease-out);
 }
 
-.prot__item[data-off='true'] {
+.prot__item[data-off="true"] {
   border-inline-start-color: var(--color-stamp);
   background: color-mix(in srgb, var(--color-stamp) 8%, var(--ground-panel));
 }
@@ -130,7 +130,7 @@
     background var(--dur-fast) var(--ease-out);
 }
 
-.prot__item[data-off='true'] .prot__knob {
+.prot__item[data-off="true"] .prot__knob {
   inset-inline-start: 2px;
   background: var(--stamp-on-ground);
 }
@@ -151,7 +151,7 @@
   color: var(--instrument-on-ground);
 }
 
-.prot__item[data-off='true'] .prot__state {
+.prot__item[data-off="true"] .prot__state {
   color: var(--stamp-on-ground);
 }
 
@@ -180,15 +180,15 @@
   transition: border-color var(--dur-base) var(--ease-out);
 }
 
-.prot__summary[data-state='intact'] {
+.prot__summary[data-state="intact"] {
   border-inline-start-color: var(--color-instrument);
 }
 
-.prot__summary[data-state='partial'] {
+.prot__summary[data-state="partial"] {
   border-inline-start-color: var(--color-ochre);
 }
 
-.prot__summary[data-state='all-off'] {
+.prot__summary[data-state="all-off"] {
   border-inline-start-color: var(--color-stamp);
   background: color-mix(in srgb, var(--color-stamp) 10%, transparent);
 }
@@ -199,11 +199,11 @@
   font-size: var(--text-cs-lg);
 }
 
-.prot__summary[data-state='all-off'] .prot__summaryTitle {
+.prot__summary[data-state="all-off"] .prot__summaryTitle {
   color: var(--stamp-on-ground);
 }
 
-.prot__summary[data-state='intact'] .prot__summaryTitle {
+.prot__summary[data-state="intact"] .prot__summaryTitle {
   color: var(--instrument-on-ground);
 }
 

@@ -146,7 +146,7 @@
   transition: border-color var(--dur-base) var(--ease-out);
 }
 
-.tier[data-on='true'] {
+.tier[data-on="true"] {
   border-inline-start-color: var(--color-ochre);
 }
 
@@ -168,7 +168,7 @@
   color: var(--text-on-ground-muted);
 }
 
-.tier[data-on='true'] .tier__toggle {
+.tier[data-on="true"] .tier__toggle {
   color: var(--ochre-on-ground);
 }
 
@@ -194,7 +194,7 @@
     background var(--dur-fast) var(--ease-out);
 }
 
-.tier[data-on='true'] .tier__knob {
+.tier[data-on="true"] .tier__knob {
   inset-inline-start: 16px;
   background: var(--color-ochre);
 }
@@ -285,32 +285,32 @@
   transition: fill var(--dur-fast) var(--ease-out);
 }
 
-[data-disposition='escalated'] {
+[data-disposition="escalated"] {
   fill: var(--color-stamp);
 }
 
-[data-disposition='logged'] {
+[data-disposition="logged"] {
   fill: var(--color-ochre);
 }
 
-[data-disposition='uncaptured'] {
+[data-disposition="uncaptured"] {
   fill: color-mix(in srgb, var(--color-doc) 26%, transparent);
 }
 
 .stream__near {
-  fill: none !important;
+  fill: none;
   stroke-width: 1.8;
 }
 
-.stream__near[data-disposition='escalated'] {
+.stream__near[data-disposition="escalated"] {
   stroke: var(--color-stamp);
 }
 
-.stream__near[data-disposition='logged'] {
+.stream__near[data-disposition="logged"] {
   stroke: var(--color-ochre);
 }
 
-.stream__near[data-disposition='uncaptured'] {
+.stream__near[data-disposition="uncaptured"] {
   stroke: color-mix(in srgb, var(--color-doc) 34%, transparent);
 }
 
@@ -422,7 +422,7 @@
   color: var(--color-doc);
 }
 
-.ro[data-tone='bad'] .ro__value {
+.ro[data-tone="bad"] .ro__value {
   color: var(--stamp-on-ground);
 }
 
@@ -438,15 +438,15 @@
   border-inline-start: 3px solid var(--ground-rule);
 }
 
-.ro--band[data-band='strong'] {
+.ro--band[data-band="strong"] {
   border-inline-start-color: var(--color-instrument);
 }
 
-.ro--band[data-band='weak'] {
+.ro--band[data-band="weak"] {
   border-inline-start-color: var(--color-stamp);
 }
 
-.ro--band[data-band='narrow'] {
+.ro--band[data-band="narrow"] {
   border-inline-start-color: var(--color-ochre);
 }
 
@@ -458,15 +458,15 @@
   letter-spacing: -0.01em;
 }
 
-.ro--band[data-band='strong'] .ro__bandLabel {
+.ro--band[data-band="strong"] .ro__bandLabel {
   color: var(--instrument-on-ground);
 }
 
-.ro--band[data-band='weak'] .ro__bandLabel {
+.ro--band[data-band="weak"] .ro__bandLabel {
   color: var(--stamp-on-ground);
 }
 
-.ro--band[data-band='narrow'] .ro__bandLabel {
+.ro--band[data-band="narrow"] .ro__bandLabel {
   color: var(--ochre-on-ground);
 }
 

@@ -23,11 +23,16 @@ const named = objects.flatMap((o) => o.refuse.map((r) => ({ object: o, rule: r }
 console.log('\nNamed refusals')
 console.log('─'.repeat(96))
 for (const { object, rule } of named) {
-  console.log(`  ${object.label.padEnd(36)} → ${nodeName(rule.to).padEnd(28)} ${rule.authority ?? ''}`)
+  console.log(
+    `  ${object.label.padEnd(36)} → ${nodeName(rule.to).padEnd(28)} ${rule.authority ?? ''}`,
+  )
   check(rule.reason.length > 40, `Refusal ${object.id}→${rule.to} has no substantive reason.`)
   check(rule.title.length > 0, `Refusal ${object.id}→${rule.to} has no title.`)
 }
-check(named.length >= 4, `The valve must refuse at least four distinct flows. It names ${named.length}.`)
+check(
+  named.length >= 4,
+  `The valve must refuse at least four distinct flows. It names ${named.length}.`,
+)
 
 // The four the specification calls out by name must all be present and refused.
 const required: [string, string][] = [
@@ -55,7 +60,9 @@ console.log('\nPermitted flows')
 console.log('─'.repeat(96))
 for (const [objectId, to, label] of permitted) {
   const r = resolveFlow(objectId, to as never)
-  console.log(`  ${(objectId + ' → ' + to).padEnd(36)} ${r.allowed ? 'permitted' : 'REFUSED'}   ${label}`)
+  console.log(
+    `  ${(`${objectId} → ${to}`).padEnd(36)} ${r.allowed ? 'permitted' : 'REFUSED'}   ${label}`,
+  )
   check(r.allowed, `"${label}" must be permitted, but the valve refused it (${objectId} → ${to}).`)
 }
 
@@ -73,7 +80,10 @@ for (const o of objects.filter((x) => x.kind === 'conclusion')) {
   for (const n of nodes) {
     if (n.id === o.home) continue
     const r = resolveFlow(o.id, n.id)
-    check(!r.allowed, `"${o.label}" escaped to ${n.name}. Causal and fault work must not cross outward.`)
+    check(
+      !r.allowed,
+      `"${o.label}" escaped to ${n.name}. Causal and fault work must not cross outward.`,
+    )
   }
 }
 
@@ -84,7 +94,7 @@ console.log(
 
 if (failures.length) {
   console.error('\nFAILED:')
-  for (const f of failures) console.error('  · ' + f)
+  for (const f of failures) console.error(`  · ${f}`)
   process.exit(1)
 }
 console.log('The valve holds.\n')

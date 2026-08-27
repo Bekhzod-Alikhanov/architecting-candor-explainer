@@ -53,7 +53,10 @@ export function BoundaryChart({ entries, current, onSelect, vertical }: Boundary
   // The line begins at the left edge rather than at the first dot, so a single
   // drawn entry still produces a visible boundary instead of a lone point.
   const points: { t: number; classification: number }[] = first
-    ? [{ t: axis.from, classification: first.classification }, ...drawn.map((e) => ({ t: e.t, classification: e.classification }))]
+    ? [
+        { t: axis.from, classification: first.classification },
+        ...drawn.map((e) => ({ t: e.t, classification: e.classification })),
+      ]
     : []
 
   // And it runs out to the far edge once everything is drawn, so the boundary
@@ -87,22 +90,11 @@ export function BoundaryChart({ entries, current, onSelect, vertical }: Boundary
   const startLevel = entries[0]?.classification ?? 1
   const closeAt = classScale(startLevel)
 
-  const lineGen = d3line<{ t: number; classification: number }>()
-    .x(px)
-    .y(py)
-    .curve(curveStepAfter)
+  const lineGen = d3line<{ t: number; classification: number }>().x(px).y(py).curve(curveStepAfter)
 
   const areaGen = vertical
-    ? d3area<{ t: number; classification: number }>()
-        .y(py)
-        .x0(closeAt)
-        .x1(px)
-        .curve(curveStepAfter)
-    : d3area<{ t: number; classification: number }>()
-        .x(px)
-        .y0(closeAt)
-        .y1(py)
-        .curve(curveStepAfter)
+    ? d3area<{ t: number; classification: number }>().y(py).x0(closeAt).x1(px).curve(curveStepAfter)
+    : d3area<{ t: number; classification: number }>().x(px).y0(closeAt).y1(py).curve(curveStepAfter)
 
   const linePath = points.length ? lineGen(points) : null
   const areaPath = points.length > 0 ? areaGen(points) : null
@@ -115,9 +107,7 @@ export function BoundaryChart({ entries, current, onSelect, vertical }: Boundary
       viewBox={`0 0 ${w} ${h}`}
       role="img"
       aria-label={`The product classification boundary from ${axis.from} to 2027. ${
-        activeEntry
-          ? `Currently showing ${activeEntry.date}: ${activeEntry.title}.`
-          : ''
+        activeEntry ? `Currently showing ${activeEntry.date}: ${activeEntry.title}.` : ''
       } The full sequence is listed below the chart.`}
       preserveAspectRatio="xMidYMid meet"
     >
@@ -130,7 +120,15 @@ export function BoundaryChart({ entries, current, onSelect, vertical }: Boundary
           patternUnits="userSpaceOnUse"
           patternTransform="rotate(45)"
         >
-          <line x1="0" y1="0" x2="0" y2="7" stroke="var(--color-instrument)" strokeWidth="1.4" opacity="0.32" />
+          <line
+            x1="0"
+            y1="0"
+            x2="0"
+            y2="7"
+            stroke="var(--color-instrument)"
+            strokeWidth="1.4"
+            opacity="0.32"
+          />
         </pattern>
       </defs>
 
@@ -183,9 +181,7 @@ export function BoundaryChart({ entries, current, onSelect, vertical }: Boundary
       })}
 
       {/* The product territory. It grows. */}
-      {areaPath ? (
-        <path d={areaPath} fill={`url(#hatch-${uid})`} className="bchart__area" />
-      ) : null}
+      {areaPath ? <path d={areaPath} fill={`url(#hatch-${uid})`} className="bchart__area" /> : null}
 
       {/* Span entries get a bracket showing they cover a period, not a moment. */}
       {drawn
@@ -236,7 +232,6 @@ export function BoundaryChart({ entries, current, onSelect, vertical }: Boundary
             data-current={isCurrent}
             data-future={e.future ? 'true' : undefined}
             onClick={() => onSelect(i)}
-            role="presentation"
           >
             {isCurrent ? <circle cx={cx} cy={cy} r={11} className="bchart__halo" /> : null}
             <circle cx={cx} cy={cy} r={5.5} className="bchart__dot" />

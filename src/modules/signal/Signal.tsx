@@ -69,7 +69,9 @@ export function Signal() {
                   onClick={() => setStage(i)}
                 >
                   <span className="decay__stopBar" aria-hidden="true">
-                    <span style={{ blockSize: `${(h.fields.length / origin.fields.length) * 100}%` }} />
+                    <span
+                      style={{ blockSize: `${(h.fields.length / origin.fields.length) * 100}%` }}
+                    />
                   </span>
                   <span className="decay__stopName">{h.actor}</span>
                   <span className="decay__stopCount" data-figure>
@@ -98,7 +100,9 @@ export function Signal() {
               </div>
               {current.dropped ? (
                 <div>
-                  <p className="decay__colLabel decay__colLabel--lost">{translation.droppedLabel}</p>
+                  <p className="decay__colLabel decay__colLabel--lost">
+                    {translation.droppedLabel}
+                  </p>
                   <p className="decay__dropped">{current.dropped}</p>
                 </div>
               ) : null}

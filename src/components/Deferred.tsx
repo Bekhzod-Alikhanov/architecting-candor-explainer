@@ -75,7 +75,11 @@ export function Deferred({ id, n, title, seq, children }: DeferredProps) {
   }, [mounted, id])
 
   if (mounted) {
-    return <Suspense fallback={<Placeholder id={id} n={n} title={title} seq={seq} />}>{children}</Suspense>
+    return (
+      <Suspense fallback={<Placeholder id={id} n={n} title={title} seq={seq} />}>
+        {children}
+      </Suspense>
+    )
   }
 
   return (

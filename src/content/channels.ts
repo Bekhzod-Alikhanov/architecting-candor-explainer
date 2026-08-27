@@ -8,7 +8,14 @@
  * The rules are not: they are the paper's, from §1.2 and §3.2.2.
  */
 
-export type NodeId = 'one' | 'one-overwrite' | 'two' | 'three' | 'dashboard' | 'public' | 'regulator'
+export type NodeId =
+  | 'one'
+  | 'one-overwrite'
+  | 'two'
+  | 'three'
+  | 'dashboard'
+  | 'public'
+  | 'regulator'
 
 export interface ChannelNode {
   readonly id: NodeId
@@ -427,8 +434,7 @@ export const architectureCopy = {
   objectsLabel: 'Objects',
   targetsLabel: 'Destinations',
   logLabel: 'Attempt log',
-  logNote:
-    'Append-only, like everything else here. Your refused attempts stay on the record too.',
+  logNote: 'Append-only, like everything else here. Your refused attempts stay on the record too.',
   logEmpty: 'Nothing attempted yet. Select an object, then choose a destination.',
   chooseObject: 'Select an object to move',
   chooseTarget: 'Now choose a destination',

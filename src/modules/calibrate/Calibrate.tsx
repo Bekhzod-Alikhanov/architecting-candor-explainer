@@ -40,9 +40,10 @@ const STEP_SETTINGS: readonly (Settings | null)[] = [
 ]
 
 const INITIAL: Settings = {
-  levels: Object.fromEntries(
-    dimensions.map((d) => [d.id, d.defaultLevel]),
-  ) as Record<DimensionId, number>,
+  levels: Object.fromEntries(dimensions.map((d) => [d.id, d.defaultLevel])) as Record<
+    DimensionId,
+    number
+  >,
   loggingTier: false,
   loggingOffset: 22,
 }
@@ -50,8 +51,10 @@ const INITIAL: Settings = {
 export function Calibrate() {
   // A shared link carries a whole configuration. The stream is seeded, so the
   // reader who opens it sees the same quarter of events and the same readouts.
-  const [settings, setSettings] = useState<Settings>(
-    () => (typeof window === 'undefined' ? INITIAL : settingsFromLocation(window.location.search) ?? INITIAL),
+  const [settings, setSettings] = useState<Settings>(() =>
+    typeof window === 'undefined'
+      ? INITIAL
+      : (settingsFromLocation(window.location.search) ?? INITIAL),
   )
   const [copied, setCopied] = useState(false)
   const [step, setStep] = useState(0)

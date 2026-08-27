@@ -68,9 +68,7 @@ export function Hero() {
           <Prov kind="simulated" />
         </div>
         <p className="hero__standfirst">
-          {wide
-            ? r.standfirst
-            : r.standfirst.replace(r.dragInstruction, r.standfirstStacked)}
+          {wide ? r.standfirst : r.standfirst.replace(r.dragInstruction, r.standfirstStacked)}
         </p>
 
         <div className="hero__split" data-stacked={!wide}>
@@ -105,7 +103,10 @@ export function Hero() {
           />
 
           {/* The legal reading. Same facts. */}
-          <div className="hero__pane hero__exhibitWrap" style={wide ? { flex: '1 1 0' } : undefined}>
+          <div
+            className="hero__pane hero__exhibitWrap"
+            style={wide ? { flex: '1 1 0' } : undefined}
+          >
             <div className="hero__exhibit doc-object doc-object--scanned on-doc">
               <div className="hero__exhibitHead">
                 <span className="hero__exhibitNo">{r.exhibitNo}</span>

@@ -8,33 +8,34 @@
     "build": "tsc -b && vite build",
     "preview": "vite preview",
     "typecheck": "tsc -b --noEmit",
-    "og": "node scripts/render-og.mjs",
+    "lint": "biome check .",
+    "lint:fix": "biome check --write .",
+    "format": "biome format --write .",
+    "check": "pnpm check:grading && pnpm check:valve && pnpm check:tripwire && pnpm check:linter",
     "check:grading": "jiti scripts/check-grading.ts",
     "check:valve": "jiti scripts/check-valve.ts",
-    "check": "pnpm check:grading && pnpm check:valve && pnpm check:tripwire && pnpm check:linter",
     "check:tripwire": "jiti scripts/check-tripwire.ts",
     "check:linter": "jiti scripts/check-linter.ts",
     "check:keyboard": "node scripts/check-keyboard.mjs",
     "audit:a11y": "node scripts/audit-a11y.mjs",
-    "read:aloud": "jiti scripts/read-aloud.ts"
+    "read:aloud": "jiti scripts/read-aloud.ts",
+    "og": "node scripts/render-og.mjs"
   },
   "dependencies": {
-    "d3-array": "^3.2.4",
     "d3-scale": "^4.0.2",
     "d3-shape": "^3.2.0",
-    "framer-motion": "^13.1.1",
     "react": "^19.2.8",
     "react-dom": "^19.2.8"
   },
   "devDependencies": {
+    "@biomejs/biome": "^2.5.10",
     "@fontsource/ibm-plex-mono": "^5.3.0",
     "@fontsource/ibm-plex-sans": "^5.3.0",
     "@fontsource/spectral": "^5.3.0",
     "@tailwindcss/vite": "^4.3.3",
-    "@types/d3-array": "^3.2.2",
     "@types/d3-scale": "^4.0.9",
     "@types/d3-shape": "^3.2.0",
-    "@types/node": "^26.2.0",
+    "@types/node": "^24.13.3",
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.4",
     "@vitejs/plugin-react": "^6.1.0",
@@ -44,5 +45,10 @@
     "tailwindcss": "^4.3.3",
     "typescript": "^7.0.2",
     "vite": "^8.2.2"
-  }
+  },
+  "engines": {
+    "node": ">=24.18.0 <25",
+    "pnpm": ">=11.13.0"
+  },
+  "packageManager": "pnpm@11.13.1"
 }

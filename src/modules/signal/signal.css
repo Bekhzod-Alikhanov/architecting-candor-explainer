@@ -97,12 +97,12 @@
   border-color: var(--instrument-on-ground);
 }
 
-.decay__stop[data-active='true'] {
+.decay__stop[data-active="true"] {
   border-color: var(--color-instrument);
   background: var(--ground-raised);
 }
 
-.decay__stop[data-passed='true'] {
+.decay__stop[data-passed="true"] {
   opacity: 0.7;
 }
 
@@ -125,7 +125,7 @@
   transition: block-size var(--dur-base) var(--ease-out);
 }
 
-.decay__stop[data-active='true'] .decay__stopBar > span {
+.decay__stop[data-active="true"] .decay__stopBar > span {
   background: var(--color-instrument);
 }
 
@@ -165,11 +165,11 @@
 }
 
 /* The harder the boundary, the more it wears counsel's ink. */
-.decay__boundary[data-boundary='semantic'] > span {
+.decay__boundary[data-boundary="semantic"] > span {
   color: var(--ochre-on-ground);
 }
 
-.decay__boundary[data-boundary='pragmatic'] > span {
+.decay__boundary[data-boundary="pragmatic"] > span {
   color: var(--stamp-on-ground);
 }
 
@@ -280,7 +280,7 @@
   max-inline-size: 100%;
 }
 
-.drift[data-harmed='true'] .drift__accepted {
+.drift[data-harmed="true"] .drift__accepted {
   background: var(--tint-stamp);
   border-inline-end-color: var(--color-stamp);
 }
@@ -332,7 +332,7 @@
   color: var(--color-doc);
 }
 
-.drift[data-harmed='true'] .drift__count {
+.drift[data-harmed="true"] .drift__count {
   color: var(--stamp-on-ground);
 }
 

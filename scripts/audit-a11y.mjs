@@ -91,7 +91,8 @@ try {
       awaitPromise,
       returnByValue: true,
     })
-    if (exceptionDetails) throw new Error(exceptionDetails.text + ' ' + (exceptionDetails.exception?.description ?? ''))
+    if (exceptionDetails)
+      throw new Error(`${exceptionDetails.text} ${exceptionDetails.exception?.description ?? ''}`)
     return result.value
   }
 

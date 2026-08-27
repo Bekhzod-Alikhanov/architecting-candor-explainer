@@ -28,24 +28,24 @@
      This matches on "neither is, nor contains, the checklist" instead. */
   .skip-link,
   main > *:not(#gc):not(:has(#checklist)) {
-    display: none !important;
+    display: none;
   }
 
   #gc > *:not(#checklist) {
-    display: none !important;
+    display: none;
   }
 
   /* The page wrapper's gutters and measure do not apply to paper. */
   main.page,
   section.page {
-    padding-inline: 0 !important;
-    max-width: none !important;
-    margin: 0 !important;
+    padding-inline: 0;
+    max-width: none;
+    margin: 0;
   }
 
   section#gc {
-    padding-block: 0 !important;
-    border: 0 !important;
+    padding-block: 0;
+    border: 0;
   }
 
   /* The document object becomes an actual document. */
@@ -67,12 +67,12 @@
 
   #checklist,
   #checklist * {
-    color: var(--color-ink) !important;
+    color: var(--color-ink);
   }
 
   /* Controls do not print. */
   #checklist .cl__actions {
-    display: none !important;
+    display: none;
   }
 
   #checklist .cl__head {
@@ -118,7 +118,7 @@
 
   #checklist .clg__n {
     background: var(--color-ink);
-    color: var(--color-paper) !important;
+    color: var(--color-paper);
     font-size: 6.2pt;
     padding: 0.3mm 0.9mm;
   }
@@ -155,7 +155,7 @@
   /* The printed artifact is the checklist. The reasoning behind each item stays
      on the page it came from, which is what keeps this to one sheet. */
   #checklist .cli__note {
-    display: none !important;
+    display: none;
   }
 
   #checklist .cl__foot {
@@ -177,6 +177,6 @@
   .solo .lint__privacy,
   .solo .lint__inputActions,
   .solo .solo__rubric {
-    display: none !important;
+    display: none;
   }
 }

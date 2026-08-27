@@ -26,11 +26,11 @@
 }
 
 /* The two forces pull opposite ways, and the rule that opens each says which. */
-.force[data-force='document'] {
+.force[data-force="document"] {
   box-shadow: inset 3px 0 0 var(--color-instrument);
 }
 
-.force[data-force='produce'] {
+.force[data-force="produce"] {
   box-shadow: inset 3px 0 0 var(--color-stamp);
 }
 
@@ -51,11 +51,11 @@
   letter-spacing: -0.015em;
 }
 
-.force[data-force='document'] .force__title {
+.force[data-force="document"] .force__title {
   color: var(--instrument-on-ground);
 }
 
-.force[data-force='produce'] .force__title {
+.force[data-force="produce"] .force__title {
   color: var(--stamp-on-ground);
 }
 
@@ -218,13 +218,13 @@
   transition: fill var(--dur-fast) var(--ease-out);
 }
 
-.bchart__node[data-current='true'] .bchart__dot {
+.bchart__node[data-current="true"] .bchart__dot {
   fill: var(--color-instrument);
 }
 
 /* Not yet in force: hollow with a dashed ring, so status is not carried by
    colour alone. */
-.bchart__node[data-future='true'] .bchart__dot {
+.bchart__node[data-future="true"] .bchart__dot {
   stroke-dasharray: 3 2.5;
 }
 
@@ -242,7 +242,7 @@
   fill: var(--text-on-ground-muted);
 }
 
-.bchart__node[data-current='true'] .bchart__date {
+.bchart__node[data-current="true"] .bchart__date {
   fill: var(--color-doc);
 }
 
@@ -302,7 +302,7 @@
 }
 
 /* Selection is carried by fill, border and a left rule, not by colour alone. */
-.tl__entry[data-selected='true'] {
+.tl__entry[data-selected="true"] {
   border-color: var(--color-instrument);
   background: var(--tint-instrument);
   box-shadow: inset 3px 0 0 var(--color-instrument);
@@ -310,7 +310,7 @@
 
 /* Not yet reached. Signalled with a dashed edge rather than with opacity,
    because dimming text is how a state indicator becomes a contrast failure. */
-.tl__entry[data-drawn='false'] {
+.tl__entry[data-drawn="false"] {
   border-style: dashed;
 }
 
@@ -323,7 +323,7 @@
   font-variant-numeric: tabular-nums;
 }
 
-.tl__entry[data-selected='true'] .tl__entryDate {
+.tl__entry[data-selected="true"] .tl__entryDate {
   color: var(--instrument-on-ground);
 }
 
@@ -509,7 +509,7 @@
   max-width: 60ch;
 }
 
-.countdown[data-state='in-force'] {
+.countdown[data-state="in-force"] {
   border-color: color-mix(in srgb, var(--color-instrument) 50%, var(--ground-rule));
 }
 

@@ -106,8 +106,7 @@ export const recommended = {
   } as Readonly<Record<DimensionId, number>>,
   loggingTier: true,
   loggingOffset: 22,
-  note:
-    'Tiered, with a logging tier sitting well beneath the review tier. The review bands are set so counsel is engaged on a signal that is genuinely quantified and comparatively rare, while the logging tier below catches the near misses that a regime designed under legal fear would discard first.',
+  note: 'Tiered, with a logging tier sitting well beneath the review tier. The review bands are set so counsel is engaged on a signal that is genuinely quantified and comparatively rare, while the logging tier below catches the near misses that a regime designed under legal fear would discard first.',
 }
 
 export const stream = {
@@ -123,7 +122,8 @@ export const calibrateCopy = {
   standfirst:
     'Channel Two opens automatically when a pre-committed threshold is crossed, and precommitment is what makes the claim defensible when a firm is acting on its own signals. Below is a simulated quarter of events. Move the bands and watch four things move against each other.',
   streamLabel: 'Simulated event stream',
-  streamNote: 'Generated in your browser from a fixed seed, so the same settings always give the same numbers.',
+  streamNote:
+    'Generated in your browser from a fixed seed, so the same settings always give the same numbers.',
   tierLabel: 'Tiered structure',
   tierOn: 'Logging tier active',
   tierOff: 'Logging tier collapsed',
@@ -181,26 +181,22 @@ export const defensibility: Readonly<
 > = {
   none: {
     label: 'Nothing to defend',
-    body:
-      'The channel never opens. There is no privileged analysis to protect, and no candid assessment being made anywhere in the firm.',
+    body: 'The channel never opens. There is no privileged analysis to protect, and no candid assessment being made anywhere in the firm.',
     authority: '',
   },
   narrow: {
     label: 'Defensible, but barely exercised',
-    body:
-      'A quantified trigger that almost never fires is defensible in form. It is also doing very little of the work the architecture assumes, and the analysis it was built to protect is mostly not happening.',
+    body: 'A quantified trigger that almost never fires is defensible in form. It is also doing very little of the work the architecture assumes, and the analysis it was built to protect is mostly not happening.',
     authority: 'In re Target (2015)',
   },
   strong: {
     label: 'Reads as pre-committed and quantified',
-    body:
-      'The channel opens on an objective threshold set in advance, fires at a rate consistent with genuinely anticipated litigation, and is demonstrably separate from routine operational remediation. This is the posture that survived in the data-breach discovery disputes.',
+    body: 'The channel opens on an objective threshold set in advance, fires at a rate consistent with genuinely anticipated litigation, and is demonstrably separate from routine operational remediation. This is the posture that survived in the data-breach discovery disputes.',
     authority: 'In re Target (2015)',
   },
   weak: {
     label: 'Reads as routine business activity',
-    body:
-      'A channel that opens this often is not responding to anticipated litigation; it is how the firm processes ordinary incidents. That is the reasoning on which privilege was pierced, because substantially similar work would have been performed in the ordinary course.',
+    body: 'A channel that opens this often is not responding to anticipated litigation; it is how the firm processes ordinary incidents. That is the reasoning on which privilege was pierced, because substantially similar work would have been performed in the ordinary course.',
     authority: 'In re Capital One (2020)',
   },
 }

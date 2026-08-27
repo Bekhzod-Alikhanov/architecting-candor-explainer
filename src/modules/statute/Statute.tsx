@@ -1,12 +1,7 @@
 import { useState } from 'react'
 import { SectionHead } from '../../components/SectionHead'
 import { ArguesBlock } from '../../components/ArguesBlock'
-import {
-  principles,
-  protections,
-  statuteCopy as copy,
-  statuteArgues,
-} from '../../content/statute'
+import { principles, protections, statuteCopy as copy, statuteArgues } from '../../content/statute'
 import './statute.css'
 
 /**
@@ -73,12 +68,12 @@ export function Statute() {
                             <span className="prot__knob" />
                           </span>
                           <span className="prot__name">{pr.name}</span>
-                          <span className="prot__state">{isOff ? copy.offLabel : copy.onLabel}</span>
+                          <span className="prot__state">
+                            {isOff ? copy.offLabel : copy.onLabel}
+                          </span>
                         </button>
                         <p className="prot__text">{isOff ? pr.breaks : pr.holds}</p>
-                        {isOff ? (
-                          <p className="prot__breaksLabel">{copy.breaksLabel}</p>
-                        ) : null}
+                        {isOff ? <p className="prot__breaksLabel">{copy.breaksLabel}</p> : null}
                       </li>
                     )
                   })}
@@ -97,11 +92,7 @@ export function Statute() {
                         : `${off.size} of ${protections.length} ${copy.partialTitleSuffix}`}
                   </p>
                   <p className="prot__summaryBody">
-                    {allOff
-                      ? copy.allOffBody
-                      : intact
-                        ? copy.intactBody
-                        : copy.partialBody}
+                    {allOff ? copy.allOffBody : intact ? copy.intactBody : copy.partialBody}
                   </p>
                 </div>
               </div>

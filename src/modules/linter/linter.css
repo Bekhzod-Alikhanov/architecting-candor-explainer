@@ -123,31 +123,31 @@
   text-underline-offset: 3px;
 }
 
-.lint__mark[data-cat='fault'] {
+.lint__mark[data-cat="fault"] {
   background: color-mix(in srgb, var(--color-stamp) 30%, transparent);
   text-decoration-style: solid;
   text-decoration-color: var(--color-stamp);
 }
 
-.lint__mark[data-cat='harm'] {
+.lint__mark[data-cat="harm"] {
   background: color-mix(in srgb, var(--color-stamp) 20%, transparent);
   text-decoration-style: double;
   text-decoration-color: var(--color-stamp);
 }
 
-.lint__mark[data-cat='causal'] {
+.lint__mark[data-cat="causal"] {
   background: color-mix(in srgb, var(--color-ochre) 26%, transparent);
   text-decoration-style: wavy;
   text-decoration-color: var(--color-ochre);
 }
 
-.lint__mark[data-cat='counterfactual'] {
+.lint__mark[data-cat="counterfactual"] {
   background: color-mix(in srgb, var(--color-ochre) 20%, transparent);
   text-decoration-style: dashed;
   text-decoration-color: var(--color-ochre);
 }
 
-.lint__mark[data-cat='legal'] {
+.lint__mark[data-cat="legal"] {
   background: var(--color-redact);
   color: var(--color-doc);
   text-decoration-style: solid;
@@ -219,7 +219,7 @@
   margin-inline-end: 0.25rem;
 }
 
-.lint__tally li[data-cat='legal'] {
+.lint__tally li[data-cat="legal"] {
   border-color: var(--color-stamp);
 }
 
@@ -237,8 +237,8 @@
   padding: 0.7rem 0.8rem;
 }
 
-.flag[data-cat='causal'],
-.flag[data-cat='counterfactual'] {
+.flag[data-cat="causal"],
+.flag[data-cat="counterfactual"] {
   border-inline-start-color: var(--color-ochre);
 }
 
@@ -266,8 +266,8 @@
   color: var(--stamp-on-ground);
 }
 
-.flag[data-cat='causal'] .flag__cat,
-.flag[data-cat='counterfactual'] .flag__cat {
+.flag[data-cat="causal"] .flag__cat,
+.flag[data-cat="counterfactual"] .flag__cat {
   color: var(--ochre-on-ground);
 }
 

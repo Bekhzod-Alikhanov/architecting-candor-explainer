@@ -90,7 +90,7 @@ function cdp(ws) {
         msg.error ? p.reject(new Error(msg.error.message)) : p.resolve(msg.result)
       }
     } else if (events.has(msg.method)) {
-      events.get(msg.method).forEach((fn) => fn(msg.params))
+      for (const fn of events.get(msg.method)) fn(msg.params)
       events.delete(msg.method)
     }
   })
@@ -154,7 +154,7 @@ try {
       returnByValue: true,
       awaitPromise: true,
     })
-    if (exceptionDetails) throw new Error('--eval threw: ' + exceptionDetails.text)
+    if (exceptionDetails) throw new Error(`--eval threw: ${exceptionDetails.text}`)
     if (result?.value !== undefined) console.log('  eval →', JSON.stringify(result.value))
     await sleep(400)
   }

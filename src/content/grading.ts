@@ -38,7 +38,8 @@ export const outcomes: Readonly<
     label: 'Privilege pierced',
     short: 'Pierced',
     glyph: '✕',
-    blurb: 'Privilege asserted and defeated. The document is produced anyway, and the attempt is now on the record.',
+    blurb:
+      'Privilege asserted and defeated. The document is produced anyway, and the attempt is now on the record.',
     adverse: true,
   },
   excluded407: {
@@ -141,7 +142,8 @@ export const strategies: readonly Strategy[] = [
   {
     id: 'nothing',
     name: 'Write nothing',
-    claim: 'The lesson counsel drew from the Pinto. If it is not written down, it cannot be produced.',
+    claim:
+      'The lesson counsel drew from the Pinto. If it is not written down, it cannot be produced.',
     lesson:
       'The telemetry a plaintiff most wants — the classifier score against its deployment threshold, and the interval before the guardrail fired — is generated automatically and produced either way. What suppression removes is everything a person wrote: the April finding that named the threshold, and the user’s account of the conditions the failure actually arose in. Without those, the raw telemetry says what happened and cannot say what to change, so no regression test gets written. It also adds a spoliation problem for the artifacts that already existed.',
     assign: () => 'none',
@@ -211,8 +213,7 @@ export const bestRun = {
   remediation: 'recoverable',
   adverse: 'adverse',
   warnings: 'warnings',
-  note:
-    'Ranked on the record an engineer could still reconstruct, then on adverse discovery outcomes, then on warnings. Kept in this tab only.',
+  note: 'Ranked on the record an engineer could still reconstruct, then on adverse discovery outcomes, then on warnings. Kept in this tab only.',
 } as const
 
 export const routeSteps = [

@@ -170,7 +170,7 @@
   border-color: var(--instrument-on-ground);
 }
 
-.acard[data-selected='true'] {
+.acard[data-selected="true"] {
   border-color: var(--color-instrument);
   background: var(--ground-raised);
   box-shadow: inset 3px 0 0 var(--color-instrument);
@@ -257,24 +257,24 @@
 }
 
 /* Channel identity: hue plus rule style plus the number key. */
-.bin[data-bin='one'] {
+.bin[data-bin="one"] {
   border-inline-start: 3px solid var(--color-instrument);
 }
 
-.bin[data-bin='two'] {
+.bin[data-bin="two"] {
   border-inline-start: 3px solid var(--color-stamp);
 }
 
-.bin[data-bin='three'] {
+.bin[data-bin="three"] {
   border-inline-start: 3px dashed var(--color-instrument);
 }
 
-.bin[data-bin='none'] {
+.bin[data-bin="none"] {
   border-inline-start: 3px solid var(--color-redact);
   background: color-mix(in srgb, var(--color-redact) 34%, var(--ground-panel));
 }
 
-.bin[data-over='true'] {
+.bin[data-over="true"] {
   border-color: var(--color-instrument);
   background: var(--ground-raised);
 }
@@ -304,17 +304,17 @@
   color: var(--text-on-ground-muted);
 }
 
-.bin[data-bin='one'] .bin__key {
+.bin[data-bin="one"] .bin__key {
   color: var(--instrument-on-ground);
   border-color: color-mix(in srgb, var(--color-instrument) 45%, transparent);
 }
 
-.bin[data-bin='two'] .bin__key {
+.bin[data-bin="two"] .bin__key {
   color: var(--stamp-on-ground);
   border-color: color-mix(in srgb, var(--color-stamp) 50%, transparent);
 }
 
-.bin[data-bin='three'] .bin__key {
+.bin[data-bin="three"] .bin__key {
   color: var(--instrument-on-ground);
   border-style: dashed;
   border-color: color-mix(in srgb, var(--color-instrument) 45%, transparent);
@@ -370,7 +370,7 @@
   overflow: hidden;
 }
 
-.chip[data-selected='true'] {
+.chip[data-selected="true"] {
   border-color: var(--color-instrument);
 }
 
@@ -491,15 +491,15 @@
 /* A zero row is de-emphasised by colour, not by opacity: the count and the
    empty bar already say it is zero, and dimming the label below 4.5:1 would
    trade a legible readout for a decorative one. */
-.board__row[data-zero='true'] .board__label,
-.board__row[data-zero='true'] .board__glyph,
-.board__row[data-zero='true'] .board__n {
+.board__row[data-zero="true"] .board__label,
+.board__row[data-zero="true"] .board__glyph,
+.board__row[data-zero="true"] .board__n {
   color: var(--text-on-ground-faint);
 }
 
-.board__row[data-adverse='true'] .board__label,
-.board__row[data-adverse='true'] .board__glyph,
-.board__row[data-adverse='true'] .board__n {
+.board__row[data-adverse="true"] .board__label,
+.board__row[data-adverse="true"] .board__glyph,
+.board__row[data-adverse="true"] .board__n {
   color: var(--stamp-on-ground);
 }
 
@@ -518,7 +518,7 @@
   transition: inline-size var(--dur-base) var(--ease-out);
 }
 
-.board__row[data-adverse='true'] .board__bar > span {
+.board__row[data-adverse="true"] .board__bar > span {
   background: var(--color-stamp);
 }
 
@@ -570,7 +570,7 @@
   color: var(--instrument-on-ground);
 }
 
-.board__field[data-available='false'] .board__fieldMark {
+.board__field[data-available="false"] .board__fieldMark {
   color: var(--stamp-on-ground);
 }
 
@@ -587,7 +587,7 @@
   color: var(--text-on-ground);
 }
 
-.board__field[data-available='false'] .board__fieldLabel {
+.board__field[data-available="false"] .board__fieldLabel {
   color: var(--text-on-ground-faint);
   text-decoration: line-through;
   text-decoration-color: var(--stamp-on-ground);
@@ -683,14 +683,14 @@
   color: var(--text-on-doc);
 }
 
-.ledger__outcome[data-adverse='true'] {
+.ledger__outcome[data-adverse="true"] {
   color: var(--stamp-on-doc);
   border-color: color-mix(in srgb, var(--color-stamp) 50%, transparent);
   background: color-mix(in srgb, var(--color-stamp) 8%, transparent);
 }
 
-.ledger__outcome[data-outcome='excluded407'],
-.ledger__outcome[data-outcome='withheld'] {
+.ledger__outcome[data-outcome="excluded407"],
+.ledger__outcome[data-outcome="withheld"] {
   color: var(--instrument-on-doc);
   border-color: color-mix(in srgb, var(--color-instrument) 45%, transparent);
 }
@@ -772,7 +772,7 @@
   flex-direction: column;
 }
 
-.scol[data-reader='true'] {
+.scol[data-reader="true"] {
   border-color: var(--color-instrument);
   background: var(--ground-raised);
 }
@@ -817,11 +817,11 @@
   color: var(--color-doc);
 }
 
-.scol__stat[data-good='true'] dd {
+.scol__stat[data-good="true"] dd {
   color: var(--instrument-on-ground);
 }
 
-.scol__stat[data-bad='true'] dd {
+.scol__stat[data-bad="true"] dd {
   color: var(--stamp-on-ground);
 }
 
@@ -839,7 +839,7 @@
   gap: 0.4rem;
 }
 
-.scol__breakdown li[data-adverse='true'] {
+.scol__breakdown li[data-adverse="true"] {
   color: var(--stamp-on-ground);
 }
 

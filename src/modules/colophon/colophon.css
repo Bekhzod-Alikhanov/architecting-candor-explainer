@@ -46,12 +46,12 @@
 }
 
 .colo__authors li::after {
-  content: ' ·';
+  content: " ·";
   color: var(--text-on-doc-muted);
 }
 
 .colo__authors li:last-child::after {
-  content: '';
+  content: "";
 }
 
 .colo__star {

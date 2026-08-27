@@ -30,8 +30,7 @@ export const pincer = {
       id: 'document',
       kicker: 'Force one',
       title: 'Write it down',
-      lead:
-        'Regulation and fiduciary duty compel documentation, and the obligations are affirmative rather than permissive.',
+      lead: 'Regulation and fiduciary duty compel documentation, and the obligations are affirmative rather than permissive.',
       items: [
         {
           authority: 'EU AI Act, art. 73',
@@ -57,8 +56,7 @@ export const pincer = {
       id: 'produce',
       kicker: 'Force two',
       title: 'Hand it over',
-      lead:
-        'American civil discovery reaches the record the first force compels, and it reaches it wherever it is kept.',
+      lead: 'American civil discovery reaches the record the first force compels, and it reaches it wherever it is kept.',
       items: [
         {
           authority: 'Fed. R. Civ. P. 26(b)(1)',
@@ -85,8 +83,7 @@ export const pincer = {
   /** The bind, stated plainly. */
   bind: {
     label: 'The bind',
-    body:
-      'A structural tension now runs across the Atlantic, in which American litigation rules tend to reward less documentation while European regulatory obligations reward more. The same record that makes a failure intelligible to engineers may become evidence of notice, of defect, of an available precaution, or of an inadequate mitigation.',
+    body: 'A structural tension now runs across the Atlantic, in which American litigation rules tend to reward less documentation while European regulatory obligations reward more. The same record that makes a failure intelligible to engineers may become evidence of notice, of defect, of an available precaution, or of an inadequate mitigation.',
     cite: 'Paper, §1.1',
   },
 } as const

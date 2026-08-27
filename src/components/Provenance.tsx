@@ -28,10 +28,7 @@ export interface ProvProps {
 export function Prov({ kind, cite, label, className = '' }: ProvProps) {
   const text = label ?? provenance[kind].label
   return (
-    <span
-      className={`prov prov--${kind} ${className}`.trim()}
-      title={provenance[kind].explain}
-    >
+    <span className={`prov prov--${kind} ${className}`.trim()} title={provenance[kind].explain}>
       <Glyph kind={kind} />
       <span>
         {text}
@@ -53,7 +50,15 @@ function Glyph({ kind }: { readonly kind: ProvKind }) {
   if (kind === 'illustrative') {
     return (
       <svg width="9" height="9" viewBox="0 0 9 9" aria-hidden="true" focusable="false">
-        <circle cx="4.5" cy="4.5" r="3.6" stroke="currentColor" strokeWidth="1.2" fill="none" strokeDasharray="2 1.6" />
+        <circle
+          cx="4.5"
+          cy="4.5"
+          r="3.6"
+          stroke="currentColor"
+          strokeWidth="1.2"
+          fill="none"
+          strokeDasharray="2 1.6"
+        />
       </svg>
     )
   }

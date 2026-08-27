@@ -56,7 +56,7 @@ export interface Readout {
 
 /** Skew a uniform draw toward zero. Higher power means quieter noise. */
 function skew(u: number, power: number): number {
-  return Math.pow(u, power) * 100
+  return u ** power * 100
 }
 
 /**

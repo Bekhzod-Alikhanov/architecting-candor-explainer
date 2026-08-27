@@ -201,7 +201,7 @@ export function Architecture() {
               {i < channels.length - 1 ? (
                 <Seam
                   state={seamState}
-                  reason={reasonSeam === i ? result?.title ?? null : null}
+                  reason={reasonSeam === i ? (result?.title ?? null) : null}
                   className="arch__seam"
                 />
               ) : null}

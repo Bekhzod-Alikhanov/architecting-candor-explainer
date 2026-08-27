@@ -1,11 +1,6 @@
 import { useMemo, useState } from 'react'
 import { lint } from '../../lib/lint'
-import {
-  sample,
-  template,
-  linterCopy as copy,
-  type Category,
-} from '../../content/linter-rules'
+import { sample, template, linterCopy as copy, type Category } from '../../content/linter-rules'
 import './linter.css'
 
 /**
@@ -60,10 +55,10 @@ export function Linter({ standalone = false }: { readonly standalone?: boolean }
             <>
               <p className="lint__annotatedLabel">{copy.annotatedLabel}</p>
               <p className="lint__annotated">
-                {result.segments.map((s, i) =>
+                {result.segments.map((s) =>
                   s.flag ? (
                     <mark
-                      key={i}
+                      key={s.start}
                       className="lint__mark"
                       data-cat={s.flag.category}
                       title={`${s.flag.categoryLabel}: ${s.flag.hazard}`}
@@ -71,7 +66,7 @@ export function Linter({ standalone = false }: { readonly standalone?: boolean }
                       {s.text}
                     </mark>
                   ) : (
-                    <span key={i}>{s.text}</span>
+                    <span key={s.start}>{s.text}</span>
                   ),
                 )}
               </p>
@@ -112,13 +107,15 @@ export function Linter({ standalone = false }: { readonly standalone?: boolean }
               <p className="lint__flagsLabel">{copy.flagsLabel}</p>
               <ol className="lint__flags">
                 {dedupe(result.flags).map((f) => (
-                  <li className="flag" key={`${f.category}-${f.text.toLowerCase()}`} data-cat={f.category}>
+                  <li
+                    className="flag"
+                    key={`${f.category}-${f.text.toLowerCase()}`}
+                    data-cat={f.category}
+                  >
                     <p className="flag__head">
                       <span className="flag__phrase">{f.text}</span>
                       <span className="flag__cat">{f.categoryLabel}</span>
-                      {f.count > 1 ? (
-                        <span className="flag__count">×{f.count}</span>
-                      ) : null}
+                      {f.count > 1 ? <span className="flag__count">×{f.count}</span> : null}
                     </p>
                     <p className="flag__hazard">{f.hazard}</p>
                     {f.note ? <p className="flag__note">{f.note}</p> : null}
@@ -159,7 +156,10 @@ export function Linter({ standalone = false }: { readonly standalone?: boolean }
 
 /** One entry per distinct phrase, with a count, so a repeated phrase is not repeated advice. */
 function dedupe(flags: ReturnType<typeof lint>['flags']) {
-  const map = new Map<string, { -readonly [K in keyof (typeof flags)[number]]: (typeof flags)[number][K] } & { count: number }>()
+  const map = new Map<
+    string,
+    { -readonly [K in keyof (typeof flags)[number]]: (typeof flags)[number][K] } & { count: number }
+  >()
   for (const f of flags) {
     const key = `${f.category}|${f.text.toLowerCase()}`
     const existing = map.get(key)

@@ -51,7 +51,8 @@ export function Countdown() {
 
         <p className="sr-only">
           {r.days} days, {r.hours} hours and {r.minutes} minutes remain until{' '}
-          {commencement.displayDate}, when {commencement.label.replace(' applies from', '')} applies.
+          {commencement.displayDate}, when {commencement.label.replace(' applies from', '')}{' '}
+          applies.
         </p>
 
         <p className="countdown__scope">

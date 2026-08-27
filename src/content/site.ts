@@ -42,6 +42,12 @@ export const meta = {
   description:
     'AI firms are compelled to document safety incidents and compelled to produce those documents in discovery. An operable walkthrough of the three-channel Safety Translation Layer proposed in Architecting Candor (Arcadia Impact, August 2026).',
   canonical: 'https://architecting-candor.vercel.app/',
+  /** The standalone linter route. Both entry points are in public/sitemap.xml,
+      so each has to claim its own canonical or they contradict each other. */
+  linterTitle: 'The incident ticket linter — Architecting Candor',
+  linterDescription:
+    'Paste an incident ticket and see which phrases would be read as the firm’s own findings, with a measurement-form substitute for each. Runs entirely in your browser. From Architecting Candor (Arcadia Impact, August 2026).',
+  linterCanonical: 'https://architecting-candor.vercel.app/linter',
   ogAlt:
     'One incident record shown twice: as a line of engineering telemetry and as a stamped discovery exhibit, divided by a vertical seam.',
 } as const

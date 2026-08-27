@@ -449,6 +449,10 @@
     color: var(--text-on-ground-muted);
   }
 
+  .anchor__body + .anchor__body {
+    margin-block-start: 0.8em;
+  }
+
   .anchor__cite {
     margin-block-start: 1rem;
     display: flex;

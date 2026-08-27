@@ -478,7 +478,9 @@ export const architectureSteps = [
 export const architectureArgues = {
   label: 'What the machine argues',
   body: [
-    'The valve is the whole design. Everything else in the architecture follows from a single rule: analysis may consume facts, and facts may not be replaced by analysis. Take the rule away and the three channels collapse back into one system that is either candid and exposed, or protected and useless.',
-    'Notice what the machine never does. It never hides a fact, never deletes anything, and never claims protection for work the firm would have done anyway. It withholds one thing, which is the legal advice itself, and that is the thing the law has always permitted a company to withhold. The candour of the first channel is what makes the claim over the second one credible.',
+    'The valve is the whole design. Everything else in the architecture follows from a single rule: analysis may consume facts, and facts may not be replaced by analysis.',
+    'Take the rule away and the three channels collapse back into one system that is either candid and exposed, or protected and useless.',
+    'Notice what the machine never does. It never hides a fact, never deletes anything, and never claims protection for work the firm would have done anyway.',
+    'It withholds one thing, which is the legal advice itself, and that is the thing the law has always permitted a company to withhold. The candour of the first channel is what makes the claim over the second one credible.',
   ],
 } as const

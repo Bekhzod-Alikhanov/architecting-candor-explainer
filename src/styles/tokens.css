@@ -30,26 +30,27 @@
   --font-sans: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
   --font-doc: 'Spectral', Palatino, 'Palatino Linotype', Georgia, serif;
 
-  /* Console scale. Tight and tabular, but body text is 16px: this is a page
-     someone reads for twenty minutes, not a dashboard they glance at. The
-     smallest step is 13px, which is the floor for a caption a reader must act
-     on. */
+  /* Console scale. Tight and tabular, but body text is 17px: this is a page
+     someone reads for twenty minutes, not a dashboard they glance at. Only the
+     smallest step stays at 13px — it carries the Bates stamps, table headers,
+     rail numbers and chip labels, which are letter-spaced and live in tight
+     columns where a larger size starts wrapping. */
   --text-cs-xs: 0.8125rem;
-  --text-cs-sm: 0.875rem;
-  --text-cs-base: 0.9375rem;
-  --text-cs-md: 1rem;
-  --text-cs-lg: 1.125rem;
-  --text-cs-xl: 1.5rem;
-  --text-cs-2xl: 2rem;
+  --text-cs-sm: 0.9375rem;
+  --text-cs-base: 1rem;
+  --text-cs-md: 1.0625rem;
+  --text-cs-lg: 1.1875rem;
+  --text-cs-xl: 1.5625rem;
+  --text-cs-2xl: 2.125rem;
 
   /* Document scale — wider, longer measure. Deliberately not reconciled
      with the console scale. The two systems do not agree on type either. */
-  --text-ds-sm: 0.9375rem;
-  --text-ds-base: 1.125rem;
-  --text-ds-lg: 1.3125rem;
-  --text-ds-xl: 1.75rem;
-  --text-ds-2xl: 2.5rem;
-  --text-ds-3xl: 3.5rem;
+  --text-ds-sm: 1rem;
+  --text-ds-base: 1.1875rem;
+  --text-ds-lg: 1.375rem;
+  --text-ds-xl: 1.875rem;
+  --text-ds-2xl: 2.625rem;
+  --text-ds-3xl: 3.75rem;
 
   /* --- corner radius --------------------------------------------------- */
   /* Three steps, by what the thing is rather than by how big it is.

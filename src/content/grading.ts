@@ -142,8 +142,10 @@ export interface Strategy {
   readonly id: string
   readonly name: string
   readonly claim: string
-  /** Filled in from the grader; this is what the strategy actually produces. */
-  readonly lesson: string
+  /** What the strategy actually produces, as paragraphs. These render in a
+      narrow comparison column, where a single 60-90 word block is the hardest
+      thing on the site to read. */
+  readonly lesson: readonly string[]
   readonly assign: (properBin: Bin) => Bin
 }
 
@@ -153,32 +155,39 @@ export const strategies: readonly Strategy[] = [
     name: 'Write nothing',
     claim:
       'The lesson counsel drew from the Pinto. If it is not written down, it cannot be produced.',
-    lesson:
-      'The telemetry a plaintiff most wants — the classifier score against its deployment threshold, and the interval before the guardrail fired — is generated automatically and produced either way. What suppression removes is everything a person wrote: the April finding that named the threshold, and the user’s account of the conditions the failure actually arose in. Without those, the raw telemetry says what happened and cannot say what to change, so no regression test gets written. It also adds a spoliation problem for the artifacts that already existed.',
+    lesson: [
+      'The telemetry a plaintiff most wants — the classifier score against its deployment threshold, and the interval before the guardrail fired — is generated automatically and produced either way.',
+      'What suppression removes is everything a person wrote: the April finding that named the threshold, and the user’s account of the conditions the failure actually arose in.',
+      'Without those, the raw telemetry says what happened and cannot say what to change, so no regression test gets written. It also adds a spoliation problem for the artifacts that already existed.',
+    ],
     assign: () => 'none',
   },
   {
     id: 'counsel',
     name: 'Route everything through counsel',
     claim: 'Privilege is a shield. Put the whole incident under it.',
-    lesson:
-      'Privilege is pierced across most of the deck on the reasoning of In re Capital One, because substantially similar work would have been performed in the ordinary course. The documents are produced anyway, and the failed claim is now itself on the record. Counsel becomes a chokepoint on routine technical response, and the facts engineering needs sit inside a channel with bounded membership.',
+    lesson: [
+      'Privilege is pierced across most of the deck on the reasoning of In re Capital One, because substantially similar work would have been performed in the ordinary course.',
+      'The documents are produced anyway, and the failed claim is now itself on the record. Counsel becomes a chokepoint on routine technical response, and the facts engineering needs sit inside a channel with bounded membership.',
+    ],
     assign: () => 'two',
   },
   {
     id: 'one-system',
     name: 'Write everything into one system',
     claim: 'Full transparency. One record, everything in it, nothing hidden.',
-    lesson:
+    lesson: [
       'Remediation is at its maximum. So is exposure. Fault language and counsel’s assessments sit in discoverable tickets, and the privilege that would have protected candid analysis is waived by where it was written.',
+    ],
     assign: () => 'one',
   },
   {
     id: 'three-channel',
     name: 'The three-channel routing',
     claim: 'Separate the act of observing from the act of judging, and judging from fixing.',
-    lesson:
+    lesson: [
       'Remediation is preserved, the privilege claims that are made survive because entry was pre-committed rather than asserted after the fact, and remedial instructions are written in engineering language. The facts remain discoverable, which is the design.',
+    ],
     assign: (properBin) => properBin,
   },
 ]
@@ -250,7 +259,10 @@ export const routeSteps = [
 export const routeArgues = {
   label: 'What the routing game argues',
   body: [
-    'The instinct the Pinto taught is not merely unhelpful now; it is close to inert. An AI system writes much of its own record automatically, so the decision not to document arrives after the document already exists. Suppression buys very little in discovery, and what it costs is the human record: the finding that named the threshold, the account of the conditions the failure arose in, the analysis that would have said what to change. The instrumentation survives and says what happened. It cannot say what to fix.',
-    'What the architecture withholds is only what the law has always permitted a company to withhold, which is the legal advice itself. The facts stay discoverable. That is not a concession extracted from the design; it is the condition on which the design works, because a firm that has preserved and produced its factual record in the ordinary course can credibly say that its privileged channel holds judgment rather than concealed facts.',
+    'The instinct the Pinto taught is not merely unhelpful now; it is close to inert. An AI system writes much of its own record automatically, so the decision not to document arrives after the document already exists.',
+    'Suppression buys very little in discovery, and what it costs is the human record: the finding that named the threshold, the account of the conditions the failure arose in, the analysis that would have said what to change.',
+    'The instrumentation survives and says what happened. It cannot say what to fix.',
+    'What the architecture withholds is only what the law has always permitted a company to withhold, which is the legal advice itself. The facts stay discoverable.',
+    'That is not a concession extracted from the design; it is the condition on which the design works. A firm that has preserved and produced its factual record in the ordinary course can credibly say that its privileged channel holds judgment rather than concealed facts.',
   ],
 } as const

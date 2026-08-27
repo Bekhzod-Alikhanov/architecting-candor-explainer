@@ -190,5 +190,9 @@ export const timelineSteps = [
 /** The labelled block closing the section, in the paper's voice. */
 export const timelineArgues = {
   label: 'What the timeline argues',
-  body: 'Products liability shifts the question a court asks. Negligence asks whether the developer behaved reasonably; design defect asks whether the system’s foreseeable risks outweighed its utility and whether a safer alternative design was reasonably available. That second question is answered out of the firm’s own materials. System cards, adversarial testing findings and internal escalation memoranda can show a jury that the company knew of a failure mode, held a feasible alternative, and deployed anyway. The same records can also show disciplined testing, prompt escalation and reasonable remediation. Which of those two things the record proves depends on how it was written, and that is a matter of architecture rather than of luck.',
+  body: [
+    'Products liability shifts the question a court asks. Negligence asks whether the developer behaved reasonably; design defect asks whether the system’s foreseeable risks outweighed its utility and whether a safer alternative design was reasonably available.',
+    'That second question is answered out of the firm’s own materials. System cards, adversarial testing findings and internal escalation memoranda can show a jury that the company knew of a failure mode, held a feasible alternative, and deployed anyway.',
+    'The same records can also show disciplined testing, prompt escalation and reasonable remediation. Which of those two things the record proves depends on how it was written, and that is a matter of architecture rather than of luck.',
+  ],
 } as const

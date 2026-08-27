@@ -239,7 +239,10 @@ export const calibrateSteps = [
 export const calibrateArgues = {
   label: 'What the calibrator argues',
   body: [
-    'There is no setting that makes all four readouts good at once, and that is the finding rather than a limitation of the model. Bands high enough to keep counsel’s involvement rare are bands high enough to miss real signals; bands low enough to catch everything turn the privileged channel into ordinary business process and forfeit the protection it exists for. The tiered structure is the only move that improves two readouts without worsening a third, because it separates the decision to capture a record from the decision to engage counsel.',
-    'That separation is also what makes the trigger defensible. A threshold defined before any harm-framed record exists supplies contemporaneous timing and separation, which is the difference between a privilege claim a court reads as pre-committed and one it reads as a reactive assertion made after the firm knew it had a problem.',
+    'There is no setting that makes all four readouts good at once, and that is the finding rather than a limitation of the model.',
+    'Bands high enough to keep counsel’s involvement rare are bands high enough to miss real signals. Bands low enough to catch everything turn the privileged channel into ordinary business process and forfeit the protection it exists for.',
+    'The tiered structure is the only move that improves two readouts without worsening a third, because it separates the decision to capture a record from the decision to engage counsel.',
+    'That separation is also what makes the trigger defensible.',
+    'A threshold defined before any harm-framed record exists supplies contemporaneous timing and separation, which is the difference between a privilege claim a court reads as pre-committed and one it reads as a reactive assertion made after the firm knew it had a problem.',
   ],
 } as const

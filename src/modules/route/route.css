@@ -847,9 +847,18 @@
   .scol__lesson {
     margin-block-start: auto;
     padding-block-start: 0.85rem;
-    font-size: var(--text-cs-xs);
+    /* Was --text-cs-xs, the smallest step on the site, applied to the longest
+       text in the narrowest column. */
+    font-size: var(--text-cs-sm);
     line-height: 1.6;
     color: var(--text-on-ground-muted);
+  }
+
+  /* Only the first paragraph takes the auto margin that bottom-aligns the
+     group; the rest just need spacing from each other. */
+  .scol__lesson + .scol__lesson {
+    margin-block-start: 0;
+    padding-block-start: 0.7em;
   }
 
   /* --- the best run --------------------------------------------------------

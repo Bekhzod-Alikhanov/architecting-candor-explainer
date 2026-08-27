@@ -113,9 +113,11 @@ export const translation = {
   heading:
     'A signal rarely disappears. It is edited, at every handoff, by people acting reasonably.',
   body: [
-    'Carlile identifies three boundaries that knowledge has to cross inside an organisation, and they get harder in order. At a syntactic boundary a shared lexicon is enough. At a semantic boundary the same term has to be reconciled across different interpretations. At a pragmatic boundary the parties have different stakes, and words like risk, incident and safety imply different actions for engineers, lawyers, product teams and the board.',
+    'Carlile identifies three boundaries that knowledge has to cross inside an organisation, and they get harder in order.',
+    'At a syntactic boundary a shared lexicon is enough. At a semantic boundary the same term has to be reconciled across different interpretations. At a pragmatic boundary the parties have different stakes, and words like risk, incident and safety imply different actions for engineers, lawyers, product teams and the board.',
     'Røvik describes knowledge transfer as a rule-governed process in which omission is a routine move rather than an act of concealment. Each function keeps what is salient to its own environment. The operational context that made the signal important is what gets left behind.',
-    'Hansen adds the relational half. Weak ties are effective for locating knowledge, but transferring knowledge that is complex, tacit or hard to codify needs stronger and more recurrent working relationships. AI incident knowledge has exactly those properties, and the connections between front-line engineering, legal, compliance, executives and the board are frequently episodic. The signals that most need contextual explanation travel through the channel least able to carry it.',
+    'Hansen adds the relational half. Weak ties are effective for locating knowledge, but transferring knowledge that is complex, tacit or hard to codify needs stronger and more recurrent working relationships.',
+    'AI incident knowledge has exactly those properties, and the connections between front-line engineering, legal, compliance, executives and the board are frequently episodic. The signals that most need contextual explanation travel through the channel least able to carry it.',
   ],
   stepLabel: 'Advance the handoff',
   restartLabel: 'Back to the observation',
@@ -157,8 +159,10 @@ export const recording = {
   heading: 'And none of it matters if the person who saw it decides not to write it down.',
   body: [
     'Edmondson describes psychological safety as a shared belief that people can raise questions, mistakes and concerns without interpersonal punishment. In an incident system it operates as a condition of the documentation process itself, because the decision to record precedes every downstream use of the record.',
-    'A meta-analysis of 131 studies finds that employees who perceive threat do not merely fail to share knowledge, they actively withhold it. Casper and colleagues identify the consequence that matters most here: suppression removes the most diagnostically useful records first, because those are the ones that would be most damaging to possess.',
-    'The countermeasure the paper recommends is a just culture with a written accountability standard distinguishing inadvertent error from wilful misconduct. In software teams the clarity of stated norms predicts performance substantially more strongly than psychological safety on its own, so a firm has to make explicit what is reportable, to whom, on what timeline, and with what protection.',
+    'A meta-analysis of 131 studies finds that employees who perceive threat do not merely fail to share knowledge, they actively withhold it.',
+    'Casper and colleagues identify the consequence that matters most here: suppression removes the most diagnostically useful records first, because those are the ones that would be most damaging to possess.',
+    'The countermeasure the paper recommends is a just culture with a written accountability standard distinguishing inadvertent error from wilful misconduct.',
+    'In software teams the clarity of stated norms predicts performance substantially more strongly than psychological safety on its own, so a firm has to make explicit what is reportable, to whom, on what timeline, and with what protection.',
   ],
   studies: '131',
   studiesNote: 'studies in the meta-analysis on knowledge hiding',
@@ -168,7 +172,11 @@ export const recording = {
 export const anchor = {
   figure: 'Fewer than 5%',
   lead: 'of cybersecurity incidents had a formal written report requested by counsel.',
-  body: 'One forensic investigator interviewed by Schwarcz, Wolff and Woods gave that estimate, and gave the reason: a written report would have to document the failures. Cybersecurity is this paper’s empirical proxy for AI, because it is the closest industry analog in litigation exposure and documentation culture. This is not a prediction about what suppression might do. It is what practitioners in the industry that adopted the strategy first report that it produced.',
+  body: [
+    'One forensic investigator interviewed by Schwarcz, Wolff and Woods gave that estimate, and gave the reason: a written report would have to document the failures.',
+    'Cybersecurity is this paper’s empirical proxy for AI, because it is the closest industry analog in litigation exposure and documentation culture.',
+    'This is not a prediction about what suppression might do. It is what practitioners in the industry that adopted the strategy first report that it produced.',
+  ],
   cite: 'Schwarcz, Wolff & Woods (2023), p. 450 · paper §2.1.3',
 } as const
 
@@ -183,7 +191,10 @@ export const signalCopy = {
 export const signalArgues = {
   label: 'What this section argues',
   body: [
-    'These three mechanisms make signal loss predictable rather than accidental, and none of them is a failure of individual diligence. Detail attrition, normalized anomalies and suppressed documentation each result from how authority, incentive and information access are allocated inside the firm, which means they are answerable to structural design and not to exhortation.',
-    'The remedy is not to eliminate interpretation, which is impossible. It is to ensure that interpretation travels with a stable factual core: a structured, quantifiable record of the metric, the baseline, the system state, the time window and the deployment context, preserved once and then evaluated by each function without being rewritten at every handoff. That is what the first channel is for, and it is why the architecture has to start there.',
+    'These three mechanisms make signal loss predictable rather than accidental, and none of them is a failure of individual diligence.',
+    'Detail attrition, normalized anomalies and suppressed documentation each result from how authority, incentive and information access are allocated inside the firm, which means they are answerable to structural design and not to exhortation.',
+    'The remedy is not to eliminate interpretation, which is impossible. It is to ensure that interpretation travels with a stable factual core.',
+    'That core is a structured, quantifiable record of the metric, the baseline, the system state, the time window and the deployment context, preserved once and then evaluated by each function without being rewritten at every handoff.',
+    'That is what the first channel is for, and it is why the architecture has to start there.',
   ],
 } as const

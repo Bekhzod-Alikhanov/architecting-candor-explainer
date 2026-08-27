@@ -52,6 +52,10 @@
     color: var(--text-on-ground-muted);
   }
 
+  .prin__body + .prin__body {
+    margin-block-start: 0.8em;
+  }
+
   .prin__cite {
     margin-block-start: 0.6rem;
     font-family: var(--font-mono);
@@ -78,12 +82,13 @@
       grid-column: 1;
     }
 
-    .prin__item > .prin__body,
-    .prin__item > .prin__cite {
+    .prin__item > .prin__text {
       grid-column: 2;
     }
 
-    .prin__item > .prin__body {
+    /* Only the first paragraph loses its top margin; the rest still need to be
+       spaced from each other. */
+    .prin__text > .prin__body:first-of-type {
       margin-block-start: 0;
     }
   }

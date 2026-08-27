@@ -211,7 +211,7 @@ export const linterCopy = {
   eyebrow: 'Take it to your GC',
   headline: 'Two entries can record the same event. Only one of them is an admission.',
   standfirst:
-    'Paste an incident ticket, a postmortem, or a message you are about to send. This flags the phrases that would be read as the firm’s own findings and proposes the measurement form instead. It is the smallest piece of the architecture and the one a team can adopt on Monday without asking anyone’s permission.',
+    'Paste an incident ticket, a postmortem, or a message you are about to send. This flags the phrases that would be read as the firm’s own findings and proposes the measurement form instead.',
   privacyTitle: 'This runs entirely in your browser.',
   privacyBody:
     'The text you paste is never transmitted. There is no server to send it to: the rules are compiled into the page, the matching happens in your tab, and the page makes no network requests after it loads. You can check that in your own devtools, and you should, because nobody sensible pastes a real incident ticket into something that phones home.',
@@ -236,7 +236,9 @@ export const linterCopy = {
 export const linterArgues = {
   label: 'What the linter argues',
   body: [
-    'The distinction it enforces is not a litigation trick. A causal explanation recorded in the moment of observation is rarely supported by controlled evidence, because in entangled machine-learning systems changing any component changes the behaviour of others. The factual entry is therefore both the legally safer record and the more accurate one, and the causal question it defers is answered in the channel designed to answer it.',
-    'It is also the only part of this architecture that costs nothing to adopt. A firm that never builds a tripwire, never separates a channel and never speaks to its general counsel about any of this can still template its ticket fields, and doing so removes the single most common way an engineering record turns into an admission.',
+    'The distinction it enforces is not a litigation trick. A causal explanation recorded in the moment of observation is rarely supported by controlled evidence, because in entangled machine-learning systems changing any component changes the behaviour of others.',
+    'The factual entry is therefore both the legally safer record and the more accurate one, and the causal question it defers is answered in the channel designed to answer it.',
+    'It is also the only part of this architecture that costs nothing to adopt.',
+    'A firm that never builds a tripwire, never separates a channel and never speaks to its general counsel about any of this can still template its ticket fields, and doing so removes the single most common way an engineering record turns into an admission.',
   ],
 } as const

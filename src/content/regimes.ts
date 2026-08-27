@@ -168,8 +168,11 @@ export const regimeCopy = {
 export const regimeArgues = {
   label: 'What the comparison argues',
   body: [
-    'The three functions recur in every one of these regimes, and no regime protects everything. Each preserves the original operational facts for regulators and injured parties, each protects a bounded evaluative process with prespecified conditions of entry, and each returns verified findings to operations as corrective requirements rather than leaving the protected process as an informational dead end. The architecture is not novel. What is novel is applying it to a class of system whose records are generated automatically, and doing it before an accident forces the question.',
-    'One difference matters more than any similarity. Every regime above rests on a statute; the Safety Translation Layer rests on privilege doctrine, which is forum-specific and which no court has yet applied to this device. That is the gap section 07 asks Congress to close, and until it does, a firm building this architecture is relying on the durability of a common-law protection rather than on a rule written for the purpose.',
+    'The three functions recur in every one of these regimes, and no regime protects everything.',
+    'Each preserves the original operational facts for regulators and injured parties, each protects a bounded evaluative process with prespecified conditions of entry, and each returns verified findings to operations as corrective requirements rather than leaving the protected process as an informational dead end.',
+    'The architecture is not novel. What is novel is applying it to a class of system whose records are generated automatically, and doing it before an accident forces the question.',
+    'One difference matters more than any similarity. Every regime above rests on a statute; the Safety Translation Layer rests on privilege doctrine, which is forum-specific and which no court has yet applied to this device.',
+    'That is the gap section 07 asks Congress to close. Until it does, a firm building this architecture is relying on the durability of a common-law protection rather than on a rule written for the purpose.',
   ],
 } as const
 

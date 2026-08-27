@@ -45,8 +45,14 @@ export function Statute() {
               </span>
               <h3 className="prin__title">{p.title}</h3>
             </div>
-            <p className="prin__body">{p.body}</p>
-            {p.cite ? <p className="prin__cite">{p.cite}</p> : null}
+            <div className="prin__text">
+              {p.body.map((para) => (
+                <p className="prin__body" key={para.slice(0, 28)}>
+                  {para}
+                </p>
+              ))}
+              {p.cite ? <p className="prin__cite">{p.cite}</p> : null}
+            </div>
 
             {p.n === '02' ? (
               <div className="prot">

@@ -211,7 +211,11 @@ export function Signal() {
       <figure className="anchor">
         <p className="anchor__figure">{anchor.figure}</p>
         <figcaption className="anchor__lead">{anchor.lead}</figcaption>
-        <p className="anchor__body">{anchor.body}</p>
+        {anchor.body.map((para) => (
+          <p className="anchor__body" key={para.slice(0, 28)}>
+            {para}
+          </p>
+        ))}
         <p className="anchor__cite">
           <Prov kind="paper" cite="§2.1.3" />
           {anchor.cite}

@@ -35,7 +35,8 @@ export const memo = {
 
   /** The Pinto passage. Paraphrase with attribution; no facsimile. */
   pinto: [
-    'The American legal system has a long memory for internal corporate candour. In the litigation that followed the Ford Pinto, a car whose rear-mounted fuel tank was prone to rupture in rear-end collisions, an internal cost-benefit memorandum surfaced in which the company appeared to weigh the projected cost of settling burn-death claims against the per-unit cost of a safer tank.',
+    'The American legal system has a long memory for internal corporate candour.',
+    'In the litigation that followed the Ford Pinto, a car whose rear-mounted fuel tank was prone to rupture in rear-end collisions, an internal cost-benefit memorandum surfaced in which the company appeared to weigh the projected cost of settling burn-death claims against the per-unit cost of a safer tank.',
     'The lesson corporate counsel drew from it has proved durable and perverse. It taught a generation of lawyers that the gravest danger lay in writing the trade-offs down.',
   ],
   pintoCite: 'Grimshaw v. Ford Motor Co. (1981) · paper, Executive Summary I',

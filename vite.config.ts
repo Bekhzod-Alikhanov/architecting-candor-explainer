@@ -11,7 +11,26 @@ import { defineConfig } from 'vite'
  * without the player rather than with one pointing at a 404.
  */
 const EXPLAINER = 'video/architecting-candor-explainer.mp4'
-const hasExplainer = existsSync(resolve(import.meta.dirname, 'public', EXPLAINER))
+
+/*
+ * Resolve against BOTH the config's directory and the build's working
+ * directory. Checking only import.meta.dirname worked locally and silently
+ * returned false on Vercel — the video uploaded and was served, but the player
+ * was dead-code-eliminated out of the bundle, so the site shipped a video
+ * nobody could reach. Vite may evaluate this config from a bundled temp file,
+ * in which case import.meta.dirname is not the project root.
+ */
+const hasExplainer = [
+  resolve(process.cwd(), 'public', EXPLAINER),
+  resolve(import.meta.dirname, 'public', EXPLAINER),
+].some(existsSync)
+
+// Say so in the build log. A silent false is what made this hard to see.
+console.log(
+  hasExplainer
+    ? `[explainer] found ${EXPLAINER} — the player will be built in`
+    : `[explainer] ${EXPLAINER} NOT found — building without the player`,
+)
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 

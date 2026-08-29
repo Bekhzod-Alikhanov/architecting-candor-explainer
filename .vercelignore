@@ -1,0 +1,16 @@
+# Vercel's upload ignore list.
+#
+# This file must exist. Without it the CLI falls back to .gitignore, which
+# excludes public/video/ — and the explainer video would be missing from the
+# deployment while everything appeared to work locally.
+#
+# So: the usual build junk, but NOT public/video/.
+node_modules
+.vite
+*.local
+.DS_Store
+*.tsbuildinfo
+.env*
+.git
+docs
+scripts

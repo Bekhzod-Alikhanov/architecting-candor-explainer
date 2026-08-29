@@ -38,6 +38,7 @@
     .skip-link,
     .snav,
     .snavJump,
+    .colo__video,
     .shell__flow > *:not(#gc) {
       display: none;
     }

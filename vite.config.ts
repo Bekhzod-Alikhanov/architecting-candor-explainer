@@ -1,10 +1,25 @@
+import { existsSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { defineConfig } from 'vite'
+
+/**
+ * The explainer video is deliberately not in git — 87MB that never changes, and
+ * committing it would sit in every clone's history permanently. It ships with
+ * the deployment upload instead; see .gitignore and .vercelignore.
+ *
+ * So the build asks whether the file is actually there. A fresh clone builds
+ * without the player rather than with one pointing at a 404.
+ */
+const EXPLAINER = 'video/architecting-candor-explainer.mp4'
+const hasExplainer = existsSync(resolve(import.meta.dirname, 'public', EXPLAINER))
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 
 export default defineConfig({
   plugins: [react(), tailwindcss()],
+  define: {
+    __HAS_EXPLAINER__: JSON.stringify(hasExplainer),
+  },
   build: {
     target: 'es2022',
     cssCodeSplit: true,

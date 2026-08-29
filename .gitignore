@@ -7,3 +7,18 @@ dist/
 
 .vercel
 .env*
+
+# The explainer video is deliberately NOT in git. It is 87MB, it never changes,
+# and committing it would put that in every clone's history permanently.
+#
+# It still SHIPS: .vercelignore exists precisely so this file does not also
+# exclude it from the deployment upload — without that file the Vercel CLI falls
+# back to .gitignore and the video would silently never reach the site.
+#
+# A fresh clone therefore builds without the player rather than with a broken
+# one; see the note in src/modules/colophon/Colophon.tsx and the README.
+public/video/*.mp4
+
+# The poster is 34KB and derived from public/og.png, so it stays in git. Only
+# the one large file is the exception.
+!public/video/poster.webp

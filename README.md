@@ -136,6 +136,28 @@ docs/           reference-audit.md, design-plan.md
 
 **Routing.** Two entry points, `/` and `/linter`, resolved by a pathname switch in `src/main.tsx` rather than a routing library. Both deploy configs rewrite **only** `/linter` to the SPA shell; anything else falls through to a real 404. `/linter` sets its own canonical, title and description on mount, because both routes are served from the same `index.html` and the sitemap lists them separately.
 
+**The explainer video.** A 9½-minute video sits in §09 beside the paper links,
+self-hosted so that watching it sends no request to anyone but this domain — the
+same reason the linter runs in your browser. `preload="none"` and a 22 kB poster
+mean nothing is fetched until you press play; verified as zero bytes on load.
+
+The 87 MB file is **not in git**. It never changes, and committing it would put
+87 MB in every clone's history permanently. Two consequences worth knowing:
+
+- `.vercelignore` exists specifically because of this. Without it the Vercel CLI
+  falls back to `.gitignore`, which would exclude the video from the deployment
+  upload too — the site would build fine and silently ship without it.
+- `vite.config.ts` checks whether the file is present and exposes
+  `__HAS_EXPLAINER__`. A fresh clone therefore builds **without** the player
+  rather than with one pointing at a 404. To restore it, drop the mp4 at
+  `public/video/architecting-candor-explainer.mp4` and rebuild.
+
+It has **no caption track**, which is the site's one known accessibility gap.
+axe reports it as *incomplete* rather than a violation — it cannot verify
+captions programmatically and asks a human to. A fabricated or empty track would
+be worse than none, so there isn't one; supply a transcript and it becomes a
+`.vtt` alongside the video.
+
 **Code splitting.** Sections 02 to 07 are separate chunks, mounted by `src/components/Deferred.tsx` as the reader approaches, or immediately if they arrived at that section's anchor. §08 is deliberately eager so the checklist is printable from anywhere. Initial JS is about 80 kB gzipped across 10 chunks.
 
 ---

@@ -104,6 +104,58 @@
     color: var(--color-doc);
   }
 
+  /* --- the explainer video -------------------------------------------------
+   Sits with the paper links, because it is source material rather than another
+   interactive. 16:9 is declared on the element as width/height so the box is
+   reserved before anything loads — with preload off there is no metadata to
+   size it from, and without this the section would shift when it appears.
+   ---------------------------------------------------------------------- */
+
+  .colo__video {
+    margin: 1.5rem 0 0;
+  }
+
+  .colo__videoHead {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-block-end: 0.5rem;
+  }
+
+  .colo__videoLabel {
+    font-family: var(--font-mono);
+    font-size: var(--text-cs-xs);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--text-on-doc-muted);
+  }
+
+  .colo__videoMeta {
+    font-family: var(--font-mono);
+    font-size: var(--text-cs-xs);
+    font-variant-numeric: tabular-nums;
+    color: var(--text-on-doc-muted);
+  }
+
+  .colo__player {
+    display: block;
+    inline-size: 100%;
+    block-size: auto;
+    aspect-ratio: 16 / 9;
+    background: var(--color-redact);
+    border: 1px solid var(--doc-rule);
+    border-radius: var(--radius-panel);
+  }
+
+  .colo__videoNote {
+    margin-block-start: 0.6rem;
+    font-family: var(--font-mono);
+    font-size: var(--text-cs-xs);
+    line-height: 1.55;
+    color: var(--text-on-doc-muted);
+  }
+
   .colo__citation {
     margin-block-start: 1.5rem;
     padding-block-start: 1rem;

@@ -29,11 +29,12 @@ export const paper = {
     'Celone, M. A., McGregor, S., Secret, M., Mignot, E., Bregman, N., & Alikhanov, B. (2026). Architecting Candor: Products Liability and AI Incident Knowledge Governance. Arcadia Impact AI Governance Taskforce.',
   researchPage: 'https://www.arcadiaimpact.org/ai-governance-taskforce/research',
   /**
-   * The paper is listed on the Arcadia Impact research page. Replace this with
-   * a direct link to the PDF or DOI once one is published; nothing else needs
-   * to change.
+   * The taskforce's permanent link for this paper. It forwards to the SSRN
+   * record, so this is the address to cite rather than the SSRN URL: it keeps
+   * working if the paper moves. Until this existed, "Read the paper" and
+   * "Arcadia Impact research" both pointed at the same index page.
    */
-  paperUrl: 'https://www.arcadiaimpact.org/ai-governance-taskforce/research',
+  paperUrl: 'https://www.arcadiaimpact.org/aigt/research/s26-incident-liability-report',
 } as const
 
 export const meta = {
@@ -129,6 +130,32 @@ export function section(id: SectionId): {
   if (!found) throw new Error(`Unknown section id: ${id}`)
   return { ...found, seq: i + 1 }
 }
+
+/**
+ * The explainer video, in §09 beside the paper links.
+ *
+ * Self-hosted, so watching it sends no request to anyone but this domain — the
+ * same reason the linter runs in the browser. It is 87MB, so preload is off and
+ * nothing is fetched until a reader presses play.
+ */
+export const explainer = {
+  src: '/video/architecting-candor-explainer.mp4',
+  type: 'video/mp4',
+  /**
+   * A dedicated poster, not og.png. The OG card is a 2400px PNG at 163KB, and
+   * browsers fetch a poster eagerly even when preload is off — so pointing at
+   * it pulled 163KB onto the critical path to illustrate a player in the last
+   * section, and cost 3 points of mobile performance.
+   */
+  poster: '/video/poster.webp',
+  label: 'The explainer',
+  title: 'Architecting Candor: structuring AI safety against litigation',
+  duration: '9 min 28 s',
+  /** Shown to a browser that cannot play the file at all. */
+  fallback: 'Your browser cannot play this video.',
+  downloadLabel: 'Download the file',
+  note: 'Self-hosted and not tracked. Nothing is downloaded until you press play.',
+} as const
 
 /** The section rail. */
 export const navCopy = {

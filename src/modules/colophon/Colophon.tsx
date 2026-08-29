@@ -1,5 +1,13 @@
 import { SectionHead } from '../../components/SectionHead'
-import { paper, about, contribution, disclaimer, colophonCopy, section } from '../../content/site'
+import {
+  paper,
+  about,
+  contribution,
+  disclaimer,
+  colophonCopy,
+  explainer,
+  section,
+} from '../../content/site'
 import './colophon.css'
 
 /**
@@ -62,6 +70,40 @@ export function Colophon() {
               {colophonCopy.researchLink} <span aria-hidden="true">↗</span>
             </a>
           </div>
+
+          {/*
+            The video ships with the deployment but is not in git, so the build
+            reports whether it was actually there — see vite.config.ts. Without
+            this a fresh clone would render a player pointing at a 404.
+          */}
+          {__HAS_EXPLAINER__ ? (
+            <figure className="colo__video">
+              <figcaption className="colo__videoHead">
+                <span className="colo__videoLabel">{explainer.label}</span>
+                <span className="colo__videoMeta">{explainer.duration}</span>
+              </figcaption>
+              {/* biome-ignore lint/a11y/useMediaCaption: no caption track exists
+                  for this video yet. A fabricated or empty track would be worse
+                  than none, because it would claim captions that are not there.
+                  This is the site's one known accessibility gap and it is
+                  recorded in the README rather than hidden. */}
+              <video
+                className="colo__player"
+                controls
+                preload="none"
+                poster={explainer.poster}
+                width={1280}
+                height={720}
+              >
+                <source src={explainer.src} type={explainer.type} />
+                {explainer.fallback}{' '}
+                <a href={explainer.src} download>
+                  {explainer.downloadLabel}
+                </a>
+              </video>
+              <p className="colo__videoNote">{explainer.note}</p>
+            </figure>
+          ) : null}
 
           <div className="colo__citation">
             <span className="colo__citationLabel">{colophonCopy.citeLabel}</span>

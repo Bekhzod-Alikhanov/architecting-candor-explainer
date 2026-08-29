@@ -141,19 +141,20 @@ self-hosted so that watching it sends no request to anyone but this domain — t
 same reason the linter runs in your browser. `preload="none"` and a 22 kB poster
 mean nothing is fetched until you press play; verified as zero bytes on load.
 
-The 87 MB file is **not in git**. It never changes, and committing it would put
-87 MB in every clone's history permanently. Two consequences worth knowing:
+The 87 MB file **is committed**. That is a deliberate trade. It was briefly kept
+out of git and shipped with the deployment upload instead, which broke as soon as
+it met reality: the Vercel GitHub integration rebuilds production from the
+repository on every push, so a push produced a site where the video existed but
+nothing on the page linked to it. One large file, added once and never modified,
+is the least-bad case for git history, and it makes every build — local, CLI or
+git-triggered — produce the same site.
 
-- `.vercelignore` exists specifically because of this. Without it the Vercel CLI
-  falls back to `.gitignore`, which would exclude the video from the deployment
-  upload too — the site would build fine and silently ship without it.
-- `vite.config.ts` checks whether the file is present and exposes
-  `__HAS_EXPLAINER__`. A fresh clone therefore builds **without** the player
-  rather than with one pointing at a 404. To restore it, drop the mp4 at
-  `public/video/architecting-candor-explainer.mp4` and rebuild.
+`.vercelignore` still exists and is worth knowing about: without it the Vercel
+CLI falls back to `.gitignore`. That is a sharp edge to remember before adding
+anything to `.gitignore` that the deployed site actually needs.
 
-It has **no caption track**, which is the site's one known accessibility gap.
-axe reports it as *incomplete* rather than a violation — it cannot verify
+The video has **no caption track**, which is the site's one known accessibility
+gap. axe reports it as *incomplete* rather than a violation — it cannot verify
 captions programmatically and asks a human to. A fabricated or empty track would
 be worse than none, so there isn't one; supply a transcript and it becomes a
 `.vtt` alongside the video.

@@ -1,10 +1,9 @@
-# Vercel's upload ignore list.
+# Files the deployment does not need. Keeps the upload small.
 #
-# This file must exist. Without it the CLI falls back to .gitignore, which
-# excludes public/video/ — and the explainer video would be missing from the
-# deployment while everything appeared to work locally.
-#
-# So: the usual build junk, but NOT public/video/.
+# Note that this file existing at all is load-bearing: without it the Vercel CLI
+# falls back to .gitignore. That mattered enormously when the explainer video was
+# excluded from git, and it is worth remembering before adding a build artifact
+# to .gitignore that the site actually needs.
 node_modules
 .vite
 *.local

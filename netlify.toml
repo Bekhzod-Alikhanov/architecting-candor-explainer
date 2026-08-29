@@ -34,6 +34,15 @@
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
 
+# The explainer video is 87MB with a stable filename, so it gets a real cache
+# window rather than the default revalidate-every-visit. Not `immutable`: the
+# name does not change if the file is replaced, and a day of staleness is a
+# cheaper mistake than an uncacheable 87MB.
+[[headers]]
+  for = "/video/*"
+  [headers.values]
+    Cache-Control = "public, max-age=86400, stale-while-revalidate=604800"
+
 [[headers]]
   for = "/fonts/*"
   [headers.values]

@@ -12,15 +12,17 @@
 
 import { spawn } from 'node:child_process'
 import { createServer } from 'node:http'
-import { readFileSync, writeFileSync, existsSync, mkdtempSync, rmSync } from 'node:fs'
+import { readFileSync, writeFileSync, existsSync, mkdirSync, mkdtempSync, rmSync } from 'node:fs'
 import { extname, join, resolve } from 'node:path'
 import { tmpdir } from 'node:os'
 import { formatHex, parse } from 'culori'
+import sharp from 'sharp'
 
 const ROOT = resolve(import.meta.dirname, '..')
 const WIDTH = 2400
 const HEIGHT = 1260
 const OUT = join(ROOT, 'public', 'og.png')
+const ICONS_DIR = join(ROOT, 'public', 'icons')
 
 const CHROME = [
   'C:/Program Files/Google/Chrome/Application/chrome.exe',
@@ -59,7 +61,10 @@ function colour(name) {
  * for the same reason everything else is.
  */
 function writeFavicon() {
-  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  // width/height alongside viewBox: without them an SVG's intrinsic size is
+  // renderer-defined, and the rasteriser in writeIcons() below needs a fixed
+  // 32x32 to scale up from rather than a guess.
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
   <rect width="32" height="32" rx="4" fill="${colour('ground')}"/>
   <path d="M17 3h11a1 1 0 0 1 1 1v24a1 1 0 0 1-1 1H17z" fill="${colour('doc')}"/>
   <rect x="6" y="9" width="7" height="2.5" rx="1" fill="${colour('instrument')}"/>
@@ -73,6 +78,69 @@ function writeFavicon() {
 `
   writeFileSync(join(ROOT, 'public', 'favicon.svg'), svg)
   console.log('favicon.svg  32x32')
+  return svg
+}
+
+/**
+ * Rasterise the favicon to every fixed-size PNG the platforms actually ask
+ * for: the two manifest sizes, the iOS home-screen icon, and a PNG fallback
+ * favicon for the browsers that still prefer one over the SVG. `density`
+ * scales up the vector render to match each target, rather than rasterising
+ * once at 32x32 and stretching a bitmap.
+ */
+async function writeIcons(svg) {
+  mkdirSync(ICONS_DIR, { recursive: true })
+  const sizes = [
+    ['icon-512.png', 512],
+    ['icon-192.png', 192],
+    ['apple-touch-icon.png', 180],
+    ['favicon-32.png', 32],
+  ]
+  for (const [file, size] of sizes) {
+    await sharp(Buffer.from(svg), { density: 96 * (size / 32) })
+      .resize(size, size)
+      .png()
+      .toFile(join(ICONS_DIR, file))
+  }
+  console.log(`icons        ${sizes.map(([file]) => file).join(', ')}`)
+}
+
+/**
+ * public/site.webmanifest — the two icon sizes it lists are the two
+ * writeIcons() above always produces, so check-dist.mjs can assert the pair
+ * stays in sync without hand-maintaining a second list.
+ */
+function writeManifest() {
+  const ground = colour('ground')
+  const manifest = {
+    name: 'Architecting Candor',
+    short_name: 'Architecting Candor',
+    start_url: '/',
+    display: 'browser',
+    icons: [
+      { src: '/icons/icon-192.png', sizes: '192x192', type: 'image/png' },
+      { src: '/icons/icon-512.png', sizes: '512x512', type: 'image/png' },
+    ],
+    theme_color: ground,
+    background_color: ground,
+  }
+  writeFileSync(join(ROOT, 'public', 'site.webmanifest'), `${JSON.stringify(manifest, null, 2)}\n`)
+  console.log(`site.webmanifest  theme_color=${ground}`)
+}
+
+/**
+ * index.html's one literal hex value, kept in step with --color-ground so the
+ * README's "no hex outside tokens.css" claim stays true of the whole repo,
+ * not just src/.
+ */
+function rewriteThemeColor() {
+  const file = join(ROOT, 'index.html')
+  const html = readFileSync(file, 'utf8')
+  const ground = colour('ground')
+  const pattern = /<meta name="theme-color" content="#[0-9a-fA-F]{6}" \/>/
+  if (!pattern.test(html)) throw new Error('theme-color <meta> not found in index.html')
+  writeFileSync(file, html.replace(pattern, `<meta name="theme-color" content="${ground}" />`))
+  console.log(`index.html   theme-color=${ground}`)
 }
 
 /** Lift every custom property out of the token layer. */
@@ -207,7 +275,10 @@ try {
   writeFileSync(OUT, Buffer.from(data, 'base64'))
   console.log(`og.png  ${WIDTH}x${HEIGHT}  fonts=${info.families.join(', ')}`)
 
-  writeFavicon()
+  const favSvg = writeFavicon()
+  await writeIcons(favSvg)
+  writeManifest()
+  rewriteThemeColor()
   ws.close()
 } finally {
   chrome.kill()

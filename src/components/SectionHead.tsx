@@ -1,5 +1,7 @@
 import type { ReactNode } from 'react'
-import { bates, section, type SectionId } from '../content/site'
+import { bates, meta, section, sectionLinkCopy, type SectionId } from '../content/site'
+import { a11y } from '../content/ui'
+import { useCopy } from '../lib/useCopy'
 
 /**
  * The stamped section head. The numbering is chain of custody: an append-only
@@ -51,6 +53,7 @@ export function SectionHead({
   leadBelow,
 }: SectionHeadProps) {
   const { n, title: eyebrow, seq } = section(id)
+  const { copied, copy: copyLink } = useCopy()
 
   return (
     <>
@@ -64,6 +67,33 @@ export function SectionHead({
             this, §09 had no accessible name at all. */}
         <span className="sect-eyebrow" {...(titleId && !headline ? { id: titleId } : {})}>
           {eyebrow}
+        </span>
+        <span className="sect-copyWrap">
+          <button
+            type="button"
+            className="sect-copy"
+            aria-label={a11y.copySectionLink(eyebrow)}
+            onClick={() => copyLink(`${meta.canonical}#${id}`)}
+          >
+            {/* A link glyph, not an emoji — this codebase draws its own marks. */}
+            <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+              <path
+                d="M6.5 9.5a2.5 2.5 0 0 1 0-3.54l2-2a2.5 2.5 0 0 1 3.54 3.54l-1 1M9.5 6.5a2.5 2.5 0 0 1 0 3.54l-2 2a2.5 2.5 0 0 1-3.54-3.54l1-1"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.3"
+                strokeLinecap="round"
+              />
+            </svg>
+          </button>
+          {/* Absolutely positioned, so a sighted reader sees confirmation
+              without the stamp bar reflowing. One persistent role="status"
+              node whose text changes — rather than mounting/unmounting a
+              status element — because some screen readers only announce a
+              live region's own text mutating, not a fresh node appearing. */}
+          <span className="sect-copy__status" role="status">
+            {copied ? sectionLinkCopy.copied : ''}
+          </span>
         </span>
         <span className="bates sect-bates">{bates(seq)}</span>
       </div>

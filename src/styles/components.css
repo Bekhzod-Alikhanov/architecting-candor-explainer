@@ -77,6 +77,75 @@
     margin-inline-start: auto;
   }
 
+  /* The per-section "Copy link" button. Positioned relative so its status
+     text (below) can sit off to the side without pushing the Bates stamp. */
+  .sect-copyWrap {
+    position: relative;
+    display: inline-flex;
+  }
+
+  .sect-copy {
+    display: grid;
+    place-items: center;
+    width: 1.5rem;
+    height: 1.5rem;
+    padding: 0;
+    border: 1px solid transparent;
+    border-radius: var(--radius-mark);
+    background: transparent;
+    color: var(--text-on-ground-faint);
+    transition:
+      color var(--dur-fast) var(--ease-out),
+      border-color var(--dur-fast) var(--ease-out);
+  }
+
+  .sect-copy svg {
+    width: 0.9rem;
+    height: 0.9rem;
+  }
+
+  /* Colour and border change on hover/focus; nothing resizes, so there is no
+     layout shift. */
+  .sect-copy:hover {
+    color: var(--instrument-on-ground);
+    border-color: var(--ground-rule);
+  }
+
+  /* Same 44px comfort-target pattern as .scaffold__dot above, without moving
+     the 24px glyph itself. */
+  @media (pointer: coarse) {
+    .sect-copy::before {
+      content: "";
+      position: absolute;
+      inset: -11px;
+    }
+  }
+
+  .sect-copy__status {
+    position: absolute;
+    inset-block-start: calc(100% + 0.3rem);
+    inset-inline-start: 50%;
+    translate: -50% 0;
+    z-index: 5;
+    width: max-content;
+    padding: 0.3rem 0.55rem;
+    background: var(--color-stamp);
+    color: var(--color-doc);
+    font-family: var(--font-mono);
+    font-size: var(--text-cs-xs);
+    letter-spacing: 0.04em;
+    border-radius: var(--radius-mark);
+    pointer-events: none;
+  }
+
+  /* The element stays mounted at all times (see the comment in
+     SectionHead.tsx), but its padding and fill would otherwise paint a small
+     tag with nothing in it. :empty drops both while there is no text. */
+  .sect-copy__status:empty {
+    padding: 0;
+    background: none;
+  }
+
   .sect-headline {
     font-family: var(--font-doc);
     font-weight: 500;

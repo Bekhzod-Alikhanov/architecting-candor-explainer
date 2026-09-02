@@ -111,4 +111,9 @@ export const a11y = {
     `${r.nearMissCaptured} of ${r.nearMissTotal} near misses captured, ` +
     `${r.signalsMissed} of ${r.signalTotal} signals missed. ` +
     `The figures are repeated below the chart.`,
+
+  /** Every section head's "Copy link" button. The section title makes the
+   *  name distinctive; without it, ten buttons on the page would all be
+   *  named "Copy link". */
+  copySectionLink: (title: string) => `Copy a link to “${title}”`,
 } as const

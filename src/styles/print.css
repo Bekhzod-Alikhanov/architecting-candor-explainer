@@ -44,6 +44,19 @@
       display: none;
     }
 
+    /* The section-head "Copy link" button is furniture for a screen, not
+       paper — there is nothing to click on a printed page. This is already
+       true by inheritance everywhere the button's ancestor is removed above,
+       but §08's own section head is a sibling of #checklist rather than an
+       ancestor of it, so its "Copy link" button needs its own rule here.
+       Targets the button and its status text directly, rather than only the
+       wrapper, so a query against `.sect-copy` itself sees display: none. */
+    .sect-copyWrap,
+    .sect-copy,
+    .sect-copy__status {
+      display: none;
+    }
+
     /* The shell is a grid on wide viewports; print has one column. */
     .shell {
       display: block;

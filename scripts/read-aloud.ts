@@ -133,6 +133,7 @@ const spoken: readonly [string, string][] = [
       signalTotal: 27,
     }),
   ],
+  ['— · a section head "Copy link" button', ui.a11y.copySectionLink('The paper')],
 ]
 
 console.log(`\n${'='.repeat(78)}`)

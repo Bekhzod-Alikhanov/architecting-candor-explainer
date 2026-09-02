@@ -71,24 +71,38 @@ try {
   await new Promise((r) => ws.addEventListener('open', r, { once: true }))
   let id = 0
   const pending = new Map()
-  const cspViolations = []
-  // A CSP that blocks something the page actually needs (a font, the poster
-  // image, a popover) fails silently otherwise — the browser just drops the
-  // resource. Console/log events surface those as "Content Security Policy"
-  // text, so catch them here rather than trusting the policy by eye.
-  const trackCsp = (text) => {
-    if (typeof text === 'string' && text.includes('Content Security Policy'))
-      cspViolations.push(text)
+  const consoleFailures = []
+  /*
+   * Console text this run refuses to see.
+   *
+   * A CSP that blocks something the page actually needs (a font, the poster
+   * image, a popover) fails silently otherwise — the browser just drops the
+   * resource.
+   *
+   * A hydration mismatch fails even more quietly: React throws the prerendered
+   * markup away for that subtree and re-renders it on the client, which looks
+   * identical and costs exactly what the prerender was for. src/main.tsx logs
+   * every recoverable error under `[hydration]`, and React's own production
+   * numbers for the three mismatch cases are #418, #423 and #425.
+   */
+  const CONSOLE_FAILURES = [
+    'Content Security Policy',
+    '[hydration]',
+    'Minified React error #418',
+    'Minified React error #423',
+    'Minified React error #425',
+  ]
+  const track = (text) => {
+    if (typeof text === 'string' && CONSOLE_FAILURES.some((f) => text.includes(f)))
+      consoleFailures.push(text)
   }
   ws.addEventListener('message', (ev) => {
     const m = JSON.parse(ev.data)
-    if (m.method === 'Log.entryAdded') trackCsp(m.params?.entry?.text)
+    if (m.method === 'Log.entryAdded') track(m.params?.entry?.text)
     if (m.method === 'Runtime.consoleAPICalled')
-      for (const a of m.params?.args ?? []) trackCsp(a.value ?? a.description)
+      for (const a of m.params?.args ?? []) track(a.value ?? a.description)
     if (m.method === 'Runtime.exceptionThrown')
-      trackCsp(
-        m.params?.exceptionDetails?.exception?.description ?? m.params?.exceptionDetails?.text,
-      )
+      track(m.params?.exceptionDetails?.exception?.description ?? m.params?.exceptionDetails?.text)
     const p = pending.get(m.id)
     if (p) {
       pending.delete(m.id)
@@ -124,14 +138,30 @@ try {
   await send('Page.navigate', { url })
   await sleep(2000)
 
-  // Mount every deferred section by walking the page, then exercise the
-  // instruments so their real markup is present for the scan.
+  /*
+   * Mount every deferred section by walking the page, then exercise the
+   * instruments so their real markup is present for the scan.
+   *
+   * The build prerenders every section, so what is on screen before a mount is
+   * the section's own markup rather than a placeholder — complete, readable,
+   * and entirely inert. So the wait is for `[data-deferred]` to reach
+   * "mounted", not for `[aria-busy="true"]` to disappear: nothing is aria-busy
+   * any more, and clicking a control whose handler is not attached yet drives
+   * nothing and audits an untouched instrument.
+   */
   const mounted = await evaluate(`(async () => {
     const wait = ms => new Promise(r => setTimeout(r, ms))
+    const pending = () => document.querySelectorAll('[data-deferred]:not([data-deferred="mounted"])')
     for (let y = 0; y < document.body.scrollHeight; y += 600) {
       window.scrollTo(0, y); await wait(60)
     }
     window.scrollTo(0, document.body.scrollHeight); await wait(900)
+    for (let i = 0; i < 20; i++) {
+      const left = pending()[0]
+      if (!left) break
+      left.scrollIntoView({ block: 'center' })
+      await wait(400)
+    }
     window.scrollTo(0, 0); await wait(300)
 
     // Route the Record: route the deck and run the request.
@@ -154,12 +184,13 @@ try {
     await wait(300)
 
     return {
-      // Direct children of the flow, not 'main > section': the rail took the
-      // shell's other track, so the sections moved inside .shell__flow and the
-      // old selector reported 0. Not '.sect' either — the hero is .hero, so
-      // that undercounted by one.
-      sections: document.querySelectorAll('.shell__flow > section, main > section').length,
-      busy: document.querySelectorAll('[aria-busy="true"]').length,
+      // Inside the flow rather than 'main >': the rail took the shell's other
+      // track, so the sections moved into .shell__flow. A descendant selector
+      // rather than a child one, because a deferred section sits inside the
+      // wrapper div that carries data-deferred. Not '.sect' either — the hero
+      // is .hero, so that undercounted by one.
+      sections: document.querySelectorAll('.shell__flow section[id], main.solo').length,
+      busy: pending().length,
       flags: document.querySelectorAll('.flag').length,
       verdicts: document.querySelectorAll('.ledger__item').length,
     }
@@ -247,14 +278,14 @@ try {
     console.log('')
   }
 
-  if (cspViolations.length) {
-    console.log(`\nCSP violation(s) during the run:`)
-    for (const v of cspViolations) console.log(`  · ${v}`)
+  if (consoleFailures.length) {
+    console.log(`\nConsole output this run does not allow:`)
+    for (const v of consoleFailures) console.log(`  · ${v}`)
   }
 
   ws.close()
   process.exit(
-    cspViolations.length ||
+    consoleFailures.length ||
       violations.some((v) => v.impact === 'critical' || v.impact === 'serious')
       ? 2
       : 0,

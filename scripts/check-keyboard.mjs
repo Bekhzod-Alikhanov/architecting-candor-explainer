@@ -65,7 +65,28 @@ const proc = spawn(
 
 const failures = []
 const results = []
-const cspViolations = []
+const consoleFailures = []
+
+/**
+ * Console text this run refuses to see.
+ *
+ * A CSP that blocks something the page actually needs (a font, the poster
+ * image, a popover) fails silently otherwise — the browser just drops the
+ * resource.
+ *
+ * A hydration mismatch fails even more quietly: React throws the prerendered
+ * markup away for that subtree and re-renders it on the client, which looks
+ * identical and costs exactly what the prerender was for. src/main.tsx logs
+ * every recoverable error under `[hydration]`, and React's own production
+ * numbers for the three mismatch cases are #418, #423 and #425.
+ */
+const CONSOLE_FAILURES = [
+  'Content Security Policy',
+  '[hydration]',
+  'Minified React error #418',
+  'Minified React error #423',
+  'Minified React error #425',
+]
 
 try {
   let wsUrl = null
@@ -84,23 +105,19 @@ try {
   await new Promise((r) => ws.addEventListener('open', r, { once: true }))
   let id = 0
   const pending = new Map()
-  // A CSP that blocks something the page actually needs (a font, the poster
-  // image, a popover) would otherwise fail silently — the browser just drops
-  // the resource. Console/log events surface those as "Content Security
-  // Policy" text, so catch them here rather than trusting the policy by eye.
-  const trackCsp = (text) => {
-    if (typeof text === 'string' && text.includes('Content Security Policy'))
-      cspViolations.push(text)
+  // Console and log events are the only place these surface, so they are read
+  // rather than trusted by eye. See CONSOLE_FAILURES above.
+  const track = (text) => {
+    if (typeof text === 'string' && CONSOLE_FAILURES.some((f) => text.includes(f)))
+      consoleFailures.push(text)
   }
   ws.addEventListener('message', (ev) => {
     const m = JSON.parse(ev.data)
-    if (m.method === 'Log.entryAdded') trackCsp(m.params?.entry?.text)
+    if (m.method === 'Log.entryAdded') track(m.params?.entry?.text)
     if (m.method === 'Runtime.consoleAPICalled')
-      for (const a of m.params?.args ?? []) trackCsp(a.value ?? a.description)
+      for (const a of m.params?.args ?? []) track(a.value ?? a.description)
     if (m.method === 'Runtime.exceptionThrown')
-      trackCsp(
-        m.params?.exceptionDetails?.exception?.description ?? m.params?.exceptionDetails?.text,
-      )
+      track(m.params?.exceptionDetails?.exception?.description ?? m.params?.exceptionDetails?.text)
     const p = pending.get(m.id)
     if (p) {
       pending.delete(m.id)
@@ -165,29 +182,43 @@ try {
   await send('Page.navigate', { url })
   await sleep(2500)
 
-  // Mount every deferred section. Each mount grows the page, so keep going
-  // until the height settles.
+  /*
+   * Mount every deferred section. Each mount grows the page, so keep going
+   * until the height settles.
+   *
+   * "Still deferred" is `[data-deferred]` that has not reached "mounted", not
+   * `[aria-busy="true"]`: the build prerenders every section, so what is on
+   * screen before a mount is the section's own markup — complete, readable and
+   * entirely inert. Waiting on aria-busy would find nothing to wait for and
+   * then drive controls that have no handlers attached yet.
+   *
+   * Sections are counted with `section[id]` rather than as direct children,
+   * because a deferred one sits inside the wrapper div that carries
+   * data-deferred.
+   */
   const mounted = await evaluate(`(async () => {
     const wait = ms => new Promise(r => setTimeout(r, ms))
+    const pending = () => document.querySelectorAll('[data-deferred]:not([data-deferred="mounted"])')
     let last = -1, guard = 0
     while (document.body.scrollHeight !== last && guard++ < 40) {
       last = document.body.scrollHeight
       for (let y = 0; y <= last; y += 500) { window.scrollTo(0, y); await wait(25) }
       await wait(400)
     }
-    // Scrolling in steps can skip a placeholder between frames, so bring any
-    // that are left into view one at a time.
+    // Scrolling in steps can skip a section between frames, so bring any that
+    // are left into view one at a time.
     for (let i = 0; i < 20; i++) {
-      const left = document.querySelector('[aria-busy="true"]')
+      const left = pending()[0]
       if (!left) break
       left.scrollIntoView({ block: 'center' })
       await wait(500)
     }
     window.scrollTo(0, 0); await wait(200)
-    return { sections: document.querySelectorAll('.shell__flow > section, main > section').length,
-             deferred: document.querySelectorAll('[aria-busy="true"]').length }
+    return { sections: document.querySelectorAll('.shell__flow section[id]').length,
+             deferred: pending().length }
   })()`)
   console.log(`\nmounted ${mounted.sections} sections, ${mounted.deferred} still deferred`)
+  if (mounted.sections !== 10) failures.push(`${mounted.sections} sections, expected 10`)
   if (mounted.deferred > 0) failures.push(`${mounted.deferred} sections never mounted`)
 
   /**
@@ -465,10 +496,10 @@ try {
   }
 }
 
-if (cspViolations.length) {
-  console.error(`\nCSP violation(s) during the run:`)
-  for (const v of cspViolations) console.error(`  · ${v}`)
-  failures.push(`${cspViolations.length} Content-Security-Policy violation(s) — see above`)
+if (consoleFailures.length) {
+  console.error(`\nConsole output this run does not allow:`)
+  for (const v of consoleFailures) console.error(`  · ${v}`)
+  failures.push(`${consoleFailures.length} CSP or hydration message(s) — see above`)
 }
 
 console.log('')

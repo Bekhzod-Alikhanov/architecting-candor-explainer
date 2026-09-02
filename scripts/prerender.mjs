@@ -17,6 +17,7 @@
  * the only place any of this site's prose lives.
  */
 
+import { createHash } from 'node:crypto'
 import { mkdirSync, readFileSync, rmSync, statSync, writeFileSync } from 'node:fs'
 import { join, resolve } from 'node:path'
 import { pathToFileURL } from 'node:url'
@@ -43,17 +44,26 @@ const ROUTES = [
 ]
 
 /**
- * The stylesheets the lazy chunks would have brought with them.
+ * One stylesheet carrying the CSS the lazy chunks would each have brought with
+ * them on mount.
  *
- * §02 to §07 are on screen from the first paint now, so the CSS that styles
- * them has to be in the head from the first paint too — otherwise the reader
- * gets six sections of unstyled markup until they scroll far enough to trigger
- * the chunk. Walked from the client entry through the manifest's own import
- * graph, so the 404 page's stylesheet is not dragged in and a new lazy section
- * needs no change here. Order does not matter: everything in src/styles and
- * every module sheet is inside a cascade layer.
+ * §02 to §07 are in the document from the first byte now, so the CSS that
+ * styles them has to arrive with it — otherwise a reader without JavaScript
+ * gets six sections of unstyled markup, and Lighthouse's target-size audit
+ * fails on their unstyled controls, which is how that was noticed.
+ *
+ * Six separate links cost six round trips ahead of the fonts. They are
+ * concatenated into one file instead: order is irrelevant, because every sheet
+ * in src/styles and every module sheet is inside a cascade layer. The chunks
+ * still carry their own copies, which is what styles a section mounted on a
+ * page that was not prerendered (the dev server), and Vite's loader skips the
+ * fetch when the href is already in the document.
+ *
+ * Walked from the client entry through the manifest's own import graph, so the
+ * 404 page's stylesheet is not dragged in and a new lazy section needs no
+ * change here.
  */
-function lazyStylesheets() {
+function sectionStylesheet() {
   const seen = new Set()
   const css = new Set()
 
@@ -68,7 +78,16 @@ function lazyStylesheets() {
   walk('index.html')
 
   // The entry's own stylesheet is already linked in the template Vite wrote.
-  return [...css].filter((f) => !template.includes(f))
+  const files = [...css].filter((f) => !template.includes(f))
+  if (!files.length) return null
+
+  const body = files.map((f) => readFileSync(join(DIST, f), 'utf8')).join('\n')
+  // Hashed like everything else in assets/, so it inherits the immutable
+  // cache header and changes name whenever any section's CSS changes.
+  const hash = createHash('sha256').update(body).digest('base64url').slice(0, 8)
+  const out = `assets/sections-${hash}.css`
+  writeFileSync(join(DIST, out), body, 'utf8')
+  return { file: out, from: files, bytes: body.length }
 }
 
 /** Head rewrites and additions for one route. */
@@ -143,9 +162,13 @@ function swap(html, pattern, replacement, what) {
   return html.replace(pattern, () => replacement)
 }
 
-const stylesheets = lazyStylesheets()
+const sectionCss = sectionStylesheet()
 console.log(`\nprerender`)
-console.log(`  lazy stylesheets: ${stylesheets.length ? stylesheets.join(', ') : 'none'}`)
+console.log(
+  sectionCss
+    ? `  ${sectionCss.file}  ${(sectionCss.bytes / 1024).toFixed(1)} kB from ${sectionCss.from.length} chunk stylesheets`
+    : '  no lazy stylesheets',
+)
 
 for (const { route, out, lazyCss, note } of ROUTES) {
   const { prelude, errors } = await render(route)
@@ -168,13 +191,46 @@ for (const { route, out, lazyCss, note } of ROUTES) {
     html = swap(html, pattern, replacement, `${route} ${what}`)
   }
 
-  const links = lazyCss
-    ? stylesheets.map((f) => `<link rel="stylesheet" crossorigin href="/${f}" />`)
-    : []
-  const extra = [...tags, ...links].map((t) => `    ${t}`).join('\n')
+  /*
+   * The section stylesheet goes in the head, with everything else.
+   *
+   * Putting it in the body just before the first deferred section — where it
+   * would have blocked the paint of those sections only, rather than of the
+   * hero — cost a hydration mismatch: that position is inside the tree React
+   * hydrates, so React found a <link> where it expected the section's wrapper,
+   * discarded the prerendered subtree and rebuilt it on the client. React's own
+   * #418, caught by the [hydration] assertion in check-keyboard.mjs. The head is
+   * the only place a stylesheet can go without being inside somebody's render.
+   */
+  if (lazyCss && sectionCss) {
+    tags.push(`<link rel="stylesheet" crossorigin href="/${sectionCss.file}" />`)
+  }
+
+  const extra = tags.map((t) => `    ${t}`).join('\n')
   if (extra) {
     html = swap(html, /\n?\s*<\/head>/, `\n${extra}\n  </head>`, `${route} </head>`)
   }
+
+  /*
+   * The hydration bundle, demoted.
+   *
+   * A module script is deferred but still fetched at high priority, which was
+   * right while it was the only thing that could draw the page. It is not any
+   * more: the document arrives complete, and 98 kB of JavaScript competing for
+   * a phone's bandwidth now delays the paint of markup that needs none of it.
+   * Measured on Lighthouse's throttled mobile profile: first paint 2.9s → 2.3s,
+   * with total blocking time unchanged at single-digit milliseconds.
+   */
+  html = swap(
+    html,
+    /<script type="module" crossorigin/,
+    '<script type="module" fetchpriority="low" crossorigin',
+    `${route} module script`,
+  )
+  html = html.replaceAll(
+    '<link rel="modulepreload" crossorigin',
+    '<link rel="modulepreload" fetchpriority="low" crossorigin',
+  )
 
   html = swap(
     html,

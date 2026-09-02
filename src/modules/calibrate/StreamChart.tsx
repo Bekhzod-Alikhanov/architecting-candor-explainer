@@ -23,6 +23,16 @@ export interface StreamChartProps {
   readonly settings: Settings
 }
 
+/**
+ * A coordinate, to a hundredth of a viewBox unit.
+ *
+ * This chart is 900 units wide and is drawn a few hundred pixels wide, so two
+ * decimals is already well under a device pixel. Full float precision is not
+ * free: 420 marks at seventeen significant figures put 20 kB of digits into the
+ * prerendered document, which every reader downloads.
+ */
+const px = (n: number) => Math.round(n * 100) / 100
+
 export function StreamChart({ readout, settings }: StreamChartProps) {
   const uid = useId().replace(/:/g, '')
   const plotH = H - PAD.top - PAD.bottom
@@ -30,9 +40,9 @@ export function StreamChart({ readout, settings }: StreamChartProps) {
 
   const y = (margin: number) => {
     const clamped = Math.max(LO, Math.min(HI, margin))
-    return PAD.top + ((HI - clamped) / (HI - LO)) * plotH
+    return px(PAD.top + ((HI - clamped) / (HI - LO)) * plotH)
   }
-  const x = (t: number) => PAD.left + t * plotW
+  const x = (t: number) => px(PAD.left + t * plotW)
 
   const marginOf = (values: Readonly<Record<string, number>>) =>
     Math.max(...dimensions.map((d) => values[d.id]! - settings.levels[d.id]))
@@ -60,7 +70,7 @@ export function StreamChart({ readout, settings }: StreamChartProps) {
           x={PAD.left}
           y={reviewY}
           width={plotW}
-          height={Math.max(0, logY - reviewY)}
+          height={px(Math.max(0, logY - reviewY))}
           className="stream__logBand"
         />
       ) : null}
@@ -96,8 +106,8 @@ export function StreamChart({ readout, settings }: StreamChartProps) {
           return (
             <rect
               key={event.i}
-              x={cx - 3.4}
-              y={cy - 3.4}
+              x={px(cx - 3.4)}
+              y={px(cy - 3.4)}
               width={6.8}
               height={6.8}
               className="stream__signal"

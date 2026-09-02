@@ -63,10 +63,17 @@
     color: var(--instrument-on-ground);
   }
 
+  /* Not --instrument-on-ground for the label here: that token is measured at
+     5.0:1 against the flat ground, and this chip puts it on --tint-instrument,
+     which lifts the background enough to drop the pair to 4.36:1 at 13px —
+     under AA. Measured by Lighthouse once §06 started being prerendered, which
+     is the first time the chip existed in the document at load. The active
+     state is still carried by the tint and the border, so nothing rests on the
+     label's hue. */
   .chipbtn[data-active="true"] {
     background: var(--tint-instrument);
     border-color: var(--color-instrument);
-    color: var(--instrument-on-ground);
+    color: var(--text-on-ground);
   }
 
   .reg__select {

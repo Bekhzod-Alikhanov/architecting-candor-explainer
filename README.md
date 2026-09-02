@@ -159,7 +159,7 @@ captions programmatically and asks a human to. A fabricated or empty track would
 be worse than none, so there isn't one; supply a transcript and it becomes a
 `.vtt` alongside the video.
 
-**Code splitting.** Sections 02 to 07 are separate chunks, mounted by `src/components/Deferred.tsx` as the reader approaches, or immediately if they arrived at that section's anchor. §08 is deliberately eager so the checklist is printable from anywhere. Initial JS is about 93 kB gzipped across 3 chunks — react 59.6 kB, main 24.3 kB, d3 9.4 kB — plus 12.1 kB gzipped CSS.
+**Code splitting.** Sections 02 to 07 are separate chunks, mounted by `src/components/Deferred.tsx` as the reader approaches, or immediately if they arrived at that section's anchor. §08 is deliberately eager so the checklist is printable from anywhere. Initial JS is about 94 kB gzipped across 5 chunks — react 59.6 kB, main 24.0 kB, d3 9.4 kB, modulepreload-polyfill 0.4 kB — plus 12.1 kB gzipped CSS.
 
 ---
 

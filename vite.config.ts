@@ -9,7 +9,7 @@ export default defineConfig({
   build: {
     target: 'es2022',
     cssCodeSplit: true,
-    rollupOptions: {
+    rolldownOptions: {
       // Two HTML entries. 404.html is built rather than dropped in public/ so
       // that the error page is styled from the token layer instead of from hex
       // values inlined into a standalone file.
@@ -17,8 +17,6 @@ export default defineConfig({
         main: resolve(import.meta.dirname, 'index.html'),
         notFound: resolve(import.meta.dirname, '404.html'),
       },
-    },
-    rolldownOptions: {
       output: {
         // String `test` values are substring matches, so this sidesteps the
         // path-separator regex pitfall Rolldown's own docs warn about on

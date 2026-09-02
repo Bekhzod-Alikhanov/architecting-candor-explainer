@@ -256,21 +256,32 @@
     color: var(--text-on-ground-faint);
   }
 
-  /* The split. A flex row on wide screens, a column when stacked. */
+  /* The split. A column by default, a flex row once there is width for two
+     readings side by side.
+
+     This used to be a `data-stacked` attribute set from a matchMedia read in
+     Hero.tsx. The section is prerendered now, so at the moment this markup is
+     written there is no viewport to read: a JS breakpoint can only be right
+     after hydration, and a reader without JavaScript would never get the right
+     arrangement at all. The breakpoint below is the same 48rem Hero.tsx reads,
+     and what the component still decides is only whether the seam can be
+     dragged.
+
+     Only one of the two endings to the standfirst is shown, for the same
+     reason — both are in the markup. */
   .hero__split {
     display: flex;
+    flex-direction: column;
     align-items: stretch;
     margin-block-start: 1.5rem;
     border: 1px solid var(--ground-rule);
     border-radius: var(--radius-panel);
     background: var(--ground-deep);
     overflow: hidden;
-    min-height: 22rem;
   }
 
-  .hero__split[data-stacked="true"] {
-    flex-direction: column;
-    min-height: 0;
+  .hero__dragNote {
+    display: none;
   }
 
   .hero__pane {
@@ -279,6 +290,67 @@
     overflow: hidden;
     display: flex;
     flex-direction: column;
+  }
+
+  @media (min-width: 48rem) {
+    .hero__split {
+      flex-direction: row;
+      min-height: 22rem;
+    }
+
+    /* --hero-split is set as an inline custom property by Hero.tsx and is what
+       dragging the seam changes. The prerendered markup already carries the
+       opening value, so the panes are the right size before hydration. */
+    .hero__console {
+      flex: 0 0 var(--hero-split, 46%);
+    }
+
+    .hero__exhibitWrap {
+      flex: 1 1 0;
+    }
+
+    /* Before hydration the seam does not know it is in a row — Seam.tsx picks
+       its orientation from the same matchMedia read — so its box is given the
+       vertical geometry here. That is also what keeps the swap to the draggable
+       seam free of layout shift: the box it lands in is already this one. */
+    .hero__seam {
+      width: max(var(--seam-width), 12px);
+      height: auto;
+      min-height: 100%;
+      align-self: stretch;
+      /* The draggable seam draws its line with a pseudo-element inside a 12px
+         hit box; this paints the same line in the same place, so the two
+         states are pixel-identical and the swap is invisible. */
+      background: linear-gradient(
+        to right,
+        transparent calc(50% - var(--seam-width) / 2),
+        var(--seam-colour) calc(50% - var(--seam-width) / 2) calc(50% + var(--seam-width) / 2),
+        transparent calc(50% + var(--seam-width) / 2)
+      );
+    }
+
+    .hero__seam::before {
+      inset-block: 0;
+      inset-inline: auto;
+      left: 50%;
+      top: auto;
+      translate: -50% 0;
+      width: 9px;
+      height: auto;
+      background-image: repeating-linear-gradient(
+        to bottom,
+        var(--seam-colour) 0 1px,
+        transparent 1px 13px
+      );
+    }
+
+    .hero__dragNote {
+      display: inline;
+    }
+
+    .hero__stackedNote {
+      display: none;
+    }
   }
 
   /* --- left pane: the engineering reading --------------------------------- */

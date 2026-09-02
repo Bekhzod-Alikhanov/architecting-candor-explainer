@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, type CSSProperties } from 'react'
 import { Seam } from '../../components/Seam'
 import { Prov } from '../../components/Provenance'
 import { useMediaQuery } from '../../lib/useMediaQuery'
@@ -20,6 +20,12 @@ const memoSection = section('memo')
  * On narrow screens the two readings stack and both are shown in full, which
  * carries the same point without asking anyone to drag a splitter on a 360px
  * screen.
+ *
+ * Which of the two arrangements is drawn is decided in hero.css, at the same
+ * breakpoint this component reads. That duplication is deliberate: the build
+ * prerenders this section, so the CSS has to be able to lay it out correctly at
+ * every width before any JavaScript has run, and `wide` then only decides
+ * whether the seam becomes draggable.
  */
 export function Hero() {
   const wide = useMediaQuery('(min-width: 48rem)')
@@ -98,16 +104,23 @@ export function Hero() {
           <h2 className="hero__recordTitle">{r.heading}</h2>
           <Prov kind="simulated" />
         </div>
+        {/* Both endings to the sentence are in the markup and CSS shows the one
+            that matches the viewport. The page is prerendered, so a JS
+            breakpoint read cannot decide this: the HTML is written before any
+            viewport exists. */}
         <p className="hero__standfirst">
-          {wide ? r.standfirst : r.standfirst.replace(r.dragInstruction, r.standfirstStacked)}
+          {r.standfirst.replace(r.dragInstruction, '')}
+          <span className="hero__dragNote">{r.dragInstruction}</span>
+          <span className="hero__stackedNote">{r.standfirstStacked}</span>
         </p>
 
-        <div className="hero__split" data-stacked={!wide}>
+        {/* The seam's position is a custom property rather than a conditional
+            inline style, so the prerendered markup already carries the split
+            the reader will see and CSS applies it only where the panes sit
+            side by side. */}
+        <div className="hero__split" style={{ '--hero-split': `${split * 100}%` } as CSSProperties}>
           {/* The engineering reading. */}
-          <div
-            className="hero__pane hero__console"
-            style={wide ? { flex: `0 0 ${split * 100}%` } : undefined}
-          >
+          <div className="hero__pane hero__console">
             <p className="hero__paneLabel">{r.consoleLabel}</p>
             <dl className="hero__telemetry">
               {r.telemetry.map((f) => (
@@ -121,6 +134,7 @@ export function Hero() {
           </div>
 
           <Seam
+            className="hero__seam"
             orientation={wide ? 'vertical' : 'horizontal'}
             {...(wide
               ? {
@@ -134,10 +148,7 @@ export function Hero() {
           />
 
           {/* The legal reading. Same facts. */}
-          <div
-            className="hero__pane hero__exhibitWrap"
-            style={wide ? { flex: '1 1 0' } : undefined}
-          >
+          <div className="hero__pane hero__exhibitWrap">
             <div className="hero__exhibit doc-object doc-object--scanned on-doc">
               <div className="hero__exhibitHead">
                 <span className="hero__exhibitNo">{r.exhibitNo}</span>

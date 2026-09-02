@@ -38,15 +38,31 @@ export function remainingUntil(iso: string, now: number = Date.now()): Remaining
  * Ticks once a second. This is information rather than decoration, so it keeps
  * running under prefers-reduced-motion; what that setting removes elsewhere is
  * movement, not facts.
+ *
+ * Returns `null` on the first render, and only on the first render. The page is
+ * prerendered at build time, so a clock read during render would bake the
+ * build's own second into the HTML and then disagree with the reader's clock
+ * the moment React hydrated it. The caller renders a static frame for `null`
+ * instead — see Countdown.tsx — and the real figure arrives with the first
+ * tick, which is also the first effect.
  */
-export function useCountdown(iso: string): Remaining {
-  const [value, setValue] = useState(() => remainingUntil(iso))
+export function useCountdown(iso: string): Remaining | null {
+  const [value, setValue] = useState<Remaining | null>(null)
 
   useEffect(() => {
-    if (value.passed) return
-    const id = window.setInterval(() => setValue(remainingUntil(iso)), 1000)
+    const first = remainingUntil(iso)
+    setValue(first)
+    if (first.passed) return
+
+    const id = window.setInterval(() => {
+      const next = remainingUntil(iso)
+      setValue(next)
+      // Stop at zero rather than re-deriving the same passed state every
+      // second for the rest of the session.
+      if (next.passed) window.clearInterval(id)
+    }, 1000)
     return () => window.clearInterval(id)
-  }, [iso, value.passed])
+  }, [iso])
 
   return value
 }

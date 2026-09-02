@@ -104,56 +104,23 @@
     color: var(--color-doc);
   }
 
-  /* --- the explainer video -------------------------------------------------
-   Sits with the paper links, because it is source material rather than another
-   interactive. 16:9 is declared on the element as width/height so the box is
-   reserved before anything loads — with preload off there is no metadata to
-   size it from, and without this the section would shift when it appears.
+  /* --- back to the explainer -----------------------------------------------
+   The player itself moved to §00 (U1). This is the one line that says where
+   it went, styled as understated text rather than a button because it is a
+   pointer back, not a new call to action next to "Read the paper".
    ---------------------------------------------------------------------- */
 
-  .colo__video {
-    margin: 1.5rem 0 0;
-  }
-
-  .colo__videoHead {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 1rem;
-    padding-block-end: 0.5rem;
-  }
-
-  .colo__videoLabel {
+  .colo__videoBack {
+    display: inline-block;
+    margin-block-start: 1.4rem;
     font-family: var(--font-mono);
-    font-size: var(--text-cs-xs);
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
+    font-size: var(--text-cs-sm);
+    letter-spacing: 0.04em;
     color: var(--text-on-doc-muted);
   }
 
-  .colo__videoMeta {
-    font-family: var(--font-mono);
-    font-size: var(--text-cs-xs);
-    font-variant-numeric: tabular-nums;
-    color: var(--text-on-doc-muted);
-  }
-
-  .colo__player {
-    display: block;
-    inline-size: 100%;
-    block-size: auto;
-    aspect-ratio: 16 / 9;
-    background: var(--color-redact);
-    border: 1px solid var(--doc-rule);
-    border-radius: var(--radius-panel);
-  }
-
-  .colo__videoNote {
-    margin-block-start: 0.6rem;
-    font-family: var(--font-mono);
-    font-size: var(--text-cs-xs);
-    line-height: 1.55;
-    color: var(--text-on-doc-muted);
+  .colo__videoBack:hover {
+    color: var(--instrument-on-doc);
   }
 
   .colo__citation {

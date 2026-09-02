@@ -140,7 +140,10 @@ export function section(id: SectionId): {
 }
 
 /**
- * The explainer video, in §09 beside the paper links.
+ * The explainer video. The player itself sits in §00, as the first "way in" —
+ * see hero.ts's waysIn — because the audit found it buried at the bottom of
+ * §09 with nothing at the top pointing to it. §09 keeps a one-line link back
+ * up to it beside the citation.
  *
  * Self-hosted, so watching it sends no request to anyone but this domain — the
  * same reason the linter runs in the browser. It is 87MB, so preload is off and
@@ -163,6 +166,8 @@ export const explainer = {
   fallback: 'Your browser cannot play this video.',
   downloadLabel: 'Download the file',
   note: 'Self-hosted and not tracked. Nothing is downloaded until you press play.',
+  /** The §09 text link back up to the §00 player. */
+  backLabel: 'Watch the explainer',
 } as const
 
 /** The section rail. */

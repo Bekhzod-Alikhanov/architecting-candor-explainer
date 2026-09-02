@@ -154,6 +154,37 @@ export function Hero() {
         <p className="hero__caption">{r.caption}</p>
       </div>
 
+      {/* The explainer, moved up from §09 (U1): it was the single most
+          accessible entry point and nothing at the top linked to it. Still
+          preload="none" behind the poster — 9½ minutes of video costs
+          nothing until a reader presses play. */}
+      <figure className="hero__explainer" id="explainer">
+        <figcaption className="hero__explainerHead">
+          <span className="hero__explainerLabel">{explainer.label}</span>
+          <span className="hero__explainerMeta">{explainer.duration}</span>
+        </figcaption>
+        {/* biome-ignore lint/a11y/useMediaCaption: no caption track exists
+              for this video yet. A fabricated or empty track would be worse
+              than none, because it would claim captions that are not there.
+              This is the site's one known accessibility gap and it is
+              recorded in the README rather than hidden. */}
+        <video
+          className="hero__explainerPlayer"
+          controls
+          preload="none"
+          poster={explainer.poster}
+          width={1280}
+          height={720}
+        >
+          <source src={explainer.src} type={explainer.type} />
+          {explainer.fallback}{' '}
+          <a href={explainer.src} download>
+            {explainer.downloadLabel}
+          </a>
+        </video>
+        <p className="hero__explainerNote">{explainer.note}</p>
+      </figure>
+
       <div className="hero__onward">
         <p className="hero__onwardBody">
           <span className="hero__onwardLabel">{content.onward.label}</span>

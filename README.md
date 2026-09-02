@@ -73,7 +73,7 @@ Requires **pnpm** and **Node 24**. No backend, no database, no API key, no envir
 | `pnpm lint` | Biome — lint and format check |
 | `pnpm check` | The four content-integrity suites above |
 | `pnpm read:aloud` | Every user-facing string as one document, for the tone check |
-| `pnpm og` | Regenerate `public/og.png` and `public/favicon.svg` from the token layer |
+| `pnpm og` | Regenerate `public/og.png`, `public/favicon.svg`, the PNG icon set and `public/site.webmanifest` from the token layer |
 
 These three drive a real headless browser, so they need the production build already being served — run `pnpm build && pnpm preview` in another shell first. They are deliberately **not** part of `pnpm check`, which stays server-free.
 
@@ -206,6 +206,8 @@ Fully static. Both configs are committed and either works unchanged.
 Both set immutable caching on hashed assets and fonts, plus `X-Content-Type-Options`, `Referrer-Policy`, `X-Frame-Options: DENY`, a `Permissions-Policy` that locks down the sensor/media APIs the page never uses, and a strict `Content-Security-Policy` (`default-src 'none'`, same-origin only for scripts, styles, fonts, media and connections). The site loads no third-party resources and has no inline scripts, so the policy costs nothing here — and it makes the linter's claim that "the page makes no network requests after it loads" enforceable by the browser rather than just true by inspection. `vite.config.ts` reads the same headers out of `vercel.json` for `pnpm preview`, so local runs see the identical policy.
 
 If the site moves to a different domain, update `meta.canonical` and `meta.linterCanonical` in `src/content/site.ts`, the `og:url` and `twitter` URLs in `index.html`, and the URLs in `public/robots.txt` and `public/sitemap.xml`.
+
+**Structured data and citation metadata.** Both routes carry a JSON-LD `@graph` — a `WebSite`, the paper's own `ScholarlyArticle` (all six authors, the DOI as `identifier`), and a `WebPage` (`/linter` adds a `WebApplication`) — plus Highwire `citation_*` tags, generated in `scripts/prerender.mjs`'s `buildHead()` from the same `src/content/site.ts` fields the rest of the head is built from, never hand-written. The `citation_*` tags exist for Zotero and Mendeley's one-click capture on this companion page; Google Scholar indexes the paper's own record at `citation_abstract_html_url`, not this site. `pnpm og` also rasterises `public/favicon.svg` into the icon set `public/icons/` and writes `public/site.webmanifest`, and rewrites the one literal hex value in `index.html`'s `theme-color` meta from the same token — so that value, like the OG card and favicon, never drifts from `src/styles/tokens.css` by hand. `scripts/check-dist.mjs` asserts the JSON-LD parses and carries the right author count and DOI, that the citation and icon/manifest tags are present, and that every icon `site.webmanifest` names actually exists in `dist/icons/`.
 
 ---
 

@@ -23,7 +23,7 @@ import { chunkStylesheets, esc } from './build-shared.mjs'
 const ROOT = resolve(import.meta.dirname, '..')
 const DIST = join(ROOT, 'dist')
 
-const { deferredLoads, meta, noscript, sections } = await import(
+const { deferredLoads, meta, noscript, paper, sections } = await import(
   pathToFileURL(join(ROOT, 'dist-ssr', 'entry-server.js')).href
 )
 
@@ -49,6 +49,67 @@ const read = (rel) => {
 
 const has = (html, needle, what, rel) => {
   if (!html.includes(needle)) fail(`${rel}: ${what}`)
+}
+
+/** Reads the JSON-LD out of one document, asserting there is exactly one
+ *  script and that it parses, and returns its @graph — or null, having
+ *  already recorded the failure, so a caller can skip shape checks that
+ *  would otherwise throw on a document with no script at all. */
+const readJsonLd = (html, rel) => {
+  const matches = [
+    ...html.matchAll(/<script[^>]*type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/g),
+  ]
+  if (matches.length !== 1) {
+    fail(`${rel}: ${matches.length} JSON-LD scripts, expected exactly 1`)
+    return null
+  }
+  try {
+    return JSON.parse(matches[0][1])['@graph'] ?? []
+  } catch (e) {
+    fail(`${rel}: JSON-LD does not parse — ${e.message}`)
+    return null
+  }
+}
+
+/** The ScholarlyArticle every route's graph carries, and the two facts about
+ *  it most likely to drift silently from site.ts: all six authors, and the
+ *  DOI as its identifier rather than some other id scheme. */
+const checkArticle = (graph, rel) => {
+  const article = graph?.find((n) => n['@type'] === 'ScholarlyArticle')
+  if (!article) {
+    fail(`${rel}: JSON-LD @graph has no ScholarlyArticle`)
+    return
+  }
+  if ((article.author ?? []).length !== paper.authors.length) {
+    fail(
+      `${rel}: ScholarlyArticle has ${article.author?.length ?? 0} authors, expected ${paper.authors.length}`,
+    )
+  }
+  if (article.identifier?.value !== paper.doi) {
+    fail(`${rel}: ScholarlyArticle identifier.value is not paper.doi`)
+  }
+}
+
+/** Highwire/Google Scholar tags: one citation_author per author and exactly
+ *  one citation_doi — the counts most likely to go stale if an author is
+ *  added to site.ts without a matching prerender.mjs change. */
+const checkCitationTags = (html, rel) => {
+  const authorTags = (html.match(/name="citation_author"/g) ?? []).length
+  if (authorTags !== paper.authors.length) {
+    fail(`${rel}: ${authorTags} citation_author tags, expected ${paper.authors.length}`)
+  }
+  const doiTags = (html.match(/name="citation_doi"/g) ?? []).length
+  if (doiTags !== 1) fail(`${rel}: ${doiTags} citation_doi tags, expected 1`)
+}
+
+const checkManifestLinks = (html, rel) => {
+  has(html, '<link rel="manifest" href="/site.webmanifest" />', 'no manifest link', rel)
+  has(
+    html,
+    '<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />',
+    'no apple-touch-icon link',
+    rel,
+  )
 }
 
 /**
@@ -121,6 +182,10 @@ if (home) {
   if (links !== linked.length) {
     fail(`index.html: ${links} stylesheet links, expected ${linked.length}`)
   }
+
+  checkArticle(readJsonLd(html, 'index.html'), 'index.html')
+  checkCitationTags(html, 'index.html')
+  checkManifestLinks(html, 'index.html')
 }
 
 // --- /linter -----------------------------------------------------------------
@@ -161,9 +226,26 @@ if (linter) {
     'no <noscript> block, or not the linter sentence',
     rel,
   )
-  if (html.includes(meta.canonical.replace(/\/$/, '/"'))) {
+  // The JSON-LD WebSite node legitimately names the homepage as the site's
+  // own url — the same website entity, described identically on both
+  // routes — so it is stripped out before this check, which is looking for
+  // a *stray* homepage URL left in a meta tag or canonical, not the
+  // structured-data one that belongs here.
+  const withoutJsonLd = html.replace(
+    /<script[^>]*type="application\/ld\+json"[^>]*>[\s\S]*?<\/script>/g,
+    '',
+  )
+  if (withoutJsonLd.includes(meta.canonical.replace(/\/$/, '/"'))) {
     fail(`${rel}: still carries a homepage URL`)
   }
+
+  const linterGraph = readJsonLd(html, rel)
+  checkArticle(linterGraph, rel)
+  if (linterGraph && !linterGraph.some((n) => n['@type'] === 'WebApplication')) {
+    fail(`${rel}: JSON-LD @graph has no WebApplication`)
+  }
+  checkCitationTags(html, rel)
+  checkManifestLinks(html, rel)
 }
 
 // --- the error page ----------------------------------------------------------
@@ -226,6 +308,28 @@ if (!existsSync(sitemapFile)) {
     if (!xml.includes(`<loc>${loc}</loc>`)) fail(`sitemap.xml does not list ${loc}`)
   }
   if (!/<lastmod>\d{4}-\d{2}-\d{2}<\/lastmod>/.test(xml)) fail('sitemap.xml has no lastmod')
+}
+
+// --- manifest and icons --------------------------------------------------------
+
+// Read from public/, not dist/: the manifest is authored there by
+// render-og.mjs, and Vite's own plain copy of public/ into dist/ is not the
+// thing this is trying to prove — whether the icons it names actually exist
+// is.
+const manifestFile = join(ROOT, 'public', 'site.webmanifest')
+if (!existsSync(manifestFile)) {
+  fail('public/site.webmanifest is missing')
+} else {
+  try {
+    const manifest = JSON.parse(readFileSync(manifestFile, 'utf8'))
+    for (const icon of manifest.icons ?? []) {
+      if (!existsSync(join(DIST, icon.src.replace(/^\//, '')))) {
+        fail(`site.webmanifest lists ${icon.src}, missing from dist/icons`)
+      }
+    }
+  } catch (e) {
+    fail(`public/site.webmanifest does not parse — ${e.message}`)
+  }
 }
 
 // -----------------------------------------------------------------------------

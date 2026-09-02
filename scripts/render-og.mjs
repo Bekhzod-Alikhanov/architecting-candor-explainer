@@ -15,6 +15,7 @@ import { createServer } from 'node:http'
 import { readFileSync, writeFileSync, existsSync, mkdtempSync, rmSync } from 'node:fs'
 import { extname, join, resolve } from 'node:path'
 import { tmpdir } from 'node:os'
+import { formatHex, parse } from 'culori'
 
 const ROOT = resolve(import.meta.dirname, '..')
 const WIDTH = 2400
@@ -36,12 +37,20 @@ if (!CHROME) {
   process.exit(1)
 }
 
-/** Read one source colour out of the token layer, so no hex is duplicated. */
+/**
+ * Read one source colour out of the token layer, so no hex is duplicated.
+ * Tokens are written as oklch() since the token layer moved off hex; the
+ * favicon markup below needs a hex value, so the raw token is converted
+ * with culori rather than duplicating a hex value here.
+ */
 function colour(name) {
   const css = readFileSync(join(ROOT, 'src', 'styles', 'tokens.css'), 'utf8')
-  const m = css.match(new RegExp(`--color-${name}:\\s*(#[0-9a-fA-F]{3,8})`))
+  const m = css.match(new RegExp(`--color-${name}:\\s*([^;]+);`))
   if (!m) throw new Error(`--color-${name} not found in tokens.css`)
-  return m[1]
+  const raw = m[1].trim()
+  const hex = formatHex(parse(raw))
+  if (!hex) throw new Error(`Could not parse --color-${name}: ${raw}`)
+  return hex
 }
 
 /**

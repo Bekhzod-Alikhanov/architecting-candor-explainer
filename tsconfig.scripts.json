@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "target": "ES2023",
+    // DOM is needed here not because a script touches the browser, but because
+    // several scripts import src/lib and src/content modules directly (there is
+    // no build step between them), and those modules are typed against DOM.
+    "lib": ["ES2023", "DOM"],
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "strict": true,
+    "skipLibCheck": true,
+    "noEmit": true,
+    "checkJs": false,
+    "types": ["node"]
+  },
+  "include": ["scripts/**/*.ts"]
+}

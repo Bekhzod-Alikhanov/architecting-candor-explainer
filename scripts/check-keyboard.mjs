@@ -15,6 +15,9 @@ import { join } from 'node:path'
 import { tmpdir } from 'node:os'
 
 const url = process.argv[2] ?? 'http://localhost:4173'
+/** The ten-section count below is the homepage's. /linter is one page with one
+ *  section, so the assertion is scoped to the route that has ten. */
+const isHome = new URL(url).pathname.replace(/\/+$/, '') === ''
 
 const BROWSER = [
   process.env.BROWSER_PATH,
@@ -218,7 +221,7 @@ try {
              deferred: pending().length }
   })()`)
   console.log(`\nmounted ${mounted.sections} sections, ${mounted.deferred} still deferred`)
-  if (mounted.sections !== 10) failures.push(`${mounted.sections} sections, expected 10`)
+  if (isHome && mounted.sections !== 10) failures.push(`${mounted.sections} sections, expected 10`)
   if (mounted.deferred > 0) failures.push(`${mounted.deferred} sections never mounted`)
 
   /**

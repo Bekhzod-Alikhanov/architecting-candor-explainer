@@ -318,9 +318,14 @@
       height: auto;
       min-height: 100%;
       align-self: stretch;
-      /* The draggable seam draws its line with a pseudo-element inside a 12px
-         hit box; this paints the same line in the same place, so the two
-         states are pixel-identical and the swap is invisible. */
+    }
+
+    /* The draggable seam draws its line with a pseudo-element inside a 12px hit
+       box; this paints the same line in the same place, so the pre-hydration
+       seam is pixel-identical and the swap is invisible. Scoped off the
+       draggable state — Seam.tsx adds that class once it is live — so the line
+       is drawn once rather than by both the gradient and the pseudo-element. */
+    .hero__seam:not(.seam--draggable) {
       background: linear-gradient(
         to right,
         transparent calc(50% - var(--seam-width) / 2),

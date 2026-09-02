@@ -11,7 +11,17 @@
     scroll-margin-top: 1rem;
   }
 
-  .sect + .sect {
+  /* The rule between consecutive sections. §00 is .hero, not .sect, so §01
+     correctly gets no rule above it.
+
+     The second and third selectors exist because a deferred section lives
+     inside its own wrapper div in every state — the wrapper is what carries
+     data-deferred and what the prerendered markup is adopted into — so the
+     sibling selector alone cannot see across it. §02 to §07 are the wrapped
+     ones; §08 is the section that follows a wrapper. */
+  .sect + .sect,
+  .shell__flow > [data-deferred] > .sect,
+  .shell__flow > [data-deferred] + .sect {
     border-block-start: 1px solid var(--ground-rule-soft);
   }
 

@@ -28,8 +28,11 @@ jobs:
       - run: pnpm check
       - run: pnpm build
       # vite build exits 0 even when it silently drops an HTML entry, so the
-      # presence of both pages is asserted rather than assumed.
-      - run: test -f dist/index.html && test -f dist/404.html
+      # presence of all three pages is asserted rather than assumed. What is in
+      # them — ten sections, the right canonical on each route, no placeholder
+      # shipped as static markup — is asserted by scripts/check-dist.mjs, which
+      # `pnpm build` runs as its last step.
+      - run: test -f dist/index.html && test -f dist/linter/index.html && test -f dist/404.html
       - uses: actions/upload-artifact@v4
         with:
           name: dist

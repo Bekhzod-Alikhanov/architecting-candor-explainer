@@ -21,22 +21,48 @@ export function isProse(key: string, value: string): boolean {
   return true
 }
 
-/** Recursively collects prose strings from a content value into `out`. */
-export function walkProse(node: unknown, key: string, depth: number, out: string[]): void {
+/**
+ * Recursively visits every string reachable from `node`, depth-first, in
+ * declaration order — arrays are walked in order, objects in `Object.entries`
+ * order, and exported functions (accessible-name builders, not static prose)
+ * are skipped. `visit` is called with the string, the key it was found under,
+ * and its nesting depth.
+ *
+ * This is the one traversal read-aloud.ts and check-reading-time.ts both
+ * need: one prints every string it visits (after filtering with `isProse`),
+ * the other counts words in the ones that pass the same filter. Two copies of
+ * this recursion previously existed — one here, one inlined in
+ * read-aloud.ts — so a change to what "walking a content module" means (a
+ * new container shape, a new skip rule) could update one and silently leave
+ * the other walking something different.
+ */
+export function walkStrings(
+  node: unknown,
+  key: string,
+  depth: number,
+  visit: (key: string, value: string, depth: number) => void,
+): void {
   if (typeof node === 'string') {
-    if (isProse(key, node)) out.push(node)
+    visit(key, node, depth)
     return
   }
   if (Array.isArray(node)) {
-    for (const item of node) walkProse(item, key, depth, out)
+    for (const item of node) walkStrings(item, key, depth, visit)
     return
   }
   if (node && typeof node === 'object') {
     for (const [k, v] of Object.entries(node)) {
       if (typeof v === 'function') continue
-      walkProse(v, k, depth + 1, out)
+      walkStrings(v, k, depth + 1, visit)
     }
   }
+}
+
+/** Recursively collects prose strings from a content value into `out`. */
+export function walkProse(node: unknown, key: string, depth: number, out: string[]): void {
+  walkStrings(node, key, depth, (k, v) => {
+    if (isProse(k, v)) out.push(v)
+  })
 }
 
 /** Every prose string in a content module, in declaration order — the same

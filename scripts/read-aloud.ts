@@ -28,7 +28,7 @@ import * as linter from '../src/content/linter-rules'
 import * as checklist from '../src/content/checklist'
 import * as orientation from '../src/content/orientation'
 import * as ui from '../src/content/ui'
-import { isProse } from './lib/prose'
+import { isProse, walkStrings } from './lib/prose'
 
 const MODULES: readonly [string, Record<string, unknown>][] = [
   ['00 · site metadata, disclaimer, about this page', site],
@@ -52,27 +52,16 @@ let words = 0
 let strings = 0
 
 /** Indented print of a module's prose, in declaration order. Wraps the shared
- *  walker so this script keeps its own running word/string totals for the
- *  closing tally, and its own indentation-by-depth for readability. */
+ *  walker (scripts/lib/prose.ts) so this script keeps its own running
+ *  word/string totals for the closing tally, and its own indentation-by-depth
+ *  for readability, without duplicating the recursion itself. */
 function walk(node: unknown, key: string, depth: number, out: string[]): void {
-  if (typeof node === 'string') {
-    if (isProse(key, node)) {
-      strings += 1
-      words += node.split(/\s+/).length
-      out.push(`${'  '.repeat(Math.max(0, depth - 1))}${node}`)
-    }
-    return
-  }
-  if (Array.isArray(node)) {
-    for (const item of node) walk(item, key, depth, out)
-    return
-  }
-  if (node && typeof node === 'object') {
-    for (const [k, v] of Object.entries(node)) {
-      if (typeof v === 'function') continue
-      walk(v, k, depth + 1, out)
-    }
-  }
+  walkStrings(node, key, depth, (k, v, d) => {
+    if (!isProse(k, v)) return
+    strings += 1
+    words += v.split(/\s+/).length
+    out.push(`${'  '.repeat(Math.max(0, d - 1))}${v}`)
+  })
 }
 
 for (const [label, mod] of MODULES) {

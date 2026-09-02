@@ -26,7 +26,15 @@ import * as linterRules from '../src/content/linter-rules'
 import * as orientation from '../src/content/orientation'
 import * as pincer from '../src/content/pincer'
 import * as regimes from '../src/content/regimes'
-import { about, colophonCopy, contribution, disclaimer, paper, sections } from '../src/content/site'
+import {
+  about,
+  colophonCopy,
+  contribution,
+  disclaimer,
+  explainer,
+  paper,
+  sections,
+} from '../src/content/site'
 import * as signal from '../src/content/signal'
 import * as statute from '../src/content/statute'
 import * as thresholds from '../src/content/thresholds'
@@ -43,14 +51,29 @@ const TOLERANCE_MINUTES = 1
 /**
  * Section id → the content modules a reader actually reads in that section.
  *
- * §00 carries both the memo (hero.ts) and the orientation block that this
- * task adds (orientation.ts). §09's reading is the colophon/about furniture
- * in site.ts — not the whole of site.ts, most of which (nav labels, meta,
- * the citation machinery) is chrome rather than something a reader reads as
- * prose in any one section.
+ * §00 carries the memo (hero.ts), the orientation block (orientation.ts),
+ * and the explainer figure's caption/note/fallback copy — Hero.tsx renders
+ * `explainer.label`, `.fallback`, `.downloadLabel` and `.note` directly, even
+ * though the object itself lives in site.ts alongside chrome that isn't
+ * rendered as prose anywhere (`.src`, `.type`, `.poster`, `.title`, and
+ * `.duration`, which is too short to pass `isProse` regardless). §09's
+ * reading is the colophon/about furniture in site.ts plus `explainer.backLabel`
+ * — the one-line "Watch the explainer ↑" back-link Colophon.tsx renders —
+ * not the whole of site.ts, most of which (nav labels, meta, the citation
+ * machinery) is chrome rather than something a reader reads as prose in any
+ * one section.
  */
 const SECTION_MODULES: Readonly<Record<string, readonly Record<string, unknown>[]>> = {
-  memo: [hero, orientation],
+  memo: [
+    hero,
+    orientation,
+    {
+      explainerLabel: explainer.label,
+      explainerFallback: explainer.fallback,
+      explainerDownloadLabel: explainer.downloadLabel,
+      explainerNote: explainer.note,
+    },
+  ],
   pincer: [pincer, timeline],
   signal: [signal],
   route: [artifacts, grading],
@@ -59,7 +82,16 @@ const SECTION_MODULES: Readonly<Record<string, readonly Record<string, unknown>[
   regimes: [regimes],
   ask: [statute],
   gc: [linterRules, checklist],
-  paper: [{ about, contribution, colophonCopy, paperCitation: paper.citation, disclaimer }],
+  paper: [
+    {
+      about,
+      contribution,
+      colophonCopy,
+      paperCitation: paper.citation,
+      disclaimer,
+      explainerBackLabel: explainer.backLabel,
+    },
+  ],
 }
 
 const failures: string[] = []

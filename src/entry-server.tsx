@@ -22,6 +22,10 @@ import { resolveForPrerender } from './lib/prerender-cache'
  */
 export { explainer, meta, paper, sections } from './content/site'
 export { noscript } from './content/ui'
+/** check-dist.mjs counts the adopted wrappers in the built page against this,
+ *  so the expected number comes from the list the prerender rendered from
+ *  rather than from a literal kept in the script. */
+export { deferredLoads } from './App'
 
 export async function render(route: string) {
   const errors: unknown[] = []

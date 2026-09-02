@@ -18,13 +18,17 @@
 import { existsSync, readFileSync, statSync } from 'node:fs'
 import { join, resolve } from 'node:path'
 import { pathToFileURL } from 'node:url'
+import { chunkStylesheets, esc } from './build-shared.mjs'
 
 const ROOT = resolve(import.meta.dirname, '..')
 const DIST = join(ROOT, 'dist')
 
-const { meta, sections } = await import(
+const { deferredLoads, meta, noscript, sections } = await import(
   pathToFileURL(join(ROOT, 'dist-ssr', 'entry-server.js')).href
 )
+
+/** Moved here by prerender.mjs rather than deleted — see the note there. */
+const manifest = JSON.parse(readFileSync(join(ROOT, 'dist-ssr', 'client-manifest.json'), 'utf8'))
 
 /** A document over this is a document nobody should be sent on a phone. */
 const MAX_KB = 500
@@ -63,7 +67,12 @@ if (home) {
   // time and shipped as "Loading this section." instead.
   if (html.includes('aria-busy="true"')) fail('index.html: a deferred placeholder was prerendered')
 
-  has(html, '<noscript>', 'no <noscript> block', 'index.html')
+  has(
+    html,
+    `<noscript><p class="noscript">${esc(noscript.home)}</p></noscript>`,
+    'no <noscript> block, or not the homepage sentence',
+    'index.html',
+  )
   has(
     html,
     `<link rel="canonical" href="${meta.canonical}" />`,
@@ -72,8 +81,40 @@ if (home) {
   )
   has(html, `<title>${meta.title}`, 'title is not the homepage title', 'index.html')
 
+  // Derived from the list the prerender itself renders from, so adding a
+  // seventh deferred section does not need this number changed by hand.
   const wrappers = (html.match(/data-deferred="static"/g) ?? []).length
-  if (wrappers !== 6) fail(`index.html: ${wrappers} adopted section wrappers, expected 6`)
+  if (wrappers !== deferredLoads.length) {
+    fail(`index.html: ${wrappers} adopted section wrappers, expected ${deferredLoads.length}`)
+  }
+
+  /*
+   * Every stylesheet the homepage needs, in the homepage's head.
+   *
+   * §02 to §07 are drawn from the first byte, so their CSS has to be there from
+   * the first byte too. Without this the failure is silent in both directions:
+   * a stylesheet reachable only through a dynamic import arrives after the
+   * markup it styles (six sections of unstyled controls for a reader without
+   * JavaScript, and Lighthouse's target-size audit failing on them), and a
+   * manifest shape this walk stops recognising returns nothing at all, which is
+   * why an empty walk is a failure here rather than a log line.
+   */
+  const { linked, lazy } = chunkStylesheets(manifest)
+  if (!linked.length) {
+    fail('the manifest walk found no stylesheets at all — it no longer reads the manifest')
+  }
+  if (lazy.length) {
+    fail(
+      `${lazy.join(', ')} would be fetched by the chunk that mounts a section the build already drew — see cssCodeSplit in vite.config.ts`,
+    )
+  }
+  for (const file of linked) {
+    has(html, `href="/${file}"`, `${file} is not linked in the head`, 'index.html')
+  }
+  const links = (html.match(/rel="stylesheet"/g) ?? []).length
+  if (links !== linked.length) {
+    fail(`index.html: ${links} stylesheet links, expected ${linked.length}`)
+  }
 }
 
 // --- /linter -----------------------------------------------------------------
@@ -99,9 +140,21 @@ if (linter) {
     ['name', 'twitter:title', meta.linterTitle],
     ['name', 'twitter:description', meta.linterDescription],
   ]) {
-    const tag = `<meta ${attr}="${key}" content="${value.replaceAll('&', '&amp;')}" />`
-    has(html, tag, `${key} is not the linter's`, rel)
+    // esc() is prerender.mjs's own, imported rather than restated: a second
+    // escaping rule here would assert the built page against the wrong string.
+    has(
+      html,
+      `<meta ${attr}="${key}" content="${esc(value)}" />`,
+      `${key} is not the linter's`,
+      rel,
+    )
   }
+  has(
+    html,
+    `<noscript><p class="noscript">${esc(noscript.linter)}</p></noscript>`,
+    'no <noscript> block, or not the linter sentence',
+    rel,
+  )
   if (html.includes(meta.canonical.replace(/\/$/, '/"'))) {
     fail(`${rel}: still carries a homepage URL`)
   }

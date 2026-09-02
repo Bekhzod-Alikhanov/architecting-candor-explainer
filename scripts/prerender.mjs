@@ -17,19 +17,23 @@
  * the only place any of this site's prose lives.
  */
 
-import { createHash } from 'node:crypto'
-import { mkdirSync, readFileSync, rmSync, statSync, writeFileSync } from 'node:fs'
+import { mkdirSync, readFileSync, renameSync, rmSync, statSync, writeFileSync } from 'node:fs'
 import { join, resolve } from 'node:path'
 import { pathToFileURL } from 'node:url'
+import { esc } from './build-shared.mjs'
 
 const ROOT = resolve(import.meta.dirname, '..')
 const DIST = join(ROOT, 'dist')
 const SSR = join(ROOT, 'dist-ssr', 'entry-server.js')
+/** Where the client manifest is kept for check-dist.mjs, which walks it to
+ *  assert that every stylesheet the homepage needs is linked in the document.
+ *  Out of dist/, because publishing the build's internal shape has no reader;
+ *  moved rather than deleted, because that assertion needs it. */
+const MANIFEST_KEEP = join(ROOT, 'dist-ssr', 'client-manifest.json')
 
 const { render, meta, noscript } = await import(pathToFileURL(SSR).href)
 
 const template = readFileSync(join(DIST, 'index.html'), 'utf8')
-const manifest = JSON.parse(readFileSync(join(DIST, '.vite', 'manifest.json'), 'utf8'))
 
 /**
  * The routes, and where each one's document goes.
@@ -39,56 +43,9 @@ const manifest = JSON.parse(readFileSync(join(DIST, '.vite', 'manifest.json'), '
  * `vite preview` without a rewrite rule doing the work.
  */
 const ROUTES = [
-  { route: '/', out: 'index.html', lazyCss: true, note: noscript.home },
-  { route: '/linter', out: join('linter', 'index.html'), lazyCss: false, note: noscript.linter },
+  { route: '/', out: 'index.html', note: noscript.home },
+  { route: '/linter', out: join('linter', 'index.html'), note: noscript.linter },
 ]
-
-/**
- * One stylesheet carrying the CSS the lazy chunks would each have brought with
- * them on mount.
- *
- * §02 to §07 are in the document from the first byte now, so the CSS that
- * styles them has to arrive with it — otherwise a reader without JavaScript
- * gets six sections of unstyled markup, and Lighthouse's target-size audit
- * fails on their unstyled controls, which is how that was noticed.
- *
- * Six separate links cost six round trips ahead of the fonts. They are
- * concatenated into one file instead: order is irrelevant, because every sheet
- * in src/styles and every module sheet is inside a cascade layer. The chunks
- * still carry their own copies, which is what styles a section mounted on a
- * page that was not prerendered (the dev server), and Vite's loader skips the
- * fetch when the href is already in the document.
- *
- * Walked from the client entry through the manifest's own import graph, so the
- * 404 page's stylesheet is not dragged in and a new lazy section needs no
- * change here.
- */
-function sectionStylesheet() {
-  const seen = new Set()
-  const css = new Set()
-
-  const walk = (key) => {
-    if (!key || seen.has(key)) return
-    seen.add(key)
-    const chunk = manifest[key]
-    if (!chunk) return
-    for (const f of chunk.css ?? []) css.add(f)
-    for (const next of [...(chunk.imports ?? []), ...(chunk.dynamicImports ?? [])]) walk(next)
-  }
-  walk('index.html')
-
-  // The entry's own stylesheet is already linked in the template Vite wrote.
-  const files = [...css].filter((f) => !template.includes(f))
-  if (!files.length) return null
-
-  const body = files.map((f) => readFileSync(join(DIST, f), 'utf8')).join('\n')
-  // Hashed like everything else in assets/, so it inherits the immutable
-  // cache header and changes name whenever any section's CSS changes.
-  const hash = createHash('sha256').update(body).digest('base64url').slice(0, 8)
-  const out = `assets/sections-${hash}.css`
-  writeFileSync(join(DIST, out), body, 'utf8')
-  return { file: out, from: files, bytes: body.length }
-}
 
 /** Head rewrites and additions for one route. */
 function buildHead(route) {
@@ -147,30 +104,25 @@ function tag(attr, value, content) {
   return `<meta ${attr}="${value}" content="${esc(content)}" />`
 }
 
-function esc(s) {
-  return String(s)
-    .replaceAll('&', '&amp;')
-    .replaceAll('<', '&lt;')
-    .replaceAll('>', '&gt;')
-    .replaceAll('"', '&quot;')
-}
-
-/** A replacement that refuses to no-op. A silent miss here ships a page with
- *  the wrong canonical, which is exactly the bug being fixed. */
+/** A replacement that refuses to no-op — and refuses to guess. A silent miss
+ *  ships a page with the wrong canonical, which is exactly the bug being fixed;
+ *  a second match means the pattern has stopped identifying one thing and
+ *  `String.replace` is quietly picking the first of them. */
 function swap(html, pattern, replacement, what) {
-  if (!pattern.test(html)) throw new Error(`prerender: nothing matched ${what} in the template`)
+  const all = new RegExp(
+    pattern.source,
+    pattern.flags.includes('g') ? pattern.flags : `${pattern.flags}g`,
+  )
+  const hits = [...html.matchAll(all)].length
+  if (hits !== 1) {
+    throw new Error(`prerender: ${hits} matches for ${what} in the template, expected exactly 1`)
+  }
   return html.replace(pattern, () => replacement)
 }
 
-const sectionCss = sectionStylesheet()
 console.log(`\nprerender`)
-console.log(
-  sectionCss
-    ? `  ${sectionCss.file}  ${(sectionCss.bytes / 1024).toFixed(1)} kB from ${sectionCss.from.length} chunk stylesheets`
-    : '  no lazy stylesheets',
-)
 
-for (const { route, out, lazyCss, note } of ROUTES) {
+for (const { route, out, note } of ROUTES) {
   const { prelude, errors } = await render(route)
 
   // Buffers, concatenated once: the stream splits on byte boundaries, and this
@@ -189,21 +141,6 @@ for (const { route, out, lazyCss, note } of ROUTES) {
   const { swaps, tags } = buildHead(route)
   for (const [what, pattern, replacement] of swaps) {
     html = swap(html, pattern, replacement, `${route} ${what}`)
-  }
-
-  /*
-   * The section stylesheet goes in the head, with everything else.
-   *
-   * Putting it in the body just before the first deferred section — where it
-   * would have blocked the paint of those sections only, rather than of the
-   * hero — cost a hydration mismatch: that position is inside the tree React
-   * hydrates, so React found a <link> where it expected the section's wrapper,
-   * discarded the prerendered subtree and rebuilt it on the client. React's own
-   * #418, caught by the [hydration] assertion in check-keyboard.mjs. The head is
-   * the only place a stylesheet can go without being inside somebody's render.
-   */
-  if (lazyCss && sectionCss) {
-    tags.push(`<link rel="stylesheet" crossorigin href="/${sectionCss.file}" />`)
   }
 
   const extra = tags.map((t) => `    ${t}`).join('\n')
@@ -227,10 +164,16 @@ for (const { route, out, lazyCss, note } of ROUTES) {
     '<script type="module" fetchpriority="low" crossorigin',
     `${route} module script`,
   )
+  const beforePreloads = html
   html = html.replaceAll(
     '<link rel="modulepreload" crossorigin',
     '<link rel="modulepreload" fetchpriority="low" crossorigin',
   )
+  // Same reasoning as swap(): a rewrite that quietly matched nothing would
+  // leave the preloads competing with the paint again, and nothing would say so.
+  if (html === beforePreloads) {
+    throw new Error(`prerender: ${route} has no modulepreload links to demote`)
+  }
 
   html = swap(
     html,
@@ -273,7 +216,10 @@ ${[
 writeFileSync(join(DIST, 'sitemap.xml'), sitemap, 'utf8')
 console.log(`  sitemap.xml        2 urls, lastmod ${lastmod}`)
 
-// The manifest exists for this script. Leaving it in dist publishes the build's
-// internal shape for no reason.
+// The manifest exists for the build scripts. Leaving it in dist publishes the
+// build's internal shape for no reason, so it moves next to the SSR bundle
+// check-dist.mjs already reads — which also keeps that script re-runnable
+// against a finished dist.
+renameSync(join(DIST, '.vite', 'manifest.json'), MANIFEST_KEEP)
 rmSync(join(DIST, '.vite'), { recursive: true, force: true })
 console.log('')

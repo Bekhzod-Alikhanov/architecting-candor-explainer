@@ -63,11 +63,28 @@ export default defineConfig(({ isSsrBuild }) => ({
   },
   build: {
     target: 'es2022',
-    cssCodeSplit: true,
-    // The client build's manifest is how scripts/prerender.mjs finds the
-    // stylesheet each lazy chunk would have loaded on mount. The prerendered
-    // markup for those sections is on screen immediately, so their CSS has to
-    // be in the document head immediately too.
+    /*
+     * One stylesheet for the whole site, not one per lazy chunk.
+     *
+     * §02 to §07 are prerendered: their markup is on screen from the first
+     * byte, so their CSS cannot be allowed to arrive with the chunk that mounts
+     * them — a reader without JavaScript would get six sections of unstyled
+     * markup, and Lighthouse's target-size audit fails on their unstyled
+     * controls. Splitting it and then linking all of it in the head is the
+     * worst of both: measured on the throttled mobile profile, six extra
+     * render-blocking sheets cost 0.3s of first paint and three points of
+     * performance (median 90 against 93 for one concatenated file). Not
+     * splitting it costs one request and beats both (median 96, and the whole
+     * class of "the chunk fetches its stylesheet again on mount" goes away,
+     * because there is no chunk stylesheet to fetch).
+     *
+     * scripts/check-dist.mjs asserts that nothing has drifted back: no CSS may
+     * be reachable only through a dynamic import, and everything the manifest
+     * does list must be linked in the built document.
+     */
+    cssCodeSplit: false,
+    // The client build's manifest is what check-dist.mjs walks to make that
+    // assertion. prerender.mjs moves it out of dist/ once it has run.
     manifest: !isSsrBuild,
     // Nothing reads the SSR bundle but Node, and public/ holds an 87MB video.
     copyPublicDir: !isSsrBuild,

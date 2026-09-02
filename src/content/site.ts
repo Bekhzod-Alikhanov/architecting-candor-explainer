@@ -26,7 +26,7 @@ export const paper = {
     { name: 'Bekhzodkhon Alikhanov' },
   ] as const satisfies readonly Author[],
   citation:
-    'Celone, M. A., McGregor, S., Secret, M., Mignot, E., Bregman, N., & Alikhanov, B. (2026). Architecting Candor: Products Liability and AI Incident Knowledge Governance. Arcadia Impact AI Governance Taskforce.',
+    'Celone, M. A., McGregor, S., Secret, M., Mignot, E., Bregman, N., & Alikhanov, B. (2026). Architecting Candor: Products Liability and AI Incident Knowledge Governance. Arcadia Impact AI Governance Taskforce. https://doi.org/10.2139/ssrn.7310079',
   researchPage: 'https://www.arcadiaimpact.org/ai-governance-taskforce/research',
   /**
    * The taskforce's permanent link for this paper. It forwards to the SSRN
@@ -35,6 +35,14 @@ export const paper = {
    * "Arcadia Impact research" both pointed at the same index page.
    */
   paperUrl: 'https://www.arcadiaimpact.org/aigt/research/s26-incident-liability-report',
+  /**
+   * The DOI the taskforce link above forwards to. Cite and link this
+   * directly rather than the Arcadia URL: a DOI is the address that survives
+   * if Arcadia's own redirect ever changes, which is the same reasoning that
+   * put paperUrl ahead of the SSRN link in the first place.
+   */
+  doi: '10.2139/ssrn.7310079',
+  doiUrl: 'https://doi.org/10.2139/ssrn.7310079',
 } as const
 
 export const meta = {

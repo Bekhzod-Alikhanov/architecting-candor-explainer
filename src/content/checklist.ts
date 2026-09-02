@@ -134,7 +134,7 @@ export const checklist = {
 
   footer: {
     citation:
-      'Celone, M. A., McGregor, S., Secret, M., Mignot, E., Bregman, N., & Alikhanov, B. (2026). Architecting Candor: Products Liability and AI Incident Knowledge Governance. Arcadia Impact AI Governance Taskforce.',
+      'Celone, M. A., McGregor, S., Secret, M., Mignot, E., Bregman, N., & Alikhanov, B. (2026). Architecting Candor: Products Liability and AI Incident Knowledge Governance. Arcadia Impact AI Governance Taskforce. https://doi.org/10.2139/ssrn.7310079',
     disclaimer:
       'Nothing on this page is legal advice. Firms should consult counsel before relying on any legal principle described here.',
   },

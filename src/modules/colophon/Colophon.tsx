@@ -47,7 +47,7 @@ export function Colophon() {
           ) : null}
 
           <div className="colo__links">
-            <a className="btn btn--primary" href={paper.paperUrl} rel="noreferrer">
+            <a className="btn btn--primary" href={paper.doiUrl} rel="noreferrer">
               {colophonCopy.readPaper} <span aria-hidden="true">↗</span>
             </a>
             <a className="btn" href={paper.researchPage} rel="noreferrer">

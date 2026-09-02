@@ -1,11 +1,23 @@
+import { readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { defineConfig } from 'vite'
 
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 
+// Read the security headers straight from vercel.json rather than duplicating
+// the policy, so `pnpm preview` (and check:keyboard/audit:a11y against it)
+// exercises the exact CSP that ships on both hosts.
+const vercelConfig = JSON.parse(readFileSync(resolve(import.meta.dirname, 'vercel.json'), 'utf8'))
+const catchAllHeaders = vercelConfig.headers.find((h: { source: string }) => h.source === '/(.*)')
+  .headers as { key: string; value: string }[]
+const previewHeaders = Object.fromEntries(catchAllHeaders.map((h) => [h.key, h.value]))
+
 export default defineConfig({
   plugins: [react(), tailwindcss()],
+  preview: {
+    headers: previewHeaders,
+  },
   build: {
     target: 'es2022',
     cssCodeSplit: true,

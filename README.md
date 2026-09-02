@@ -201,7 +201,7 @@ Fully static. Both configs are committed and either works unchanged.
 - **Vercel** — `vercel.json`. Framework preset `vite`, output `dist`, rewrites for `/linter` only.
 - **Netlify** — `netlify.toml`. Same publish directory, the same `/linter` rewrite, and a catch-all to `404.html` with a real 404 status.
 
-Both set immutable caching on hashed assets and fonts, plus `X-Content-Type-Options`, `Referrer-Policy` and `X-Frame-Options`.
+Both set immutable caching on hashed assets and fonts, plus `X-Content-Type-Options`, `Referrer-Policy`, `X-Frame-Options: DENY`, a `Permissions-Policy` that locks down the sensor/media APIs the page never uses, and a strict `Content-Security-Policy` (`default-src 'none'`, same-origin only for scripts/styles/fonts/media, `connect-src 'none'`). The site loads no third-party resources and has no inline scripts, so the policy costs nothing here — and it makes the linter's claim that "the page makes no network requests after it loads" enforceable by the browser rather than just true by inspection. `vite.config.ts` reads the same headers out of `vercel.json` for `pnpm preview`, so local runs see the identical policy.
 
 If the site moves to a different domain, update `meta.canonical` and `meta.linterCanonical` in `src/content/site.ts`, the `og:url` and `twitter` URLs in `index.html`, and the URLs in `public/robots.txt` and `public/sitemap.xml`.
 

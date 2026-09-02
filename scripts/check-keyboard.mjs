@@ -65,6 +65,7 @@ const proc = spawn(
 
 const failures = []
 const results = []
+const cspViolations = []
 
 try {
   let wsUrl = null
@@ -83,8 +84,23 @@ try {
   await new Promise((r) => ws.addEventListener('open', r, { once: true }))
   let id = 0
   const pending = new Map()
+  // A CSP that blocks something the page actually needs (a font, the poster
+  // image, a popover) would otherwise fail silently — the browser just drops
+  // the resource. Console/log events surface those as "Content Security
+  // Policy" text, so catch them here rather than trusting the policy by eye.
+  const trackCsp = (text) => {
+    if (typeof text === 'string' && text.includes('Content Security Policy'))
+      cspViolations.push(text)
+  }
   ws.addEventListener('message', (ev) => {
     const m = JSON.parse(ev.data)
+    if (m.method === 'Log.entryAdded') trackCsp(m.params?.entry?.text)
+    if (m.method === 'Runtime.consoleAPICalled')
+      for (const a of m.params?.args ?? []) trackCsp(a.value ?? a.description)
+    if (m.method === 'Runtime.exceptionThrown')
+      trackCsp(
+        m.params?.exceptionDetails?.exception?.description ?? m.params?.exceptionDetails?.text,
+      )
     const p = pending.get(m.id)
     if (p) {
       pending.delete(m.id)
@@ -139,6 +155,7 @@ try {
 
   await send('Page.enable')
   await send('Runtime.enable')
+  await send('Log.enable')
   await send('Emulation.setDeviceMetricsOverride', {
     width: 1440,
     height: 1000,
@@ -446,6 +463,12 @@ try {
   } catch {
     /* profile lock */
   }
+}
+
+if (cspViolations.length) {
+  console.error(`\nCSP violation(s) during the run:`)
+  for (const v of cspViolations) console.error(`  · ${v}`)
+  failures.push(`${cspViolations.length} Content-Security-Policy violation(s) — see above`)
 }
 
 console.log('')

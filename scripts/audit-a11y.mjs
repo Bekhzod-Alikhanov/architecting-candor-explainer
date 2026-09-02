@@ -71,8 +71,24 @@ try {
   await new Promise((r) => ws.addEventListener('open', r, { once: true }))
   let id = 0
   const pending = new Map()
+  const cspViolations = []
+  // A CSP that blocks something the page actually needs (a font, the poster
+  // image, a popover) fails silently otherwise — the browser just drops the
+  // resource. Console/log events surface those as "Content Security Policy"
+  // text, so catch them here rather than trusting the policy by eye.
+  const trackCsp = (text) => {
+    if (typeof text === 'string' && text.includes('Content Security Policy'))
+      cspViolations.push(text)
+  }
   ws.addEventListener('message', (ev) => {
     const m = JSON.parse(ev.data)
+    if (m.method === 'Log.entryAdded') trackCsp(m.params?.entry?.text)
+    if (m.method === 'Runtime.consoleAPICalled')
+      for (const a of m.params?.args ?? []) trackCsp(a.value ?? a.description)
+    if (m.method === 'Runtime.exceptionThrown')
+      trackCsp(
+        m.params?.exceptionDetails?.exception?.description ?? m.params?.exceptionDetails?.text,
+      )
     const p = pending.get(m.id)
     if (p) {
       pending.delete(m.id)
@@ -97,6 +113,8 @@ try {
   }
 
   await send('Page.enable')
+  await send('Runtime.enable')
+  await send('Log.enable')
   await send('Emulation.setDeviceMetricsOverride', {
     width: 1440,
     height: 1000,
@@ -160,11 +178,13 @@ try {
   // src/styles/tokens.css is verified against. So contrast is measured against
   // the flat ground: that is the surface the tokens were computed for, and it
   // keeps the rule running instead of silently going undecided.
+  // An injected <style> element would itself be blocked by the page's own
+  // style-src-elem 'self' CSP (it has no nonce or hash); setting the style
+  // attribute directly hits style-src-attr 'unsafe-inline' instead, which is
+  // allowed for the same reason React's inline style="" props are.
   await evaluate(
     `(() => {
-      const s = document.createElement('style')
-      s.textContent = 'body { background-image: none }'
-      document.head.append(s)
+      document.body.style.setProperty('background-image', 'none')
       return true
     })()`,
     false,
@@ -224,8 +244,18 @@ try {
     console.log('')
   }
 
+  if (cspViolations.length) {
+    console.log(`\nCSP violation(s) during the run:`)
+    for (const v of cspViolations) console.log(`  · ${v}`)
+  }
+
   ws.close()
-  process.exit(violations.some((v) => v.impact === 'critical' || v.impact === 'serious') ? 2 : 0)
+  process.exit(
+    cspViolations.length ||
+      violations.some((v) => v.impact === 'critical' || v.impact === 'serious')
+      ? 2
+      : 0,
+  )
 } finally {
   chrome.kill()
   try {

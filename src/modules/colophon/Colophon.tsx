@@ -1,5 +1,7 @@
 import { SectionHead } from '../../components/SectionHead'
 import { paper, about, contribution, disclaimer, colophonCopy, explainer } from '../../content/site'
+import { bibtex } from '../../lib/citation'
+import { useCopy } from '../../lib/useCopy'
 import './colophon.css'
 
 /**
@@ -11,6 +13,9 @@ import './colophon.css'
  */
 export function Colophon() {
   const corresponding = paper.authors.find((a) => 'corresponding' in a && a.corresponding)
+  const bibtexEntry = bibtex(paper)
+  const { copied: citationCopied, copy: copyCitation } = useCopy()
+  const { copied: bibtexCopied, copy: copyBibtex } = useCopy()
 
   return (
     <section className="sect page" id="paper" aria-labelledby="paper-title">
@@ -65,6 +70,21 @@ export function Colophon() {
           <div className="colo__citation">
             <span className="colo__citationLabel">{colophonCopy.citeLabel}</span>
             <p>{paper.citation}</p>
+            <div className="colo__citeActions">
+              <button type="button" className="btn" onClick={() => copyCitation(paper.citation)}>
+                {citationCopied ? colophonCopy.copied : colophonCopy.copyCitation}
+              </button>
+              <button type="button" className="btn" onClick={() => copyBibtex(bibtexEntry)}>
+                {bibtexCopied ? colophonCopy.copied : colophonCopy.copyBibtex}
+              </button>
+              {/* One shared status element rather than one per button: only one
+                  copy can ever be in flight at a time, and a screen reader
+                  hearing "Copied" twice in a row from two separate regions
+                  would be worse than once from a shared one. */}
+              <span className="sr-only" role="status">
+                {citationCopied || bibtexCopied ? colophonCopy.copied : ''}
+              </span>
+            </div>
           </div>
         </div>
 

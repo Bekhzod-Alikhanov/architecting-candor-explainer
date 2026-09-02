@@ -206,6 +206,19 @@ export const colophonCopy = {
   citeLabel: 'Cite as',
   readPaper: 'Read the paper',
   researchLink: 'Arcadia Impact research',
+  /** The Cite-as block's two copy buttons. Each label swaps to `copied` for a
+   *  couple of seconds; a role="status" element carries the same word to a
+   *  screen reader, since a swapped button label alone is not reliably
+   *  announced. */
+  copyCitation: 'Copy citation',
+  copyBibtex: 'Copy BibTeX',
+  copied: 'Copied',
+} as const
+
+/** The per-section "Copy link" button beside the Bates stamp. Shares the
+ *  same "Copied" feedback word as the Cite-as buttons above. */
+export const sectionLinkCopy = {
+  copied: 'Copied',
 } as const
 
 /**

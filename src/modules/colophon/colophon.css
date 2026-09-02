@@ -147,6 +147,26 @@
     overflow-wrap: anywhere;
   }
 
+  .colo__citeActions {
+    margin-block-start: 0.9rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+  }
+
+  /* Same reasoning as .colo__links above: these buttons sit on the document
+     object, so they take its palette rather than the console's. */
+  .colo__citeActions .btn {
+    background: transparent;
+    border-color: var(--doc-rule);
+    color: var(--text-on-doc);
+  }
+
+  .colo__citeActions .btn:hover {
+    border-color: var(--instrument-on-doc);
+    color: var(--instrument-on-doc);
+  }
+
   /* --- contribution -------------------------------------------------------- */
 
   .colo__side {

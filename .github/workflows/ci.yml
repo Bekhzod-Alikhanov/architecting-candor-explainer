@@ -38,3 +38,32 @@ jobs:
           name: dist
           path: dist
           retention-days: 3
+
+  browser:
+    needs: static
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist
+      # The scripts look for Chrome at /usr/bin/google-chrome, which
+      # ubuntu-latest ships. Preview serves the built dist with the same
+      # headers as production (vite.config.ts reads them from vercel.json).
+      - run: |
+          (pnpm preview --port 4173 --strictPort &)
+          for i in $(seq 1 30); do curl -sf http://localhost:4173/ >/dev/null && break; sleep 1; done
+          curl -sf http://localhost:4173/ >/dev/null
+      - run: pnpm check:keyboard http://localhost:4173
+      - run: pnpm audit:a11y http://localhost:4173
+      - run: pnpm audit:a11y http://localhost:4173/linter
+      - run: LH_RUNS=1 LH_FLOOR=0.90 pnpm check:lighthouse http://localhost:4173
+      - run: LH_RUNS=1 LH_FLOOR=0.90 pnpm check:lighthouse http://localhost:4173/linter

@@ -83,7 +83,7 @@ These three drive a real headless browser, so they need the production build alr
 | `pnpm check:keyboard` | Drives all 22 interactives with real key events, at 1440 and again at 390 |
 | `pnpm audit:a11y` | axe-core over every section, with all deferred content force-mounted |
 
-**Continuous integration.** `pnpm lint`, `pnpm typecheck`, `pnpm check` and `pnpm build` run automatically in GitHub Actions on every push to `main` and every pull request (`.github/workflows/ci.yml`). The browser-driven checks — keyboard, Lighthouse and accessibility — are added to CI in a later step. Vercel's own GitHub integration posts preview URLs on pull requests; enable "Comments on Pull Requests" in the Vercel project's Git settings to see them.
+**Continuous integration.** `pnpm lint`, `pnpm typecheck`, `pnpm check` and `pnpm build` run automatically in GitHub Actions on every push to `main` and every pull request (`.github/workflows/ci.yml`). Browser-driven checks — keyboard operability, axe-core accessibility audits on both routes, and Lighthouse performance and accessibility gated at 0.90 — run in a second job against `pnpm preview` of the built artifact. Vercel's own GitHub integration posts preview URLs on pull requests; enable "Comments on Pull Requests" in the Vercel project's Git settings to see them.
 
 ---
 

@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 import { bates, meta, section, sectionLinkCopy, type SectionId } from '../content/site'
-import { a11y } from '../content/ui'
+import { a11y, readingTime } from '../content/ui'
 import { useCopy } from '../lib/useCopy'
 
 /**
@@ -52,7 +52,7 @@ export function SectionHead({
   aside,
   leadBelow,
 }: SectionHeadProps) {
-  const { n, title: eyebrow, seq } = section(id)
+  const { n, title: eyebrow, seq, readingMinutes } = section(id)
   const { copied, copy: copyLink } = useCopy()
 
   return (
@@ -68,6 +68,7 @@ export function SectionHead({
         <span className="sect-eyebrow" {...(titleId && !headline ? { id: titleId } : {})}>
           {eyebrow}
         </span>
+        <span className="sect-time">{readingTime(readingMinutes)}</span>
         <span className="sect-copyWrap">
           <button
             type="button"

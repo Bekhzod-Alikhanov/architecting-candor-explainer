@@ -117,3 +117,16 @@ export const a11y = {
    *  named "Copy link". */
   copySectionLink: (title: string) => `Copy a link to “${title}”`,
 } as const
+
+/**
+ * Each section head's reading-time label, e.g. "7 min read". A function
+ * rather than a static string, in the style of the a11y builders above,
+ * because the minutes come from the section register (site.ts) rather than
+ * from a fixed string here — see scripts/check-reading-time.ts for how that
+ * figure is kept honest, and pnpm read:aloud, which calls this with a
+ * representative value so the label goes through the same tone check as
+ * every other sentence on the site.
+ */
+export function readingTime(minutes: number): string {
+  return `${minutes} min read`
+}

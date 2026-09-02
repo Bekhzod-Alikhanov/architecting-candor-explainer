@@ -118,18 +118,27 @@ export const contribution = {
   ],
 } as const
 
-/** Section register. The numbering is a sequence because the argument is one. */
+/**
+ * Section register. The numbering is a sequence because the argument is one.
+ *
+ * `readingMinutes` is each section's word count at ~220 wpm, computed with
+ * interactives' generated/telemetry values excluded — the same prose filter
+ * read-aloud.ts uses. scripts/check-reading-time.ts recomputes it from the
+ * content modules on every `pnpm check` and fails if this drifts from the
+ * recomputation by more than a minute, so a copy edit that meaningfully
+ * changes a section's length cannot silently leave the label wrong.
+ */
 export const sections = [
-  { n: '00', id: 'memo', title: 'The memo' },
-  { n: '01', id: 'pincer', title: 'The pincer' },
-  { n: '02', id: 'signal', title: 'Where the signal dies' },
-  { n: '03', id: 'route', title: 'Route the record' },
-  { n: '04', id: 'architecture', title: 'The architecture, operable' },
-  { n: '05', id: 'calibrate', title: 'Calibrate the tripwire' },
-  { n: '06', id: 'regimes', title: 'Four regimes, one logic' },
-  { n: '07', id: 'ask', title: 'The ask' },
-  { n: '08', id: 'gc', title: 'Take it to your GC' },
-  { n: '09', id: 'paper', title: 'The paper' },
+  { n: '00', id: 'memo', title: 'The memo', readingMinutes: 3 },
+  { n: '01', id: 'pincer', title: 'The pincer', readingMinutes: 7 },
+  { n: '02', id: 'signal', title: 'Where the signal dies', readingMinutes: 6 },
+  { n: '03', id: 'route', title: 'Route the record', readingMinutes: 11 },
+  { n: '04', id: 'architecture', title: 'The architecture, operable', readingMinutes: 9 },
+  { n: '05', id: 'calibrate', title: 'Calibrate the tripwire', readingMinutes: 4 },
+  { n: '06', id: 'regimes', title: 'Four regimes, one logic', readingMinutes: 5 },
+  { n: '07', id: 'ask', title: 'The ask', readingMinutes: 4 },
+  { n: '08', id: 'gc', title: 'Take it to your GC', readingMinutes: 8 },
+  { n: '09', id: 'paper', title: 'The paper', readingMinutes: 2 },
 ] as const
 
 export type SectionId = (typeof sections)[number]['id']
@@ -147,6 +156,7 @@ export function section(id: SectionId): {
   readonly n: string
   readonly title: string
   readonly seq: number
+  readonly readingMinutes: number
 } {
   const i = sections.findIndex((s) => s.id === id)
   const found = sections[i]

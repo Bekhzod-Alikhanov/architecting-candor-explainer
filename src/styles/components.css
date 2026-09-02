@@ -73,6 +73,16 @@
     color: var(--text-on-ground-muted);
   }
 
+  /* U2: a reading-time label, so a reader can weigh a section before opening
+     it. Fainter than the eyebrow and untransformed, so it reads as a note
+     about the section rather than as a second heading competing with it. */
+  .sect-time {
+    font-family: var(--font-mono);
+    font-size: var(--text-cs-xs);
+    font-variant-numeric: tabular-nums;
+    color: var(--text-on-ground-faint);
+  }
+
   .sect-bates {
     margin-inline-start: auto;
   }

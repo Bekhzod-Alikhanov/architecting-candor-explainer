@@ -26,11 +26,14 @@ import * as regimes from '../src/content/regimes'
 import * as statute from '../src/content/statute'
 import * as linter from '../src/content/linter-rules'
 import * as checklist from '../src/content/checklist'
+import * as orientation from '../src/content/orientation'
 import * as ui from '../src/content/ui'
+import { isProse } from './lib/prose'
 
 const MODULES: readonly [string, Record<string, unknown>][] = [
   ['00 · site metadata, disclaimer, about this page', site],
   ['00 · the memo', hero],
+  ['00 · the five-minute version', orientation],
   ['01 · the pincer', pincer],
   ['01 · the reclassification timeline', timeline],
   ['02 · where the signal dies', signal],
@@ -45,21 +48,12 @@ const MODULES: readonly [string, Record<string, unknown>][] = [
   ['—  · shared interface copy', ui],
 ]
 
-/** Machine strings that are not prose and would only add noise to a read. */
-function isProse(key: string, value: string): boolean {
-  if (value.length < 12) return false
-  if (/^(id|n|seq|category|kind|home|to|from|pattern|unit|maps|side|hex)$/i.test(key)) return false
-  if (/^(#|https?:|\/|[a-z-]+\.[a-z]{2,}$)/.test(value)) return false
-  // Telemetry lines, field names and code-ish fragments.
-  if (/^[a-z_]+=[^ ]/.test(value)) return false
-  if (/^[\d-]+T[\d:.]+Z$/.test(value)) return false
-  if (!/[a-z]{3}\s+[a-z]{3}/i.test(value)) return false
-  return true
-}
-
 let words = 0
 let strings = 0
 
+/** Indented print of a module's prose, in declaration order. Wraps the shared
+ *  walker so this script keeps its own running word/string totals for the
+ *  closing tally, and its own indentation-by-depth for readability. */
 function walk(node: unknown, key: string, depth: number, out: string[]): void {
   if (typeof node === 'string') {
     if (isProse(key, node)) {
@@ -134,6 +128,7 @@ const spoken: readonly [string, string][] = [
     }),
   ],
   ['— · a section head "Copy link" button', ui.a11y.copySectionLink('The paper')],
+  ['— · a section head’s reading time', ui.readingTime(7)],
 ]
 
 console.log(`\n${'='.repeat(78)}`)

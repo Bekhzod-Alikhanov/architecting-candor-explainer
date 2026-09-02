@@ -51,6 +51,13 @@ const has = (html, needle, what, rel) => {
   if (!html.includes(needle)) fail(`${rel}: ${what}`)
 }
 
+/**
+ * Hoisted out of the `/` block below: with `cssCodeSplit: false` this is the
+ * one stylesheet for the whole build, and 404.html links the same file, not
+ * a second copy — see the check on it further down.
+ */
+const { linked, lazy } = chunkStylesheets(manifest)
+
 // --- / -----------------------------------------------------------------------
 
 const home = read('index.html')
@@ -99,7 +106,6 @@ if (home) {
    * manifest shape this walk stops recognising returns nothing at all, which is
    * why an empty walk is a failure here rather than a log line.
    */
-  const { linked, lazy } = chunkStylesheets(manifest)
   if (!linked.length) {
     fail('the manifest walk found no stylesheets at all — it no longer reads the manifest')
   }
@@ -164,7 +170,24 @@ if (linter) {
 
 // Dropped once already by a config change that exited 0. It is built rather
 // than dropped in public/, which is exactly why it can go missing.
-read('404.html')
+const notFound = read('404.html')
+if (notFound) {
+  const { html } = notFound
+  const rel = '404.html'
+
+  // With cssCodeSplit off, `linked` (computed above for index.html) is the
+  // one stylesheet for the entire build, and 404.html has to link that exact
+  // file too — not a second copy, and not none. A scoping regression in
+  // notfound.css (see the header of that file) is invisible to a byte check
+  // like this one; this only proves the page still loads the shared sheet.
+  for (const file of linked) {
+    has(html, `href="/${file}"`, `${file} is not linked in the head`, rel)
+  }
+  const links = (html.match(/rel="stylesheet"/g) ?? []).length
+  if (links !== linked.length) {
+    fail(`${rel}: ${links} stylesheet links, expected ${linked.length}`)
+  }
+}
 
 // --- every document ----------------------------------------------------------
 

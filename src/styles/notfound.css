@@ -5,6 +5,14 @@
    at src/index.css produced a second 33KB copy of the entire site's CSS for a
    page a reader reaches by accident. Colour still comes from the token layer,
    so this file contains no raw values of its own.
+
+   `build.cssCodeSplit: false` means this file and the app's components.css /
+   base.css land in one merged stylesheet, in the same three layers, serving
+   `/`, `/linter` AND `/404.html`. Unscoped, this file's `.btn`, `.btn--primary`
+   and `body` rules loaded later in the layer and won by source order, so the
+   error page's look leaked onto the app pages. Every selector below is
+   prefixed with `.nf-page`, the class 404.html puts on `<html>`, so nothing
+   here can be reached from a document that does not carry that hook.
    ========================================================================= */
 
 @import "tailwindcss";
@@ -15,11 +23,11 @@
 @import "./tokens.css";
 
 @layer app-base {
-  html {
+  html.nf-page {
     -webkit-text-size-adjust: 100%;
   }
 
-  body {
+  .nf-page body {
     margin: 0;
     min-block-size: 100vh;
     display: grid;
@@ -32,18 +40,18 @@
     -webkit-font-smoothing: antialiased;
   }
 
-  :focus-visible {
+  .nf-page :focus-visible {
     outline: 2px solid var(--color-instrument);
     outline-offset: 2px;
   }
 
-  a {
+  .nf-page a {
     color: inherit;
   }
 }
 
 @layer app-components {
-  .nf {
+  .nf-page .nf {
     width: 100%;
     max-width: var(--content-max);
     margin-inline: auto;
@@ -51,7 +59,7 @@
     padding-block: clamp(2rem, 8vh, 5rem);
   }
 
-  .nf__bates {
+  .nf-page .nf__bates {
     margin: 0;
     font-family: var(--font-mono);
     font-size: var(--text-cs-xs);
@@ -62,7 +70,7 @@
     color: var(--stamp-on-ground);
   }
 
-  .nf__title {
+  .nf-page .nf__title {
     margin: 0.6rem 0 0;
     font-family: var(--font-doc);
     font-weight: 500;
@@ -72,14 +80,14 @@
     text-wrap: balance;
   }
 
-  .nf__body {
+  .nf-page .nf__body {
     margin: 1rem 0 0;
     max-width: var(--measure-console);
     color: var(--text-on-ground-muted);
     text-wrap: pretty;
   }
 
-  .nf__links {
+  .nf-page .nf__links {
     display: flex;
     flex-wrap: wrap;
     gap: 0.6rem;
@@ -88,8 +96,10 @@
 
   /* The two buttons, matched to the site's own so the page does not read as a
      different property. Kept here rather than imported, because pulling in
-     components.css would drag the whole site's CSS back in. */
-  .btn {
+     components.css would drag the whole site's CSS back in. Scoped under
+     `.nf-page` (see file header) so they cannot out-cascade the app's own
+     `.btn` / `.btn--primary` in the merged stylesheet. */
+  .nf-page .btn {
     display: inline-flex;
     align-items: center;
     gap: 0.45rem;
@@ -104,18 +114,18 @@
     text-decoration: none;
   }
 
-  .btn:hover {
+  .nf-page .btn:hover {
     border-color: var(--instrument-on-ground);
     color: var(--instrument-on-ground);
   }
 
-  .btn--primary {
+  .nf-page .btn--primary {
     background: var(--color-stamp);
     border-color: var(--color-stamp);
     color: var(--color-doc);
   }
 
-  .btn--primary:hover {
+  .nf-page .btn--primary:hover {
     background: color-mix(in oklab, var(--color-stamp) 84%, var(--color-redact));
     border-color: color-mix(in oklab, var(--color-stamp) 84%, var(--color-redact));
     color: var(--color-doc);

@@ -10,6 +10,8 @@
  * labelled as simulated.
  */
 
+import { paper } from './site'
+
 /** One field of the automatically captured record. */
 export interface TelemetryField {
   readonly key: string
@@ -17,6 +19,35 @@ export interface TelemetryField {
   /** Marked fields are the ones the exhibit reading leans on. */
   readonly loadBearing?: boolean
 }
+
+/** One entry in the "ways in" strip. */
+export interface WayIn {
+  readonly label: string
+  readonly hint: string
+  readonly href: string
+  /** True for the one link that leaves the site — the DOI. */
+  readonly external?: boolean
+}
+
+/**
+ * The express lane. U2: ~12,300 words and no way to say "I have five
+ * minutes" — so this sits near the top of §00 and offers four exits before
+ * the reader has committed to reading in order.
+ */
+export const waysIn = {
+  label: 'Ways in',
+  items: [
+    { label: 'Watch the explainer', hint: '9 min', href: '#explainer', external: false },
+    {
+      label: 'Run the mechanism',
+      hint: '§03–§05 · about 15 min',
+      href: '#route',
+      external: false,
+    },
+    { label: 'Print the one-page checklist', hint: '§08', href: '#gc', external: false },
+    { label: 'Read the paper', hint: 'DOI', href: paper.doiUrl, external: true },
+  ] as const satisfies readonly WayIn[],
+} as const
 
 export const rubric = {
   publisher: 'Arcadia Impact · AI Governance Taskforce',

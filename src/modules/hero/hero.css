@@ -175,6 +175,86 @@
     color: var(--text-on-ground-muted);
   }
 
+  /* --- ways in: the express lane ------------------------------------------
+   U2: a reader with five minutes has nowhere to go without this. Sits after
+   the standfirst and before the split, so orientation happens before the
+   reader commits to the interactive below it.
+   ---------------------------------------------------------------------- */
+
+  .hero__waysIn {
+    margin-block: 1.25rem 0;
+  }
+
+  .hero__waysInLabel {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: var(--text-cs-xs);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-on-ground-faint);
+    margin-block-end: 0.6rem;
+  }
+
+  .hero__waysInList {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.6rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* One row once there is width to spare well ahead of the 1440px case the
+     brief measures against. */
+  @media (min-width: 56.25rem) {
+    .hero__waysInList {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+
+  .hero__waysInLink {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.2rem;
+    min-height: 1.5rem; /* 24px: WCAG 2.2's minimum target size */
+    padding: 0.5rem 0.7rem;
+    border: 1px solid var(--ground-rule);
+    border-radius: var(--radius-mark);
+    background: var(--ground-raised);
+    text-decoration: none;
+    transition:
+      border-color var(--dur-fast) var(--ease-out),
+      background var(--dur-fast) var(--ease-out);
+  }
+
+  .hero__waysInLink:hover {
+    border-color: var(--color-instrument);
+    background: var(--tint-instrument);
+  }
+
+  /* On a coarse pointer, grow the link itself to the 44px comfort target —
+     unlike the scaffold dot, there is no fixed-size mark to protect here. */
+  @media (pointer: coarse) {
+    .hero__waysInLink {
+      min-height: 2.75rem;
+    }
+  }
+
+  .hero__waysInTitle {
+    font-family: var(--font-mono);
+    font-size: var(--text-cs-sm);
+    font-weight: 500;
+    line-height: 1.3;
+    color: var(--text-on-ground);
+  }
+
+  .hero__waysInHint {
+    font-family: var(--font-mono);
+    font-size: var(--text-cs-xs);
+    color: var(--text-on-ground-faint);
+  }
+
   /* The split. A flex row on wide screens, a column when stacked. */
   .hero__split {
     display: flex;

@@ -2,8 +2,8 @@ import { useState } from 'react'
 import { Seam } from '../../components/Seam'
 import { Prov } from '../../components/Provenance'
 import { useMediaQuery } from '../../lib/useMediaQuery'
-import { memo as content, rubric, exhibitLegend } from '../../content/hero'
-import { bates, disclaimer, section } from '../../content/site'
+import { memo as content, rubric, exhibitLegend, waysIn } from '../../content/hero'
+import { bates, disclaimer, explainer, section } from '../../content/site'
 import './hero.css'
 
 /** §00's number, title and Bates sequence come from the section register. */
@@ -73,6 +73,32 @@ export function Hero() {
         <p className="hero__standfirst">
           {wide ? r.standfirst : r.standfirst.replace(r.dragInstruction, r.standfirstStacked)}
         </p>
+
+        {/* The express lane: four exits for a reader who has not yet
+            committed to reading the demo below, let alone the other nine
+            sections. */}
+        <nav className="hero__waysIn" aria-labelledby="ways-in-label">
+          <span className="hero__waysInLabel" id="ways-in-label">
+            {waysIn.label}
+          </span>
+          <ul className="hero__waysInList">
+            {waysIn.items.map((w) => (
+              <li key={w.label}>
+                <a
+                  className="hero__waysInLink"
+                  href={w.href}
+                  {...(w.external ? { rel: 'noreferrer' } : {})}
+                >
+                  <span className="hero__waysInTitle">
+                    {w.label}
+                    {w.external ? <span aria-hidden="true"> ↗</span> : null}
+                  </span>
+                  <span className="hero__waysInHint">{w.hint}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
 
         <div className="hero__split" data-stacked={!wide}>
           {/* The engineering reading. */}

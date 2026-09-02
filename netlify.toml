@@ -53,8 +53,10 @@
 # strict costs nothing here and makes the About copy's claim that the page
 # makes no network requests after load actually enforceable. style-src-attr
 # covers React's inline style="" attributes; img-src data: is the SVG grain
-# background in src/styles/base.css; connect-src 'none' also blocks Vercel's
-# preview toolbar (vercel.live), which is accepted. Permissions-Policy omits
+# background in src/styles/base.css; connect-src is 'self' rather than 'none'
+# because Lighthouse fetches /robots.txt from inside the page and a 'none'
+# policy fails its SEO audit, while 'self' still refuses every third-party
+# connection, Vercel's preview toolbar (vercel.live) included. Permissions-Policy omits
 # clipboard-write, fullscreen and picture-in-picture: copy-link and the video
 # controls need them.
 [[headers]]
@@ -63,5 +65,5 @@
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
     X-Frame-Options = "DENY"
-    Content-Security-Policy = "default-src 'none'; base-uri 'none'; object-src 'none'; frame-ancestors 'none'; form-action 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; style-src-elem 'self'; style-src-attr 'unsafe-inline'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; upgrade-insecure-requests"
+    Content-Security-Policy = "default-src 'none'; base-uri 'none'; object-src 'none'; frame-ancestors 'none'; form-action 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; style-src-elem 'self'; style-src-attr 'unsafe-inline'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'self'; upgrade-insecure-requests"
     Permissions-Policy = "accelerometer=(), camera=(), display-capture=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), midi=(), payment=(), usb=(), xr-spatial-tracking=()"

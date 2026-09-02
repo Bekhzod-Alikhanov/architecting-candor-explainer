@@ -12,8 +12,8 @@ if (!root) throw new Error('#root is missing from index.html')
  * Routing without a router.
  *
  * There are two entry points and a strict initial-JS budget, so a pathname
- * switch does the job a routing library would. SPA rewrites in netlify.toml and
- * vercel.json make /linter resolve to index.html in production.
+ * switch does the job a routing library would. The rewrites in netlify.toml and
+ * vercel.json point /linter at its own prerendered /linter/index.html.
  */
 const path = window.location.pathname.replace(/\/+$/, '')
 const isLinter = path === '/linter'
@@ -28,9 +28,20 @@ const isLinter = path === '/linter'
  * that once. `sessionStorage` — keyed to the main script this tab was built
  * from, so a genuinely new deploy gets its own attempt — stops a repeat
  * failure (a real network fault, not a stale build) from reload-looping the
- * tab; that case falls through to ChunkBoundary's retry UI instead.
+ * tab; that case falls through to Deferred's own notice instead.
  */
 window.addEventListener('vite:preloadError', (event) => {
+  /*
+   * Not while offline. The reader is holding a complete, readable document —
+   * every section's prose is in it — and reloading would navigate them off it
+   * onto the browser's own error page, losing the whole article to fetch one
+   * chunk that cannot arrive. A stale build is the case this reload is for, and
+   * a stale build is reachable. Falling through without preventDefault leaves
+   * the failure to Deferred, which keeps the prerendered section and says the
+   * instrument did not load.
+   */
+  if (navigator.onLine === false) return
+
   const mainSrc = document.querySelector<HTMLScriptElement>(
     'script[type="module"][src*="/assets/main-"]',
   )?.src

@@ -2,6 +2,7 @@ import {
   Suspense,
   lazy,
   startTransition,
+  useCallback,
   useEffect,
   useRef,
   useState,
@@ -36,9 +37,15 @@ import { ChunkBoundary } from './ChunkBoundary'
  * the state changes, and the resolved component is rendered directly, so the
  * commit that removes the static markup is the same commit that installs the
  * live section: there is no frame in between showing a placeholder, and the
- * section's height does not change across it. `lazy()` and the Suspense
- * boundary stay for the retry path — a rejected import has to reach
- * ChunkBoundary as a render error, which is the only way an error boundary can
+ * section's height does not change across it.
+ *
+ * A failed import never takes the markup away. In `static` the section stays
+ * exactly as the build wrote it and a short notice is added after it, because
+ * what the reader has lost is the instrument, not the argument — the prose,
+ * the figures and the headings are all still on screen and still findable.
+ * `lazy()`, Suspense and ChunkBoundary are kept for `placeholder`, the one
+ * state where there is nothing to keep: there a rejected import has to reach
+ * an error boundary as a render error, which is the only way a boundary can
  * see it.
  */
 export interface DeferredProps {
@@ -57,6 +64,20 @@ export interface DeferredProps {
 
 type State = 'static' | 'placeholder' | 'mounted'
 
+/**
+ * The adoption prop, defined once and never rebuilt.
+ *
+ * This object's *identity* is load-bearing. React's property update skips a
+ * prop only when `nextProp === lastProp`, and `dangerouslySetInnerHTML` is not
+ * compared any more deeply than that, so a fresh `{ __html: '' }` on a
+ * re-render is a changed prop and React answers it by setting the element's
+ * innerHTML to `''` — emptying the prerendered section it was told never to
+ * look inside. Inline it again and the failure notice below takes the whole
+ * section down with it. (Measured: the wrapper survives, its 5 845 characters
+ * do not.)
+ */
+const ADOPT_SERVER_MARKUP = { __html: '' }
+
 /** Everything a reader could Tab to. Used to put focus back after the swap. */
 const FOCUSABLE =
   'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
@@ -73,8 +94,40 @@ export function Deferred({ id, n, title, seq, load }: DeferredProps) {
   const [Lazy, setLazy] = useState<ComponentType>(() => lazy(load))
   /** The already-resolved component, on the path where nothing went wrong. */
   const [Ready, setReady] = useState<ComponentType | null>(null)
+  /** The import rejected while the prerendered markup is still on screen. */
+  const [stalled, setStalled] = useState(false)
   /** Where focus was inside the static markup, if it was inside it at all. */
   const restoreTo = useRef<number | null>(null)
+
+  /**
+   * Resolve the module and swap the static markup for the live section. Shared
+   * by the mount triggers and by the notice's "Try again", because a successful
+   * retry has to be the same swap and not a second, differently-behaved one.
+   *
+   * What "Try again" cannot do is out-run the browser's module map, which
+   * records a failed dynamic import against its URL for the life of the page
+   * and rejects a second import of it without issuing a request — measured:
+   * one network entry for the chunk across both attempts. So a chunk that 404d
+   * or was fetched while offline needs the reload the notice offers next to
+   * this; retrying is the lighter fix for the case where the import itself was
+   * never reached. See the note on ChunkBoundary for the same finding.
+   */
+  const swapIn = useCallback(
+    (el: HTMLElement, focusFirst: boolean) =>
+      load().then((mod) => {
+        // Read focus now rather than when the mount was triggered: the reader
+        // may have moved since, and the static markup is still the thing on
+        // screen until the state below changes. After a retry the button that
+        // was focused is about to be removed with the notice, so focus goes to
+        // the top of the section the reader just asked for instead of to body.
+        restoreTo.current = focusFirst ? 0 : focusedIndex(el)
+        startTransition(() => {
+          setReady(() => mod.default)
+          setState('mounted')
+        })
+      }),
+    [load],
+  )
 
   useEffect(() => {
     if (state === 'mounted') return
@@ -87,24 +140,21 @@ export function Deferred({ id, n, title, seq, load }: DeferredProps) {
       if (claimed) return
       claimed = true
 
-      load().then(
-        (mod) => {
-          // Read focus now rather than when the mount was triggered: the
-          // reader may have moved since, and the static markup is still the
-          // thing on screen until the state below changes.
-          restoreTo.current = focusedIndex(el)
-          startTransition(() => {
-            setReady(() => mod.default)
-            setState('mounted')
-          })
-        },
-        () => {
-          // Let the lazy component re-throw the same rejection during render,
-          // where ChunkBoundary can catch it and offer the retry.
-          restoreTo.current = focusedIndex(el)
-          startTransition(() => setState('mounted'))
-        },
-      )
+      swapIn(el, false).catch(() => {
+        if (state === 'static') {
+          // Keep the section. Every word of it is in the document already, and
+          // replacing a complete, readable section with an error box is a
+          // strictly worse page than the one the reader is looking at. The
+          // notice rendered after it says what is missing and offers the retry.
+          setStalled(true)
+          return
+        }
+        // No markup to keep — the dev server's placeholder. Let the lazy
+        // component re-throw the same rejection during render, where
+        // ChunkBoundary can catch it and offer the retry.
+        restoreTo.current = focusedIndex(el)
+        startTransition(() => setState('mounted'))
+      })
     }
 
     // No IntersectionObserver means an older engine; mount rather than withhold.
@@ -144,7 +194,7 @@ export function Deferred({ id, n, title, seq, load }: DeferredProps) {
       window.removeEventListener('hashchange', onHash)
       el.removeEventListener('focusin', mount)
     }
-  }, [state, id, load])
+  }, [state, id, swapIn])
 
   useEffect(() => {
     const i = restoreTo.current
@@ -184,16 +234,51 @@ export function Deferred({ id, n, title, seq, load }: DeferredProps) {
      * the live section would be appended alongside the static copy of itself.
      * A changed key removes this node, and every prerendered child with it, in
      * the same commit that inserts the live one.
+     *
+     * A fragment even when there is no notice to render. Changing a component's
+     * return between a bare element and a fragment changes what React finds in
+     * this slot, and it answers that by unmounting the wrapper — taking the
+     * prerendered markup with it, which is the one thing the failure path
+     * exists to keep. The notice is a sibling and never a child: the wrapper's
+     * contents belong to the browser, and React never looks inside it.
      */
     return (
-      <div
-        key="static"
-        ref={ref}
-        data-deferred="static"
-        suppressHydrationWarning
-        // biome-ignore lint/security/noDangerouslySetInnerHtml: no content is set — see above
-        dangerouslySetInnerHTML={{ __html: '' }}
-      />
+      <>
+        <div
+          key="static"
+          ref={ref}
+          data-deferred="static"
+          suppressHydrationWarning
+          // biome-ignore lint/security/noDangerouslySetInnerHtml: no content is set — see above
+          dangerouslySetInnerHTML={ADOPT_SERVER_MARKUP}
+        />
+        {stalled ? (
+          <div key="stalled" className="page deferred__failure">
+            <p className="deferred__note">{deferred.inert}</p>
+            <div className="deferred__actions">
+              <button
+                type="button"
+                className="btn"
+                // The notice is left standing while this runs, and on a second
+                // failure nothing changes at all. Clearing it first would drop
+                // the reader's focus onto <body> the moment this button was
+                // unmounted, and put it back a moment later — on the path where
+                // retrying is least likely to help. A successful swap removes
+                // the notice with the rest of the static branch.
+                onClick={() => {
+                  const el = ref.current
+                  if (el) swapIn(el, true).catch(() => {})
+                }}
+              >
+                {deferred.retry}
+              </button>
+              <a className="btn" href={window.location.href}>
+                {deferred.reload}
+              </a>
+            </div>
+          </div>
+        ) : null}
+      </>
     )
   }
 

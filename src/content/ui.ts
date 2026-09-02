@@ -25,9 +25,14 @@ export const provenance = {
 
 export const deferred = {
   loading: 'Loading this section.',
-  /** Shown when the section's chunk fails to load — most often because a
-   *  deploy has replaced it since this tab was opened. */
+  /** Shown when the section's chunk fails to load and there is nothing on
+   *  screen to keep — the dev server's placeholder path. */
   failed: 'This section failed to load. The site may have updated since you opened this page.',
+  /** Shown under a section whose prerendered text is intact but whose
+   *  instrument never arrived, so it has to say what is missing rather than
+   *  claim the section failed. */
+  inert:
+    'The interactive part of this section did not load. The text above is complete. The site may have updated since you opened this page, or the connection may have dropped.',
   retry: 'Try again',
   reload: 'Reload the page',
 } as const

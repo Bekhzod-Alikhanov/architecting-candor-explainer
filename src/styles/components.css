@@ -40,7 +40,8 @@
      ones; §08 is the section that follows a wrapper. */
   .sect + .sect,
   .shell__flow > [data-deferred] > .sect,
-  .shell__flow > [data-deferred] + .sect {
+  .shell__flow > [data-deferred] + .sect,
+  .shell__flow > .deferred__failure + .sect {
     border-block-start: 1px solid var(--ground-rule-soft);
   }
 
@@ -628,7 +629,14 @@
     color: var(--text-on-ground-faint);
   }
 
-  /* ChunkBoundary's "try again" / reload pair, once a chunk fails. */
+  /* The notice under a section whose prerendered text is intact but whose chunk
+     never arrived. It sits between two sections, so it takes the same block
+     rhythm as one without the full section padding. */
+  .deferred__failure {
+    padding-block: var(--space-block);
+  }
+
+  /* The "try again" / reload pair, once a chunk fails. */
   .deferred__actions {
     display: flex;
     flex-wrap: wrap;

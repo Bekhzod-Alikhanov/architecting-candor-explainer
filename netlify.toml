@@ -8,18 +8,19 @@
 [build.environment]
   NODE_VERSION = "24"
 
-# /linter is the only second entry point, so it is the only path rewritten to
-# the SPA shell. A catch-all here would answer every dead URL with the full site
-# and a 200, which is neither honest nor useful; anything else falls through to
-# 404.html, which the build emits.
+# /linter has its own prerendered document — its own title, description,
+# canonical and social card — so these point at it rather than at the homepage's
+# HTML, which is what the route used to be served. A catch-all here would answer
+# every dead URL with the full site and a 200, which is neither honest nor
+# useful; anything else falls through to 404.html, which the build emits.
 [[redirects]]
   from = "/linter"
-  to = "/index.html"
+  to = "/linter/index.html"
   status = 200
 
 [[redirects]]
   from = "/linter/"
-  to = "/index.html"
+  to = "/linter/index.html"
   status = 200
 
 [[redirects]]

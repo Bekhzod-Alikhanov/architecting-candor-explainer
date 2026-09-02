@@ -6,11 +6,11 @@
   "rewrites": [
     {
       "source": "/linter",
-      "destination": "/index.html"
+      "destination": "/linter/index.html"
     },
     {
       "source": "/linter/",
-      "destination": "/index.html"
+      "destination": "/linter/index.html"
     }
   ],
   "headers": [

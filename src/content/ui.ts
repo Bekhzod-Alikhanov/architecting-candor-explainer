@@ -35,6 +35,18 @@ export const deferred = {
 /** The skip link, which is the first thing a keyboard user reaches. */
 export const skipLink = 'Skip to content'
 
+/**
+ * Shown only to a reader with JavaScript switched off. The build prerenders
+ * both pages in full, so what that reader is missing is the moving parts rather
+ * than the argument, and this says so instead of apologising. One sentence per
+ * route, because the two pages have different moving parts.
+ */
+export const noscript = {
+  home: 'JavaScript is switched off, so none of the instruments on this page can be operated. Every section is here and readable as text; what is missing is the moving parts — dragging the seam, routing the artifacts, calibrating the tripwire and linting a ticket.',
+  linter:
+    'JavaScript is switched off, so the linter cannot run. It has no server to fall back on: the rules are compiled into the page and the matching happens in your browser, which is also why nothing you paste can leave it. The templated ticket below is readable either way.',
+} as const
+
 /** The guided-steps component. */
 export const scaffold = {
   back: 'Back',

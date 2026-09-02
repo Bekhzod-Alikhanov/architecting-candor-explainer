@@ -5,6 +5,7 @@
 # excluded from git, and it is worth remembering before adding a build artifact
 # to .gitignore that the site actually needs.
 node_modules
+dist-ssr
 .vite
 *.local
 .DS_Store

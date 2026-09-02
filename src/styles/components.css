@@ -4,6 +4,25 @@
    ========================================================================= */
 
 @layer app-components {
+  /* --- the no-JavaScript note ----------------------------------------------
+   Injected into both documents by scripts/prerender.mjs and shown only when
+   scripting is off. Sits above everything, in the console register, and reads
+   as a note about the instruments rather than an apology for a blank page:
+   every section is in the HTML either way.
+   ---------------------------------------------------------------------- */
+
+  .noscript {
+    max-width: var(--content-max);
+    margin-inline: auto;
+    padding: 0.85rem var(--page-gutter);
+    border-block-end: 1px solid var(--ground-rule);
+    background: var(--ground-raised);
+    font-family: var(--font-mono);
+    font-size: var(--text-cs-sm);
+    line-height: 1.6;
+    color: var(--text-on-ground-muted);
+  }
+
   /* --- section head -------------------------------------------------------- */
 
   .sect {

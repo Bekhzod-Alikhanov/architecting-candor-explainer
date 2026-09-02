@@ -10,6 +10,7 @@ import {
 import { bates } from '../content/site'
 import { deferred } from '../content/ui'
 import { isServer, prerendered } from '../lib/env'
+import { prerenderedComponent } from '../lib/prerender-cache'
 import { ChunkBoundary } from './ChunkBoundary'
 
 /**
@@ -153,23 +154,17 @@ export function Deferred({ id, n, title, seq, load }: DeferredProps) {
   }, [state])
 
   if (state === 'static') {
-    // The prerender itself: the whole section, rendered through the same lazy
-    // boundary the client uses, because prerenderToNodeStream waits for it.
+    // The prerender itself: the whole section, straight out of the module the
+    // build already resolved. No Suspense boundary — see prerender-cache.ts for
+    // what React does with one that resolves late.
     if (isServer) {
+      const Resolved = prerenderedComponent(load)
+      if (!Resolved) {
+        throw new Error(`Deferred section "${id}" was not resolved before the prerender`)
+      }
       return (
         <div data-deferred="static">
-          <ChunkBoundary
-            id={id}
-            n={n}
-            title={title}
-            seq={seq}
-            attempt={attempt}
-            onRetry={() => undefined}
-          >
-            <Suspense fallback={<Placeholder id={id} n={n} title={title} seq={seq} />}>
-              <Lazy />
-            </Suspense>
-          </ChunkBoundary>
+          <Resolved />
         </div>
       )
     }

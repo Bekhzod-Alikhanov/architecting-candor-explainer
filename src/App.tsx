@@ -30,6 +30,23 @@ const loadCalibrate = () =>
   import('./modules/calibrate/Calibrate').then((m) => ({ default: m.Calibrate }))
 const loadRegimes = () => import('./modules/regimes/Regimes').then((m) => ({ default: m.Regimes }))
 const loadStatute = () => import('./modules/statute/Statute').then((m) => ({ default: m.Statute }))
+
+/**
+ * The same six imports, as a list, for the build's prerender.
+ *
+ * src/entry-server.tsx resolves all of them before rendering, because the
+ * prerender cannot suspend — see src/lib/prerender-cache.ts. A section left out
+ * of this list fails the build rather than shipping as a placeholder, which is
+ * what keeps the two lists honest.
+ */
+export const deferredLoads = [
+  loadSignal,
+  loadRouteTheRecord,
+  loadArchitecture,
+  loadCalibrate,
+  loadRegimes,
+  loadStatute,
+] as const
 /*
  * §08 is deliberately NOT lazy. It contains the implementation checklist, which
  * the print stylesheet renders as the only thing on the page. Deferring it made

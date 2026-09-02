@@ -1,8 +1,9 @@
 import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
+import { createRoot, hydrateRoot } from 'react-dom/client'
 import './index.css'
 import { App } from './App'
 import { LinterPage } from './LinterPage'
+import { prerendered } from './lib/env'
 
 const root = document.getElementById('root')
 if (!root) throw new Error('#root is missing from index.html')
@@ -48,4 +49,24 @@ window.addEventListener('vite:preloadError', (event) => {
   }
 })
 
-createRoot(root).render(<StrictMode>{isLinter ? <LinterPage /> : <App />}</StrictMode>)
+const tree = <StrictMode>{isLinter ? <LinterPage /> : <App />}</StrictMode>
+
+if (prerendered) {
+  /**
+   * Adopt the build's markup rather than replacing it.
+   *
+   * onRecoverableError is not decoration. A hydration mismatch is repaired
+   * silently — React throws the server's markup away for that subtree and
+   * re-renders it on the client, which looks like nothing happened and costs
+   * exactly what the prerender was meant to save. Logging it under a fixed
+   * prefix is what lets scripts/check-keyboard.mjs and scripts/audit-a11y.mjs
+   * fail the build on one instead of leaving it to be noticed by eye.
+   */
+  hydrateRoot(root, tree, {
+    onRecoverableError(error, errorInfo) {
+      console.error('[hydration]', error, errorInfo.componentStack ?? '')
+    },
+  })
+} else {
+  createRoot(root).render(tree)
+}

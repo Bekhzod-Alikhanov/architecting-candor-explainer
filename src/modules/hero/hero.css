@@ -176,13 +176,14 @@
   }
 
   /* --- ways in: the express lane ------------------------------------------
-   U2: a reader with five minutes has nowhere to go without this. Sits after
-   the standfirst and before the split, so orientation happens before the
-   reader commits to the interactive below it.
+   U2: a reader with five minutes has nowhere to go without this. Sits in
+   the left text track directly under the turn's closing paragraph, above
+   the fold beside the Pinto artifact, so orientation happens before the
+   reader ever scrolls to the double-reading demo below.
    ---------------------------------------------------------------------- */
 
   .hero__waysIn {
-    margin-block: 1.25rem 0;
+    margin-block: var(--space-block) 0;
   }
 
   .hero__waysInLabel {

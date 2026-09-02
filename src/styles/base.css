@@ -239,6 +239,10 @@
     display: inline-flex;
     align-items: center;
     gap: 0.4em;
+    /* WCAG 2.2's 24px minimum target size, at the same font-size as the rest
+       of the mark — the button grows a little taller than its text, not the
+       type itself. */
+    min-block-size: 24px;
     font: inherit;
     letter-spacing: inherit;
     text-transform: inherit;

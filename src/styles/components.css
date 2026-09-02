@@ -347,15 +347,18 @@
 
   .scaffold__dots {
     display: flex;
-    gap: 0.3rem;
+    gap: 0.5rem;
     margin-inline-end: auto;
   }
 
   /* Dots carry a number in their accessible name, and the current one is marked
-   by size and ring as well as by fill. */
+   by size and ring as well as by fill. 1.5rem (24px) is WCAG 2.2's minimum
+   target size; the 0.5rem (8px) gap above keeps a 24px circle centred on one
+   dot clear of the next. */
   .scaffold__dot {
-    width: 1.4rem;
-    height: 1.4rem;
+    position: relative;
+    width: 1.5rem;
+    height: 1.5rem;
     display: grid;
     place-items: center;
     border-radius: var(--radius-mark);
@@ -369,6 +372,18 @@
       background var(--dur-fast) var(--ease-out),
       color var(--dur-fast) var(--ease-out),
       border-color var(--dur-fast) var(--ease-out);
+  }
+
+  /* On a coarse pointer, grow the hit area to the 44px comfort target without
+     moving the dot itself or the rail it sits on. */
+  @media (pointer: coarse) {
+    .scaffold__dot::before {
+      content: "";
+      position: absolute;
+      /* inset is relative to the padding box, inside the 1px border, so it
+         needs an extra pixel over the nominal (44 - 24) / 2 to clear 44px. */
+      inset: -11px;
+    }
   }
 
   .scaffold__dot:hover {

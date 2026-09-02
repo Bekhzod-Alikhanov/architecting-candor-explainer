@@ -194,7 +194,10 @@ try {
   const results = await evaluate(`(async () => {
     const r = await axe.run(document, {
       resultTypes: ['violations', 'incomplete'],
-      runOnly: { type: 'tag', values: ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'best-practice'] },
+      runOnly: {
+        type: 'tag',
+        values: ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa', 'best-practice'],
+      },
     })
     return JSON.stringify({
       violations: r.violations.map(v => ({

@@ -89,6 +89,9 @@
     -webkit-appearance: none;
     appearance: none;
     width: 100%;
+    /* Matches the thumb, so the input's own box — what a hit-test measures,
+       not just the thumb it paints — already clears the 24px minimum. */
+    block-size: 24px;
     margin-block-start: 0.35rem;
     background: transparent;
     cursor: pointer;
@@ -109,20 +112,40 @@
   .slider__input::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
-    inline-size: 15px;
-    block-size: 15px;
-    margin-block-start: -5.5px;
+    inline-size: 24px;
+    block-size: 24px;
+    margin-block-start: -10px;
     border-radius: var(--radius-mark);
     background: var(--color-instrument);
     border: 1px solid var(--color-ground);
   }
 
   .slider__input::-moz-range-thumb {
-    inline-size: 15px;
-    block-size: 15px;
+    inline-size: 24px;
+    block-size: 24px;
     border-radius: var(--radius-mark);
     background: var(--color-instrument);
     border: 1px solid var(--color-ground);
+  }
+
+  /* A 24px thumb meets WCAG 2.2's minimum on any input; a coarse pointer
+     (touch, no hover) gets the full 44px comfort target, sized on the thumb
+     itself since a range thumb accepts no pseudo-element of its own. */
+  @media (pointer: coarse) {
+    .slider__input {
+      block-size: 44px;
+    }
+
+    .slider__input::-webkit-slider-thumb {
+      inline-size: 44px;
+      block-size: 44px;
+      margin-block-start: -20px;
+    }
+
+    .slider__input::-moz-range-thumb {
+      inline-size: 44px;
+      block-size: 44px;
+    }
   }
 
   .slider__input:disabled {
@@ -163,6 +186,8 @@
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
+    /* The switch's own label text sizes it to ~21px; WCAG 2.2 wants 24. */
+    min-block-size: 24px;
     font-family: var(--font-mono);
     font-size: var(--text-cs-xs);
     letter-spacing: 0.06em;

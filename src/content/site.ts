@@ -7,6 +7,11 @@
 
 export interface Author {
   readonly name: string
+  /** Given name(s), Highwire/JSON-LD order. Needed because "Family, Given"
+   *  can't be safely guessed back out of the display name for every author —
+   *  e.g. a two-part given name or a single-word family name. */
+  readonly given: string
+  readonly family: string
   readonly corresponding?: boolean
   readonly email?: string
 }
@@ -15,15 +20,25 @@ export const paper = {
   title: 'Architecting Candor',
   subtitle: 'Products Liability and AI Incident Knowledge Governance',
   date: 'August 2026',
+  /** ISO-ish year-month, for citation_publication_date and JSON-LD
+   *  datePublished. `date` above stays the prose form readers see. */
+  datePublished: '2026-08',
+  language: 'en',
   publisher: 'Arcadia Impact AI Governance Taskforce',
   copublisher: 'Responsible AI Collaborative',
   authors: [
-    { name: 'Michael A. Celone', corresponding: true, email: 'michael.celone@arcadiaimpact.org' },
-    { name: 'Sean McGregor' },
-    { name: 'Mosi Secret' },
-    { name: 'Eduardo Mignot' },
-    { name: 'Noga Bregman' },
-    { name: 'Bekhzodkhon Alikhanov' },
+    {
+      name: 'Michael A. Celone',
+      given: 'Michael A.',
+      family: 'Celone',
+      corresponding: true,
+      email: 'michael.celone@arcadiaimpact.org',
+    },
+    { name: 'Sean McGregor', given: 'Sean', family: 'McGregor' },
+    { name: 'Mosi Secret', given: 'Mosi', family: 'Secret' },
+    { name: 'Eduardo Mignot', given: 'Eduardo', family: 'Mignot' },
+    { name: 'Noga Bregman', given: 'Noga', family: 'Bregman' },
+    { name: 'Bekhzodkhon Alikhanov', given: 'Bekhzodkhon', family: 'Alikhanov' },
   ] as const satisfies readonly Author[],
   citation:
     'Celone, M. A., McGregor, S., Secret, M., Mignot, E., Bregman, N., & Alikhanov, B. (2026). Architecting Candor: Products Liability and AI Incident Knowledge Governance. Arcadia Impact AI Governance Taskforce. https://doi.org/10.2139/ssrn.7310079',

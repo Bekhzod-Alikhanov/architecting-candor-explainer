@@ -196,21 +196,38 @@
     margin-block-end: 0.6rem;
   }
 
+  /* The second column carries "Print the one-page checklist" (see the
+     nth-child rule below for its desktop counterpart) — the one label long
+     enough that an even split leaves it short of the room it needs to wrap
+     on a word boundary instead of the hyphen in "one-page". */
   .hero__waysInList {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
     gap: 0.6rem;
     list-style: none;
     margin: 0;
     padding: 0;
   }
 
-  /* One row once there is width to spare well ahead of the 1440px case the
-     brief measures against. Five items now that U2's express lane added a
-     "Five-minute version" entry (was four). */
-  @media (min-width: 56.25rem) {
+  /* Three across, not five, once the masthead itself goes two-track (the
+     same 64rem breakpoint as .hero__masthead below): from there the strip
+     lives inside the ~540px left column, not the full viewport, so it needs
+     its own breakpoint rather than the viewport-wide one that used to sit
+     here. Five items make two rows (3 + 2) instead of one row of five cards
+     too narrow for their own labels. */
+  @media (min-width: 64rem) {
     .hero__waysInList {
-      grid-template-columns: repeat(5, minmax(0, 1fr));
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    /* "Print the one-page checklist" is the one label long enough that, at
+       one column's share of the ~540px left track, greedy text wrapping
+       breaks after the hyphen in "one-page" rather than between words — the
+       hyphen is a break opportunity like any space. A second column track
+       gives it the width to wrap on word boundaries only (or not wrap at
+       all), without touching the other four cards' equal thirds. */
+    .hero__waysInList > li:nth-child(4) {
+      grid-column: span 2;
     }
   }
 

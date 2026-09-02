@@ -206,10 +206,11 @@
   }
 
   /* One row once there is width to spare well ahead of the 1440px case the
-     brief measures against. */
+     brief measures against. Five items now that U2's express lane added a
+     "Five-minute version" entry (was four). */
   @media (min-width: 56.25rem) {
     .hero__waysInList {
-      grid-template-columns: repeat(4, minmax(0, 1fr));
+      grid-template-columns: repeat(5, minmax(0, 1fr));
     }
   }
 

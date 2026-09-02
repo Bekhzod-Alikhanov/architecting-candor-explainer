@@ -31,12 +31,22 @@ export interface WayIn {
 
 /**
  * The express lane. U2: ~12,300 words and no way to say "I have five
- * minutes" — so this sits near the top of §00 and offers four exits before
+ * minutes" — so this sits near the top of §00 and offers five exits before
  * the reader has committed to reading in order.
+ *
+ * "Five-minute version" is the shortest of the five, so it leads: it points
+ * at the orientation block's own express lane (§00, #orientation) rather
+ * than asking a reader who has five minutes to scroll past the video first.
  */
 export const waysIn = {
   label: 'Ways in',
   items: [
+    {
+      label: 'Five-minute version',
+      hint: '5 min',
+      href: '#orientation',
+      external: false,
+    },
     { label: 'Watch the explainer', hint: '9 min', href: '#explainer', external: false },
     {
       label: 'Run the mechanism',

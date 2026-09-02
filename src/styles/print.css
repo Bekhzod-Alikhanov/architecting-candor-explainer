@@ -40,7 +40,6 @@
     .locator,
     .snavJump__panel,
     .progress,
-    .colo__video,
     .shell__flow > *:not(#gc) {
       display: none;
     }

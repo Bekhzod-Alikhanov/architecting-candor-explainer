@@ -7,3 +7,5 @@ dist/
 
 .vercel
 .env*
+.gstack/
+.superpowers/

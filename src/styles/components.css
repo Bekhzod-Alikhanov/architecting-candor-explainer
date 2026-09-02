@@ -631,9 +631,11 @@
 
   /* The notice under a section whose prerendered text is intact but whose chunk
      never arrived. It sits between two sections, so it takes the same block
-     rhythm as one without the full section padding. */
+     rhythm as one without the full section padding, and the same rule above it
+     that `.sect + .sect` draws between ordinary sections. */
   .deferred__failure {
     padding-block: var(--space-block);
+    border-block-start: 1px solid var(--ground-rule-soft);
   }
 
   /* The "try again" / reload pair, once a chunk fails. */

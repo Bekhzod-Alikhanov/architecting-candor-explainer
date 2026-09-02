@@ -253,7 +253,7 @@ export function Deferred({ id, n, title, seq, load }: DeferredProps) {
           dangerouslySetInnerHTML={ADOPT_SERVER_MARKUP}
         />
         {stalled ? (
-          <div key="stalled" className="page deferred__failure">
+          <div key="stalled" className="page deferred__failure" role="status">
             <p className="deferred__note">{deferred.inert}</p>
             <div className="deferred__actions">
               <button
@@ -272,9 +272,9 @@ export function Deferred({ id, n, title, seq, load }: DeferredProps) {
               >
                 {deferred.retry}
               </button>
-              <a className="btn" href={window.location.href}>
+              <button type="button" className="btn" onClick={() => window.location.reload()}>
                 {deferred.reload}
-              </a>
+              </button>
             </div>
           </div>
         ) : null}

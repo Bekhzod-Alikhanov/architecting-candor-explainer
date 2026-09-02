@@ -75,9 +75,9 @@ export class ChunkBoundary extends Component<ChunkBoundaryProps, ChunkBoundarySt
           <button type="button" className="btn" onClick={onRetry}>
             {deferred.retry}
           </button>
-          <a className="btn" href={window.location.href}>
+          <button type="button" className="btn" onClick={() => window.location.reload()}>
             {deferred.reload}
-          </a>
+          </button>
         </div>
       </section>
     )

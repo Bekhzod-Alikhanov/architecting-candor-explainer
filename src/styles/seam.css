@@ -74,11 +74,24 @@
 
   /* --- draggable variant, used in the hero -------------------------------- */
 
+  /* The seam's own box is the pointer target (Seam.tsx attaches
+     onPointerDown to it), but that box is only 12px wide — under WCAG 2.2's
+     24px minimum. Widen the hit-tested box, not the seam: box-sizing is
+     reset to content-box here (the rest of the app is border-box, see
+     src/styles/base.css) so the padding actually grows the border box
+     instead of just eating into it, and the matching negative margin pulls
+     that growth back out of the flex row, so neighbouring panes still only
+     reserve 12px. Both pseudo-elements below are centred with `left: 50%;
+     translate: -50%` against this box, so they stay put — the tick pattern
+     is untouched. */
   .seam--draggable {
     width: max(var(--seam-width), 12px);
     background: transparent;
     cursor: col-resize;
     touch-action: none;
+    box-sizing: content-box;
+    padding-inline: 6px;
+    margin-inline: -6px;
   }
 
   .seam--draggable::after {
@@ -98,23 +111,6 @@
 
   .seam--draggable[data-state="refuse"]::after {
     background: var(--seam-refuse);
-  }
-
-  /* The seam's own box is the pointer target (Seam.tsx attaches
-     onPointerDown to it), but that box is only 12px wide — under WCAG 2.2's
-     24px minimum. Widen the hit area, not the seam: this reclaims the tick
-     pseudo-element, which normal-flow siblings would otherwise occlude at
-     the fringes since a positioned .seam already paints over them, and
-     turns it into an invisible 24px strip instead of the decorative dashes. */
-  .seam--draggable::before {
-    top: 0;
-    right: -6px;
-    bottom: 0;
-    left: -6px;
-    width: auto;
-    translate: none;
-    background-image: none;
-    pointer-events: auto;
   }
 
   /* The grip. Reads as a physical handle on a bound gutter. */

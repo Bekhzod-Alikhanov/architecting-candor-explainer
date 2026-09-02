@@ -384,6 +384,14 @@
          needs an extra pixel over the nominal (44 - 24) / 2 to clear 44px. */
       inset: -11px;
     }
+
+    /* At the base 0.5rem gap, adjacent dots' centres sit 32px apart, so their
+       44px zones (from the -11px inset above) overlap by 12px and the later
+       dot always wins the tie. Widen the gap so the zones just meet instead:
+       gap >= hit (44) - dot (24) = 20px. */
+    .scaffold__dots {
+      gap: 1.25rem;
+    }
   }
 
   .scaffold__dot:hover {

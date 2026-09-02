@@ -17,6 +17,7 @@ import {
 import { a11y } from '../../content/ui'
 import { evaluate, type Settings } from '../../lib/tripwire'
 import { settingsFromLocation, writeSettingsToLocation } from '../../lib/calibration-url'
+import { useCopy } from '../../lib/useCopy'
 import './calibrate.css'
 
 /**
@@ -57,7 +58,7 @@ export function Calibrate() {
       ? INITIAL
       : (settingsFromLocation(window.location.search) ?? INITIAL),
   )
-  const [copied, setCopied] = useState(false)
+  const { copied, copy: copyShareLink, reset: resetCopied } = useCopy()
   const [step, setStep] = useState(0)
   const [touches, setTouches] = useState(0)
   const [showingRecommended, setShowingRecommended] = useState(false)
@@ -69,8 +70,8 @@ export function Calibrate() {
   // pushing so the back button still leaves the page.
   useEffect(() => {
     writeSettingsToLocation(settings)
-    setCopied(false)
-  }, [settings])
+    resetCopied()
+  }, [settings, resetCopied])
 
   // The paper's shape stays locked until the reader has actually explored.
   const unlocked = touches >= 4 || step >= STEP_SETTINGS.length - 1
@@ -226,16 +227,7 @@ export function Calibrate() {
             <button
               type="button"
               className="btn"
-              onClick={async () => {
-                try {
-                  await navigator.clipboard.writeText(window.location.href)
-                  setCopied(true)
-                } catch {
-                  // Clipboard access can be refused; selecting the address bar
-                  // is the fallback, and the URL is already correct there.
-                  setCopied(false)
-                }
-              }}
+              onClick={() => copyShareLink(window.location.href)}
             >
               {copied ? copy.shareCopied : copy.shareLabel}
             </button>

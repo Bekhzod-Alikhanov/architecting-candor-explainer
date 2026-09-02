@@ -163,9 +163,7 @@ export function RouteTheRecord() {
   return (
     <section className="sect page" id="route" aria-labelledby="route-title">
       <SectionHead
-        n={routeCopy.section}
-        eyebrow={routeCopy.eyebrow}
-        seq={4}
+        id="route"
         titleId="route-title"
         headline={routeCopy.headline}
         standfirst={routeCopy.standfirst}
@@ -195,7 +193,6 @@ export function RouteTheRecord() {
         }
       />
 
-      {/* eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions */}
       <div className="rt" onKeyDown={onKeyDown}>
         <div className="rt__work">
           <div className="rt__queue">

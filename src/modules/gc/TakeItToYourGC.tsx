@@ -15,9 +15,7 @@ export function TakeItToYourGC() {
   return (
     <section className="sect page" id="gc" aria-labelledby="gc-title">
       <SectionHead
-        n={copy.section}
-        eyebrow={copy.eyebrow}
-        seq={9}
+        id="gc"
         titleId="gc-title"
         headline={copy.headline}
         standfirst={copy.standfirst}

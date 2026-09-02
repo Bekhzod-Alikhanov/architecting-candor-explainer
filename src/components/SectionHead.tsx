@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import { bates } from '../content/site'
+import { bates, section, type SectionId } from '../content/site'
 
 /**
  * The stamped section head. The numbering is chain of custody: an append-only
@@ -20,10 +20,9 @@ import { bates } from '../content/site'
  * original reading order, so nothing about narrow screens changes.
  */
 export interface SectionHeadProps {
-  readonly n: string
-  readonly eyebrow: string
-  /** Production number for this section, 1-indexed. */
-  readonly seq: number
+  /** The register in site.ts is the single source for a section's number,
+   *  title and Bates sequence — this is the only thing a caller supplies. */
+  readonly id: SectionId
   readonly titleId?: string
   readonly headline?: string
   readonly standfirst?: string
@@ -44,15 +43,15 @@ export interface SectionHeadProps {
 }
 
 export function SectionHead({
-  n,
-  eyebrow,
-  seq,
+  id,
   titleId,
   headline,
   standfirst,
   aside,
   leadBelow,
 }: SectionHeadProps) {
+  const { n, title: eyebrow, seq } = section(id)
+
   return (
     <>
       <div className="sect-head">

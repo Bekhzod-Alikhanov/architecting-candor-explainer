@@ -120,9 +120,7 @@ export function Calibrate() {
   return (
     <section className="sect page" id="calibrate" aria-labelledby="cal-title">
       <SectionHead
-        n={copy.section}
-        eyebrow={copy.eyebrow}
-        seq={6}
+        id="calibrate"
         titleId="cal-title"
         headline={copy.headline}
         standfirst={copy.standfirst}

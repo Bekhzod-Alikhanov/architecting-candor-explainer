@@ -1,13 +1,5 @@
 import { SectionHead } from '../../components/SectionHead'
-import {
-  paper,
-  about,
-  contribution,
-  disclaimer,
-  colophonCopy,
-  explainer,
-  section,
-} from '../../content/site'
+import { paper, about, contribution, disclaimer, colophonCopy, explainer } from '../../content/site'
 import './colophon.css'
 
 /**
@@ -17,20 +9,12 @@ import './colophon.css'
  * dated snapshot, illustrative interactives, and a legal landscape that moves
  * faster than the page does.
  */
-/** §09's number, title and Bates sequence all come from the section register. */
-const paperSection = section('paper')
-
 export function Colophon() {
   const corresponding = paper.authors.find((a) => 'corresponding' in a && a.corresponding)
 
   return (
     <section className="sect page" id="paper" aria-labelledby="paper-title">
-      <SectionHead
-        n={paperSection.n}
-        eyebrow={paperSection.title}
-        seq={paperSection.seq}
-        titleId="paper-title"
-      />
+      <SectionHead id="paper" titleId="paper-title" />
 
       <div className="colo">
         <div className="colo__cite doc-object doc-object--scanned on-doc">

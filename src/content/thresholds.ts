@@ -125,8 +125,6 @@ export const streamChart = {
 } as const
 
 export const calibrateCopy = {
-  section: '05',
-  eyebrow: 'Calibrate the tripwire',
   headline: 'Set the bands. Watch what you catch, and what you lose.',
   standfirst:
     'Channel Two opens automatically when a pre-committed threshold is crossed, and precommitment is what makes the claim defensible when a firm is acting on its own signals. Below is a simulated quarter of events. Move the bands and watch four things move against each other.',

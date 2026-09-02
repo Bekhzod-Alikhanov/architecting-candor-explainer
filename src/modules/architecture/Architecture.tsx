@@ -91,9 +91,7 @@ export function Architecture() {
   return (
     <section className="sect page" id="architecture" aria-labelledby="arch-title">
       <SectionHead
-        n={copy.section}
-        eyebrow={copy.eyebrow}
-        seq={5}
+        id="architecture"
         titleId="arch-title"
         headline={copy.headline}
         standfirst={copy.standfirst}

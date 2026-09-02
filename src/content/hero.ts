@@ -27,9 +27,6 @@ export const rubric = {
 export const exhibitLegend = 'Confidential'
 
 export const memo = {
-  section: '00',
-  eyebrow: 'The memo',
-
   /** The display headline. This is the thesis. */
   headline: 'The record gets written either way.',
 

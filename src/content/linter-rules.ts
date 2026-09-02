@@ -207,8 +207,6 @@ complains.
 Fix: lower the threshold and add a test.`
 
 export const linterCopy = {
-  section: '08',
-  eyebrow: 'Take it to your GC',
   headline: 'Two entries can record the same event. Only one of them is an admission.',
   standfirst:
     'Paste an incident ticket, a postmortem, or a message you are about to send. This flags the phrases that would be read as the firm’s own findings and proposes the measurement form instead.',

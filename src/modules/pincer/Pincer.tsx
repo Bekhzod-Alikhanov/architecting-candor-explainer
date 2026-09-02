@@ -34,9 +34,7 @@ export function Pincer() {
   return (
     <section className="sect page" id="pincer" aria-labelledby="pincer-title">
       <SectionHead
-        n={pincer.section}
-        eyebrow={pincer.eyebrow}
-        seq={2}
+        id="pincer"
         titleId="pincer-title"
         headline={pincer.headline}
         standfirst={pincer.standfirst}

@@ -140,8 +140,6 @@ export const channelNames: Readonly<Record<ChannelMap, string>> = {
 }
 
 export const regimeCopy = {
-  section: '06',
-  eyebrow: 'Four regimes, one logic',
   headline: 'Every structural choice in the architecture has already been tested somewhere else.',
   standfirst:
     'Aviation and healthcare confronted this problem long before machine learning, and resolved it through deliberate institutional design rather than professional norms. Read together, the regimes reveal a common logic: preserve original facts, protect only a bounded process of evaluative analysis, and return verified findings to operations as corrective action.',

@@ -36,9 +36,7 @@ export function Signal() {
   return (
     <section className="sect page" id="signal" aria-labelledby="signal-title">
       <SectionHead
-        n={copy.section}
-        eyebrow={copy.eyebrow}
-        seq={3}
+        id="signal"
         titleId="signal-title"
         headline={copy.headline}
         standfirst={copy.standfirst}

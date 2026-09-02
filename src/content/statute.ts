@@ -95,8 +95,6 @@ export const protections: readonly Protection[] = [
 ]
 
 export const statuteCopy = {
-  section: '07',
-  eyebrow: 'The ask',
   headline: 'The architecture can be built now. What it cannot do is travel.',
   standfirst:
     'Every comparative regime in the previous section rests on a statute. This one does not, and the three-channel structure works only inside a single firm. The paper asks for four things.',

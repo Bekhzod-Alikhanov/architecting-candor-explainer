@@ -193,8 +193,6 @@ export const strategies: readonly Strategy[] = [
 ]
 
 export const routeCopy = {
-  section: '03',
-  eyebrow: 'Route the record',
   headline: 'You decide where each piece of knowledge goes.',
   standfirst:
     'Two systems will grade the result, and they pull in opposite directions. One asks what a plaintiff can get. The other asks what an engineer can still fix. Nothing here marks you against a correct answer; it grades a strategy.',

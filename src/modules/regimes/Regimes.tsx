@@ -61,9 +61,7 @@ export function Regimes() {
   return (
     <section className="sect page" id="regimes" aria-labelledby="reg-title">
       <SectionHead
-        n={copy.section}
-        eyebrow={copy.eyebrow}
-        seq={7}
+        id="regimes"
         titleId="reg-title"
         headline={copy.headline}
         standfirst={copy.standfirst}

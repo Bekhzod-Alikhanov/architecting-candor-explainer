@@ -19,8 +19,6 @@ export interface ForceItem {
 }
 
 export const pincer = {
-  section: '01',
-  eyebrow: 'The pincer',
   headline: 'Two rules, pulling opposite ways, on the same set of documents.',
   standfirst:
     'One body of law requires an AI developer to monitor its systems and write down what it finds. Another lets a plaintiff compel production of what it wrote. Neither yields to the other, and the paper names the bind the Documentation Paradox.',

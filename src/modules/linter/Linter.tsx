@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react'
 import { lint } from '../../lib/lint'
-import { sample, template, linterCopy as copy, type Category } from '../../content/linter-rules'
+import { sample, template, linterCopy as copy } from '../../content/linter-rules'
 import './linter.css'
 
 /**
@@ -168,11 +168,3 @@ function dedupe(flags: ReturnType<typeof lint>['flags']) {
   }
   return [...map.values()]
 }
-
-export const linterCategories: readonly Category[] = [
-  'fault',
-  'harm',
-  'causal',
-  'counterfactual',
-  'legal',
-]

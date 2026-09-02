@@ -181,8 +181,6 @@ export const anchor = {
 } as const
 
 export const signalCopy = {
-  section: '02',
-  eyebrow: 'Where the signal dies',
   headline: 'The legal pressure acts on an organisation that was already losing the signal.',
   standfirst:
     'Section 01 described a bind created by law. This one is about the firm itself. Three mechanisms erode incident knowledge before any lawyer is involved, and the documentation paradox amplifies all three.',

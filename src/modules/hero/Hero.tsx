@@ -3,8 +3,11 @@ import { Seam } from '../../components/Seam'
 import { Prov } from '../../components/Provenance'
 import { useMediaQuery } from '../../lib/useMediaQuery'
 import { memo as content, rubric, exhibitLegend } from '../../content/hero'
-import { bates, disclaimer } from '../../content/site'
+import { bates, disclaimer, section } from '../../content/site'
 import './hero.css'
+
+/** §00's number, title and Bates sequence come from the section register. */
+const memoSection = section('memo')
 
 /**
  * 00 — The memo.
@@ -32,10 +35,10 @@ export function Hero() {
 
       <div className="hero__head">
         <span className="hero__number" aria-hidden="true">
-          {content.section}
+          {memoSection.n}
         </span>
-        <span className="hero__eyebrow">{content.eyebrow}</span>
-        <span className="bates bates--push">{bates(1)}</span>
+        <span className="hero__eyebrow">{memoSection.title}</span>
+        <span className="bates bates--push">{bates(memoSection.seq)}</span>
       </div>
 
       <div className="hero__masthead">

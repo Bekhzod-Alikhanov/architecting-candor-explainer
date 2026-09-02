@@ -28,9 +28,7 @@ export function Statute() {
   return (
     <section className="sect page" id="ask" aria-labelledby="ask-title">
       <SectionHead
-        n={copy.section}
-        eyebrow={copy.eyebrow}
-        seq={8}
+        id="ask"
         titleId="ask-title"
         headline={copy.headline}
         standfirst={copy.standfirst}

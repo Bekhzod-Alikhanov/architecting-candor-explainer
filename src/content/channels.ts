@@ -426,8 +426,6 @@ export const plainly = [
 ]
 
 export const architectureCopy = {
-  section: '04',
-  eyebrow: 'The architecture, operable',
   headline: 'Pick something up and try to move it.',
   standfirst:
     'This is Figure 1 from the paper, except that it runs. Choose an object, choose a destination, and the valve will answer. Some flows are permitted and some are refused, and every refusal gives its reason.',

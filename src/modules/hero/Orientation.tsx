@@ -59,7 +59,7 @@ export function Orientation() {
           {express.steps.map((step) => {
             const target = section(step.ref)
             return (
-              <li className="orient__step" key={step.ref}>
+              <li className="orient__step" key={step.id}>
                 <p className="orient__stepText">{step.text}</p>
                 <div className="orient__stepMeta">
                   <a className="orient__stepLink reg-console" href={step.href}>

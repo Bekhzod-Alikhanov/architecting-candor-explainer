@@ -20,6 +20,10 @@ export interface HowItem {
 }
 
 export interface ExpressStep {
+  /** Stable identity for the step, independent of the section it links to —
+   *  two steps both link to `pincer`, so keying React's list by `ref` (or by
+   *  array index) produced a duplicate-key warning on the first two steps. */
+  readonly id: 'paradox' | 'reclassification' | 'signal' | 'architecture' | 'precedent'
   readonly text: string
   /** Section anchor the sentence links to. */
   readonly href: `#${string}`
@@ -60,30 +64,35 @@ export const orientation = {
       'Five sentences, one per movement of the argument. Each one links to the section that makes it.',
     steps: [
       {
+        id: 'paradox',
         text: 'Regulation and fiduciary duty now compel AI developers to write their systems’ failures down, and American civil discovery lets a plaintiff compel production of exactly those documents. The paper calls the bind the Documentation Paradox.',
         href: '#pincer',
         ref: 'pincer',
         cite: 'Paper, executive summary I',
       },
       {
+        id: 'reclassification',
         text: "Courts are reclassifying AI systems as products, and under products liability a firm's own safety records become the central evidence of defect, of notice and of a feasible alternative design.",
         href: '#pincer',
         ref: 'pincer',
         cite: 'Paper, executive summary II',
       },
       {
+        id: 'signal',
         text: 'Inside a firm the response is predictable: the signal degrades as it moves between engineers, counsel and the board, anomalies are normalised, and people stop writing things down.',
         href: '#signal',
         ref: 'signal',
         cite: 'Paper, executive summary III and §2',
       },
       {
+        id: 'architecture',
         text: "The paper's answer is a three-channel Safety Translation Layer: a factual record that is discoverable by design, a privileged channel for counsel's causal analysis that opens only when a pre-committed telemetry tripwire is crossed, and a remediation record written in engineering language.",
         href: '#architecture',
         ref: 'architecture',
         cite: 'Paper, executive summary V',
       },
       {
+        id: 'precedent',
         text: 'Aviation and healthcare resolved the same paradox by statute. The paper asks legislatures to give AI incident reporting the same protection, and asks firms to build the architecture now, because existing law already permits it.',
         href: '#regimes',
         ref: 'regimes',

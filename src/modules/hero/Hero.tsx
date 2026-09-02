@@ -1,6 +1,7 @@
 import { useState, type CSSProperties } from 'react'
 import { Seam } from '../../components/Seam'
 import { Prov } from '../../components/Provenance'
+import { SectionTime } from '../../components/SectionTime'
 import { useMediaQuery } from '../../lib/useMediaQuery'
 import { memo as content, rubric, exhibitLegend, waysIn } from '../../content/hero'
 import { bates, disclaimer, explainer, section } from '../../content/site'
@@ -45,6 +46,7 @@ export function Hero() {
           {memoSection.n}
         </span>
         <span className="hero__eyebrow">{memoSection.title}</span>
+        <SectionTime minutes={memoSection.readingMinutes} />
         <span className="bates bates--push">{bates(memoSection.seq)}</span>
       </div>
 

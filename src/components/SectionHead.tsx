@@ -1,7 +1,8 @@
 import type { ReactNode } from 'react'
 import { bates, meta, section, sectionLinkCopy, type SectionId } from '../content/site'
-import { a11y, readingTime } from '../content/ui'
+import { a11y } from '../content/ui'
 import { useCopy } from '../lib/useCopy'
+import { SectionTime } from './SectionTime'
 
 /**
  * The stamped section head. The numbering is chain of custody: an append-only
@@ -68,7 +69,7 @@ export function SectionHead({
         <span className="sect-eyebrow" {...(titleId && !headline ? { id: titleId } : {})}>
           {eyebrow}
         </span>
-        <span className="sect-time">{readingTime(readingMinutes)}</span>
+        <SectionTime minutes={readingMinutes} />
         <span className="sect-copyWrap">
           <button
             type="button"

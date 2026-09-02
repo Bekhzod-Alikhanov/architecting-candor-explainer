@@ -100,6 +100,23 @@
     background: var(--seam-refuse);
   }
 
+  /* The seam's own box is the pointer target (Seam.tsx attaches
+     onPointerDown to it), but that box is only 12px wide — under WCAG 2.2's
+     24px minimum. Widen the hit area, not the seam: this reclaims the tick
+     pseudo-element, which normal-flow siblings would otherwise occlude at
+     the fringes since a positioned .seam already paints over them, and
+     turns it into an invisible 24px strip instead of the decorative dashes. */
+  .seam--draggable::before {
+    top: 0;
+    right: -6px;
+    bottom: 0;
+    left: -6px;
+    width: auto;
+    translate: none;
+    background-image: none;
+    pointer-events: auto;
+  }
+
   /* The grip. Reads as a physical handle on a bound gutter. */
   .seam__grip {
     position: absolute;

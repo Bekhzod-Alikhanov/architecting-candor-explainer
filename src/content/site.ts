@@ -164,6 +164,12 @@ export const navCopy = {
   /** The narrow-viewport control that opens the same list. */
   jumpLabel: 'Jump to a section',
   jumpShort: 'Sections',
+  /** Visually-hidden prefix on the locator bar's current-section text. Not
+   *  aria-live: that text changes on every scroll frame and would flood a
+   *  screen reader, so it is read only on demand, like any other text. */
+  current: 'Current section',
+  /** The popover's back-to-top item. */
+  top: 'Top',
 } as const
 
 /** Colophon furniture. */

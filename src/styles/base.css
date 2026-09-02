@@ -13,6 +13,16 @@
   html {
     -webkit-text-size-adjust: 100%;
     scroll-behavior: smooth;
+    /* Keeps an anchor jump's target clear of the fixed locator bar below
+       82rem — see .locator in components.css, which this height matches. At
+       82rem and up the bar does not exist, so the offset is dropped there. */
+    scroll-padding-block-end: calc(44px + env(safe-area-inset-bottom) + var(--space-block));
+  }
+
+  @media (min-width: 82rem) {
+    html {
+      scroll-padding-block-end: 0;
+    }
   }
 
   @media (prefers-reduced-motion: reduce) {

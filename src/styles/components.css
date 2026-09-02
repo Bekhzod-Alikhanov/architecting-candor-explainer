@@ -215,21 +215,77 @@
     font-weight: 600;
   }
 
-  /* --- the narrow-viewport jump control -----------------------------------
+  /* --- the narrow-viewport locator bar -------------------------------------
    Everything below 82rem — every phone and most tablets — otherwise has no way
-   to reach a section except scrolling the whole argument.
+   to reach a section except scrolling the whole argument. This used to be a
+   floating "☰ Sections" pill parked over the bottom-right corner; on a phone
+   that corner is body text, and the pill had no reserved space of its own, so
+   it simply covered whatever scrolled underneath (finding U4). A full-width
+   bar claims that strip instead of floating over it.
 
-   It MUST be display:none at wide width, not merely invisible: SectionNav
-   returns a fragment, so this is a second child of .shell, and left in flow it
-   would take the grid's content track and push the sections into a third
-   column.
+   .locator MUST be display:none at wide width, not merely invisible:
+   SectionNav returns a fragment, so this is a sibling of .snav inside .shell,
+   and left in flow at a width where .shell is a grid it would take a track of
+   its own rather than disappearing.
    ---------------------------------------------------------------------- */
 
-  .snavJump__btn {
+  .locator {
     position: fixed;
-    inset-block-end: clamp(0.9rem, 3vw, 1.5rem);
-    inset-inline-end: clamp(0.9rem, 3vw, 1.5rem);
+    inset: auto 0 0 0;
     z-index: 40;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    block-size: calc(44px + env(safe-area-inset-bottom));
+    padding-inline: clamp(0.9rem, 3vw, 1.5rem);
+    padding-block-end: env(safe-area-inset-bottom);
+    background: var(--ground-raised);
+    border-block-start: 1px solid var(--ground-rule);
+  }
+
+  .locator__current {
+    display: flex;
+    align-items: baseline;
+    gap: 0.55em;
+    min-width: 0;
+    margin: 0;
+  }
+
+  /* Same register as the rail's own current-section mark (.snav__n on
+     data-current="true"): mono numeral, redacted ink on instrument fill. The
+     bar only ever shows the current section, so that treatment is always on,
+     with no separate "not current" state to draw. */
+  .locator__n {
+    flex-shrink: 0;
+    font-family: var(--font-mono);
+    font-size: var(--text-cs-xs);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.06em;
+    color: var(--color-redact);
+    background: var(--color-instrument);
+    border-radius: var(--radius-hair);
+    padding: 0.05em 0.4em;
+    font-weight: 500;
+  }
+
+  .locator__label {
+    min-width: 0;
+    font-family: var(--font-sans);
+    font-size: var(--text-cs-sm);
+    font-weight: 600;
+    color: var(--text-on-ground);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .snavJump__btn {
+    flex-shrink: 0;
+    /* Fills the bar's own block-size rather than one sized from its own
+       padding, so the tap target is the full 44px the bar promises — not an
+       extra hit-area hack layered under a shorter button. */
+    align-self: stretch;
     display: inline-flex;
     align-items: center;
     gap: 0.5em;
@@ -238,16 +294,14 @@
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--text-on-ground);
-    background: var(--ground-raised);
-    border: 1px solid var(--ground-rule);
-    border-radius: var(--radius-panel);
-    padding: 0.7em 0.95em;
-    box-shadow: var(--lift-doc-sm);
+    background: transparent;
+    border: 0;
+    border-inline-start: 1px solid var(--ground-rule-soft);
+    padding-inline: 1rem 0.9em;
     cursor: pointer;
   }
 
   .snavJump__btn:hover {
-    border-color: var(--instrument-on-ground);
     color: var(--instrument-on-ground);
   }
 
@@ -263,8 +317,9 @@
     box-shadow: var(--lift-doc);
   }
 
-  /* Anchored above the button where anchor positioning exists; the UA centres
-     it otherwise, which is fine for a list on a small screen. */
+  /* Anchored above the button (implicitly the bar's own trigger) where anchor
+     positioning exists; the UA centres it otherwise, which is fine for a list
+     on a small screen. */
   @supports (position-area: block-start) {
     .snavJump__panel:popover-open {
       position-area: block-start span-inline-start;
@@ -273,9 +328,78 @@
     }
   }
 
+  /* The back-to-top item at the head of the popover list. A standalone rule
+     rather than sharing .snav__link: that class is written for an <a>, and a
+     <button> needs its UA chrome reset (border, background, font) before the
+     same look would apply, which is more rule than the one-off divider below
+     is worth sharing for. */
+  .snavJump__top {
+    display: grid;
+    grid-template-columns: 1.9em minmax(0, 1fr);
+    gap: 0.5em;
+    align-items: baseline;
+    width: 100%;
+    margin: 0 0 0.4rem -0.4rem;
+    padding: 0.32rem 0.4rem 0.55rem;
+    border: 0;
+    border-block-end: 1px solid var(--ground-rule-soft);
+    border-radius: var(--radius-mark);
+    background: none;
+    color: var(--text-on-ground-muted);
+    font: inherit;
+    text-align: start;
+    cursor: pointer;
+    transition:
+      color var(--dur-fast) var(--ease-out),
+      background var(--dur-fast) var(--ease-out);
+  }
+
+  .snavJump__top:hover {
+    color: var(--text-on-ground);
+    background: var(--ground-panel);
+  }
+
   @media (min-width: 82rem) {
-    .snavJump {
+    .locator {
       display: none;
+    }
+  }
+
+  /* --- the scroll progress line ---------------------------------------------
+   Fixed at the very top, every viewport. transform, not width or inline-size:
+   a scale is a compositor-only change, so the bar can update every scroll
+   frame without forcing a layout pass on the page under it.
+   ---------------------------------------------------------------------- */
+
+  .progress {
+    position: fixed;
+    inset: 0 0 auto 0;
+    block-size: 2px;
+    z-index: 90;
+    background: transparent;
+  }
+
+  .progress__bar {
+    inline-size: 100%;
+    block-size: 100%;
+    background: var(--color-instrument);
+    transform-origin: left;
+    transition: transform var(--dur-fast) var(--ease-out);
+  }
+
+  /* --- reserving space for the locator bar ----------------------------------
+   Matches .locator's own block-size so the last lines of every section clear
+   the bar rather than sitting behind it — the occlusion half of finding U4,
+   the pill's coverage being the other half.
+   ---------------------------------------------------------------------- */
+
+  .shell__flow {
+    padding-block-end: calc(44px + env(safe-area-inset-bottom) + var(--space-block));
+  }
+
+  @media (min-width: 82rem) {
+    .shell__flow {
+      padding-block-end: 0;
     }
   }
 

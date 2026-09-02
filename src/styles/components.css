@@ -328,35 +328,20 @@
     }
   }
 
-  /* The back-to-top item at the head of the popover list. A standalone rule
-     rather than sharing .snav__link: that class is written for an <a>, and a
-     <button> needs its UA chrome reset (border, background, font) before the
-     same look would apply, which is more rule than the one-off divider below
-     is worth sharing for. */
+  /* The back-to-top item at the head of the popover list. Inherits grid layout,
+     color, transition, and hover from .snav__link; this rule resets only the
+     native button chrome and the button-specific padding and margin, plus a
+     top-border divider. */
   .snavJump__top {
-    display: grid;
-    grid-template-columns: 1.9em minmax(0, 1fr);
-    gap: 0.5em;
-    align-items: baseline;
+    border: 0;
+    background: none;
+    font: inherit;
+    cursor: pointer;
     width: 100%;
     margin: 0 0 0.4rem -0.4rem;
     padding: 0.32rem 0.4rem 0.55rem;
-    border: 0;
-    border-block-end: 1px solid var(--ground-rule-soft);
-    border-radius: var(--radius-mark);
-    background: none;
-    color: var(--text-on-ground-muted);
-    font: inherit;
     text-align: start;
-    cursor: pointer;
-    transition:
-      color var(--dur-fast) var(--ease-out),
-      background var(--dur-fast) var(--ease-out);
-  }
-
-  .snavJump__top:hover {
-    color: var(--text-on-ground);
-    background: var(--ground-panel);
+    border-block-end: 1px solid var(--ground-rule-soft);
   }
 
   @media (min-width: 82rem) {

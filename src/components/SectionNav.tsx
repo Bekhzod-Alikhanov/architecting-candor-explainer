@@ -178,7 +178,7 @@ export function SectionNav() {
         <p className="snav__title">{navCopy.title}</p>
         {/* Back-to-top, first in the list: scrolling is the only way down
             through ten sections, so it should also be the shortest way back. */}
-        <button type="button" className="snavJump__top" onClick={goToTop}>
+        <button type="button" className="snav__link snavJump__top" onClick={goToTop}>
           <span className="snav__n" aria-hidden="true">
             ↑
           </span>

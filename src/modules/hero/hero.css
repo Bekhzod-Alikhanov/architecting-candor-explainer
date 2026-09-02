@@ -566,6 +566,166 @@
     color: var(--text-on-ground-faint);
   }
 
+  /* --- the orientation block and the five-minute version (U2) -------------
+   Sits between the explainer and "what follows" as a document object, so it
+   reads as the memo's own summary rather than as site chrome bolted on top
+   of it. `.reg-doc` sets the Spectral body register; `.doc-object` supplies
+   the paper-card surface the Pinto passage above and the exhibit reading
+   already use.
+   ---------------------------------------------------------------------- */
+
+  .orient {
+    margin-block-start: clamp(2.25rem, 5vw, 3.5rem);
+    padding: clamp(1.5rem, 3.5vw, 2.5rem) clamp(1.5rem, 4vw, 2.75rem);
+  }
+
+  .orient__head {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.75rem 1.5rem;
+  }
+
+  .orient__title {
+    font-family: var(--font-doc);
+    font-weight: 500;
+    font-size: clamp(1.3rem, 3vw, 1.9rem);
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+  }
+
+  /* --- what / who / how, as one compact definitions list -------------------- */
+
+  .orient__facts {
+    margin-block-start: 1.5rem;
+    display: grid;
+    gap: 1.15rem;
+    padding-block-start: 1.1rem;
+    border-block-start: 1px solid var(--doc-rule);
+  }
+
+  .orient__facts dt {
+    font-family: var(--font-mono);
+    font-size: var(--text-cs-xs);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-on-doc-muted);
+  }
+
+  .orient__facts dd {
+    margin: 0.4rem 0 0;
+    max-width: 62ch;
+    font-size: var(--text-ds-sm);
+    line-height: 1.6;
+  }
+
+  .orient__how {
+    display: grid;
+    gap: 0.45rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    max-width: 34rem;
+  }
+
+  .orient__how li {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.5rem 1rem;
+  }
+
+  .orient__howLabel {
+    color: var(--text-on-doc-muted);
+  }
+
+  .orient__howValue {
+    font-size: var(--text-cs-sm);
+    color: var(--text-on-doc);
+    white-space: nowrap;
+  }
+
+  /* --- the five-minute version ------------------------------------------- */
+
+  .orient__express {
+    margin-block-start: 1.75rem;
+    padding-block-start: 1.5rem;
+    border-block-start: 1px solid var(--doc-rule);
+  }
+
+  .orient__expressTitle {
+    font-family: var(--font-doc);
+    font-weight: 500;
+    font-size: clamp(1.1rem, 2.4vw, 1.4rem);
+  }
+
+  .orient__expressIntro {
+    margin-block-start: 0.5rem;
+    max-width: 60ch;
+    font-size: var(--text-ds-sm);
+    color: var(--text-on-doc-muted);
+  }
+
+  .orient__steps {
+    margin-block-start: 1.25rem;
+    padding-inline-start: 1.4em;
+    display: grid;
+    gap: 1.15rem;
+    /* base.css resets every ol/ul to list-style: none; put decimal numbering
+       back here deliberately — this is the one list on the page where the
+       count itself is part of the argument (one sentence per movement). */
+    list-style: decimal;
+  }
+
+  /* Native ordered-list numbering carries the argument's own sequence — one
+     sentence per movement — which is a different count from the site's
+     section numbers, so it is drawn in the stamp colour rather than reusing
+     the .bates treatment. */
+  .orient__step::marker {
+    font-family: var(--font-mono);
+    font-weight: 500;
+    color: var(--stamp-on-doc);
+  }
+
+  .orient__stepText {
+    max-width: 66ch;
+    font-size: var(--text-ds-sm);
+    line-height: 1.6;
+  }
+
+  .orient__stepMeta {
+    margin-block-start: 0.45rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.35rem 1rem;
+    font-size: var(--text-cs-xs);
+  }
+
+  .orient__stepLink {
+    color: var(--instrument-on-doc);
+    letter-spacing: 0.02em;
+    text-decoration: none;
+  }
+
+  .orient__stepLink:hover {
+    text-decoration: underline;
+  }
+
+  .orient__stepCite {
+    letter-spacing: 0.03em;
+    color: var(--text-on-doc-muted);
+  }
+
+  .orient__outro {
+    margin-block-start: 1.5rem;
+    font-family: var(--font-doc);
+    font-style: italic;
+    font-size: var(--text-ds-sm);
+    color: var(--text-on-doc-muted);
+  }
+
   /* --- onward ------------------------------------------------------------- */
 
   .hero__onward {
@@ -638,6 +798,15 @@
 
     .hero__caption {
       font-size: var(--text-ds-sm);
+    }
+
+    /* Stacked rather than a label-left/value-right row: at this width the
+       row wrapped, but justify-content: space-between still pushed the
+       wrapped value to the far edge, leaving it stranded well to the right
+       of the label it belongs to. */
+    .orient__how li {
+      flex-direction: column;
+      gap: 0.1rem;
     }
   }
 }

@@ -4,6 +4,7 @@ import { Prov } from '../../components/Provenance'
 import { useMediaQuery } from '../../lib/useMediaQuery'
 import { memo as content, rubric, exhibitLegend, waysIn } from '../../content/hero'
 import { bates, disclaimer, explainer, section } from '../../content/site'
+import { Orientation } from './Orientation'
 import './hero.css'
 
 /** §00's number, title and Bates sequence come from the section register. */
@@ -197,6 +198,12 @@ export function Hero() {
         </video>
         <p className="hero__explainerNote">{explainer.note}</p>
       </figure>
+
+      {/* The orientation block and the five-minute version (U2), between the
+          explainer and "What follows" — after the two ways the reader has
+          just been shown the record, and before the section-by-section
+          argument begins. */}
+      <Orientation />
 
       <div className="hero__onward">
         <p className="hero__onwardBody">

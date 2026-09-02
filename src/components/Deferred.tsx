@@ -1,6 +1,7 @@
-import { Suspense, useEffect, useRef, useState, type ReactNode } from 'react'
+import { Suspense, lazy, useEffect, useRef, useState, type ComponentType } from 'react'
 import { bates } from '../content/site'
 import { deferred } from '../content/ui'
+import { ChunkBoundary } from './ChunkBoundary'
 
 /**
  * Mounts a below-fold section only once the reader is approaching it.
@@ -19,14 +20,25 @@ export interface DeferredProps {
   readonly n: string
   readonly title: string
   readonly seq: number
-  readonly children: ReactNode
+  /**
+   * The dynamic import itself, not an already-`lazy()`-wrapped component.
+   * `lazy()` caches a rejected import forever, so a retry after a chunk
+   * failure has to build a fresh lazy component from this — see
+   * ChunkBoundary's retry note.
+   */
+  readonly load: () => Promise<{ default: ComponentType }>
 }
 
-export function Deferred({ id, n, title, seq, children }: DeferredProps) {
+export function Deferred({ id, n, title, seq, load }: DeferredProps) {
   const ref = useRef<HTMLDivElement>(null)
   const [mounted, setMounted] = useState(
     () => typeof window !== 'undefined' && window.location.hash === `#${id}`,
   )
+  // `attempt` both keys the ChunkBoundary (forcing it to remount, which is
+  // what clears its caught-error state) and forces a fresh lazy component
+  // below, since the stale one's rejected promise never resolves.
+  const [attempt, setAttempt] = useState(0)
+  const [Lazy, setLazy] = useState<ComponentType>(() => lazy(load))
 
   useEffect(() => {
     if (mounted) return
@@ -68,9 +80,22 @@ export function Deferred({ id, n, title, seq, children }: DeferredProps) {
 
   if (mounted) {
     return (
-      <Suspense fallback={<Placeholder id={id} n={n} title={title} seq={seq} />}>
-        {children}
-      </Suspense>
+      <ChunkBoundary
+        key={attempt}
+        id={id}
+        n={n}
+        title={title}
+        seq={seq}
+        attempt={attempt}
+        onRetry={() => {
+          setLazy(() => lazy(load))
+          setAttempt((a) => a + 1)
+        }}
+      >
+        <Suspense fallback={<Placeholder id={id} n={n} title={title} seq={seq} />}>
+          <Lazy />
+        </Suspense>
+      </ChunkBoundary>
     )
   }
 

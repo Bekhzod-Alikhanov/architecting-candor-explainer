@@ -466,4 +466,12 @@
     font-size: var(--text-cs-sm);
     color: var(--text-on-ground-faint);
   }
+
+  /* ChunkBoundary's "try again" / reload pair, once a chunk fails. */
+  .deferred__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-block-start: var(--space-block);
+  }
 }

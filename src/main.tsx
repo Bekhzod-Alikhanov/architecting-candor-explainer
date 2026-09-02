@@ -17,4 +17,35 @@ if (!root) throw new Error('#root is missing from index.html')
 const path = window.location.pathname.replace(/\/+$/, '')
 const isLinter = path === '/linter'
 
+/**
+ * A stale tab: the reader has this page open from before a deploy, so their
+ * copy of index.html points at chunk hashes that no longer exist on the
+ * server. Vite dispatches `vite:preloadError` on the window when a dynamic
+ * import (or one of its own preloaded dependencies) 404s.
+ *
+ * A fresh reload picks up the new index.html and its correct hashes, so try
+ * that once. `sessionStorage` — keyed to the main script this tab was built
+ * from, so a genuinely new deploy gets its own attempt — stops a repeat
+ * failure (a real network fault, not a stale build) from reload-looping the
+ * tab; that case falls through to ChunkBoundary's retry UI instead.
+ */
+window.addEventListener('vite:preloadError', (event) => {
+  const mainSrc = document.querySelector<HTMLScriptElement>(
+    'script[type="module"][src*="/assets/main-"]',
+  )?.src
+  const key = mainSrc ? `ac:reloaded:${mainSrc}` : null
+
+  try {
+    if (key && !sessionStorage.getItem(key)) {
+      sessionStorage.setItem(key, '1')
+      event.preventDefault()
+      window.location.reload()
+    }
+  } catch {
+    // Some private-browsing modes throw on sessionStorage access. Falling
+    // through lets the error propagate to ChunkBoundary rather than reloading
+    // blind on every failure.
+  }
+})
+
 createRoot(root).render(<StrictMode>{isLinter ? <LinterPage /> : <App />}</StrictMode>)

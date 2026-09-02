@@ -1,4 +1,3 @@
-import { lazy } from 'react'
 import { Hero } from './modules/hero/Hero'
 import { Pincer } from './modules/pincer/Pincer'
 import { Colophon } from './modules/colophon/Colophon'
@@ -16,23 +15,21 @@ import { skipLink } from './content/ui'
  * them. 08 is eager because it has to be printable from anywhere on the page —
  * see the note above its import. 09 is small and stays eager so the citation is
  * always present.
+ *
+ * These are plain import functions, not `lazy(...)` calls: Deferred builds the
+ * lazy component itself, because a retry after a chunk failure needs a fresh
+ * one — `lazy()` caches a rejection forever, so the module-scope constant this
+ * used to be could never be retried.
  */
-const Signal = lazy(() => import('./modules/signal/Signal').then((m) => ({ default: m.Signal })))
-const RouteTheRecord = lazy(() =>
-  import('./modules/route/RouteTheRecord').then((m) => ({ default: m.RouteTheRecord })),
-)
-const Architecture = lazy(() =>
-  import('./modules/architecture/Architecture').then((m) => ({ default: m.Architecture })),
-)
-const Calibrate = lazy(() =>
-  import('./modules/calibrate/Calibrate').then((m) => ({ default: m.Calibrate })),
-)
-const Regimes = lazy(() =>
-  import('./modules/regimes/Regimes').then((m) => ({ default: m.Regimes })),
-)
-const Statute = lazy(() =>
-  import('./modules/statute/Statute').then((m) => ({ default: m.Statute })),
-)
+const loadSignal = () => import('./modules/signal/Signal').then((m) => ({ default: m.Signal }))
+const loadRouteTheRecord = () =>
+  import('./modules/route/RouteTheRecord').then((m) => ({ default: m.RouteTheRecord }))
+const loadArchitecture = () =>
+  import('./modules/architecture/Architecture').then((m) => ({ default: m.Architecture }))
+const loadCalibrate = () =>
+  import('./modules/calibrate/Calibrate').then((m) => ({ default: m.Calibrate }))
+const loadRegimes = () => import('./modules/regimes/Regimes').then((m) => ({ default: m.Regimes }))
+const loadStatute = () => import('./modules/statute/Statute').then((m) => ({ default: m.Statute }))
 /*
  * §08 is deliberately NOT lazy. It contains the implementation checklist, which
  * the print stylesheet renders as the only thing on the page. Deferring it made
@@ -56,29 +53,17 @@ export function App() {
           <Hero />
           <Pincer />
 
-          <Deferred {...section('signal')}>
-            <Signal />
-          </Deferred>
+          <Deferred {...section('signal')} load={loadSignal} />
 
-          <Deferred {...section('route')}>
-            <RouteTheRecord />
-          </Deferred>
+          <Deferred {...section('route')} load={loadRouteTheRecord} />
 
-          <Deferred {...section('architecture')}>
-            <Architecture />
-          </Deferred>
+          <Deferred {...section('architecture')} load={loadArchitecture} />
 
-          <Deferred {...section('calibrate')}>
-            <Calibrate />
-          </Deferred>
+          <Deferred {...section('calibrate')} load={loadCalibrate} />
 
-          <Deferred {...section('regimes')}>
-            <Regimes />
-          </Deferred>
+          <Deferred {...section('regimes')} load={loadRegimes} />
 
-          <Deferred {...section('ask')}>
-            <Statute />
-          </Deferred>
+          <Deferred {...section('ask')} load={loadStatute} />
 
           <TakeItToYourGC />
 

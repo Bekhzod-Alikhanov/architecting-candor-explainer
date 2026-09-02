@@ -25,6 +25,11 @@ export const provenance = {
 
 export const deferred = {
   loading: 'Loading this section.',
+  /** Shown when the section's chunk fails to load — most often because a
+   *  deploy has replaced it since this tab was opened. */
+  failed: 'This section failed to load. The site may have updated since you opened this page.',
+  retry: 'Try again',
+  reload: 'Reload the page',
 } as const
 
 /** The skip link, which is the first thing a keyboard user reaches. */

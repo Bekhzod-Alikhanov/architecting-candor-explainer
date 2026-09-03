@@ -96,6 +96,11 @@ export const a11y = {
     (active ? ` Currently showing ${active}.` : '') +
     ` The full sequence is listed below the chart.`,
 
+  /** Each node on the reclassification chart, reachable by keyboard. Matches
+   *  the wording of its counterpart in the entry list below the chart, so a
+   *  screen-reader user hears the same name whichever path they took. */
+  timelineNode: (date: string, title: string) => `${date}: ${title}`,
+
   /**
    * The calibrator's stream chart. This is the chart for anyone who cannot see
    * it, so it carries the same four readouts the visible chart does.

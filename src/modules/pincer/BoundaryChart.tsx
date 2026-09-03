@@ -103,10 +103,14 @@ export function BoundaryChart({ entries, current, onSelect, vertical }: Boundary
   const activeEntry = entries[current]
 
   return (
+    // role="group" rather than "img": the nodes below are real focusable
+    // controls now, and a group (unlike an image) still exposes its
+    // descendants, so Tab reaches them while this label keeps standing in
+    // for the whole picture.
     <svg
       className="bchart"
       viewBox={`0 0 ${w} ${h}`}
-      role="img"
+      role="group"
       aria-label={a11y.boundarySummary(
         axis.from,
         Math.floor(axis.to),
@@ -234,10 +238,27 @@ export function BoundaryChart({ entries, current, onSelect, vertical }: Boundary
             className="bchart__node"
             data-current={isCurrent}
             data-future={e.future ? 'true' : undefined}
+            role="button"
+            tabIndex={0}
+            aria-label={a11y.timelineNode(e.date, e.title)}
             onClick={() => onSelect(i)}
+            onKeyDown={(evt: React.KeyboardEvent<SVGGElement>) => {
+              if (evt.key === 'Enter' || evt.key === ' ') {
+                evt.preventDefault()
+                onSelect(i)
+              }
+            }}
           >
+            {/* An invisible, larger circle to hit and to focus: the visible
+                dot is 11px across, well under the 24px (44px on touch)
+                minimum target size. */}
+            <circle cx={cx} cy={cy} r={12} className="bchart__hit" />
             {isCurrent ? <circle cx={cx} cy={cy} r={11} className="bchart__halo" /> : null}
             <circle cx={cx} cy={cy} r={5.5} className="bchart__dot" />
+            {/* The default outline on a focused <g> is inconsistent across
+                browsers, so the ring is drawn explicitly and toggled by the
+                node's own :focus-visible state (see pincer.css). */}
+            <circle cx={cx} cy={cy} r={14} className="bchart__focusRing" />
             {isCurrent || i < 2 || hasRoom(i) ? (
               <text
                 className="bchart__date"

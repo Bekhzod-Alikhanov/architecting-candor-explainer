@@ -210,6 +210,32 @@
 
   .bchart__node {
     cursor: pointer;
+    /* The ring below is the focus indicator; the default box-shaped outline
+       would sit oddly around a circular node. */
+    outline: none;
+  }
+
+  .bchart__hit {
+    fill: transparent;
+    r: 12px;
+  }
+
+  @media (pointer: coarse) {
+    .bchart__hit {
+      r: 22px;
+    }
+  }
+
+  .bchart__focusRing {
+    fill: none;
+    stroke: var(--color-instrument);
+    stroke-width: 2;
+    opacity: 0;
+    transition: opacity var(--dur-fast) var(--ease-out);
+  }
+
+  .bchart__node:focus-visible .bchart__focusRing {
+    opacity: 1;
   }
 
   .bchart__dot {

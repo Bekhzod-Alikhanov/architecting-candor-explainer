@@ -24,7 +24,11 @@
          seam, and the body weight the largest text block above the fold is set
          in. That block is the Largest Contentful Paint element, and until Plex
          Sans 400 was preloaded it was discovered only after the stylesheet had
-         parsed, which put the swap after the paint it was being measured by. -->
+         parsed, which put the swap after the paint it was being measured by.
+         The other five faces (Plex Mono 500, Plex Sans 500/600, Spectral 400
+         and its italic) aren't above the fold at load, so they swap in behind
+         the metric-matched fallbacks in src/styles/font-fallbacks.css instead
+         of paying for a preload. -->
     <link
       rel="preload"
       href="/fonts/ibm-plex-sans-latin-400-normal.woff2"

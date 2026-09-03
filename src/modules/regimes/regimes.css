@@ -86,6 +86,11 @@
     border-radius: var(--radius-mark);
   }
 
+  /* Keyboard access to the horizontal scroll only when there is something
+     to scroll: Regimes.tsx measures scrollWidth vs clientWidth and adds
+     tabIndex/role/aria-label itself, so a focused-but-static wrapper never
+     shows up on screens wide enough to fit the table. The visible ring
+     comes from the global :focus-visible rule in base.css. */
   .reg__tableWrap {
     margin-block-start: 1rem;
     overflow-x: auto;

@@ -1,4 +1,18 @@
-import { useCallback, useMemo, useState } from 'react'
+/**
+ * biome-ignore-all lint/a11y/noRedundantRoles: below 68rem regimes.css sets
+ *   display:block on table/thead/tbody/tr/th/td for the card layout, which
+ *   strips their implicit table/rowgroup/row/columnheader/rowheader/cell
+ *   roles in Chrome, Firefox and Safari. These roles are only "redundant" at
+ *   the default table display Biome assumes; at the card breakpoint they are
+ *   what keeps row/column association available to screen readers.
+ * biome-ignore-all lint/a11y/useAriaPropsSupportedByRole: on .reg__tableWrap,
+ *   role and aria-label are set by the same `tableScrollable` condition (see
+ *   the measuring effect below), so aria-label is never present without
+ *   role="region" at runtime. Biome can't correlate the two conditionals and
+ *   falls back to the element's roleless default.
+ */
+
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { SectionHead } from '../../components/SectionHead'
 import { ArguesBlock } from '../../components/ArguesBlock'
 import { Scaffold } from '../../components/Scaffold'
@@ -35,6 +49,24 @@ export function Regimes() {
   const [openId, setOpenId] = useState<string>(regimes[0]!.id)
   const [step, setStep] = useState(0)
 
+  // The wrapper only needs to be in the tab order when it actually scrolls.
+  // Server-rendered markup has no measurements, so it renders with no
+  // tabIndex; the client measures after mount (and on resize) and adds it
+  // only once scrollWidth exceeds clientWidth, keeping wide-screen layouts
+  // free of a focusable no-op.
+  const tableWrapRef = useRef<HTMLDivElement>(null)
+  const [tableScrollable, setTableScrollable] = useState(false)
+
+  useEffect(() => {
+    const el = tableWrapRef.current
+    if (!el) return
+    const measure = () => setTableScrollable(el.scrollWidth > el.clientWidth)
+    measure()
+    const ro = new ResizeObserver(measure)
+    ro.observe(el)
+    return () => ro.disconnect()
+  }, [])
+
   /**
    * Each step drives the comparator, in the same controlled pattern the other
    * interactives use. The last entry sets nothing: it releases control, leaving
@@ -66,6 +98,12 @@ export function Regimes() {
   // every step is the flood the scaffold's own announcement already covers.
   // Only the regime's name, for row clicks the scaffold does not drive.
   const openStatus = useStatus(open?.name ?? '')
+  // Both the table's accessible name (aria-label) and its sr-only <caption>
+  // read this, so the filter/sort state that was already announced through
+  // the caption is not lost now that an explicit label is also set.
+  const tableDescription = `${copy.captionTemplate} Filtered to ${
+    filter === 'all' ? copy.filterAll.toLowerCase() : channelNames[filter]
+  }, sorted by ${sort}.`
 
   return (
     <section className="sect page" id="regimes" aria-labelledby="reg-title">
@@ -130,24 +168,35 @@ export function Regimes() {
         </div>
       </div>
 
-      <div className="reg__tableWrap">
-        <table className="reg__table">
-          <caption className="sr-only">
-            {copy.captionTemplate} Filtered to{' '}
-            {filter === 'all' ? copy.filterAll.toLowerCase() : channelNames[filter]}, sorted by{' '}
-            {sort}.
-          </caption>
-          <thead>
-            <tr>
-              <th scope="col">{copy.regimeColumn}</th>
+      <div
+        className="reg__tableWrap"
+        ref={tableWrapRef}
+        // Keyboard access to the scroll region, only when there is
+        // something to scroll — see the measuring effect above.
+        tabIndex={tableScrollable ? 0 : undefined}
+        role={tableScrollable ? 'region' : undefined}
+        aria-label={tableScrollable ? copy.scrollHint : undefined}
+      >
+        {/* Below 68rem the card layout sets display:block on every table
+            element (regimes.css), which strips their implicit table/row/cell
+            roles in Chrome, Firefox and Safari alike. The roles below are
+            explicit so row and column association survives that switch;
+            scope attributes stay for browsers/AT that still read them. */}
+        <table className="reg__table" role="table" aria-label={tableDescription}>
+          <caption className="sr-only">{tableDescription}</caption>
+          <thead role="rowgroup">
+            <tr role="row">
+              <th scope="col" role="columnheader">
+                {copy.regimeColumn}
+              </th>
               {columns.map((c) => (
-                <th scope="col" key={c.id}>
+                <th scope="col" role="columnheader" key={c.id}>
                   {c.label}
                 </th>
               ))}
             </tr>
           </thead>
-          <tbody>
+          <tbody role="rowgroup">
             {rows.map((r) => (
               <RegimeRow
                 key={r.id}
@@ -159,9 +208,9 @@ export function Regimes() {
               />
             ))}
           </tbody>
-          <tbody className="reg__targetBody">
-            <tr className="reg__targetHead">
-              <td colSpan={columns.length + 1}>
+          <tbody className="reg__targetBody" role="rowgroup">
+            <tr className="reg__targetHead" role="row">
+              <td colSpan={columns.length + 1} role="cell">
                 <span className="reg__targetLabel">{copy.targetLabel}</span>
                 {copy.targetNote}
               </td>
@@ -218,15 +267,15 @@ function RegimeRow({
   readonly seen: Set<GlossaryId>
 }) {
   return (
-    <tr className="reg__row" data-open={open} data-proposed={regime.proposed}>
-      <th scope="row" data-label={copy.regimeColumn}>
+    <tr className="reg__row" role="row" data-open={open} data-proposed={regime.proposed}>
+      <th scope="row" role="rowheader" data-label={copy.regimeColumn}>
         <button type="button" className="reg__rowBtn" onClick={onOpen} aria-expanded={open}>
           <span className="reg__rowName">{regime.name}</span>
           <span className="reg__rowDomain">{regime.domain}</span>
         </button>
       </th>
       {columns.map((c) => (
-        <td key={c.id} data-label={c.label}>
+        <td key={c.id} role="cell" data-label={c.label}>
           {c.id === 'maps' ? (
             <span className="reg__maps">
               {regime.maps.map((m) => (

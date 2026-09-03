@@ -169,6 +169,9 @@ export const regimeCopy = {
   scaffoldHint: 'Filter, sort and open any row.',
   emptyBefore: 'No regime in the paper maps to',
   emptyAfter: 'alone. The proposal below still does — that is the point of the row.',
+  /** Label for the horizontally-scrolling wrapper around the comparator, read
+   *  only when the wrapper is actually scrollable (narrower than the table). */
+  scrollHint: 'Comparison table, scrolls sideways.',
 } as const
 
 export const regimeArgues = {

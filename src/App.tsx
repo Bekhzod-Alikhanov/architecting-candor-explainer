@@ -4,7 +4,8 @@ import { Colophon } from './modules/colophon/Colophon'
 import { Deferred } from './components/Deferred'
 import { TakeItToYourGC } from './modules/gc/TakeItToYourGC'
 import { SectionNav } from './components/SectionNav'
-import { section } from './content/site'
+import { section, disclaimer, paper } from './content/site'
+import { rubric } from './content/hero'
 import { skipLink } from './content/ui'
 
 /**
@@ -60,13 +61,25 @@ export const deferredLoads = [
 export function App() {
   return (
     <>
-      <a className="skip-link" href="#memo">
+      <a className="skip-link" href="#content">
         {skipLink}
       </a>
-      <main className="shell">
+
+      {/* The masthead. A real <header>, deliberately not nested inside <main>
+          or a <section>: the "banner" landmark role only applies to a
+          top-level <header>, so §00 carried this rubric itself until now and
+          a screen reader's landmark list never saw a banner at all. Same
+          rubric, same look — see hero.css/components.css for the padding
+          that used to live on .hero moving here instead, so nothing shifts. */}
+      <header className="shell__mast">
+        <span>{rubric.publisher}</span>
+        <span>{rubric.season}</span>
+      </header>
+
+      <div className="shell">
         <SectionNav />
 
-        <div className="shell__flow">
+        <main className="shell__flow" id="content">
           <Hero />
           <Pincer />
 
@@ -85,8 +98,18 @@ export function App() {
           <TakeItToYourGC />
 
           <Colophon />
-        </div>
-      </main>
+        </main>
+      </div>
+
+      {/* contentinfo, and for the same reason as the header above: a
+          <footer> nested inside <main> is not a landmark at all, so the
+          disclaimer and citation would be unreachable from a landmark list.
+          §09's paper card keeps its own full citation and BibTeX block —
+          this is only the one-line version every page should carry. */}
+      <footer className="shell__foot">
+        <p>{disclaimer.short}</p>
+        <p>{paper.citation}</p>
+      </footer>
     </>
   )
 }

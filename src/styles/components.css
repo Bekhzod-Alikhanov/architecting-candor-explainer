@@ -66,6 +66,13 @@
   }
 
   .sect-eyebrow {
+    /* An unmounted section's placeholder now renders this as an <h2> rather
+       than a <span> — see Deferred.tsx and ChunkBoundary.tsx — so the
+       heading outline has no hole while the section is still deferred. The
+       margin reset keeps that swap invisible: a bare <h2> carries the
+       browser's own block margin, which would otherwise grow .sect-head's
+       height the moment a section becomes deferred. */
+    margin: 0;
     font-family: var(--font-mono);
     font-size: var(--text-cs-sm);
     letter-spacing: 0.16em;
@@ -494,6 +501,75 @@
   @media (min-width: 82rem) {
     .shell__flow {
       padding-block-end: 0;
+    }
+  }
+
+  /* --- the masthead and the footer -------------------------------------
+   Both sit outside .shell now, as a real <header>/<footer> — the "banner"
+   and "contentinfo" landmark roles only apply to a top-level header/footer,
+   not one nested inside <main> or a <section>. Neither is a child of the
+   rail/flow grid, so each centres itself the way every .page-classed
+   section already does (max-width/margin-inline/padding-inline), rather
+   than inheriting that from a wrapping ancestor.
+   ---------------------------------------------------------------------- */
+
+  .shell__mast {
+    max-width: var(--content-max);
+    margin-inline: auto;
+    padding-inline: var(--page-gutter);
+    /* This is the rubric bar §00 used to open with — same padding, same
+       border, same type, just moved. See the note in hero.css: the top
+       value used to be .hero's own top padding. */
+    padding-block: clamp(1.5rem, 4vw, 2.5rem) 0.75rem;
+    border-block-end: 1px solid var(--ground-rule-soft);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.5rem 1.5rem;
+    font-family: var(--font-mono);
+    font-size: var(--text-cs-xs);
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: var(--text-on-ground-faint);
+  }
+
+  .shell__foot {
+    max-width: var(--content-max);
+    margin-inline: auto;
+    padding-inline: var(--page-gutter);
+    padding-block-start: var(--space-section);
+    /* Matches .shell__flow's own reservation above: the locator bar is
+       fixed to the viewport bottom below 82rem, and this is now the last
+       thing on the page, so it needs the same clearance. */
+    padding-block-end: calc(44px + env(safe-area-inset-bottom) + var(--space-block));
+    border-block-start: 1px solid var(--ground-rule-soft);
+  }
+
+  .shell__foot p {
+    font-family: var(--font-mono);
+    font-size: var(--text-cs-xs);
+    line-height: 1.6;
+    max-width: 62ch;
+    color: var(--text-on-ground-faint);
+  }
+
+  .shell__foot p + p {
+    margin-block-start: 0.5rem;
+  }
+
+  @media (min-width: 82rem) {
+    .shell__foot {
+      display: grid;
+      grid-template-columns: var(--rail-w) minmax(0, 1fr);
+      column-gap: clamp(1.75rem, 3vw, 3.5rem);
+      padding-block-end: var(--space-section);
+    }
+
+    /* Empty first column, same width as the rail track above, so the text
+       lands under the flow column instead of the full-width page. */
+    .shell__foot > * {
+      grid-column: 2;
     }
   }
 

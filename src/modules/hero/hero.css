@@ -5,25 +5,13 @@
    ========================================================================= */
 
 @layer app-modules {
+  /* The rubric bar's own top padding (clamp(1.5rem, 4vw, 2.5rem)) now lives on
+     .shell__mast in components.css, since that rubric moved out of this
+     section into App.tsx's <header> — see the comment there. Only the
+     bottom padding stays here, so the space above the memo's own head bar is
+     unchanged. */
   .hero {
-    padding-block: clamp(1.5rem, 4vw, 2.5rem) clamp(3rem, 8vw, 6rem);
-  }
-
-  /* --- rubric bar ---------------------------------------------------------- */
-
-  .hero__rubric {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 0.5rem 1.5rem;
-    padding-block-end: 0.75rem;
-    border-block-end: 1px solid var(--ground-rule-soft);
-    font-family: var(--font-mono);
-    font-size: var(--text-cs-xs);
-    letter-spacing: 0.13em;
-    text-transform: uppercase;
-    color: var(--text-on-ground-faint);
+    padding-block-end: clamp(3rem, 8vw, 6rem);
   }
 
   /* --- section head -------------------------------------------------------- */

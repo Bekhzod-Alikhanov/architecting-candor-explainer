@@ -3,7 +3,7 @@ import { Seam } from '../../components/Seam'
 import { Prov } from '../../components/Provenance'
 import { SectionTime } from '../../components/SectionTime'
 import { useMediaQuery } from '../../lib/useMediaQuery'
-import { memo as content, rubric, exhibitLegend, waysIn } from '../../content/hero'
+import { memo as content, exhibitLegend, waysIn } from '../../content/hero'
 import { bates, disclaimer, explainer, section } from '../../content/site'
 import { Orientation } from './Orientation'
 import './hero.css'
@@ -36,11 +36,8 @@ export function Hero() {
 
   return (
     <section className="hero page" id="memo" aria-labelledby="memo-title">
-      <div className="hero__rubric">
-        <span>{rubric.publisher}</span>
-        <span>{rubric.season}</span>
-      </div>
-
+      {/* The masthead rubric this section used to open with now lives in
+          App.tsx's <header> — see the comment there for why. */}
       <div className="hero__head">
         <span className="hero__number" aria-hidden="true">
           {memoSection.n}

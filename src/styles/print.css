@@ -36,6 +36,8 @@
      matched the wrapper that CONTAINS the checklist, which printed a blank
      sheet. scripts/shot.mjs --print-media --pdf is what catches that. */
     .skip-link,
+    .shell__mast,
+    .shell__foot,
     .snav,
     .locator,
     .snavJump__panel,
@@ -191,7 +193,11 @@
     }
 
     /* On the standalone /linter route there is no checklist, so the chrome that
-     would waste paper is removed and the reader prints what they came for. */
+     would waste paper is removed and the reader prints what they came for.
+     .solo__mast is the top rubric, now a <header> outside .solo — see
+     LinterPage — so it needs its own selector rather than the descendant
+     one below, which still catches the citation line at the foot. */
+    .solo__mast,
     .solo .lint__privacy,
     .solo .lint__inputActions,
     .solo .solo__rubric {

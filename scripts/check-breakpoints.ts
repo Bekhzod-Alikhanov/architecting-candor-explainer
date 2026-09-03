@@ -36,10 +36,14 @@ const check = (ok: boolean, msg: string) => {
 
 for (const file of cssFiles(join(__dirname, '..', 'src'))) {
   const text = readFileSync(file, 'utf8')
-  const re = /@media[^{]*\((min|max)-width:\s*([0-9.]+)rem\)/g
-  for (const m of text.matchAll(re)) {
-    const value = Number(m[2])
-    check(onScale(value), `${file}: (${m[1]}-width: ${m[2]}rem) is not on the breakpoint scale.`)
+  // Two passes: one per @media prelude (everything up to its `{`), then one
+  // per width condition inside it. A single greedy match would see only the
+  // last width in `(min-width: X) and (max-width: Y)` and let X slip through.
+  for (const prelude of text.matchAll(/@media([^{]*)\{/g)) {
+    for (const m of prelude[1]!.matchAll(/\((min|max)-width:\s*([0-9.]+)rem\)/g)) {
+      const value = Number(m[2])
+      check(onScale(value), `${file}: (${m[1]}-width: ${m[2]}rem) is not on the breakpoint scale.`)
+    }
   }
 }
 

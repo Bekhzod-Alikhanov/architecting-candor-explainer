@@ -49,18 +49,16 @@ check(new Set(ids).size === ids.length, `Duplicate glossary id(s): ${dupes.join(
 
 // --- no orphan definitions ---------------------------------------------------
 //
-// Every module in src/content/*.ts, walked with the same walkStrings that
-// scripts/read-aloud.ts and check-reading-time.ts use. This includes
-// glossary.ts itself: a form's own entry in its `forms` array counts as an
-// occurrence, which is why a wording present only in the glossary's own
-// definition — not yet used by any section's prose, ahead of the part of
-// this task that wires terms into that prose — still passes.
+// Every module in src/content/*.ts EXCEPT glossary.ts itself, walked with the
+// same walkStrings that scripts/read-aloud.ts and check-reading-time.ts use.
+// glossary.ts is deliberately excluded: a form's own entry in its `forms`
+// array is not an occurrence in the page's prose, and counting it would let
+// a definition nothing on the page ever opens pass as if it were used.
 
 const CONTENT_MODULES: Record<string, Record<string, unknown>> = {
   artifacts,
   channels,
   checklist,
-  glossary: { glossary },
   grading,
   hero,
   'linter-rules': linterRules,

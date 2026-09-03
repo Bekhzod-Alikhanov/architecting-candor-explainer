@@ -70,7 +70,9 @@ export const glossary: readonly GlossaryEntry[] = [
   {
     id: 'rule-407',
     term: 'Rule 407',
-    forms: ['Rule 407', 'subsequent remedial measures', 'subsequent remedial measure'],
+    // The plural "subsequent remedial measures" appears nowhere in this
+    // site's prose — every occurrence is singular — so it is not listed.
+    forms: ['Rule 407', 'subsequent remedial measure'],
     definition:
       'Federal Rule of Evidence 407 generally bars using a fix made after an injury to prove negligence, culpable conduct, a product defect or a need for warning. It limits use at trial, not discovery, and it protects the fix rather than any analysis written alongside it.',
     ref: 'Fed. R. Evid. 407; paper §1.2.3',
@@ -117,8 +119,12 @@ export const glossary: readonly GlossaryEntry[] = [
   },
   {
     id: 'normalization-of-deviance',
-    term: 'Normalisation of deviance',
-    forms: ['normalisation of deviance', 'normalization of deviance'],
+    // The site's prose (§02, §05) only ever writes the American spelling —
+    // it is the term as Vaughan's own literature uses it — so `term` and
+    // `forms` both follow that; the British spelling was never used and is
+    // not listed.
+    term: 'Normalization of deviance',
+    forms: ['normalization of deviance'],
     definition:
       "Diane Vaughan's account of the Challenger disaster: an anomaly accepted once becomes a precedent, and each uneventful recurrence is read as evidence that it is benign, until the boundary of the acceptable has migrated to the edge of safe behaviour.",
     ref: 'Vaughan (1996); paper §2.1.2',

@@ -51,12 +51,16 @@ export function LinterPage() {
       <a className="skip-link" href="#linter">
         {skipLink}
       </a>
-      <main className="solo page">
-        <div className="solo__rubric">
-          <span>{copy.masthead}</span>
-          <a href="/">{copy.backToSite} →</a>
-        </div>
 
+      {/* A real <header>, outside <main> — the "banner" landmark role does
+          not apply to a header nested inside main, same as the site's own
+          masthead in App.tsx. */}
+      <header className="solo__rubric solo__mast">
+        <span>{copy.masthead}</span>
+        <a href="/">{copy.backToSite} →</a>
+      </header>
+
+      <main className="solo page">
         <div className="solo__head" id="linter">
           <h1 className="sect-headline">{copy.headline}</h1>
           <p className="sect-standfirst">{copy.standfirst}</p>

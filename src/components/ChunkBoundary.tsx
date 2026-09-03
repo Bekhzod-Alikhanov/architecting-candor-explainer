@@ -67,7 +67,10 @@ export class ChunkBoundary extends Component<ChunkBoundaryProps, ChunkBoundarySt
           <span className="sect-num" aria-hidden="true">
             {n}
           </span>
-          <span className="sect-eyebrow">{title}</span>
+          {/* An <h2>, same reasoning as Deferred's Placeholder: this stands
+              in for a section that never mounted, and the heading outline
+              should not have a hole for it. */}
+          <h2 className="sect-eyebrow">{title}</h2>
           <span className="bates sect-bates">{bates(seq)}</span>
         </div>
         <p className="sect-standfirst">{deferred.failed}</p>

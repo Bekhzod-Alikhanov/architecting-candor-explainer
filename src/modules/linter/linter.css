@@ -391,7 +391,7 @@
 
   .solo {
     min-block-size: 100dvh;
-    padding-block: clamp(1.5rem, 4vw, 3rem) clamp(3rem, 8vw, 5rem);
+    padding-block-end: clamp(3rem, 8vw, 5rem);
   }
 
   .solo__rubric {
@@ -407,6 +407,19 @@
     letter-spacing: 0.13em;
     text-transform: uppercase;
     color: var(--text-on-ground-faint);
+  }
+
+  /* The top rubric only: it is a <header> now, sitting outside <main> — see
+     LinterPage for why — so unlike the citation line at the foot of the
+     page, which reuses .solo__rubric's type and stays inside <main>, this
+     one needs its own page centring and the top padding .solo used to open
+     with (moved here rather than duplicated, so the space above it is
+     unchanged). */
+  .solo__mast {
+    max-width: var(--content-max);
+    margin-inline: auto;
+    padding-inline: var(--page-gutter);
+    padding-block-start: clamp(1.5rem, 4vw, 3rem);
   }
 
   .solo__rubric a {

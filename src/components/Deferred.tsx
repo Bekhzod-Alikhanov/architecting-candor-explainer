@@ -341,7 +341,11 @@ function Placeholder({
         <span className="sect-num" aria-hidden="true">
           {n}
         </span>
-        <span className="sect-eyebrow">{title}</span>
+        {/* An <h2>, not a <span>: SectionHead renders the mounted section's
+            own heading as an h2 (or, for §09, Colophon supplies one right
+            after it), so the heading outline would have a hole for every
+            section that has not mounted yet without this. */}
+        <h2 className="sect-eyebrow">{title}</h2>
         <span className="bates sect-bates">{bates(seq)}</span>
       </div>
       <p className="sect-standfirst deferred__note">{deferred.loading}</p>

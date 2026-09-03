@@ -1,3 +1,13 @@
+/**
+ * biome-ignore-all lint/a11y/noAriaHiddenOnFocusable: every aria-hidden here
+ *   sits on a decorative descendant (axis, ticks, region labels, the node's
+ *   hit/focus circles, the per-node date) inside or beside the node's own
+ *   `<g role="button" tabIndex={0}>`. None of the hidden elements are
+ *   themselves focusable — the rule can't tell a decorative sibling from the
+ *   focusable ancestor it flags against. The button keeps its own
+ *   aria-label, which is the whole point of hiding the rest.
+ */
+
 import { useId } from 'react'
 import { scaleLinear } from 'd3-scale'
 import { area as d3area, line as d3line, curveStepAfter } from 'd3-shape'
@@ -139,94 +149,102 @@ export function BoundaryChart({ entries, current, onSelect, vertical }: Boundary
         </pattern>
       </defs>
 
-      {/* The time axis. Present from the start, so the instrument always has a
+      {/* Everything below but the nodes is decorative scaffolding: the axis,
+          ticks, region labels, territory fill, and boundary line. The group's
+          aria-label already carries the chart's meaning, so a screen reader
+          should hear the group, then each node button, and nothing else. */}
+      <g aria-hidden="true">
+        {/* The time axis. Present from the start, so the instrument always has a
           visible domain rather than opening as an empty rectangle. */}
-      <line
-        className="bchart__axis"
-        x1={vertical ? axisPos : padX}
-        y1={vertical ? padY : axisPos}
-        x2={vertical ? axisPos : w - padX}
-        y2={vertical ? h - padY : axisPos}
-      />
-      {ticks.map((yr) => {
-        const p = timeScale(yr)
-        return (
-          <g key={yr}>
-            <line
-              className="bchart__tick"
-              x1={vertical ? axisPos - 4 : p}
-              y1={vertical ? p : axisPos}
-              x2={vertical ? axisPos + 4 : p}
-              y2={vertical ? p : axisPos + 5}
-            />
-            <text
-              className="bchart__tickLabel"
-              x={vertical ? axisPos - 9 : p}
-              y={vertical ? p + 4 : axisPos + 20}
-              textAnchor={vertical ? 'end' : 'middle'}
-            >
-              {yr}
-            </text>
-          </g>
-        )
-      })}
+        <line
+          className="bchart__axis"
+          x1={vertical ? axisPos : padX}
+          y1={vertical ? padY : axisPos}
+          x2={vertical ? axisPos : w - padX}
+          y2={vertical ? h - padY : axisPos}
+        />
+        {ticks.map((yr) => {
+          const p = timeScale(yr)
+          return (
+            <g key={yr}>
+              <line
+                className="bchart__tick"
+                x1={vertical ? axisPos - 4 : p}
+                y1={vertical ? p : axisPos}
+                x2={vertical ? axisPos + 4 : p}
+                y2={vertical ? p : axisPos + 5}
+              />
+              <text
+                className="bchart__tickLabel"
+                x={vertical ? axisPos - 9 : p}
+                y={vertical ? p + 4 : axisPos + 20}
+                textAnchor={vertical ? 'end' : 'middle'}
+              >
+                {yr}
+              </text>
+            </g>
+          )
+        })}
 
-      {/* Entries not yet drawn are marked on the axis only. The reader can see
+        {/* Entries not yet drawn are marked on the axis only. The reader can see
           the instrument's full span without being shown the finding early. */}
-      {entries.slice(current + 1).map((e) => {
-        const p = timeScale(e.t)
-        return (
-          <line
-            key={`pending-${e.id}`}
-            className="bchart__pending"
-            x1={vertical ? axisPos - 3 : p}
-            y1={vertical ? p : axisPos - 7}
-            x2={vertical ? axisPos + 7 : p}
-            y2={vertical ? p : axisPos}
-          />
-        )
-      })}
-
-      {/* The product territory. It grows. */}
-      {areaPath ? <path d={areaPath} fill={`url(#hatch-${uid})`} className="bchart__area" /> : null}
-
-      {/* Span entries get a bracket showing they cover a period, not a moment. */}
-      {drawn
-        .filter((e) => e.tEnd !== undefined)
-        .map((e) => {
-          const a = { t: e.t, classification: e.classification }
-          const b = { t: e.tEnd as number, classification: e.classification }
+        {entries.slice(current + 1).map((e) => {
+          const p = timeScale(e.t)
           return (
             <line
-              key={`span-${e.id}`}
-              x1={px(a)}
-              y1={py(a)}
-              x2={px(b)}
-              y2={py(b)}
-              className="bchart__span"
+              key={`pending-${e.id}`}
+              className="bchart__pending"
+              x1={vertical ? axisPos - 3 : p}
+              y1={vertical ? p : axisPos - 7}
+              x2={vertical ? axisPos + 7 : p}
+              y2={vertical ? p : axisPos}
             />
           )
         })}
 
-      {linePath ? <path d={linePath} className="bchart__line" fill="none" /> : null}
+        {/* The product territory. It grows. */}
+        {areaPath ? (
+          <path d={areaPath} fill={`url(#hatch-${uid})`} className="bchart__area" />
+        ) : null}
 
-      {/* Region labels sit inside the territories they name. */}
-      <text
-        className="bchart__region"
-        x={vertical ? padX - 6 : padX - 8}
-        y={vertical ? padY - 14 : padY - 16}
-        textAnchor={vertical ? 'start' : 'start'}
-      >
-        {axis.topLabel}
-      </text>
-      <text
-        className="bchart__region bchart__region--product"
-        x={vertical ? w - padX + 6 : padX - 8}
-        y={vertical ? padY - 14 : h - padY - AXIS_GAP + 4}
-        textAnchor="start"
-      >
-        {axis.bottomLabel}
-      </text>
+        {/* Span entries get a bracket showing they cover a period, not a moment. */}
+        {drawn
+          .filter((e) => e.tEnd !== undefined)
+          .map((e) => {
+            const a = { t: e.t, classification: e.classification }
+            const b = { t: e.tEnd as number, classification: e.classification }
+            return (
+              <line
+                key={`span-${e.id}`}
+                x1={px(a)}
+                y1={py(a)}
+                x2={px(b)}
+                y2={py(b)}
+                className="bchart__span"
+              />
+            )
+          })}
+
+        {linePath ? <path d={linePath} className="bchart__line" fill="none" /> : null}
+
+        {/* Region labels sit inside the territories they name. */}
+        <text
+          className="bchart__region"
+          x={vertical ? padX - 6 : padX - 8}
+          y={vertical ? padY - 14 : padY - 16}
+          textAnchor={vertical ? 'start' : 'start'}
+        >
+          {axis.topLabel}
+        </text>
+        <text
+          className="bchart__region bchart__region--product"
+          x={vertical ? w - padX + 6 : padX - 8}
+          y={vertical ? padY - 14 : h - padY - AXIS_GAP + 4}
+          textAnchor="start"
+        >
+          {axis.bottomLabel}
+        </text>
+      </g>
 
       {drawn.map((e, i) => {
         const cx = px(e)
@@ -251,17 +269,21 @@ export function BoundaryChart({ entries, current, onSelect, vertical }: Boundary
           >
             {/* An invisible, larger circle to hit and to focus: the visible
                 dot is 11px across, well under the 24px (44px on touch)
-                minimum target size. */}
-            <circle cx={cx} cy={cy} r={12} className="bchart__hit" />
-            {isCurrent ? <circle cx={cx} cy={cy} r={11} className="bchart__halo" /> : null}
-            <circle cx={cx} cy={cy} r={5.5} className="bchart__dot" />
+                minimum target size. Presentational only: the button's own
+                aria-label already carries the node's name. */}
+            <circle cx={cx} cy={cy} r={12} className="bchart__hit" aria-hidden="true" />
+            {isCurrent ? (
+              <circle cx={cx} cy={cy} r={11} className="bchart__halo" aria-hidden="true" />
+            ) : null}
+            <circle cx={cx} cy={cy} r={5.5} className="bchart__dot" aria-hidden="true" />
             {/* The default outline on a focused <g> is inconsistent across
                 browsers, so the ring is drawn explicitly and toggled by the
                 node's own :focus-visible state (see pincer.css). */}
-            <circle cx={cx} cy={cy} r={14} className="bchart__focusRing" />
+            <circle cx={cx} cy={cy} r={14} className="bchart__focusRing" aria-hidden="true" />
             {isCurrent || i < 2 || hasRoom(i) ? (
               <text
                 className="bchart__date"
+                aria-hidden="true"
                 x={vertical ? cx + 14 : cx}
                 y={vertical ? cy + 4 : cy + labelSide(i) * 15 + (labelSide(i) < 0 ? 0 : 5)}
                 textAnchor={

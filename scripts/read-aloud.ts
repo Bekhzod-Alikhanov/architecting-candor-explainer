@@ -98,6 +98,10 @@ const spoken: readonly [string, string][] = [
   ['03 · return a card', ui.a11y.returnToQueue('red-team finding')],
   ['03 · return announced', ui.a11y.returnedAnnouncement('Red-team finding')],
   [
+    '03 · routed, one status per action',
+    ui.a11y.routedAnnouncement('Prior red-team finding', 'Channel One', 9, 15, 4, 7),
+  ],
+  [
     '01 · the boundary chart',
     ui.a11y.boundarySummary(1989, 2027, '21 May 2025: Garcia v. Character Technologies'),
   ],
@@ -115,6 +119,15 @@ const spoken: readonly [string, string][] = [
       signalsMissed: 0,
       signalTotal: 27,
     }),
+  ],
+  ['05 · the calibrator’s one status', ui.a11y.calibrateStatus(31, 47, 55, 0, 'strong')],
+  [
+    '02 · translation loss’s one status',
+    ui.a11y.decayStatus('Safety review', 5, 7, 'Syntactic boundary'),
+  ],
+  [
+    '02 · normalization of deviance’s one status',
+    ui.a11y.driftStatus(2, signal.deviance.observedLabel, signal.deviance.steps[1]!),
   ],
   ['— · a section head "Copy link" button', ui.a11y.copySectionLink('The paper')],
   ['— · a section head’s reading time', ui.readingTime(7)],

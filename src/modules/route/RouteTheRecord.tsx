@@ -20,6 +20,7 @@ import {
 import { a11y } from '../../content/ui'
 import { grade, type Assignment } from '../../lib/grade'
 import { defineTerms } from '../../lib/defineTerms'
+import { useStatus } from '../../lib/useStatus'
 import type { GlossaryId } from '../../content/glossary'
 import './route.css'
 
@@ -59,6 +60,7 @@ export function RouteTheRecord() {
   const [dragId, setDragId] = useState<string | null>(null)
   const [overBin, setOverBin] = useState<Bin | null>(null)
   const [announcement, setAnnouncement] = useState('')
+  const status = useStatus(announcement)
   /**
    * The reader's best run, in component state only. A run beats another on the
    * record an engineer could still reconstruct, then on adverse outcomes, then
@@ -80,9 +82,23 @@ export function RouteTheRecord() {
     (id: string, bin: Bin) => {
       const artifact = deck.find((a) => a.id === id)
       if (!artifact) return
-      setAssignment((prev) => ({ ...prev, [id]: bin }))
+      const nextAssignment = { ...assignment, [id]: bin }
+      setAssignment(nextAssignment)
       const binName = bins.find((b) => b.id === bin)?.name ?? bin
-      setAnnouncement(`${artifact.kind} routed to ${binName}.`)
+      // The one status this instrument gets per routing action, folding in a
+      // one-clause read of both scoreboards so their own live regions do not
+      // also have to announce (Scoreboards renders them off).
+      const g = grade(nextAssignment)
+      setAnnouncement(
+        a11y.routedAnnouncement(
+          artifact.kind,
+          binName,
+          g.counts.produced + g.counts.pierced,
+          deck.length,
+          g.remediationScore,
+          g.remediationTotal,
+        ),
+      )
       // Keep the queue moving. Select whatever now occupies the position the
       // routed card just left, so working down the list stays continuous
       // instead of throwing the reader back to the top each time.
@@ -343,8 +359,8 @@ export function RouteTheRecord() {
         </div>
       </div>
 
-      <p className="sr-only" aria-live="polite">
-        {announcement}
+      <p className="sr-only" role="status">
+        {status}
       </p>
 
       <div className="rt__actions">
@@ -374,7 +390,9 @@ export function RouteTheRecord() {
       </div>
 
       {best ? (
-        <div className="bestrun" aria-live="polite">
+        // Not live: the run's own status sentence, above, already carries
+        // the routing action that changed it.
+        <div className="bestrun" aria-live="off">
           <p className="bestrun__label">{bestRun.label}</p>
           <p className="bestrun__figures">
             <span data-figure>

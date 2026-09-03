@@ -70,7 +70,10 @@ export function Scoreboards({ grade, routedCount, total, terms, seen }: Scoreboa
           </ul>
         )}
 
-        <p className="board__live sr-only" aria-live="polite">
+        {/* Not live: Route the Record's single status already folds a
+            one-clause read of this board into its own announcement, on every
+            routing action, so this sr-only readout does not also fire. */}
+        <p className="board__live sr-only" aria-live="off">
           {routedCount} of {total} routed. {grade.counts.produced} produced, {grade.counts.withheld}{' '}
           withheld as privileged, {grade.counts.pierced} pierced, {grade.counts.excluded407}{' '}
           excluded under Rule 407, {grade.counts.spoliation} at spoliation risk,{' '}

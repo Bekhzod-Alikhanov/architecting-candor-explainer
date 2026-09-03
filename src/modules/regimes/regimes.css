@@ -32,7 +32,7 @@
 
   .reg__controlLabel {
     font-family: var(--font-mono);
-    font-size: var(--text-cs-xs);
+    font-size: var(--text-cs-sm-14);
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--text-on-ground-faint);
@@ -46,7 +46,7 @@
 
   .chipbtn {
     font-family: var(--font-mono);
-    font-size: var(--text-cs-xs);
+    font-size: var(--text-cs-sm-14);
     letter-spacing: 0.05em;
     padding: 0.4rem 0.65rem;
     border: 1px solid var(--ground-rule);
@@ -107,7 +107,7 @@
     vertical-align: bottom;
     padding: 0.6rem 0.7rem;
     font-family: var(--font-mono);
-    font-size: var(--text-cs-xs);
+    font-size: var(--text-cs-sm-14);
     font-weight: 400;
     letter-spacing: 0.1em;
     text-transform: uppercase;
@@ -152,7 +152,7 @@
 
   .reg__rowDomain {
     font-family: var(--font-mono);
-    font-size: var(--text-cs-xs);
+    font-size: var(--text-cs-sm-14);
     color: var(--text-on-ground-faint);
   }
 
@@ -162,7 +162,7 @@
     display: inline-block;
     margin-inline-start: 0.4rem;
     font-family: var(--font-mono);
-    font-size: var(--text-cs-xs);
+    font-size: var(--text-cs-sm-14);
     letter-spacing: 0.08em;
     color: var(--instrument-on-ground);
     border: 1px solid color-mix(in oklab, var(--color-instrument) 45%, transparent);
@@ -182,7 +182,7 @@
     place-items: center;
     border-radius: var(--radius-mark);
     font-family: var(--font-mono);
-    font-size: var(--text-cs-xs);
+    font-size: var(--text-cs-sm-14);
     border: 1px solid var(--ground-rule);
     color: var(--text-on-ground-muted);
   }
@@ -207,7 +207,7 @@
   .reg__targetHead td {
     padding: 1rem 0.7rem 0.5rem;
     border-block-start: 2px solid var(--color-stamp);
-    font-size: var(--text-cs-xs);
+    font-size: var(--text-cs-sm-14);
     color: var(--text-on-ground-faint);
   }
 
@@ -246,7 +246,7 @@
 
   .lesson__domain {
     font-family: var(--font-mono);
-    font-size: var(--text-cs-xs);
+    font-size: var(--text-cs-sm-14);
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--stamp-on-doc);
@@ -254,7 +254,7 @@
 
   .lesson__cite {
     font-family: var(--font-mono);
-    font-size: var(--text-cs-xs);
+    font-size: var(--text-cs-sm-14);
     color: var(--text-on-doc-muted);
   }
 
@@ -271,7 +271,7 @@
     padding-block-start: 0.75rem;
     border-block-start: 1px solid var(--doc-rule);
     font-family: var(--font-mono);
-    font-size: var(--text-cs-xs);
+    font-size: var(--text-cs-sm-14);
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--text-on-doc-muted);
@@ -328,7 +328,7 @@
       display: block;
       margin-block-end: 0.2rem;
       font-family: var(--font-mono);
-      font-size: var(--text-cs-xs);
+      font-size: var(--text-cs-sm-14);
       letter-spacing: 0.1em;
       text-transform: uppercase;
       color: var(--text-on-ground-faint);

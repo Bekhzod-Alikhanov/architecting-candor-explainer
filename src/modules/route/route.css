@@ -129,7 +129,7 @@
   .rt__queueHint,
   .rt__queueDone {
     font-family: var(--font-mono);
-    font-size: var(--text-cs-xs);
+    font-size: var(--text-cs-sm-14);
     color: var(--text-on-ground-faint);
   }
 
@@ -190,7 +190,7 @@
 
   .acard__kind {
     font-family: var(--font-mono);
-    font-size: var(--text-cs-xs);
+    font-size: var(--text-cs-sm-14);
     letter-spacing: 0.09em;
     text-transform: uppercase;
     color: var(--instrument-on-ground);
@@ -198,7 +198,7 @@
 
   .acard__auto {
     font-family: var(--font-mono);
-    font-size: var(--text-cs-xs);
+    font-size: var(--text-cs-sm-14);
     letter-spacing: 0.1em;
     color: var(--text-on-ground-faint);
     border: 1px solid var(--ground-rule);
@@ -216,7 +216,7 @@
   .acard__text {
     margin-block-start: 0.5rem;
     font-family: var(--font-mono);
-    font-size: var(--text-cs-xs);
+    font-size: var(--text-cs-sm-14);
     line-height: 1.6;
     color: var(--text-on-ground-muted);
     overflow-wrap: anywhere;
@@ -228,7 +228,7 @@
     flex-wrap: wrap;
     gap: 0.25rem 0.9rem;
     font-family: var(--font-mono);
-    font-size: var(--text-cs-xs);
+    font-size: var(--text-cs-sm-14);
     color: var(--text-on-ground-faint);
   }
 
@@ -301,7 +301,7 @@
     border-radius: var(--radius-mark);
     border: 1px solid var(--ground-rule);
     font-family: var(--font-mono);
-    font-size: var(--text-cs-xs);
+    font-size: var(--text-cs-sm-14);
     color: var(--text-on-ground-muted);
   }
 
@@ -336,7 +336,7 @@
 
   .bin__sub {
     font-family: var(--font-mono);
-    font-size: var(--text-cs-xs);
+    font-size: var(--text-cs-sm-14);
     letter-spacing: 0.06em;
     color: var(--text-on-ground-faint);
   }
@@ -350,7 +350,7 @@
 
   .bin__hint {
     margin-block-start: 0.55rem;
-    font-size: var(--text-cs-xs);
+    font-size: var(--text-cs-sm-14);
     line-height: 1.5;
     color: var(--text-on-ground-faint);
   }
@@ -378,7 +378,7 @@
   .chip__select {
     padding: 0.25rem 0.45rem;
     font-family: var(--font-mono);
-    font-size: var(--text-cs-xs);
+    font-size: var(--text-cs-sm-14);
     color: var(--text-on-ground-muted);
     text-align: start;
   }
@@ -407,7 +407,7 @@
 
   .rt__selectedKind {
     font-family: var(--font-mono);
-    font-size: var(--text-cs-xs);
+    font-size: var(--text-cs-sm-14);
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--stamp-on-doc);
@@ -434,7 +434,7 @@
     padding-block-start: 0.7rem;
     border-block-start: 1px solid var(--doc-rule);
     font-family: var(--font-mono);
-    font-size: var(--text-cs-xs);
+    font-size: var(--text-cs-sm-14);
     color: var(--text-on-doc-muted);
   }
 
@@ -485,7 +485,7 @@
     align-items: center;
     gap: 0.5rem;
     font-family: var(--font-mono);
-    font-size: var(--text-cs-xs);
+    font-size: var(--text-cs-sm-14);
     color: var(--text-on-ground-muted);
   }
 
@@ -545,7 +545,7 @@
 
   .board__scoreOf {
     font-family: var(--font-mono);
-    font-size: var(--text-cs-xs);
+    font-size: var(--text-cs-sm-14);
     letter-spacing: 0.1em;
     text-transform: uppercase;
     color: var(--text-on-ground-faint);
@@ -583,7 +583,7 @@
 
   .board__fieldLabel {
     font-family: var(--font-mono);
-    font-size: var(--text-cs-xs);
+    font-size: var(--text-cs-sm-14);
     letter-spacing: 0.05em;
     color: var(--text-on-ground);
   }
@@ -595,7 +595,7 @@
   }
 
   .board__fieldLost {
-    font-size: var(--text-cs-xs);
+    font-size: var(--text-cs-sm-14);
     line-height: 1.5;
     color: var(--stamp-on-ground);
   }
@@ -612,7 +612,7 @@
 
   .rt__actionsHint {
     font-family: var(--font-mono);
-    font-size: var(--text-cs-xs);
+    font-size: var(--text-cs-sm-14);
     line-height: 1.5;
     color: var(--text-on-ground-faint);
     max-width: 46ch;
@@ -649,7 +649,7 @@
 
   .ledger__kind {
     font-family: var(--font-mono);
-    font-size: var(--text-cs-xs);
+    font-size: var(--text-cs-sm-14);
     letter-spacing: 0.1em;
     text-transform: uppercase;
     color: var(--text-on-doc-muted);
@@ -657,7 +657,7 @@
 
   .ledger__bin {
     font-family: var(--font-mono);
-    font-size: var(--text-cs-xs);
+    font-size: var(--text-cs-sm-14);
     letter-spacing: 0.08em;
     color: var(--stamp-on-doc);
   }
@@ -675,7 +675,7 @@
     align-items: center;
     gap: 0.4rem;
     font-family: var(--font-mono);
-    font-size: var(--text-cs-xs);
+    font-size: var(--text-cs-sm-14);
     letter-spacing: 0.1em;
     text-transform: uppercase;
     padding: 0.25em 0.5em;
@@ -699,7 +699,7 @@
   .ledger__authority {
     margin-block-start: 0.6rem;
     font-family: var(--font-mono);
-    font-size: var(--text-cs-xs);
+    font-size: var(--text-cs-sm-14);
     letter-spacing: 0.04em;
     color: var(--stamp-on-doc);
   }
@@ -717,7 +717,7 @@
     margin-block-start: 0.65rem;
     padding: 0.5rem 0.65rem;
     border-radius: var(--radius-mark);
-    font-size: var(--text-cs-xs);
+    font-size: var(--text-cs-sm-14);
     line-height: 1.55;
   }
 
@@ -808,7 +808,7 @@
     padding-block-start: 0.3rem;
     border-block-start: 1px solid var(--ground-rule-soft);
     font-family: var(--font-mono);
-    font-size: var(--text-cs-xs);
+    font-size: var(--text-cs-sm-14);
     color: var(--text-on-ground-faint);
   }
 
@@ -831,7 +831,7 @@
     display: grid;
     gap: 0.2rem;
     font-family: var(--font-mono);
-    font-size: var(--text-cs-xs);
+    font-size: var(--text-cs-sm-14);
     color: var(--text-on-ground-muted);
   }
 
@@ -878,7 +878,7 @@
 
   .bestrun__label {
     font-family: var(--font-mono);
-    font-size: var(--text-cs-xs);
+    font-size: var(--text-cs-sm-14);
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--text-on-ground-faint);
@@ -915,7 +915,7 @@
 
   .bestrun__note {
     margin-block-start: 0.4rem;
-    font-size: var(--text-cs-xs);
+    font-size: var(--text-cs-sm-14);
     line-height: 1.5;
     color: var(--text-on-ground-faint);
   }

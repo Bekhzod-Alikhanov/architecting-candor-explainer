@@ -16,7 +16,11 @@
     /* Keeps an anchor jump's target clear of the fixed locator bar below
        82rem — see .locator in components.css, which this height matches. At
        82rem and up the bar does not exist, so the offset is dropped there. */
-    scroll-padding-block-end: calc(44px + env(safe-area-inset-bottom) + var(--space-block));
+    scroll-padding-block-end: calc(
+      var(--target-min-coarse) +
+      env(safe-area-inset-bottom) +
+      var(--space-block)
+    );
   }
 
   @media (min-width: 82rem) {
@@ -234,7 +238,7 @@
     align-items: center;
     gap: 0.4em;
     font-family: var(--font-mono);
-    font-size: var(--text-cs-xs);
+    font-size: var(--text-cs-sm-14);
     font-weight: 500;
     letter-spacing: 0.1em;
     text-transform: uppercase;
@@ -252,7 +256,7 @@
     /* WCAG 2.2's 24px minimum target size, at the same font-size as the rest
        of the mark — the button grows a little taller than its text, not the
        type itself. */
-    min-block-size: 24px;
+    min-block-size: var(--target-min);
     font: inherit;
     letter-spacing: inherit;
     text-transform: inherit;
@@ -281,7 +285,7 @@
     color: var(--text-on-ground);
     box-shadow: var(--lift-doc-sm);
     font-family: var(--font-mono);
-    font-size: var(--text-cs-xs);
+    font-size: var(--text-cs-sm-14);
     font-weight: 400;
     line-height: 1.6;
     letter-spacing: normal;

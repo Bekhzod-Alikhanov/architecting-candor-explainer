@@ -85,7 +85,7 @@
      about the section rather than as a second heading competing with it. */
   .sect-time {
     font-family: var(--font-mono);
-    font-size: var(--text-cs-xs);
+    font-size: var(--text-cs-sm-14);
     font-variant-numeric: tabular-nums;
     color: var(--text-on-ground-faint);
   }
@@ -104,8 +104,8 @@
   .sect-copy {
     display: grid;
     place-items: center;
-    width: 1.5rem;
-    height: 1.5rem;
+    width: var(--target-min);
+    height: var(--target-min);
     padding: 0;
     border: 1px solid transparent;
     border-radius: var(--radius-mark);
@@ -149,7 +149,7 @@
     background: var(--color-stamp);
     color: var(--color-doc);
     font-family: var(--font-mono);
-    font-size: var(--text-cs-xs);
+    font-size: var(--text-cs-sm-14);
     letter-spacing: 0.04em;
     border-radius: var(--radius-mark);
     pointer-events: none;
@@ -260,7 +260,7 @@
 
   .snav__title {
     font-family: var(--font-mono);
-    font-size: var(--text-cs-xs);
+    font-size: var(--text-cs-sm-14);
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: var(--text-on-ground-faint);
@@ -304,7 +304,7 @@
 
   .snav__n {
     font-family: var(--font-mono);
-    font-size: var(--text-cs-xs);
+    font-size: var(--text-cs-sm-14);
     font-variant-numeric: tabular-nums;
     letter-spacing: 0.06em;
     color: var(--text-on-ground-faint);
@@ -353,7 +353,7 @@
     align-items: center;
     justify-content: space-between;
     gap: 0.75rem;
-    block-size: calc(44px + env(safe-area-inset-bottom));
+    block-size: calc(var(--target-min-coarse) + env(safe-area-inset-bottom));
     padding-inline: clamp(0.9rem, 3vw, 1.5rem);
     padding-block-end: env(safe-area-inset-bottom);
     background: var(--ground-raised);
@@ -375,7 +375,7 @@
   .locator__n {
     flex-shrink: 0;
     font-family: var(--font-mono);
-    font-size: var(--text-cs-xs);
+    font-size: var(--text-cs-sm-14);
     font-variant-numeric: tabular-nums;
     letter-spacing: 0.06em;
     color: var(--color-redact);
@@ -406,7 +406,7 @@
     align-items: center;
     gap: 0.5em;
     font-family: var(--font-mono);
-    font-size: var(--text-cs-xs);
+    font-size: var(--text-cs-sm-14);
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--text-on-ground);
@@ -556,13 +556,17 @@
     /* Matches .shell__flow's own reservation above: the locator bar is
        fixed to the viewport bottom below 82rem, and this is now the last
        thing on the page, so it needs the same clearance. */
-    padding-block-end: calc(44px + env(safe-area-inset-bottom) + var(--space-block));
+    padding-block-end: calc(
+      var(--target-min-coarse) +
+      env(safe-area-inset-bottom) +
+      var(--space-block)
+    );
     border-block-start: 1px solid var(--ground-rule-soft);
   }
 
   .shell__foot p {
     font-family: var(--font-mono);
-    font-size: var(--text-cs-xs);
+    font-size: var(--text-cs-sm-14);
     line-height: 1.6;
     max-width: 62ch;
     color: var(--text-on-ground-faint);
@@ -620,7 +624,7 @@
     justify-content: space-between;
     gap: 1rem;
     font-family: var(--font-mono);
-    font-size: var(--text-cs-xs);
+    font-size: var(--text-cs-sm-14);
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--text-on-ground-faint);
@@ -665,15 +669,15 @@
    dot clear of the next. */
   .scaffold__dot {
     position: relative;
-    width: 1.5rem;
-    height: 1.5rem;
+    width: var(--target-min);
+    height: var(--target-min);
     display: grid;
     place-items: center;
     border-radius: var(--radius-mark);
     border: 1px solid var(--ground-rule);
     background: transparent;
     font-family: var(--font-mono);
-    font-size: var(--text-cs-xs);
+    font-size: var(--text-cs-sm-14);
     font-variant-numeric: tabular-nums;
     color: var(--text-on-ground-faint);
     transition:
@@ -770,7 +774,7 @@
   .argues__label {
     display: block;
     font-family: var(--font-mono);
-    font-size: var(--text-cs-xs);
+    font-size: var(--text-cs-sm-14);
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: var(--stamp-on-doc);
@@ -902,7 +906,7 @@
     display: block;
     margin-block-start: 0.5em;
     font-family: var(--font-mono);
-    font-size: var(--text-cs-xs);
+    font-size: var(--text-cs-sm-14);
     font-style: normal;
     color: var(--text-on-ground-muted);
   }

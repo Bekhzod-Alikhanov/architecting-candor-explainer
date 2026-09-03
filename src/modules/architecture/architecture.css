@@ -21,7 +21,7 @@
   .arch__targetsLabel,
   .arch__outwardLabel {
     font-family: var(--font-mono);
-    font-size: var(--text-cs-xs);
+    font-size: var(--text-cs-sm-14);
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: var(--text-on-ground-faint);
@@ -77,7 +77,7 @@
 
   .obj__home {
     font-family: var(--font-mono);
-    font-size: var(--text-cs-xs);
+    font-size: var(--text-cs-sm-14);
     letter-spacing: 0.08em;
     color: var(--text-on-ground-faint);
   }
@@ -230,7 +230,7 @@
 
   .cbox__sub {
     font-family: var(--font-mono);
-    font-size: var(--text-cs-xs);
+    font-size: var(--text-cs-sm-14);
     letter-spacing: 0.08em;
     color: var(--text-on-ground-faint);
   }
@@ -246,7 +246,7 @@
     margin-block-start: auto;
     padding-block-start: 0.7rem;
     font-family: var(--font-mono);
-    font-size: var(--text-cs-xs);
+    font-size: var(--text-cs-sm-14);
     letter-spacing: 0.1em;
     text-transform: uppercase;
     color: var(--instrument-on-ground);
@@ -261,14 +261,14 @@
   .cbox__authority {
     margin-block-start: 0.25rem;
     font-family: var(--font-mono);
-    font-size: var(--text-cs-xs);
+    font-size: var(--text-cs-sm-14);
     color: var(--text-on-ground-faint);
   }
 
   .cbox__home {
     margin-block-start: 0.5rem;
     font-family: var(--font-mono);
-    font-size: var(--text-cs-xs);
+    font-size: var(--text-cs-sm-14);
     letter-spacing: 0.08em;
     color: var(--instrument-on-ground);
   }
@@ -306,13 +306,13 @@
 
   .arch__overwriteSub {
     font-family: var(--font-mono);
-    font-size: var(--text-cs-xs);
+    font-size: var(--text-cs-sm-14);
     color: var(--stamp-on-ground);
   }
 
   .arch__overwriteStatus {
     font-family: var(--font-mono);
-    font-size: var(--text-cs-xs);
+    font-size: var(--text-cs-sm-14);
     letter-spacing: 0.08em;
     text-transform: uppercase;
     color: var(--text-on-ground-faint);
@@ -346,7 +346,7 @@
     padding: 0.5rem 0.65rem;
     cursor: pointer;
     font-family: var(--font-mono);
-    font-size: var(--text-cs-xs);
+    font-size: var(--text-cs-sm-14);
     list-style: none;
   }
 
@@ -393,7 +393,7 @@
   .arrow__authority {
     margin-block-start: 0.4rem;
     font-family: var(--font-mono);
-    font-size: var(--text-cs-xs);
+    font-size: var(--text-cs-sm-14);
     color: var(--stamp-on-ground);
   }
 
@@ -453,7 +453,7 @@
 
   .valve__badge {
     font-family: var(--font-mono);
-    font-size: var(--text-cs-xs);
+    font-size: var(--text-cs-sm-14);
     letter-spacing: 0.14em;
     text-transform: uppercase;
     padding: 0.2em 0.5em;
@@ -495,7 +495,7 @@
   .valve__authority {
     margin-block-start: 0.55rem;
     font-family: var(--font-mono);
-    font-size: var(--text-cs-xs);
+    font-size: var(--text-cs-sm-14);
     letter-spacing: 0.05em;
     color: var(--stamp-on-ground);
   }
@@ -508,7 +508,11 @@
     border-radius: var(--radius-mark);
     font-size: var(--text-cs-sm);
     line-height: 1.55;
-    color: var(--instrument-on-ground);
+    /* Not --instrument-on-ground: that token is measured against --color-doc,
+       and this text sits on --tint-instrument, which drops the pair to
+       4.2-4.4:1 depending on the ground beneath — under AA. The rule and the
+       fill still carry the instrument association; the label doesn't need to. */
+    color: var(--text-on-ground);
   }
 
   /* --- the plain statements ------------------------------------------------ */
@@ -560,7 +564,7 @@
   .arch__logNote,
   .arch__logEmpty {
     font-family: var(--font-mono);
-    font-size: var(--text-cs-xs);
+    font-size: var(--text-cs-sm-14);
     color: var(--text-on-ground-faint);
   }
 
@@ -582,7 +586,7 @@
     gap: 0.75rem;
     align-items: baseline;
     font-family: var(--font-mono);
-    font-size: var(--text-cs-xs);
+    font-size: var(--text-cs-sm-14);
     color: var(--text-on-ground-muted);
     padding-block: 0.15rem;
   }

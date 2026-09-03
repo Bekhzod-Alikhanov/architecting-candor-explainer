@@ -22,7 +22,7 @@
 
   .cal__panelLabel {
     font-family: var(--font-mono);
-    font-size: var(--text-cs-xs);
+    font-size: var(--text-cs-sm-14);
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: var(--text-on-ground-faint);
@@ -73,14 +73,14 @@
 
   .slider__value {
     font-family: var(--font-mono);
-    font-size: var(--text-cs-xs);
+    font-size: var(--text-cs-sm-14);
     color: var(--instrument-on-ground);
     white-space: nowrap;
   }
 
   .slider__hint {
     margin-block-start: 0.2rem;
-    font-size: var(--text-cs-xs);
+    font-size: var(--text-cs-sm-14);
     line-height: 1.45;
     color: var(--text-on-ground-faint);
   }
@@ -91,7 +91,7 @@
     width: 100%;
     /* Matches the thumb, so the input's own box — what a hit-test measures,
        not just the thumb it paints — already clears the 24px minimum. */
-    block-size: 24px;
+    block-size: var(--target-min);
     margin-block-start: 0.35rem;
     background: transparent;
     cursor: pointer;
@@ -112,8 +112,8 @@
   .slider__input::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
-    inline-size: 24px;
-    block-size: 24px;
+    inline-size: var(--target-min);
+    block-size: var(--target-min);
     margin-block-start: -10px;
     border-radius: var(--radius-mark);
     background: var(--color-instrument);
@@ -121,8 +121,8 @@
   }
 
   .slider__input::-moz-range-thumb {
-    inline-size: 24px;
-    block-size: 24px;
+    inline-size: var(--target-min);
+    block-size: var(--target-min);
     border-radius: var(--radius-mark);
     background: var(--color-instrument);
     border: 1px solid var(--color-ground);
@@ -133,18 +133,18 @@
      itself since a range thumb accepts no pseudo-element of its own. */
   @media (pointer: coarse) {
     .slider__input {
-      block-size: 44px;
+      block-size: var(--target-min-coarse);
     }
 
     .slider__input::-webkit-slider-thumb {
-      inline-size: 44px;
-      block-size: 44px;
+      inline-size: var(--target-min-coarse);
+      block-size: var(--target-min-coarse);
       margin-block-start: -20px;
     }
 
     .slider__input::-moz-range-thumb {
-      inline-size: 44px;
-      block-size: 44px;
+      inline-size: var(--target-min-coarse);
+      block-size: var(--target-min-coarse);
     }
   }
 
@@ -187,9 +187,9 @@
     align-items: center;
     gap: 0.5rem;
     /* The switch's own label text sizes it to ~21px; WCAG 2.2 wants 24. */
-    min-block-size: 24px;
+    min-block-size: var(--target-min);
     font-family: var(--font-mono);
-    font-size: var(--text-cs-xs);
+    font-size: var(--text-cs-sm-14);
     letter-spacing: 0.06em;
     color: var(--text-on-ground-muted);
   }
@@ -227,7 +227,7 @@
 
   .tier__hint {
     margin-block-start: 0.5rem;
-    font-size: var(--text-cs-xs);
+    font-size: var(--text-cs-sm-14);
     line-height: 1.5;
     color: var(--text-on-ground-faint);
   }
@@ -239,7 +239,7 @@
     align-items: center;
     gap: 0.6rem;
     font-family: var(--font-mono);
-    font-size: var(--text-cs-xs);
+    font-size: var(--text-cs-sm-14);
     color: var(--text-on-ground-faint);
   }
 
@@ -257,7 +257,7 @@
 
   .cal__lockHint {
     font-family: var(--font-mono);
-    font-size: var(--text-cs-xs);
+    font-size: var(--text-cs-sm-14);
     color: var(--text-on-ground-faint);
   }
 
@@ -343,7 +343,7 @@
   .cal__streamNote {
     margin-block-start: 0.5rem;
     font-family: var(--font-mono);
-    font-size: var(--text-cs-xs);
+    font-size: var(--text-cs-sm-14);
     line-height: 1.5;
     color: var(--text-on-ground-faint);
   }
@@ -354,7 +354,7 @@
     flex-wrap: wrap;
     gap: 0.35rem 1.1rem;
     font-family: var(--font-mono);
-    font-size: var(--text-cs-xs);
+    font-size: var(--text-cs-sm-14);
     color: var(--text-on-ground-faint);
   }
 
@@ -425,7 +425,7 @@
 
   .ro__label {
     font-family: var(--font-mono);
-    font-size: var(--text-cs-xs);
+    font-size: var(--text-cs-sm-14);
     letter-spacing: 0.1em;
     text-transform: uppercase;
     color: var(--text-on-ground-muted);
@@ -454,7 +454,7 @@
 
   .ro__note {
     margin-block-start: 0.5rem;
-    font-size: var(--text-cs-xs);
+    font-size: var(--text-cs-sm-14);
     line-height: 1.5;
     color: var(--text-on-ground-faint);
   }
@@ -508,7 +508,7 @@
   .ro__authority {
     margin-block-start: 0.45rem;
     font-family: var(--font-mono);
-    font-size: var(--text-cs-xs);
+    font-size: var(--text-cs-sm-14);
     color: var(--stamp-on-ground);
   }
 
@@ -517,7 +517,7 @@
    control is worth having. */
   .cal__shareNote {
     margin-block-start: 0.6rem;
-    font-size: var(--text-cs-xs);
+    font-size: var(--text-cs-sm-14);
     line-height: 1.55;
     color: var(--text-on-ground-faint);
     max-width: 52ch;

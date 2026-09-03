@@ -63,7 +63,7 @@
   .colo__corresponding {
     margin-block-start: 0.85rem;
     font-family: var(--font-mono);
-    font-size: var(--text-cs-xs);
+    font-size: var(--text-cs-sm-14);
     letter-spacing: 0.06em;
     line-height: 1.6;
     color: var(--text-on-doc-muted);
@@ -132,7 +132,7 @@
   .colo__citationLabel {
     display: block;
     font-family: var(--font-mono);
-    font-size: var(--text-cs-xs);
+    font-size: var(--text-cs-sm-14);
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: var(--text-on-doc-muted);
@@ -205,7 +205,7 @@
 
   .colo__credit dt {
     font-family: var(--font-mono);
-    font-size: var(--text-cs-xs);
+    font-size: var(--text-cs-sm-14);
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--instrument-on-ground);
@@ -274,7 +274,7 @@
     display: inline-block;
     margin-inline-start: 0.4em;
     font-family: var(--font-mono);
-    font-size: var(--text-cs-xs);
+    font-size: var(--text-cs-sm-14);
     font-style: normal;
     color: var(--text-on-doc-muted);
   }

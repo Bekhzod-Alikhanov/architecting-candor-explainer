@@ -32,10 +32,15 @@
 
   /* Console scale. Tight and tabular, but body text is 17px: this is a page
      someone reads for twenty minutes, not a dashboard they glance at. Only the
-     smallest step stays at 13px — it carries the Bates stamps, table headers,
-     rail numbers and chip labels, which are letter-spaced and live in tight
-     columns where a larger size starts wrapping. */
+     smallest step stays at 13px, and only for the Bates stamp and the
+     masthead rubric bar — the two things that are marks rather than prose.
+     Everything else informational (hints, notes, axis labels, rail numbers,
+     chip labels) reads at --text-cs-sm-14 or larger. */
   --text-cs-xs: 0.8125rem;
+  /* The 14px informational step: hints, notes and axis labels that read as
+     body copy rather than as a stamp. Sits between --text-cs-xs (reserved
+     above for the Bates stamp and masthead rubric only) and --text-cs-sm. */
+  --text-cs-sm-14: 0.875rem;
   --text-cs-sm: 0.9375rem;
   --text-cs-base: 1rem;
   --text-cs-md: 1.0625rem;
@@ -94,7 +99,12 @@
      --ground-raised, dark text against --doc-panel. Computed from the OKLab
      mix, then confirmed with axe-core against the built page. */
   --text-on-ground-muted: color-mix(in oklab, var(--color-doc) 72%, var(--color-ground)); /* 5.6:1 */
-  --text-on-ground-faint: color-mix(in oklab, var(--color-doc) 65%, var(--color-ground)); /* 4.7:1 */
+  /* Was 65% doc (4.7:1 against --ground-raised) — AA-legal but hard to read at
+     13px. Raised to 72%: 5.6:1 against --ground-raised, 5.9:1 against
+     --ground-panel, 7.4:1 against --ground-deep. Computed with culori
+     (oklab color-mix, WCAG relative-luminance contrast) against all three
+     grounds; --ground-raised is the worst case, as above. */
+  --text-on-ground-faint: color-mix(in oklab, var(--color-doc) 72%, var(--color-ground)); /* 5.6:1 */
   /* on a document object */
   --text-on-doc: var(--color-ground); /* 11.1:1 */
   --text-on-doc-muted: color-mix(in oklab, var(--color-ground) 70%, var(--color-doc)); /* 5.1:1 */
@@ -123,6 +133,13 @@
   /* --- measure ---------------------------------------------------------- */
   --measure-console: 74ch;
   --measure-doc: 62ch;
+
+  /* --- target size, WCAG 2.2 -------------------------------------------- */
+  /* The minimum on any pointer, and the comfort target on a coarse one
+     (touch, no hover). Named for what they guarantee, not for the pixel
+     count, so a future change to the WCAG minimum is one edit here. */
+  --target-min: 24px;
+  --target-min-coarse: 44px;
 
   /* The frame.
 

@@ -37,7 +37,7 @@
 
   .force__kicker {
     font-family: var(--font-mono);
-    font-size: var(--text-cs-xs);
+    font-size: var(--text-cs-sm-14);
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: var(--text-on-ground-faint);
@@ -82,7 +82,7 @@
 
   .force__authority {
     font-family: var(--font-mono);
-    font-size: var(--text-cs-xs);
+    font-size: var(--text-cs-sm-14);
     letter-spacing: 0.05em;
     color: var(--text-on-ground);
   }
@@ -113,7 +113,7 @@
   .bind__label {
     display: block;
     font-family: var(--font-mono);
-    font-size: var(--text-cs-xs);
+    font-size: var(--text-cs-sm-14);
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: var(--stamp-on-doc);
@@ -130,7 +130,7 @@
     display: block;
     margin-block-start: 0.9rem;
     font-family: var(--font-mono);
-    font-size: var(--text-cs-xs);
+    font-size: var(--text-cs-sm-14);
     letter-spacing: 0.1em;
     text-transform: uppercase;
     color: var(--text-on-doc-muted);
@@ -317,15 +317,19 @@
 
   .tl__entryDate {
     font-family: var(--font-mono);
-    font-size: var(--text-cs-xs);
+    font-size: var(--text-cs-sm-14);
     letter-spacing: 0.08em;
     text-transform: uppercase;
     color: var(--text-on-ground-faint);
     font-variant-numeric: tabular-nums;
   }
 
+  /* Not --instrument-on-ground: the selected row's background is
+     --tint-instrument, which drops that pair under 4.5:1 (same failure mode
+     as the §06 chip below). The left rule and border already carry the
+     instrument association. */
   .tl__entry[data-selected="true"] .tl__entryDate {
-    color: var(--instrument-on-ground);
+    color: var(--text-on-ground);
   }
 
   .tl__entryTitle {
@@ -361,7 +365,7 @@
 
   .tl__pending {
     font-family: var(--font-mono);
-    font-size: var(--text-cs-xs);
+    font-size: var(--text-cs-sm-14);
     letter-spacing: 0.1em;
     text-transform: uppercase;
     color: var(--ochre-on-doc);
@@ -382,7 +386,7 @@
   .tl__authority {
     margin-block-start: 0.5rem;
     font-family: var(--font-mono);
-    font-size: var(--text-cs-xs);
+    font-size: var(--text-cs-sm-14);
     line-height: 1.5;
     color: var(--text-on-doc-muted);
   }
@@ -396,7 +400,7 @@
   .tl__fieldLabel {
     display: block;
     font-family: var(--font-mono);
-    font-size: var(--text-cs-xs);
+    font-size: var(--text-cs-sm-14);
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--text-on-doc-muted);
@@ -466,7 +470,7 @@
   }
 
   .countdown__label {
-    font-size: var(--text-cs-xs);
+    font-size: var(--text-cs-sm-14);
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--text-on-ground-faint);

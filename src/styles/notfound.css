@@ -62,7 +62,7 @@
   .nf-page .nf__bates {
     margin: 0;
     font-family: var(--font-mono);
-    font-size: var(--text-cs-xs);
+    font-size: var(--text-cs-sm-14);
     font-weight: 500;
     letter-spacing: 0.14em;
     font-variant-numeric: tabular-nums;

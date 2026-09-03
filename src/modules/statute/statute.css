@@ -59,7 +59,7 @@
   .prin__cite {
     margin-block-start: 0.6rem;
     font-family: var(--font-mono);
-    font-size: var(--text-cs-xs);
+    font-size: var(--text-cs-sm-14);
     color: var(--stamp-on-ground);
   }
 
@@ -180,7 +180,7 @@
   .prot__state {
     margin-inline-start: auto;
     font-family: var(--font-mono);
-    font-size: var(--text-cs-xs);
+    font-size: var(--text-cs-sm-14);
     letter-spacing: 0.1em;
     text-transform: uppercase;
     color: var(--instrument-on-ground);
@@ -200,7 +200,7 @@
   .prot__breaksLabel {
     margin-block-start: 0.5rem;
     font-family: var(--font-mono);
-    font-size: var(--text-cs-xs);
+    font-size: var(--text-cs-sm-14);
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--stamp-on-ground);

@@ -33,7 +33,7 @@
     margin-block-start: 0.4rem;
     max-width: 62ch;
     font-family: var(--font-mono);
-    font-size: var(--text-cs-xs);
+    font-size: var(--text-cs-sm-14);
     line-height: 1.6;
     color: var(--text-on-doc-muted);
   }
@@ -59,7 +59,7 @@
 
   .cl__printNote {
     font-family: var(--font-mono);
-    font-size: var(--text-cs-xs);
+    font-size: var(--text-cs-sm-14);
     color: var(--text-on-doc-muted);
   }
 
@@ -91,7 +91,7 @@
 
   .clg__n {
     font-family: var(--font-mono);
-    font-size: var(--text-cs-xs);
+    font-size: var(--text-cs-sm-14);
     letter-spacing: 0.1em;
     color: var(--color-doc);
     background: var(--color-stamp);
@@ -137,7 +137,7 @@
   .cli__owner {
     justify-self: start;
     font-family: var(--font-mono);
-    font-size: var(--text-cs-xs);
+    font-size: var(--text-cs-sm-14);
     letter-spacing: 0.08em;
     text-transform: uppercase;
     color: var(--stamp-on-doc);
@@ -164,14 +164,14 @@
 
   .cl__cite {
     font-family: var(--font-mono);
-    font-size: var(--text-cs-xs);
+    font-size: var(--text-cs-sm-14);
     line-height: 1.55;
     color: var(--text-on-doc-muted);
   }
 
   .cl__disclaimer {
     font-family: var(--font-mono);
-    font-size: var(--text-cs-xs);
+    font-size: var(--text-cs-sm-14);
     line-height: 1.55;
     color: var(--stamp-on-doc);
   }

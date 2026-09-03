@@ -92,7 +92,7 @@
     padding-block-start: 0.75rem;
     border-block-start: 1px solid var(--doc-rule);
     font-family: var(--font-mono);
-    font-size: var(--text-cs-xs);
+    font-size: var(--text-cs-sm-14);
     letter-spacing: 0.08em;
     text-transform: uppercase;
     color: var(--text-on-doc-muted);
@@ -177,7 +177,7 @@
   .hero__waysInLabel {
     display: block;
     font-family: var(--font-mono);
-    font-size: var(--text-cs-xs);
+    font-size: var(--text-cs-sm-14);
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--text-on-ground-faint);
@@ -224,7 +224,7 @@
     flex-direction: column;
     justify-content: center;
     gap: 0.2rem;
-    min-height: 1.5rem; /* 24px: WCAG 2.2's minimum target size */
+    min-height: var(--target-min);
     padding: 0.5rem 0.7rem;
     border: 1px solid var(--ground-rule);
     border-radius: var(--radius-mark);
@@ -244,7 +244,7 @@
      unlike the scaffold dot, there is no fixed-size mark to protect here. */
   @media (pointer: coarse) {
     .hero__waysInLink {
-      min-height: 2.75rem;
+      min-height: var(--target-min-coarse);
     }
   }
 
@@ -258,7 +258,7 @@
 
   .hero__waysInHint {
     font-family: var(--font-mono);
-    font-size: var(--text-cs-xs);
+    font-size: var(--text-cs-sm-14);
     color: var(--text-on-ground-faint);
   }
 
@@ -376,7 +376,7 @@
     align-items: center;
     gap: 0.5rem;
     font-family: var(--font-mono);
-    font-size: var(--text-cs-xs);
+    font-size: var(--text-cs-sm-14);
     letter-spacing: 0.11em;
     text-transform: uppercase;
     color: var(--instrument-on-ground);
@@ -431,7 +431,7 @@
     margin-block-start: auto;
     padding-block-start: 1.25rem;
     font-family: var(--font-mono);
-    font-size: var(--text-cs-xs);
+    font-size: var(--text-cs-sm-14);
     letter-spacing: 0.06em;
     color: var(--text-on-ground-faint);
   }
@@ -492,7 +492,7 @@
     justify-content: space-between;
     gap: 0.5rem 1rem;
     font-family: var(--font-mono);
-    font-size: var(--text-cs-xs);
+    font-size: var(--text-cs-sm-14);
     letter-spacing: 0.09em;
     text-transform: uppercase;
     color: var(--text-on-doc-muted);
@@ -541,7 +541,7 @@
 
   .hero__explainerLabel {
     font-family: var(--font-mono);
-    font-size: var(--text-cs-xs);
+    font-size: var(--text-cs-sm-14);
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: var(--text-on-ground-faint);
@@ -549,7 +549,7 @@
 
   .hero__explainerMeta {
     font-family: var(--font-mono);
-    font-size: var(--text-cs-xs);
+    font-size: var(--text-cs-sm-14);
     font-variant-numeric: tabular-nums;
     color: var(--text-on-ground-faint);
   }
@@ -567,7 +567,7 @@
   .hero__explainerNote {
     margin-block-start: 0.6rem;
     font-family: var(--font-mono);
-    font-size: var(--text-cs-xs);
+    font-size: var(--text-cs-sm-14);
     line-height: 1.55;
     color: var(--text-on-ground-faint);
   }
@@ -613,7 +613,7 @@
 
   .orient__facts dt {
     font-family: var(--font-mono);
-    font-size: var(--text-cs-xs);
+    font-size: var(--text-cs-sm-14);
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--text-on-doc-muted);
@@ -706,7 +706,7 @@
     flex-wrap: wrap;
     align-items: baseline;
     gap: 0.35rem 1rem;
-    font-size: var(--text-cs-xs);
+    font-size: var(--text-cs-sm-14);
   }
 
   .orient__stepLink {
@@ -754,7 +754,7 @@
   .hero__onwardLabel {
     display: block;
     font-family: var(--font-mono);
-    font-size: var(--text-cs-xs);
+    font-size: var(--text-cs-sm-14);
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--text-on-ground-faint);
@@ -778,9 +778,13 @@
       border-color var(--dur-fast) var(--ease-out);
   }
 
+  /* The hover fill is --tint-instrument, which drops --instrument-on-ground
+     under 4.5:1 (same failure as the §06 chip); switch the label to
+     --text-on-ground for the duration of the hover instead. */
   .hero__cta:hover {
     background: var(--tint-instrument);
     border-color: var(--color-instrument);
+    color: var(--text-on-ground);
   }
 
   /* --- narrow screens ----------------------------------------------------- */

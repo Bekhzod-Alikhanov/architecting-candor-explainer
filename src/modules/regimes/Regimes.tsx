@@ -228,8 +228,8 @@ function RegimeRow({
             </span>
           ) : (
             <>
-              {c.id === 'source'
-                ? defineTerms(String(regime.source ?? ''), terms, seen)
+              {c.id === 'source' || c.id === 'protects'
+                ? defineTerms(String(regime[c.id] ?? ''), terms, seen)
                 : String(regime[c.id as keyof typeof regime] ?? '')}
               {c.id === 'recipient' && regime.separated ? (
                 <span className="reg__sep" title={copy.separatedTitle}>

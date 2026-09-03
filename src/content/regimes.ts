@@ -145,9 +145,11 @@ export const regimeCopy = {
   headline: 'Every structural choice in the architecture has already been tested somewhere else.',
   standfirst:
     'Aviation and healthcare confronted this problem long before machine learning, and resolved it through deliberate institutional design rather than professional norms. Read together, the regimes reveal a common logic: preserve original facts, protect only a bounded process of evaluative analysis, and return verified findings to operations as corrective action.',
-  /** Not in the standfirst. Defined where the target row's own "Source of
-   *  protection" cell names it: "Attorney-client privilege and work-product
-   *  doctrine only". */
+  /** Not in the standfirst. The target row's own "Source of protection" cell
+   *  says "work-product" (hyphenated), which is not a listed form — the
+   *  match instead comes from the healthcare regime's own "protects" cell:
+   *  "Patient safety work product assembled or developed...". Both cells
+   *  are wired, so either spelling would be caught if the prose changed. */
   terms: ['work-product'] as const satisfies readonly GlossaryId[],
   note: 'The paper tabulates three regimes and cites a fourth as a model for its statutory recommendation. Those four are here, and nothing else is.',
   filterLabel: 'Show regimes mapping to',

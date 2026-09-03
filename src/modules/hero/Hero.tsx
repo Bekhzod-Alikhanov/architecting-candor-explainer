@@ -3,6 +3,7 @@ import { Seam } from '../../components/Seam'
 import { Prov } from '../../components/Provenance'
 import { SectionTime } from '../../components/SectionTime'
 import { useMediaQuery } from '../../lib/useMediaQuery'
+import { bp } from '../../lib/breakpoints'
 import { memo as content, exhibitLegend, waysIn } from '../../content/hero'
 import { bates, disclaimer, explainer, section } from '../../content/site'
 import { Orientation } from './Orientation'
@@ -30,7 +31,7 @@ const memoSection = section('memo')
  * whether the seam becomes draggable.
  */
 export function Hero() {
-  const wide = useMediaQuery('(min-width: 48rem)')
+  const wide = useMediaQuery(bp.tablet)
   const [split, setSplit] = useState(0.46)
   const r = content.record
 

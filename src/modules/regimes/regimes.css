@@ -286,7 +286,7 @@
 
   /* --- narrow screens: the table becomes cards ----------------------------- */
 
-  @media (max-width: 67.99rem) {
+  @media (max-width: 63.99rem) {
     .reg__table,
     .reg__table thead,
     .reg__table tbody,

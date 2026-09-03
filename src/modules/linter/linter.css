@@ -42,7 +42,7 @@
     align-items: start;
   }
 
-  @media (min-width: 68rem) {
+  @media (min-width: 64rem) {
     .lint__grid {
       grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     }
@@ -361,7 +361,7 @@
     border-block-start: 1px solid var(--ground-rule-soft);
   }
 
-  @media (min-width: 52rem) {
+  @media (min-width: 56rem) {
     .tmpl__field {
       grid-template-columns: minmax(0, 20rem) minmax(0, 1fr);
       gap: 1rem;

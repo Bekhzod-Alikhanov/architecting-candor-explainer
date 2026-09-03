@@ -5,6 +5,7 @@ import { ArguesBlock } from '../../components/ArguesBlock'
 import { BoundaryChart } from './BoundaryChart'
 import { Countdown } from './Countdown'
 import { useMediaQuery } from '../../lib/useMediaQuery'
+import { bp } from '../../lib/breakpoints'
 import { useStatus } from '../../lib/useStatus'
 import { pincer } from '../../content/pincer'
 import { entries, timelineCopy, timelineSteps, timelineArgues, axis } from '../../content/timeline'
@@ -20,7 +21,7 @@ import './pincer.css'
  * chart's own state, then an explicit release.
  */
 export function Pincer() {
-  const vertical = !useMediaQuery('(min-width: 56rem)')
+  const vertical = !useMediaQuery(bp.wide)
   const [step, setStep] = useState(0)
   const [freeSelected, setFreeSelected] = useState(entries.length - 1)
   // Shared across the standfirst and the two forces below, so a term named

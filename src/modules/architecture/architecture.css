@@ -147,7 +147,7 @@
     gap: 0.6rem;
   }
 
-  @media (min-width: 62rem) {
+  @media (min-width: 64rem) {
     .arch__channels {
       grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 0;
@@ -168,7 +168,7 @@
     }
   }
 
-  @media (max-width: 61.99rem) {
+  @media (max-width: 63.99rem) {
     .arch__seam {
       display: none;
     }
@@ -326,7 +326,7 @@
     gap: 0.35rem;
   }
 
-  @media (min-width: 62rem) {
+  @media (min-width: 64rem) {
     .arch__arrows {
       grid-template-columns: 1fr 1fr;
     }

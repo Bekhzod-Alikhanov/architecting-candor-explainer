@@ -55,6 +55,15 @@
     align-items: start;
   }
 
+  /* Deliberately not the same breakpoint as .hero__split below, even though
+     both are "go side-by-side" queries: this grid is putting two full prose
+     columns next to each other (headline-plus-standfirst against the whole
+     Pinto passage), which needs the 64rem two-track width to avoid squeezing
+     either one into an uncomfortably narrow measure. The split's panes are
+     denser, shorter-line console/exhibit readouts that already sit
+     comfortably at half of 48rem — checked at 768 and 900px, where each pane
+     still reads cleanly — so pushing it out to 64rem would just stack it
+     through 768-1023px for no gain. */
   @media (min-width: 64rem) {
     .hero__masthead {
       grid-template-columns: minmax(0, 1.08fr) minmax(0, 1fr);
@@ -274,7 +283,10 @@
      dragged.
 
      Only one of the two endings to the standfirst is shown, for the same
-     reason — both are in the markup. */
+     reason — both are in the markup.
+
+     Kept at 48rem rather than raised to match .hero__masthead's 64rem — see
+     the comment there for why the two don't share a breakpoint. */
   .hero__split {
     display: flex;
     flex-direction: column;

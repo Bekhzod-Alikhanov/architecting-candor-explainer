@@ -50,7 +50,7 @@
     align-items: start;
   }
 
-  @media (min-width: 58rem) {
+  @media (min-width: 56rem) {
     .mech__split {
       grid-template-columns: minmax(0, 1fr) minmax(12rem, 16rem);
     }
@@ -64,7 +64,7 @@
      than above it, and the instrument spans underneath both. §02 is the most
      prose-heavy section on the site; stacked, it was a 700px column of text in
      1500px of ground. */
-  @media (min-width: 78rem) {
+  @media (min-width: 82rem) {
     .mech {
       display: grid;
       grid-template-columns: minmax(0, 24rem) minmax(0, 1fr);
@@ -108,7 +108,7 @@
     gap: 0.35rem;
   }
 
-  @media (min-width: 52rem) {
+  @media (min-width: 56rem) {
     .decay__track {
       grid-template-columns: repeat(5, minmax(0, 1fr));
     }
@@ -222,7 +222,7 @@
     gap: 1rem;
   }
 
-  @media (min-width: 52rem) {
+  @media (min-width: 56rem) {
     .decay__cols {
       grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
       gap: 1.75rem;
@@ -345,7 +345,7 @@
     gap: 0.6rem;
   }
 
-  @media (min-width: 46rem) {
+  @media (min-width: 48rem) {
     .drift__readout {
       grid-template-columns: minmax(0, 10rem) minmax(0, 1fr);
       gap: 1.5rem;

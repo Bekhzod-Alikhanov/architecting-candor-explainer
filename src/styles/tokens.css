@@ -141,6 +141,25 @@
   --target-min: 24px;
   --target-min-coarse: 44px;
 
+  /* --- breakpoint scale --------------------------------------------------
+     CSS custom properties are not visible inside @media conditions, so this
+     is documentation, not a working token — every @media min/max-width in
+     this codebase must use one of these five rem values (mirrored in
+     src/lib/breakpoints.ts as `bp`, which JS media-query callers use instead
+     of hand-writing the string). A max-width query pairs with the next step
+     up's min-width as its .99 twin, keeping the two exclusive with no 0.01px
+     gap and no overlap:
+
+       40rem  (640px)  phone landscape
+       48rem  (768px)  tablet                 — max-width twin: 47.99rem
+       56rem  (896px)  wide                   — max-width twin: 55.99rem
+       64rem  (1024px) two-track (side-by-side panels)  — max-width twin: 63.99rem
+       82rem  (1312px) rail (the content-max navigation rail)  — max-width twin: 81.99rem
+
+     scripts/check-breakpoints.ts enforces this — it fails the build on any
+     @media width, in any CSS file under src, that is not on the scale or
+     its .99 pair. */
+
   /* The frame.
 
      --content-max was 1280px, which left a 1440 laptop with 80px of dead

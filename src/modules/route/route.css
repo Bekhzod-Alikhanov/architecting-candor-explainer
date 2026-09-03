@@ -78,7 +78,7 @@
     align-items: start;
   }
 
-  @media (min-width: 72rem) {
+  @media (min-width: 64rem) {
     .rt {
       grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
     }
@@ -629,7 +629,7 @@
     gap: 0.6rem;
   }
 
-  @media (min-width: 60rem) {
+  @media (min-width: 64rem) {
     .ledger__list {
       grid-template-columns: 1fr 1fr;
     }
@@ -752,7 +752,7 @@
     gap: 0.6rem;
   }
 
-  @media (min-width: 52rem) {
+  @media (min-width: 56rem) {
     .reveal__grid {
       grid-template-columns: repeat(2, 1fr);
     }

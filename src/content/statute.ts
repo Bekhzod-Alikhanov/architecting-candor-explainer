@@ -22,7 +22,7 @@ export const principles: readonly Principle[] = [
     n: '01',
     title: 'Protection attaches only to a defined process',
     body: [
-      'The statute should authorise certified non-enforcement AI safety organizations to receive sanitized incident reports derived from the three channels, without making participation in that safety-sharing process a basis for compelling otherwise protected internal deliberations among legal, engineering and safety teams.',
+      'The statute should authorise certified non-enforcement AI safety organisations to receive sanitised incident reports derived from the three channels. Taking part in that safety-sharing process must not become a basis for compelling otherwise protected internal deliberations among legal, engineering and safety teams.',
       'Protection follows the workflow, exactly as it does under the healthcare model, rather than following a label attached after an adverse event.',
     ],
   },
@@ -92,7 +92,7 @@ export const protections: readonly Protection[] = [
     holds:
       'Bounded deliberative analysis does not lose protection merely because it also informed a mandatory regulatory report or an authorised safety-sharing submission.',
     breaks:
-      'Compliance and candour become mutually exclusive. Filing the report that the EU AI Act requires would waive protection over the analysis that produced it, so a firm must choose between its regulatory duty and its privilege — which is the documentation paradox rebuilt inside the statute meant to resolve it.',
+      'Compliance and candour become mutually exclusive. Filing the report that the EU AI Act requires would waive protection over the analysis that produced it, so a firm must choose between its regulatory duty and its privilege. That is the documentation paradox rebuilt inside the statute meant to resolve it.',
   },
 ]
 

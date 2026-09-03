@@ -237,6 +237,6 @@ export const linterArgues = {
     'The distinction it enforces is not a litigation trick. A causal explanation recorded in the moment of observation is rarely supported by controlled evidence, because in entangled machine-learning systems changing any component changes the behaviour of others.',
     'The factual entry is therefore both the legally safer record and the more accurate one, and the causal question it defers is answered in the channel designed to answer it.',
     'It is also the only part of this architecture that costs nothing to adopt.',
-    'A firm that never builds a tripwire, never separates a channel and never speaks to its general counsel about any of this can still template its ticket fields, and doing so removes the single most common way an engineering record turns into an admission.',
+    'A firm that never builds a tripwire, never separates a channel and never speaks to its general counsel about any of this can still template its ticket fields. Doing so removes the single most common way an engineering record turns into an admission.',
   ],
 } as const

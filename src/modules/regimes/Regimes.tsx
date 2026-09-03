@@ -14,6 +14,7 @@ import {
   type Regime,
 } from '../../content/regimes'
 import { defineTerms } from '../../lib/defineTerms'
+import { useStatus } from '../../lib/useStatus'
 import type { GlossaryId } from '../../content/glossary'
 import './regimes.css'
 
@@ -61,6 +62,10 @@ export function Regimes() {
   const open: Regime | undefined = [...regimes, target].find((r) => r.id === openId)
   // Shared with the "Source of protection" cell on the target row below.
   const seen = new Set<GlossaryId>()
+  // The lesson card is not live — reading domain, citation and lesson body on
+  // every step is the flood the scaffold's own announcement already covers.
+  // Only the regime's name, for row clicks the scaffold does not drive.
+  const openStatus = useStatus(open?.name ?? '')
 
   return (
     <section className="sect page" id="regimes" aria-labelledby="reg-title">
@@ -178,8 +183,12 @@ export function Regimes() {
         </p>
       ) : null}
 
+      <p className="sr-only" role="status">
+        {openStatus}
+      </p>
+
       {open ? (
-        <article className="lesson doc-object doc-object--scanned on-doc" aria-live="polite">
+        <article className="lesson doc-object doc-object--scanned on-doc">
           <header className="lesson__head">
             <p className="lesson__domain">{open.domain}</p>
             <p className="lesson__cite">{open.citation}</p>

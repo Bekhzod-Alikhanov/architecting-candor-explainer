@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react'
 import { lint } from '../../lib/lint'
 import { sample, template, linterCopy as copy } from '../../content/linter-rules'
+import { useStatus } from '../../lib/useStatus'
 import './linter.css'
 
 /**
@@ -14,6 +15,15 @@ export function Linter({ standalone = false }: { readonly standalone?: boolean }
   const [text, setText] = useState('')
   const result = useMemo(() => lint(text), [text])
   const has = text.trim().length > 0
+  // The visible count updates on every keystroke; the announcement of it
+  // does not, so typing a ticket does not queue one announcement per
+  // character. The sentence itself is the same one the visible count shows.
+  const countText = !has
+    ? copy.emptyState
+    : result.total === 0
+      ? copy.cleanState
+      : `${result.total} ${result.total === 1 ? copy.countSuffixOne : copy.countSuffix}`
+  const countStatus = useStatus(countText)
 
   return (
     <div className="lint">
@@ -75,7 +85,11 @@ export function Linter({ standalone = false }: { readonly standalone?: boolean }
         </div>
 
         <div className="lint__outputSide">
-          <p className="lint__count" id="lint-count" aria-live="polite">
+          <p className="sr-only" role="status">
+            {countStatus}
+          </p>
+
+          <p className="lint__count" id="lint-count">
             {!has ? (
               <span className="lint__empty">{copy.emptyState}</span>
             ) : result.total === 0 ? (

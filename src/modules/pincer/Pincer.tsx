@@ -5,6 +5,7 @@ import { ArguesBlock } from '../../components/ArguesBlock'
 import { BoundaryChart } from './BoundaryChart'
 import { Countdown } from './Countdown'
 import { useMediaQuery } from '../../lib/useMediaQuery'
+import { useStatus } from '../../lib/useStatus'
 import { pincer } from '../../content/pincer'
 import { entries, timelineCopy, timelineSteps, timelineArgues, axis } from '../../content/timeline'
 import { defineTerms } from '../../lib/defineTerms'
@@ -30,6 +31,11 @@ export function Pincer() {
   const drawnUpTo = released ? entries.length - 1 : step
   const selected = released ? freeSelected : step
   const entry = entries[selected]
+  // The card itself is not live — reading the whole thing on every step is
+  // the flood the scaffold's own announcement already replaces. Only the
+  // title, for the selections the scaffold does not drive (the free choice
+  // once released).
+  const entryStatus = useStatus(entry?.title ?? '')
 
   const onSelect = (i: number) => {
     if (released) setFreeSelected(i)
@@ -129,8 +135,12 @@ export function Pincer() {
           ))}
         </ul>
 
+        <p className="sr-only" role="status">
+          {entryStatus}
+        </p>
+
         {entry ? (
-          <article className="tl__detail doc-object doc-object--scanned on-doc" aria-live="polite">
+          <article className="tl__detail doc-object doc-object--scanned on-doc">
             <header className="tl__detailHead">
               <span className="tl__detailDate">{entry.date}</span>
               {entry.future ? <span className="tl__pending">{axis.pendingLabel}</span> : null}

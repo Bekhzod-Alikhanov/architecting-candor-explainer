@@ -93,6 +93,11 @@ export function SectionNav() {
               {...(onNavigate ? { onClick: onNavigate } : {})}
             >
               <span className="snav__n">{s.n}</span>
+              {/* Visually-hidden separator: without it the number and title
+                  run together into one word for a screen reader — "03Route
+                  the record" — since nothing in the visible layout is a
+                  text node between the two spans. */}
+              <span className="sr-only">, </span>
               <span className="snav__label">{s.title}</span>
             </a>
           </li>
@@ -154,6 +159,9 @@ export function SectionNav() {
           {currentSection ? (
             <>
               <span className="locator__n">{currentSection.n}</span>
+              {/* Same separator as the rail's own link — see the comment
+                  there. */}
+              <span className="sr-only">, </span>
               <span className="locator__label">{currentSection.title}</span>
             </>
           ) : null}
@@ -172,7 +180,11 @@ export function SectionNav() {
         className="snavJump__panel"
         popover="auto"
         id={JUMP_ID}
-        aria-label={navCopy.label}
+        // Distinct from the rail's own aria-label (navCopy.label, "Sections")
+        // so a landmark list does not show two navs with the same name —
+        // this one already has copy naming what it does, reused from the
+        // button that opens it.
+        aria-label={navCopy.jumpLabel}
         ref={panel}
       >
         <p className="snav__title">{navCopy.title}</p>

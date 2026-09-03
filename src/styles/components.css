@@ -489,20 +489,12 @@
   }
 
   /* --- reserving space for the locator bar ----------------------------------
-   Matches .locator's own block-size so the last lines of every section clear
-   the bar rather than sitting behind it — the occlusion half of finding U4,
-   the pill's coverage being the other half.
+   The last thing on the page has to clear the fixed bar rather than sit
+   behind it — the occlusion half of finding U4, the pill's coverage being
+   the other half. That used to be .shell__flow; since the footer landmark
+   followed it, the reservation lives on .shell__foot below, and the flow
+   carries none, or the footer would float above an empty band.
    ---------------------------------------------------------------------- */
-
-  .shell__flow {
-    padding-block-end: calc(44px + env(safe-area-inset-bottom) + var(--space-block));
-  }
-
-  @media (min-width: 82rem) {
-    .shell__flow {
-      padding-block-end: 0;
-    }
-  }
 
   /* --- the masthead and the footer -------------------------------------
    Both sit outside .shell now, as a real <header>/<footer> — the "banner"

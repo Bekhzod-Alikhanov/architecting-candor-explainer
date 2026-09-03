@@ -207,6 +207,7 @@ export const routeCopy = {
     'discovery',
     'spoliation',
     'rule-407',
+    'tripwire',
   ] as const satisfies readonly GlossaryId[],
   unroutedLabel: 'Unrouted',
   routedLabel: 'routed',

@@ -57,7 +57,7 @@ export function Pincer() {
             <ul className="force__items">
               {f.items.map((it) => (
                 <li key={it.authority}>
-                  <span className="force__authority">{it.authority}</span>
+                  <span className="force__authority">{defineTerms(it.authority, pincer.terms, seen)}</span>
                   <span className="force__text">{it.text}</span>
                 </li>
               ))}

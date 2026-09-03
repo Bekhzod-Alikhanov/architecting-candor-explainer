@@ -28,7 +28,13 @@ export function Term({ id, children }: TermProps) {
 
   return (
     <>
-      <button type="button" className="term" popoverTarget={popId} aria-describedby={popId}>
+      <button
+        type="button"
+        className="term"
+        data-term={id}
+        popoverTarget={popId}
+        aria-describedby={popId}
+      >
         {children}
       </button>
       <span popover="auto" id={popId} className="term__pop" role="note">

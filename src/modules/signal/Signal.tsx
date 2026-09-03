@@ -12,6 +12,8 @@ import {
   signalCopy as copy,
   signalArgues,
 } from '../../content/signal'
+import { defineTerms } from '../../lib/defineTerms'
+import type { GlossaryId } from '../../content/glossary'
 import './signal.css'
 
 /**
@@ -28,6 +30,8 @@ export function Signal() {
   const current = handoffs[stage]!
   const origin = handoffs[0]!
   const harmed = recurrences >= deviance.steps.length
+  // Shared with mechanism two's label below, so the term is defined once.
+  const seen = new Set<GlossaryId>()
 
   const advance = useCallback(() => {
     setStage((s) => Math.min(s + 1, handoffs.length - 1))
@@ -40,6 +44,8 @@ export function Signal() {
         titleId="signal-title"
         headline={copy.headline}
         standfirst={copy.standfirst}
+        terms={copy.terms}
+        seen={seen}
       />
 
       {/* Mechanism one: translation loss. */}
@@ -128,7 +134,7 @@ export function Signal() {
       {/* Mechanism two: normalization of deviance. */}
       <div className="mech">
         <div className="mech__head">
-          <span className="mech__label">{deviance.label}</span>
+          <span className="mech__label">{defineTerms(deviance.label, copy.terms, seen)}</span>
           <h3 className="mech__heading">{deviance.heading}</h3>
         </div>
         <div className="mech__body">

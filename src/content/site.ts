@@ -5,6 +5,8 @@
  * component. Every factual claim must trace to the paper.
  */
 
+import type { GlossaryId } from './glossary'
+
 export interface Author {
   readonly name: string
   /** Given name(s), Highwire/JSON-LD order. Needed because "Family, Given"
@@ -88,6 +90,9 @@ export const disclaimer = {
 /** The "About this page" block. A dated snapshot, and it says so. */
 export const about = {
   heading: 'About this page',
+  /** §09 has no standfirst for SectionHead to define this against, so it is
+   *  defined directly where the third block below names itself: "synchronic". */
+  terms: ['synchronic'] as const satisfies readonly GlossaryId[],
   blocks: [
     'This is a companion to a paper, not a substitute for it. Everything substantive here comes from Architecting Candor (Arcadia Impact AI Governance Taskforce, August 2026).',
     'Where the page states a case holding, a statute, a date or a figure, it traces to that paper. Where it needed a number the paper does not supply, it says so on the screen rather than in a footnote.',

@@ -1,7 +1,8 @@
 import { SectionHead } from '../../components/SectionHead'
 import { paper, about, contribution, disclaimer, colophonCopy, explainer } from '../../content/site'
-import { glossary } from '../../content/glossary'
+import { glossary, type GlossaryId } from '../../content/glossary'
 import { bibtex } from '../../lib/citation'
+import { defineTerms } from '../../lib/defineTerms'
 import { useCopy } from '../../lib/useCopy'
 import './colophon.css'
 
@@ -17,6 +18,8 @@ export function Colophon() {
   const bibtexEntry = bibtex(paper)
   const { copied: citationCopied, copy: copyCitation } = useCopy()
   const { copied: bibtexCopied, copy: copyBibtex } = useCopy()
+  // §09 has no standfirst, so this is the only seen set for the section.
+  const seen = new Set<GlossaryId>()
 
   return (
     <section className="sect page" id="paper" aria-labelledby="paper-title">
@@ -126,7 +129,7 @@ export function Colophon() {
         <h3 className="colo__aboutHead">{about.heading}</h3>
         {about.blocks.map((b) => (
           <p className="colo__aboutBody" key={b.slice(0, 30)}>
-            {b}
+            {defineTerms(b, about.terms, seen)}
           </p>
         ))}
         <p className="colo__disclaimer">{disclaimer.full}</p>

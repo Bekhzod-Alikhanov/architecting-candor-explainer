@@ -6,6 +6,8 @@
  * breaks. Those consequences are the paper's own reasoning, not invention.
  */
 
+import type { GlossaryId } from './glossary'
+
 export interface Principle {
   readonly n: string
   readonly title: string
@@ -98,6 +100,9 @@ export const statuteCopy = {
   headline: 'The architecture can be built now. What it cannot do is travel.',
   standfirst:
     'Every comparative regime in the previous section rests on a statute. This one does not, and the three-channel structure works only inside a single firm. The paper asks for four things.',
+  /** Not in the standfirst. Defined where the third principle's own title
+   *  names it: "Raw Channel One telemetry stays discoverable". */
+  terms: ['discovery'] as const satisfies readonly GlossaryId[],
   interactiveLead:
     'The second principle is four separate protections, and it fails if any one of them is missing. Switch them off and see.',
   onLabel: 'In force',

@@ -14,7 +14,15 @@ import {
   type NodeId,
 } from '../../content/channels'
 import { resolveFlow, nodeName, type ValveResult } from '../../lib/valve'
+import { defineTerms } from '../../lib/defineTerms'
+import type { GlossaryId } from '../../content/glossary'
 import './architecture.css'
+
+/** The channel-box wrap also carries the bare "Attorney-client and work
+ *  product" status label on Channel Two, which is not one of `copy.terms`
+ *  (that list is only what the standfirst could define) but belongs to the
+ *  same once-per-section `seen` set as the other three. */
+const cboxTerms: readonly GlossaryId[] = [...copy.terms, 'work-product']
 
 /**
  * 04 — The architecture, operable.
@@ -87,6 +95,9 @@ export function Architecture() {
   const channels = nodes.filter((n) => n.side === 'channel' && n.id !== 'one-overwrite')
   const outward = nodes.filter((n) => n.side === 'outward')
   const overwrite = nodes.find((n) => n.id === 'one-overwrite')!
+  // Shared across every channel box below, so a term named on one box's
+  // status or authority line is not opened again on another's.
+  const seen = new Set<GlossaryId>()
 
   return (
     <section className="sect page" id="architecture" aria-labelledby="arch-title">
@@ -95,6 +106,8 @@ export function Architecture() {
         titleId="arch-title"
         headline={copy.headline}
         standfirst={copy.standfirst}
+        terms={copy.terms}
+        seen={seen}
         aside={
           <Scaffold
             steps={architectureSteps}
@@ -166,6 +179,8 @@ export function Architecture() {
                 onOver={() => setOverNode(n.id)}
                 onLeave={() => setOverNode((c) => (c === n.id ? null : c))}
                 lastResult={result?.to === n.id ? result : null}
+                terms={cboxTerms}
+                seen={seen}
               >
                 {n.id === 'one' ? (
                   <button
@@ -245,6 +260,8 @@ export function Architecture() {
               onOver={() => setOverNode(n.id)}
               onLeave={() => setOverNode((c) => (c === n.id ? null : c))}
               lastResult={result?.to === n.id ? result : null}
+              terms={cboxTerms}
+              seen={seen}
             />
           ))}
         </div>
@@ -326,6 +343,8 @@ function ChannelBox({
   onOver,
   onLeave,
   lastResult,
+  terms,
+  seen,
   children,
 }: {
   readonly node: (typeof nodes)[number]
@@ -336,6 +355,8 @@ function ChannelBox({
   readonly onOver: () => void
   readonly onLeave: () => void
   readonly lastResult: ValveResult | null
+  readonly terms: readonly GlossaryId[]
+  readonly seen: Set<GlossaryId>
   readonly children?: React.ReactNode
 }) {
   return (
@@ -369,8 +390,10 @@ function ChannelBox({
         <span className="cbox__sub">{node.sub}</span>
       </button>
       <p className="cbox__body">{node.body}</p>
-      <p className="cbox__status">{node.status}</p>
-      {node.authority ? <p className="cbox__authority">{node.authority}</p> : null}
+      <p className="cbox__status">{defineTerms(node.status, terms, seen)}</p>
+      {node.authority ? (
+        <p className="cbox__authority">{defineTerms(node.authority, terms, seen)}</p>
+      ) : null}
       {isHome ? <p className="cbox__home">{copy.homeNote}</p> : null}
       {children}
     </div>

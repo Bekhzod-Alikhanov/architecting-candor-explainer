@@ -8,6 +8,8 @@
  * The rules are not: they are the paper's, from §1.2 and §3.2.2.
  */
 
+import type { GlossaryId } from './glossary'
+
 export type NodeId =
   | 'one'
   | 'one-overwrite'
@@ -429,6 +431,12 @@ export const architectureCopy = {
   headline: 'Pick something up and try to move it.',
   standfirst:
     'This is Figure 1 from the paper, except that it runs. Choose an object, choose a destination, and the valve will answer. Some flows are permitted and some are refused, and every refusal gives its reason.',
+  /** None of the three occur in the standfirst above; each is defined where
+   *  a channel box below names its own authority or status. `work-product`
+   *  is not one of the three, but rides along in the same wrap: it is the
+   *  bare status label on Channel Two's box, "Attorney-client and work
+   *  product". */
+  terms: ['upjohn', 'kovel', 'rule-407'] as const satisfies readonly GlossaryId[],
   objectsLabel: 'Objects',
   targetsLabel: 'Destinations',
   logLabel: 'Attempt log',

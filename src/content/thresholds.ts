@@ -13,6 +13,8 @@
  * fixed seed.
  */
 
+import type { GlossaryId } from './glossary'
+
 export type DimensionId =
   | 'severity'
   | 'recurrence'
@@ -128,6 +130,12 @@ export const calibrateCopy = {
   headline: 'Set the bands. Watch what you catch, and what you lose.',
   standfirst:
     'Channel Two opens automatically when a pre-committed threshold is crossed, and precommitment is what makes the claim defensible when a firm is acting on its own signals. Below is a simulated quarter of events. Move the bands and watch four things move against each other.',
+  /** `tripwire` is not here: every occurrence of the word in this section is
+   *  either an aria-label (Scaffold's `label`, never rendered as text) or
+   *  this module's own doc comments, so there is nowhere in the rendered
+   *  page to define it. `near-miss` is defined where the near-misses readout
+   *  names itself below. */
+  terms: ['near-miss'] as const satisfies readonly GlossaryId[],
   streamLabel: 'Simulated event stream',
   streamNote:
     'Generated in your browser from a fixed seed, so the same settings always give the same numbers.',

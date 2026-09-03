@@ -13,6 +13,8 @@ import {
   type ChannelMap,
   type Regime,
 } from '../../content/regimes'
+import { defineTerms } from '../../lib/defineTerms'
+import type { GlossaryId } from '../../content/glossary'
 import './regimes.css'
 
 /**
@@ -57,6 +59,8 @@ export function Regimes() {
   }, [filter, sort])
 
   const open: Regime | undefined = [...regimes, target].find((r) => r.id === openId)
+  // Shared with the "Source of protection" cell on the target row below.
+  const seen = new Set<GlossaryId>()
 
   return (
     <section className="sect page" id="regimes" aria-labelledby="reg-title">
@@ -65,6 +69,8 @@ export function Regimes() {
         titleId="reg-title"
         headline={copy.headline}
         standfirst={copy.standfirst}
+        terms={copy.terms}
+        seen={seen}
         aside={
           <Scaffold
             steps={regimeSteps}
@@ -143,6 +149,8 @@ export function Regimes() {
                 regime={r}
                 open={openId === r.id}
                 onOpen={() => setOpenId(r.id)}
+                terms={copy.terms}
+                seen={seen}
               />
             ))}
           </tbody>
@@ -157,6 +165,8 @@ export function Regimes() {
               regime={target}
               open={openId === target.id}
               onOpen={() => setOpenId(target.id)}
+              terms={copy.terms}
+              seen={seen}
             />
           </tbody>
         </table>
@@ -189,10 +199,14 @@ function RegimeRow({
   regime,
   open,
   onOpen,
+  terms,
+  seen,
 }: {
   readonly regime: Regime
   readonly open: boolean
   readonly onOpen: () => void
+  readonly terms: readonly GlossaryId[]
+  readonly seen: Set<GlossaryId>
 }) {
   return (
     <tr className="reg__row" data-open={open} data-proposed={regime.proposed}>
@@ -214,7 +228,9 @@ function RegimeRow({
             </span>
           ) : (
             <>
-              {String(regime[c.id as keyof typeof regime] ?? '')}
+              {c.id === 'source'
+                ? defineTerms(String(regime.source ?? ''), terms, seen)
+                : String(regime[c.id as keyof typeof regime] ?? '')}
               {c.id === 'recipient' && regime.separated ? (
                 <span className="reg__sep" title={copy.separatedTitle}>
                   {copy.separatedMark}

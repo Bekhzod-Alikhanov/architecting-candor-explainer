@@ -7,6 +7,8 @@
  * following. The research findings and the five-percent figure are the paper's.
  */
 
+import type { GlossaryId } from './glossary'
+
 export interface Handoff {
   readonly id: string
   readonly actor: string
@@ -184,6 +186,9 @@ export const signalCopy = {
   headline: 'The legal pressure acts on an organisation that was already losing the signal.',
   standfirst:
     'Section 01 described a bind created by law. This one is about the firm itself. Three mechanisms erode incident knowledge before any lawyer is involved, and the documentation paradox amplifies all three.',
+  /** Not present in the standfirst — the term is the mechanism's own label,
+   *  defined where that label appears below. */
+  terms: ['normalization-of-deviance'] as const satisfies readonly GlossaryId[],
 } as const
 
 export const signalArgues = {

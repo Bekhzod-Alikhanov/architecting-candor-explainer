@@ -18,6 +18,9 @@ import { a11y } from '../../content/ui'
 import { evaluate, type Settings } from '../../lib/tripwire'
 import { settingsFromLocation, writeSettingsToLocation } from '../../lib/calibration-url'
 import { useCopy } from '../../lib/useCopy'
+import { defineTerms } from '../../lib/defineTerms'
+import type { GlossaryId } from '../../content/glossary'
+import type { ReactNode } from 'react'
 import './calibrate.css'
 
 /**
@@ -63,6 +66,8 @@ export function Calibrate() {
   const [touches, setTouches] = useState(0)
   const [showingRecommended, setShowingRecommended] = useState(false)
   const beforeRecommended = useRef<Settings | null>(null)
+  // Shared with the near-misses readout label below.
+  const seen = new Set<GlossaryId>()
 
   const readout = useMemo(() => evaluate(settings), [settings])
 
@@ -125,6 +130,8 @@ export function Calibrate() {
         titleId="cal-title"
         headline={copy.headline}
         standfirst={copy.standfirst}
+        terms={copy.terms}
+        seen={seen}
         aside={
           <Scaffold
             steps={calibrateSteps}
@@ -270,7 +277,7 @@ export function Calibrate() {
               tone={readout.escalations > 35 ? 'bad' : 'ok'}
             />
             <Readout
-              label={readouts.nearMisses.label}
+              label={defineTerms(readouts.nearMisses.label, copy.terms, seen)}
               sub={readouts.nearMisses.sub}
               value={`${readout.nearMissCaptured}/${readout.nearMissTotal}`}
               note={readouts.nearMisses.note}
@@ -310,7 +317,7 @@ function Readout({
   note,
   tone,
 }: {
-  readonly label: string
+  readonly label: ReactNode
   readonly sub: string
   readonly value: string
   readonly note: string

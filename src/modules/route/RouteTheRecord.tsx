@@ -19,6 +19,8 @@ import {
 } from '../../content/grading'
 import { a11y } from '../../content/ui'
 import { grade, type Assignment } from '../../lib/grade'
+import { defineTerms } from '../../lib/defineTerms'
+import type { GlossaryId } from '../../content/glossary'
 import './route.css'
 
 /**
@@ -63,6 +65,9 @@ export function RouteTheRecord() {
    * on warnings — which is the order the two scoreboards are meant to be read in.
    */
   const [best, setBest] = useState<BestRun | null>(null)
+  // Shared with the bin hints below and with Scoreboards' outcome labels, so
+  // a term named in one place is not opened again in another.
+  const seen = new Set<GlossaryId>()
 
   const unrouted = useMemo(() => deck.filter((a) => assignment[a.id] === undefined), [assignment])
   const routedCount = deck.length - unrouted.length
@@ -167,6 +172,8 @@ export function RouteTheRecord() {
         titleId="route-title"
         headline={routeCopy.headline}
         standfirst={routeCopy.standfirst}
+        terms={routeCopy.terms}
+        seen={seen}
         leadBelow={
           <div className="rt__scenario">
             <div className="rt__scenarioHead">
@@ -284,7 +291,7 @@ export function RouteTheRecord() {
                     </span>
                   </button>
 
-                  <p className="bin__hint">{b.hint}</p>
+                  <p className="bin__hint">{defineTerms(b.hint, routeCopy.terms, seen)}</p>
 
                   <ul className="bin__held">
                     {held.map((a) => (
@@ -326,7 +333,13 @@ export function RouteTheRecord() {
         </div>
 
         <div className="rt__boards">
-          <Scoreboards grade={result} routedCount={routedCount} total={deck.length} />
+          <Scoreboards
+            grade={result}
+            routedCount={routedCount}
+            total={deck.length}
+            terms={routeCopy.terms}
+            seen={seen}
+          />
         </div>
       </div>
 

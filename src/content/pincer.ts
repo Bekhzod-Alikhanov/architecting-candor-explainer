@@ -4,6 +4,8 @@
  * Two forces acting on one reader. Everything here traces to the paper.
  */
 
+import type { GlossaryId } from './glossary'
+
 export interface Force {
   readonly id: 'document' | 'produce'
   readonly kicker: string
@@ -22,6 +24,9 @@ export const pincer = {
   headline: 'Two rules, pulling opposite ways, on the same set of documents.',
   standfirst:
     'One body of law requires an AI developer to monitor its systems and write down what it finds. Another lets a plaintiff compel production of what it wrote. Neither yields to the other, and the paper names the bind the Documentation Paradox.',
+  /** Neither term surfaces in the standfirst itself — both are defined where
+   *  force two's own lead and consequence name them below. */
+  terms: ['privilege', 'discovery'] as const satisfies readonly GlossaryId[],
 
   forces: [
     {

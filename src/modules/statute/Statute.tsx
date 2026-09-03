@@ -2,6 +2,8 @@ import { useState } from 'react'
 import { SectionHead } from '../../components/SectionHead'
 import { ArguesBlock } from '../../components/ArguesBlock'
 import { principles, protections, statuteCopy as copy, statuteArgues } from '../../content/statute'
+import { defineTerms } from '../../lib/defineTerms'
+import type { GlossaryId } from '../../content/glossary'
 import './statute.css'
 
 /**
@@ -24,6 +26,8 @@ export function Statute() {
 
   const allOff = off.size === protections.length
   const intact = off.size === 0
+  // Shared with the third principle's own title below.
+  const seen = new Set<GlossaryId>()
 
   return (
     <section className="sect page" id="ask" aria-labelledby="ask-title">
@@ -32,6 +36,8 @@ export function Statute() {
         titleId="ask-title"
         headline={copy.headline}
         standfirst={copy.standfirst}
+        terms={copy.terms}
+        seen={seen}
       />
 
       <ol className="prin">
@@ -41,7 +47,7 @@ export function Statute() {
               <span className="prin__n" aria-hidden="true">
                 {p.n}
               </span>
-              <h3 className="prin__title">{p.title}</h3>
+              <h3 className="prin__title">{defineTerms(p.title, copy.terms, seen)}</h3>
             </div>
             <div className="prin__text">
               {p.body.map((para) => (

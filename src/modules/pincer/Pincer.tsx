@@ -7,6 +7,8 @@ import { Countdown } from './Countdown'
 import { useMediaQuery } from '../../lib/useMediaQuery'
 import { pincer } from '../../content/pincer'
 import { entries, timelineCopy, timelineSteps, timelineArgues, axis } from '../../content/timeline'
+import { defineTerms } from '../../lib/defineTerms'
+import type { GlossaryId } from '../../content/glossary'
 import './pincer.css'
 
 /**
@@ -20,6 +22,9 @@ export function Pincer() {
   const vertical = !useMediaQuery('(min-width: 56rem)')
   const [step, setStep] = useState(0)
   const [freeSelected, setFreeSelected] = useState(entries.length - 1)
+  // Shared across the standfirst and the two forces below, so a term named
+  // once by either force is not defined a second time by the other.
+  const seen = new Set<GlossaryId>()
 
   const released = step >= entries.length
   const drawnUpTo = released ? entries.length - 1 : step
@@ -38,6 +43,8 @@ export function Pincer() {
         titleId="pincer-title"
         headline={pincer.headline}
         standfirst={pincer.standfirst}
+        terms={pincer.terms}
+        seen={seen}
       />
 
       {/* The two forces, set opposite one another. */}
@@ -46,7 +53,7 @@ export function Pincer() {
           <article className="force" key={f.id} data-force={f.id}>
             <p className="force__kicker">{f.kicker}</p>
             <h3 className="force__title">{f.title}</h3>
-            <p className="force__lead">{f.lead}</p>
+            <p className="force__lead">{defineTerms(f.lead, pincer.terms, seen)}</p>
             <ul className="force__items">
               {f.items.map((it) => (
                 <li key={it.authority}>
@@ -55,7 +62,7 @@ export function Pincer() {
                 </li>
               ))}
             </ul>
-            <p className="force__consequence">{f.consequence}</p>
+            <p className="force__consequence">{defineTerms(f.consequence, pincer.terms, seen)}</p>
           </article>
         ))}
       </div>

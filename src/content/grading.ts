@@ -8,6 +8,7 @@
  */
 
 import type { Bin } from './artifacts'
+import type { GlossaryId } from './glossary'
 
 export type Outcome =
   | 'produced'
@@ -196,6 +197,17 @@ export const routeCopy = {
   headline: 'You decide where each piece of knowledge goes.',
   standfirst:
     'Two systems will grade the result, and they pull in opposite directions. One asks what a plaintiff can get. The other asks what an engineer can still fix. Nothing here marks you against a correct answer; it grades a strategy.',
+  /** None of the four occur in the standfirst above. `privilege` and
+   *  `discovery` are defined where Channel One's bin hint and the discovery
+   *  scoreboard's own outcome labels name them; `spoliation` and `rule-407`
+   *  where those two outcome labels name themselves. `work-product` has no
+   *  occurrence anywhere in this section's rendered text and is not listed. */
+  terms: [
+    'privilege',
+    'discovery',
+    'spoliation',
+    'rule-407',
+  ] as const satisfies readonly GlossaryId[],
   unroutedLabel: 'Unrouted',
   routedLabel: 'routed',
   keyboardHint: 'Select a card, then press 1 to 4. Or use the arrow keys and Enter.',

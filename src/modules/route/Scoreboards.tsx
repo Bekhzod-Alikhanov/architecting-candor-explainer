@@ -1,5 +1,7 @@
 import { outcomes, scoreboards, type Outcome } from '../../content/grading'
 import type { Grade } from '../../lib/grade'
+import { defineTerms } from '../../lib/defineTerms'
+import type { GlossaryId } from '../../content/glossary'
 
 /**
  * Two scoreboards, always visible, moving in tension.
@@ -22,9 +24,15 @@ export interface ScoreboardsProps {
   readonly grade: Grade
   readonly routedCount: number
   readonly total: number
+  /** Glossary ids the outcome labels below may define inline, and the
+   *  section's shared seen set, threaded in from RouteTheRecord so a term
+   *  named by a bin hint above is not opened again here. */
+  readonly terms?: readonly GlossaryId[]
+  readonly seen?: Set<GlossaryId>
 }
 
-export function Scoreboards({ grade, routedCount, total }: ScoreboardsProps) {
+export function Scoreboards({ grade, routedCount, total, terms, seen }: ScoreboardsProps) {
+  const effectiveSeen = seen ?? new Set<GlossaryId>()
   const max = Math.max(1, ...ORDER.map((o) => grade.counts[o]))
 
   return (
@@ -47,7 +55,9 @@ export function Scoreboards({ grade, routedCount, total }: ScoreboardsProps) {
                   <span className="board__glyph" aria-hidden="true">
                     {meta.glyph}
                   </span>
-                  <span className="board__label">{meta.label}</span>
+                  <span className="board__label">
+                    {terms ? defineTerms(meta.label, terms, effectiveSeen) : meta.label}
+                  </span>
                   <span className="board__bar" aria-hidden="true">
                     <span style={{ inlineSize: `${(n / max) * 100}%` }} />
                   </span>

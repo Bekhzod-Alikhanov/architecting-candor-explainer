@@ -106,6 +106,10 @@ const spoken: readonly [string, string][] = [
     ui.a11y.boundarySummary(1989, 2027, '21 May 2025: Garcia v. Character Technologies'),
   ],
   [
+    '01 · a boundary chart node',
+    ui.a11y.timelineNode('21 May 2025', 'Garcia v. Character Technologies'),
+  ],
+  [
     '05 · a threshold slider',
     ui.a11y.bandValue(thresholds.calibrateCopy.levelLabel, 58, 'severity 3 and above'),
   ],

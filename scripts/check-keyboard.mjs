@@ -278,6 +278,15 @@ try {
     ['ArrowRight', 'ArrowRight'],
     `document.querySelector('#pincer .scaffold__meta span').textContent`,
   )
+  // 01 · a chart node. `+` picks the second node (index 1) rather than the
+  // first, since with the scaffold two steps in there are three nodes drawn
+  // and the first is already selected — Enter on it would change nothing.
+  await test(
+    '01 chart node',
+    '#pincer .bchart__node + .bchart__node',
+    ['Enter'],
+    `document.querySelector('#pincer .tl__detailTitle').textContent`,
+  )
   // 01 · the entry list
   await test(
     '01 entry list',

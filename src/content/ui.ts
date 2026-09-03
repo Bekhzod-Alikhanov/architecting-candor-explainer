@@ -1,3 +1,5 @@
+import type { DefensibilityBand } from './thresholds'
+
 /**
  * Cross-cutting interface copy.
  *
@@ -112,11 +114,67 @@ export const a11y = {
     `${r.signalsMissed} of ${r.signalTotal} signals missed. ` +
     `The figures are repeated below the chart.`,
 
+  /**
+   * The calibrator's one status region, standing in for the four readouts a
+   * slider drag would otherwise flood: an escalation count, a near-miss
+   * percentage, a missed-signal count and the defensibility band, each of
+   * which already has its own visible readout on screen.
+   */
+  calibrateStatus: (
+    escalations: number,
+    nearMissCaptured: number,
+    nearMissTotal: number,
+    signalsMissed: number,
+    band: DefensibilityBand,
+  ) => {
+    const pct = nearMissTotal > 0 ? Math.round((nearMissCaptured / nearMissTotal) * 100) : 0
+    return (
+      `Escalations ${escalations}, near misses captured ${pct}%, signals missed ${signalsMissed}. ` +
+      `Defensibility: ${calibrateBandStatus[band]}.`
+    )
+  },
+
+  /**
+   * Route the Record's single status, said once per routing action. It folds
+   * in a one-clause read of both scoreboards so a screen-reader user gets the
+   * consequence of the move without also running the two boards' own live
+   * regions at the same time.
+   */
+  routedAnnouncement: (
+    kind: string,
+    binName: string,
+    reach: number,
+    reachTotal: number,
+    fix: number,
+    fixTotal: number,
+  ) =>
+    `${kind} routed to ${binName}. Plaintiff can reach ${reach} of ${reachTotal}; ` +
+    `engineer can fix ${fix} of ${fixTotal}.`,
+
+  /** Translation loss's one status, in place of announcing the whole handoff
+   *  panel — heading, field list, dropped field and all — on every step. */
+  decayStatus: (actor: string, kept: number, total: number, boundaryLabel: string) =>
+    `${actor}: ${kept} of ${total} fields carried forward. ${boundaryLabel}.`,
+
+  /** Normalization of deviance's one status: the observed count and what the
+   *  current recurrence means, rather than the panel's heading and buttons too. */
+  driftStatus: (count: number, observedLabel: string, sentence: string) =>
+    `${count} ${observedLabel.toLowerCase()}. ${sentence}`,
+
   /** Every section head's "Copy link" button. The section title makes the
    *  name distinctive; without it, ten buttons on the page would all be
    *  named "Copy link". */
   copySectionLink: (title: string) => `Copy a link to “${title}”`,
 } as const
+
+/** Terse enough to sit in a status sentence; each maps to the fuller band
+ *  label the same reader can already read in the visible readout below. */
+const calibrateBandStatus: Readonly<Record<DefensibilityBand, string>> = {
+  none: 'nothing to defend',
+  narrow: 'barely exercised',
+  strong: 'pre-committed',
+  weak: 'routine business activity',
+}
 
 /**
  * Each section head's reading-time label, e.g. "7 min read". A function

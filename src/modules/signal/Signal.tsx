@@ -13,6 +13,8 @@ import {
   signalArgues,
 } from '../../content/signal'
 import { defineTerms } from '../../lib/defineTerms'
+import { useStatus } from '../../lib/useStatus'
+import { a11y } from '../../content/ui'
 import type { GlossaryId } from '../../content/glossary'
 import './signal.css'
 
@@ -32,6 +34,27 @@ export function Signal() {
   const harmed = recurrences >= deviance.steps.length
   // Shared with mechanism two's label below, so the term is defined once.
   const seen = new Set<GlossaryId>()
+
+  const decayStatus = useStatus(
+    a11y.decayStatus(
+      current.actor,
+      current.fields.length,
+      origin.fields.length,
+      boundaries[current.boundary].label,
+    ),
+  )
+  const driftSentence = harmed
+    ? deviance.harmBody
+    : recurrences === 0
+      ? deviance.initial
+      : deviance.steps[recurrences - 1]!
+  const driftStatus = useStatus(
+    a11y.driftStatus(
+      Math.min(recurrences, deviance.steps.length),
+      deviance.observedLabel,
+      driftSentence,
+    ),
+  )
 
   const advance = useCallback(() => {
     setStage((s) => Math.min(s + 1, handoffs.length - 1))
@@ -86,7 +109,11 @@ export function Signal() {
             ))}
           </ol>
 
-          <div className="decay__panel" aria-live="polite">
+          <p className="sr-only" role="status">
+            {decayStatus}
+          </p>
+
+          <div className="decay__panel">
             <p className="decay__boundary" data-boundary={current.boundary}>
               <span>{boundaries[current.boundary].label}</span>
               {boundaries[current.boundary].note}
@@ -156,7 +183,11 @@ export function Signal() {
             <span className="drift__scale" aria-hidden="true" />
           </div>
 
-          <div className="drift__readout" aria-live="polite">
+          <p className="sr-only" role="status">
+            {driftStatus}
+          </p>
+
+          <div className="drift__readout">
             <p className="drift__counts">
               <span className="drift__count" data-figure>
                 {Math.min(recurrences, deviance.steps.length)}

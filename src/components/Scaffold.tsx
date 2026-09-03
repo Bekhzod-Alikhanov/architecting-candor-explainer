@@ -60,8 +60,8 @@ export function Scaffold({ steps, current, onChange, label, hint, className = ''
         {released && hint ? <span>{hint}</span> : null}
       </div>
 
-      {/* One live region, so a step change is announced once and completely. */}
-      <div aria-live="polite">
+      {/* One status region, so a step change is announced once and completely. */}
+      <div role="status">
         <h3 className="scaffold__heading">{step.heading}</h3>
         <p className="scaffold__body">{step.body}</p>
       </div>

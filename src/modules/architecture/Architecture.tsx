@@ -271,7 +271,7 @@ export function Architecture() {
       <div
         className="valve"
         data-state={result ? (result.allowed ? 'allowed' : 'refused') : 'idle'}
-        aria-live="polite"
+        role="status"
       >
         {result ? (
           <>

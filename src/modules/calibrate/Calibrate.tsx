@@ -18,6 +18,7 @@ import { a11y } from '../../content/ui'
 import { evaluate, type Settings } from '../../lib/tripwire'
 import { settingsFromLocation, writeSettingsToLocation } from '../../lib/calibration-url'
 import { useCopy } from '../../lib/useCopy'
+import { useStatus } from '../../lib/useStatus'
 import { defineTerms } from '../../lib/defineTerms'
 import type { GlossaryId } from '../../content/glossary'
 import type { ReactNode } from 'react'
@@ -70,6 +71,15 @@ export function Calibrate() {
   const seen = new Set<GlossaryId>()
 
   const readout = useMemo(() => evaluate(settings), [settings])
+  const status = useStatus(
+    a11y.calibrateStatus(
+      readout.escalations,
+      readout.nearMissCaptured,
+      readout.nearMissTotal,
+      readout.signalsMissed,
+      readout.band,
+    ),
+  )
 
   // Reflect the configuration in the address bar, replacing rather than
   // pushing so the back button still leaves the page.
@@ -268,7 +278,11 @@ export function Calibrate() {
             ))}
           </ul>
 
-          <div className="cal__readouts" aria-live="polite">
+          <p className="sr-only" role="status">
+            {status}
+          </p>
+
+          <div className="cal__readouts">
             <Readout
               label={readouts.escalations.label}
               sub={readouts.escalations.sub}

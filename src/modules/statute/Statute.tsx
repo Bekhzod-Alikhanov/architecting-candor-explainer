@@ -92,7 +92,7 @@ export function Statute() {
                 <div
                   className="prot__summary"
                   data-state={allOff ? 'all-off' : intact ? 'intact' : 'partial'}
-                  aria-live="polite"
+                  role="status"
                 >
                   <p className="prot__summaryTitle">
                     {allOff

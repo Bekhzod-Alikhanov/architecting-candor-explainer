@@ -5,11 +5,6 @@
  *   roles in Chrome, Firefox and Safari. These roles are only "redundant" at
  *   the default table display Biome assumes; at the card breakpoint they are
  *   what keeps row/column association available to screen readers.
- * biome-ignore-all lint/a11y/useAriaPropsSupportedByRole: on .reg__tableWrap,
- *   role and aria-label are set by the same `tableScrollable` condition (see
- *   the measuring effect below), so aria-label is never present without
- *   role="region" at runtime. Biome can't correlate the two conditionals and
- *   falls back to the element's roleless default.
  */
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
@@ -168,6 +163,7 @@ export function Regimes() {
         </div>
       </div>
 
+      {/* biome-ignore lint/a11y/useAriaPropsSupportedByRole: role and aria-label share the tableScrollable condition, so the label never appears without role="region"; Biome cannot correlate the two conditionals. */}
       <div
         className="reg__tableWrap"
         ref={tableWrapRef}

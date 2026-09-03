@@ -72,8 +72,10 @@ export function App() {
           rubric, same look — see hero.css/components.css for the padding
           that used to live on .hero moving here instead, so nothing shifts. */}
       <header className="shell__mast">
-        <span>{rubric.publisher}</span>
-        <span>{rubric.season}</span>
+        <div className="shell__mastBar">
+          <span>{rubric.publisher}</span>
+          <span>{rubric.season}</span>
+        </div>
       </header>
 
       <div className="shell">

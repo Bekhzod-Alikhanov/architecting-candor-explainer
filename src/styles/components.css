@@ -517,9 +517,17 @@
     max-width: var(--content-max);
     margin-inline: auto;
     padding-inline: var(--page-gutter);
-    /* This is the rubric bar §00 used to open with — same padding, same
-       border, same type, just moved. See the note in hero.css: the top
-       value used to be .hero's own top padding. */
+  }
+
+  /* This is the rubric bar §00 used to open with — same padding, same
+     border, same type, just moved. See the note in hero.css: the top
+     value used to be .hero's own top padding. A separate element from
+     .shell__mast itself so that, at 82rem, the outer element can become a
+     grid with an empty rail-width column while this one — the thing that
+     actually needs to lay its two children out left/right — stays a flex
+     row confined to the second column instead of splitting them one per
+     grid cell. */
+  .shell__mastBar {
     padding-block: clamp(1.5rem, 4vw, 2.5rem) 0.75rem;
     border-block-end: 1px solid var(--ground-rule-soft);
     display: flex;
@@ -532,6 +540,20 @@
     letter-spacing: 0.13em;
     text-transform: uppercase;
     color: var(--text-on-ground-faint);
+  }
+
+  @media (min-width: 82rem) {
+    .shell__mast {
+      display: grid;
+      grid-template-columns: var(--rail-w) minmax(0, 1fr);
+      column-gap: clamp(1.75rem, 3vw, 3.5rem);
+    }
+
+    /* Same empty-first-column trick as .shell__foot below: the bar lands
+       under the flow column instead of spanning the full page width. */
+    .shell__mastBar {
+      grid-column: 2;
+    }
   }
 
   .shell__foot {

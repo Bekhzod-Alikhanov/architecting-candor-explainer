@@ -13,7 +13,8 @@
       "!node_modules",
       "!public",
       "!pnpm-lock.yaml",
-      "!src/styles/tokens.css"
+      "!src/styles/tokens.css",
+      "!src/styles/font-fallbacks.css"
     ]
   },
   "formatter": {

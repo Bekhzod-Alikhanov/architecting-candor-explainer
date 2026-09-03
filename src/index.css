@@ -13,6 +13,7 @@
 @layer app-tokens, app-base, app-components, app-modules, app-print;
 
 @import "./styles/fonts.css";
+@import "./styles/font-fallbacks.css";
 @import "./styles/tokens.css";
 @import "./styles/base.css";
 @import "./styles/seam.css";

@@ -26,9 +26,9 @@
   --color-ink: oklch(0% 0 0);
 
   /* --- type ------------------------------------------------------------- */
-  --font-mono: 'IBM Plex Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
-  --font-sans: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
-  --font-doc: 'Spectral', Palatino, 'Palatino Linotype', Georgia, serif;
+  --font-mono: 'IBM Plex Mono', 'IBM Plex Mono Fallback', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+  --font-sans: 'IBM Plex Sans', 'IBM Plex Sans Fallback', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-doc: 'Spectral', 'Spectral Fallback', Palatino, 'Palatino Linotype', Georgia, serif;
 
   /* Console scale. Tight and tabular, but body text is 17px: this is a page
      someone reads for twenty minutes, not a dashboard they glance at. Only the

@@ -86,35 +86,41 @@ export function SectionHead({
         <span className="sect-eyebrow" {...(titleId && !headline ? { id: titleId } : {})}>
           {eyebrow}
         </span>
-        <SectionTime minutes={readingMinutes} />
-        <span className="sect-copyWrap">
-          <button
-            type="button"
-            className="sect-copy"
-            aria-label={a11y.copySectionLink(eyebrow)}
-            onClick={() => copyLink(`${meta.canonical}#${id}`)}
-          >
-            {/* A link glyph, not an emoji — this codebase draws its own marks. */}
-            <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
-              <path
-                d="M6.5 9.5a2.5 2.5 0 0 1 0-3.54l2-2a2.5 2.5 0 0 1 3.54 3.54l-1 1M9.5 6.5a2.5 2.5 0 0 1 0 3.54l-2 2a2.5 2.5 0 0 1-3.54-3.54l1-1"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.3"
-                strokeLinecap="round"
-              />
-            </svg>
-          </button>
-          {/* Absolutely positioned, so a sighted reader sees confirmation
-              without the stamp bar reflowing. One persistent role="status"
-              node whose text changes — rather than mounting/unmounting a
-              status element — because some screen readers only announce a
-              live region's own text mutating, not a fresh node appearing. */}
-          <span className="sect-copy__status" role="status">
-            {copied ? sectionLinkCopy.copied : ''}
+        {/* Grouped so the row can wrap as a unit below 48rem — see .sect-meta
+            in components.css — without disturbing reading order: `display:
+            contents` at wider widths keeps these three exactly where they'd
+            sit as direct children of .sect-head. */}
+        <span className="sect-meta">
+          <SectionTime minutes={readingMinutes} />
+          <span className="sect-copyWrap">
+            <button
+              type="button"
+              className="sect-copy"
+              aria-label={a11y.copySectionLink(eyebrow)}
+              onClick={() => copyLink(`${meta.canonical}#${id}`)}
+            >
+              {/* A link glyph, not an emoji — this codebase draws its own marks. */}
+              <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+                <path
+                  d="M6.5 9.5a2.5 2.5 0 0 1 0-3.54l2-2a2.5 2.5 0 0 1 3.54 3.54l-1 1M9.5 6.5a2.5 2.5 0 0 1 0 3.54l-2 2a2.5 2.5 0 0 1-3.54-3.54l1-1"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.3"
+                  strokeLinecap="round"
+                />
+              </svg>
+            </button>
+            {/* Absolutely positioned, so a sighted reader sees confirmation
+                without the stamp bar reflowing. One persistent role="status"
+                node whose text changes — rather than mounting/unmounting a
+                status element — because some screen readers only announce a
+                live region's own text mutating, not a fresh node appearing. */}
+            <span className="sect-copy__status" role="status">
+              {copied ? sectionLinkCopy.copied : ''}
+            </span>
           </span>
+          <span className="bates sect-bates">{bates(seq)}</span>
         </span>
-        <span className="bates sect-bates">{bates(seq)}</span>
       </div>
 
       <div className="sect-intro" data-aside={aside ? 'true' : 'false'}>

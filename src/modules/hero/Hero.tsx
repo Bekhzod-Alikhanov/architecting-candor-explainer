@@ -44,8 +44,14 @@ export function Hero() {
           {memoSection.n}
         </span>
         <span className="hero__eyebrow">{memoSection.title}</span>
-        <SectionTime minutes={memoSection.readingMinutes} />
-        <span className="bates bates--push">{bates(memoSection.seq)}</span>
+        {/* Grouped so the row can wrap as a unit below 48rem — see
+            .hero__meta in hero.css — without disturbing reading order:
+            `display: contents` at wider widths keeps these where they'd sit
+            as direct children of .hero__head. */}
+        <span className="hero__meta">
+          <SectionTime minutes={memoSection.readingMinutes} />
+          <span className="bates bates--push">{bates(memoSection.seq)}</span>
+        </span>
       </div>
 
       <div className="hero__masthead">

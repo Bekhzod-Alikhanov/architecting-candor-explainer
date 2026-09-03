@@ -46,6 +46,54 @@
     color: var(--text-on-ground-muted);
   }
 
+  /* Wraps reading time and Bates so they wrap onto a second row as one unit
+     below 48rem, matching .sect-meta in components.css — same wrapper
+     technique, same reasoning, so §00's head bar reads like every other
+     section's. `contents` drops the wrapper from the box tree at every
+     other width. */
+  .hero__meta {
+    display: contents;
+  }
+
+  /* Same crowding as every other section head below tablet width, and the
+     same grid fix — see the comment on .sect-head's media query in
+     components.css for why grid rather than flex-wrap. */
+  @media (max-width: 47.99rem) {
+    .hero__head {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      align-items: center;
+      column-gap: 0.9rem;
+      row-gap: 0.5rem;
+    }
+
+    .hero__number {
+      grid-column: 1;
+      grid-row: 1;
+    }
+
+    .hero__eyebrow {
+      grid-column: 2;
+      grid-row: 1;
+    }
+
+    .hero__meta {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 0.6rem;
+      grid-column: 1 / -1;
+      grid-row: 2;
+    }
+
+    /* Redundant once .hero__meta is right-aligned as a group, and would
+       otherwise pull the Bates stamp away from the reading time it now
+       shares a row with. */
+    .hero__meta .bates--push {
+      margin-inline-start: 0;
+    }
+  }
+
   /* --- masthead: the turn on the left, the artifact on the right ----------- */
 
   .hero__masthead {

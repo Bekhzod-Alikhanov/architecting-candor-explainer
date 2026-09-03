@@ -94,6 +94,16 @@
     margin-inline-start: auto;
   }
 
+  /* Wraps reading time, copy-link and Bates so the trio can wrap onto a
+     second row as one unit below 48rem (see the media query at the end of
+     this section) without changing the accessible/DOM order. `contents`
+     drops the wrapper from the box tree at every other width, so ≥48rem
+     these three lay out exactly as if they were still direct children of
+     .sect-head. */
+  .sect-meta {
+    display: contents;
+  }
+
   /* The per-section "Copy link" button. Positioned relative so its status
      text (below) can sit off to the side without pushing the Bates stamp. */
   .sect-copyWrap {
@@ -161,6 +171,50 @@
   .sect-copy__status:empty {
     padding: 0;
     background: none;
+  }
+
+  /* Below tablet width the row is too narrow for all five pieces on one
+     line — the eyebrow was left to shrink into a three-line wrap beside a
+     Bates stamp that split mid-number. Grid, not flex-wrap, because the
+     break point can't depend on how long a given section's eyebrow text
+     happens to be: row 1 is always the stamp plus the eyebrow (which gets
+     the rest of the width, up to two lines), row 2 is always the metadata
+     trio, full width, flush right as one mono line. */
+  @media (max-width: 47.99rem) {
+    .sect-head {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      align-items: center;
+      column-gap: 0.9rem;
+      row-gap: 0.5rem;
+    }
+
+    .sect-num {
+      grid-column: 1;
+      grid-row: 1;
+    }
+
+    .sect-eyebrow {
+      grid-column: 2;
+      grid-row: 1;
+    }
+
+    .sect-meta {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 0.6rem;
+      grid-column: 1 / -1;
+      grid-row: 2;
+    }
+
+    /* The push-to-the-far-edge margin is redundant once .sect-meta itself is
+       right-aligned as a group — and would otherwise split the Bates stamp
+       away from the reading time and copy-link glyph it now shares a row
+       with. */
+    .sect-bates {
+      margin-inline-start: 0;
+    }
   }
 
   .sect-headline {

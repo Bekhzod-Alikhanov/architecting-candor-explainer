@@ -724,4 +724,96 @@
     gap: 0.6rem;
     margin-block-start: var(--space-block);
   }
+
+  /* --- glossary terms -------------------------------------------------------
+   A first mention of a defined term, inline in running prose. Dotted rather
+   than solid so it reads as "defined", not as a link — nothing here
+   navigates. Only the underline colour changes on hover/focus; nothing about
+   size, padding or border does, so a term never shifts the line it sits on.
+   ---------------------------------------------------------------------- */
+
+  .term {
+    position: relative;
+    display: inline;
+    font: inherit;
+    color: inherit;
+    background: none;
+    border: 0;
+    margin: 0;
+    padding: 0;
+    cursor: help;
+    text-decoration: underline dotted;
+    text-decoration-color: var(--ground-rule);
+    text-underline-offset: 0.2em;
+  }
+
+  /* A transparent hit area, since the button itself is sized by its text.
+     Same comfort-target reasoning as .scaffold__dot above: 24px is WCAG
+     2.2's minimum, grown to 44px on a coarse pointer, without moving the
+     text or the line it sits on. */
+  .term::before {
+    content: "";
+    position: absolute;
+    inset-block: -0.5em;
+    inset-inline: -0.15em;
+  }
+
+  @media (pointer: coarse) {
+    .term::before {
+      inset-block: -1.3em;
+      inset-inline: -0.3em;
+    }
+  }
+
+  .term:hover,
+  .term:focus-visible {
+    text-decoration-color: var(--instrument-on-ground);
+  }
+
+  .on-doc .term {
+    text-decoration-color: var(--doc-rule);
+  }
+
+  .on-doc .term:hover,
+  .on-doc .term:focus-visible {
+    text-decoration-color: var(--instrument-on-doc);
+  }
+
+  /* The explanation. Styled like .prov__pop (base.css): same panel, same
+     top-layer override of the trigger's inherited type, but set in the
+     prose register rather than the console's, since a definition reads as
+     a sentence, not as a mark's label. */
+  .term__pop {
+    max-inline-size: min(38ch, calc(100vw - 2rem));
+    padding: 0.7rem 0.8rem;
+    border: 1px solid var(--ground-rule);
+    border-radius: var(--radius-panel);
+    background: var(--ground-raised);
+    color: var(--text-on-ground);
+    box-shadow: var(--lift-doc-sm);
+    font-family: var(--font-doc);
+    font-size: var(--text-ds-sm);
+    line-height: 1.55;
+    text-transform: none;
+    white-space: normal;
+  }
+
+  @supports (position-area: block-end) {
+    .term__pop:popover-open {
+      position-area: block-end span-inline-start;
+      position-try-fallbacks:
+        block-start span-inline-start,
+        block-end span-inline-end;
+      margin: 0.4rem 0 0 0;
+    }
+  }
+
+  .term__ref {
+    display: block;
+    margin-block-start: 0.5em;
+    font-family: var(--font-mono);
+    font-size: var(--text-cs-xs);
+    font-style: normal;
+    color: var(--text-on-ground-muted);
+  }
 }

@@ -20,6 +20,7 @@
 import * as artifacts from '../src/content/artifacts'
 import * as channels from '../src/content/channels'
 import * as checklist from '../src/content/checklist'
+import { glossary } from '../src/content/glossary'
 import * as grading from '../src/content/grading'
 import * as hero from '../src/content/hero'
 import * as linterRules from '../src/content/linter-rules'
@@ -61,7 +62,8 @@ const TOLERANCE_MINUTES = 1
  * — the one-line "Watch the explainer ↑" back-link Colophon.tsx renders —
  * not the whole of site.ts, most of which (nav labels, meta, the citation
  * machinery) is chrome rather than something a reader reads as prose in any
- * one section.
+ * one section. It also carries glossary.ts's `glossary`, since Colophon.tsx
+ * renders every entry's definition and reference as the §09 term list.
  */
 const SECTION_MODULES: Readonly<Record<string, readonly Record<string, unknown>[]>> = {
   memo: [
@@ -91,6 +93,7 @@ const SECTION_MODULES: Readonly<Record<string, readonly Record<string, unknown>[
       disclaimer,
       explainerBackLabel: explainer.backLabel,
     },
+    { glossary },
   ],
 }
 

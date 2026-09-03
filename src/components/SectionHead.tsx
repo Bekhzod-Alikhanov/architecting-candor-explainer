@@ -1,6 +1,8 @@
 import type { ReactNode } from 'react'
 import { bates, meta, section, sectionLinkCopy, type SectionId } from '../content/site'
 import { a11y } from '../content/ui'
+import type { GlossaryId } from '../content/glossary'
+import { defineTerms } from '../lib/defineTerms'
 import { useCopy } from '../lib/useCopy'
 import { SectionTime } from './SectionTime'
 
@@ -43,6 +45,18 @@ export interface SectionHeadProps {
    * band of nothing under the deck.
    */
   readonly leadBelow?: ReactNode
+  /**
+   * Glossary ids the standfirst may define inline. Absent, the standfirst
+   * renders as plain text exactly as before — this is additive.
+   */
+  readonly terms?: readonly GlossaryId[]
+  /**
+   * The section's shared "already defined" set, for a caller that also runs
+   * `defineTerms` on body content below the head and needs the same term not
+   * opened twice. Omitted, a fresh set is used — scoped to the standfirst
+   * alone, same as passing one used nowhere else.
+   */
+  readonly seen?: Set<GlossaryId>
 }
 
 export function SectionHead({
@@ -52,9 +66,12 @@ export function SectionHead({
   standfirst,
   aside,
   leadBelow,
+  terms,
+  seen,
 }: SectionHeadProps) {
   const { n, title: eyebrow, seq, readingMinutes } = section(id)
   const { copied, copy: copyLink } = useCopy()
+  const effectiveSeen = seen ?? new Set<GlossaryId>()
 
   return (
     <>
@@ -111,7 +128,11 @@ export function SectionHead({
               {headline}
             </h2>
           ) : null}
-          {standfirst ? <p className="sect-standfirst">{standfirst}</p> : null}
+          {standfirst ? (
+            <p className="sect-standfirst">
+              {terms ? defineTerms(standfirst, terms, effectiveSeen) : standfirst}
+            </p>
+          ) : null}
           {leadBelow ? <div className="sect-intro__leadBelow">{leadBelow}</div> : null}
         </div>
         {aside ? <div className="sect-intro__aside">{aside}</div> : null}

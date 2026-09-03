@@ -138,7 +138,7 @@ export const sections = [
   { n: '06', id: 'regimes', title: 'Four regimes, one logic', readingMinutes: 5 },
   { n: '07', id: 'ask', title: 'The ask', readingMinutes: 4 },
   { n: '08', id: 'gc', title: 'Take it to your GC', readingMinutes: 8 },
-  { n: '09', id: 'paper', title: 'The paper', readingMinutes: 2 },
+  { n: '09', id: 'paper', title: 'The paper', readingMinutes: 4 },
 ] as const
 
 export type SectionId = (typeof sections)[number]['id']
@@ -223,6 +223,7 @@ export const colophonCopy = {
   copyCitation: 'Copy citation',
   copyBibtex: 'Copy BibTeX',
   copied: 'Copied',
+  glossaryLabel: 'Terms used on this page',
 } as const
 
 /** The per-section "Copy link" button beside the Bates stamp. Shares the

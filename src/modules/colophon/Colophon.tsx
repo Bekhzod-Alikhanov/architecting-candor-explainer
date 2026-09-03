@@ -1,5 +1,6 @@
 import { SectionHead } from '../../components/SectionHead'
 import { paper, about, contribution, disclaimer, colophonCopy, explainer } from '../../content/site'
+import { glossary } from '../../content/glossary'
 import { bibtex } from '../../lib/citation'
 import { useCopy } from '../../lib/useCopy'
 import './colophon.css'
@@ -101,6 +102,25 @@ export function Colophon() {
           </dl>
         </div>
       </div>
+
+      <section
+        className="glossary doc-object doc-object--scanned on-doc"
+        aria-labelledby="glossary-title"
+      >
+        <h3 id="glossary-title" className="glossary__head">
+          {colophonCopy.glossaryLabel}
+        </h3>
+        <dl className="glossary__list">
+          {glossary.map((entry) => (
+            <div className="glossary__entry" key={entry.id}>
+              <dt className="glossary__term">{entry.term}</dt>
+              <dd className="glossary__def">
+                {entry.definition} <span className="glossary__ref">{entry.ref}</span>
+              </dd>
+            </div>
+          ))}
+        </dl>
+      </section>
 
       <div className="colo__about doc-object doc-object--scanned on-doc">
         <h3 className="colo__aboutHead">{about.heading}</h3>

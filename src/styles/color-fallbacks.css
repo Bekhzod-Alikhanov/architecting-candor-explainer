@@ -1,0 +1,227 @@
+/* ============================================================================
+   COLOR-MIX() FALLBACKS — generated, do not hand-edit.
+   Regenerate: pnpm colors:fallbacks
+
+   Until Tailwind was removed, its compiler emitted static hex fallbacks for
+   every color-mix() under @supports. Safari 15.4–16.1 has no color-mix():
+   `background: var(--ground-raised)` is invalid at computed-value time
+   there and falls back to transparent, so panels render see-through. Every
+   color-mix() here resolves to a constant — the six source colours in
+   tokens.css are static — so this file precomputes each one to a plain
+   sRGB hex (culori: OKLCH parse, OKLab premultiplied-alpha interpolation
+   per the CSS Color 4 color-mix() algorithm) and redefines it behind
+   `@supports not (color: color-mix(in oklab, red, blue))`. See scripts/color-fallbacks.mjs.
+
+   23 of 23 color-mix() token declarations in tokens.css resolved
+   (app-tokens layer, below); 43 literal color-mix() declaration(s)
+   elsewhere in src/ resolved into their own file's layer, right next to the
+   rule that uses them — a --token reference doesn't need its own fallback
+   here, since the app-tokens block above already redefines the custom
+   property it reads.
+   Left un-derived (depends on currentColor, which is only known at layout
+   time, not at build time):
+     - src/styles/base.css a { text-decoration-color }
+     - src/styles/reset.css ::placeholder { color }
+
+   This file and tokens.css are the only two places in the project where a
+   raw hex colour may appear.
+   ========================================================================= */
+
+@layer app-tokens {
+  @supports not (color: color-mix(in oklab, red, blue)) {
+    :root {
+      --ground-deep: #131c21;
+      --ground-panel: #242e34;
+      --ground-raised: #273237;
+      --ground-rule: #444f53;
+      --ground-rule-soft: #2e393e;
+      --doc-panel: #d0d6d6;
+      --doc-raised: #f0f2f2;
+      --doc-rule: #acb3b4;
+      --doc-rule-soft: #c7cdcd;
+      --text-on-ground-muted: #a3abac;
+      --text-on-ground-faint: #a3abac;
+      --text-on-doc-muted: #4c565b;
+      --stamp-on-ground: #b9989e;
+      --instrument-on-ground: #74a9ae;
+      --instrument-on-doc: #2d5d63;
+      --ochre-on-ground: #aca07a;
+      --ochre-on-doc: #64562b;
+      --tint-instrument: #3e8e9629;
+      --tint-stamp: #7a33462e;
+      --tint-ochre: #8a73322e;
+      --seam-colour: #70797c;
+      --lift-doc: 0 1px 1px #0b0f1129, 0 2px 4px #0b0f1124, 0 5px 12px #0b0f1121, 0 12px 28px #0b0f111f, 0 24px 52px #0b0f1119;
+      --lift-doc-sm: 0 1px 1px #0b0f1126, 0 2px 4px #0b0f1121, 0 5px 10px #0b0f111c;
+    }
+  }
+}
+
+@layer app-modules {
+  @supports not (color: color-mix(in oklab, red, blue)) {
+    .arch__overwrite {
+      background: #0b0f114d;
+    }
+
+    .valve[data-state="refused"] {
+      background: #2d3036;
+    }
+
+    .valve[data-state="allowed"] {
+      background: #26353b;
+    }
+
+    .cal__recNote {
+      border: 1px solid #7a334666;
+    }
+
+    [data-disposition="uncaptured"] {
+      fill: #e3e8e742;
+    }
+
+    .stream__near[data-disposition="uncaptured"] {
+      stroke: #e3e8e757;
+    }
+
+    .lg--un {
+      background: #e3e8e742;
+    }
+
+    .cl__actions .btn--primary:hover {
+      background: #672e3d;
+      border-color: #672e3d;
+    }
+
+    .cli__owner {
+      border: 1px solid #7a334666;
+    }
+
+    .colo__links .btn--primary:hover {
+      background: #672e3d;
+      border-color: #672e3d;
+    }
+
+    .colo__disclaimer {
+      border: 1px solid #7a334673;
+    }
+
+    .hero__legend {
+      border: 1px solid #7a334673;
+    }
+
+    .hero__cta {
+      border: 1px solid #3e8e966b;
+    }
+
+    .lint__privacy {
+      border: 1px solid #3e8e9666;
+    }
+
+    .lint__mark[data-cat="fault"] {
+      background: #7a33464d;
+    }
+
+    .lint__mark[data-cat="harm"] {
+      background: #7a334633;
+    }
+
+    .lint__mark[data-cat="causal"] {
+      background: #8a733242;
+    }
+
+    .lint__mark[data-cat="counterfactual"] {
+      background: #8a733233;
+    }
+
+    .tl__pending {
+      border: 1px solid #8a733280;
+    }
+
+    .countdown {
+      border: 1px solid #60444d;
+    }
+
+    .countdown[data-state="in-force"] {
+      border-color: #456e74;
+    }
+
+    .reg__sep {
+      border: 1px solid #3e8e9673;
+    }
+
+    .bin[data-bin="none"] {
+      background: #1b2328;
+    }
+
+    .bin[data-bin="one"] .bin__key {
+      border-color: #3e8e9673;
+    }
+
+    .bin[data-bin="two"] .bin__key {
+      border-color: #7a334680;
+    }
+
+    .bin[data-bin="three"] .bin__key {
+      border-color: #3e8e9673;
+    }
+
+    .ledger__outcome[data-adverse="true"] {
+      border-color: #7a334680;
+      background: #7a334614;
+    }
+
+    .ledger__outcome[data-outcome="excluded407"], .ledger__outcome[data-outcome="withheld"] {
+      border-color: #3e8e9673;
+    }
+
+    .ledger__flag {
+      background: #7a334617;
+    }
+
+    .prot__item[data-off="true"] {
+      background: #2b2f36;
+    }
+
+    .prot__summary[data-state="all-off"] {
+      background: #7a334619;
+    }
+  }
+}
+
+@layer app-base {
+  @supports not (color: color-mix(in oklab, red, blue)) {
+    .doc-object--scanned::before {
+      background: linear-gradient(to right, #1621271c, transparent 3.5rem), repeating-linear-gradient(to bottom, transparent 0 3px, #1621270f 3px 4px);
+    }
+
+    .prov--simulated {
+      border: 1px solid #8a73328c;
+    }
+  }
+}
+
+@layer app-components {
+  @supports not (color: color-mix(in oklab, red, blue)) {
+    .scaffold__dot[data-done="true"]:not([aria-current="step"]) {
+      border-color: #3e8e9673;
+    }
+
+    .btn--primary {
+      background: #19282d;
+      border-color: #3e8e9680;
+    }
+
+    .nf-page .btn--primary:hover {
+      background: #672e3d;
+      border-color: #672e3d;
+    }
+
+    .seam[data-state="live"] {
+      --seam-glow: #3e8e9642;
+    }
+
+    .seam[data-state="refuse"] {
+      --seam-glow: #7a334657;
+    }
+  }
+}

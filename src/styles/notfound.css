@@ -20,6 +20,7 @@
 @import "./reset.css";
 @import "./fonts.css";
 @import "./tokens.css";
+@import "./color-fallbacks.css";
 
 @layer app-base {
   html.nf-page {

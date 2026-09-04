@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { lint } from '../../lib/lint'
 import { sample, template, linterCopy as copy } from '../../content/linter-rules'
 import { useStatus } from '../../lib/useStatus'
@@ -13,6 +13,16 @@ import './linter.css'
  */
 export function Linter({ standalone = false }: { readonly standalone?: boolean }) {
   const [text, setText] = useState('')
+  const input = useRef<HTMLTextAreaElement>(null)
+
+  // The page is prerendered, so a reader can start typing into the textarea
+  // before the bundle has hydrated it. React 19 leaves what they typed in the
+  // DOM but its own state is still '', so the count would say there is nothing
+  // to check until the next keystroke. Adopt the DOM's value once on mount.
+  useEffect(() => {
+    const el = input.current
+    if (el && el.value !== '') setText(el.value)
+  }, [])
   const result = useMemo(() => lint(text), [text])
   const has = text.trim().length > 0
   // The visible count updates on every keystroke; the announcement of it
@@ -51,6 +61,7 @@ export function Linter({ standalone = false }: { readonly standalone?: boolean }
           </div>
 
           <textarea
+            ref={input}
             id="lint-input"
             className="lint__input"
             value={text}

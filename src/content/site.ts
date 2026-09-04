@@ -198,6 +198,9 @@ export const explainer = {
   note: 'Self-hosted and not tracked. Nothing is downloaded until you press play.',
   /** The §09 text link back up to the §00 player. */
   backLabel: 'Watch the explainer',
+  /** The on-page transcript's disclosure summary, shown only once
+   *  transcript.ts has cues — see Hero.tsx. */
+  transcriptLabel: 'Transcript',
 } as const
 
 /** The section rail. */

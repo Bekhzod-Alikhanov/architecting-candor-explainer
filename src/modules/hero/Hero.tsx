@@ -6,11 +6,21 @@ import { useMediaQuery } from '../../lib/useMediaQuery'
 import { bp } from '../../lib/breakpoints'
 import { memo as content, exhibitLegend, waysIn } from '../../content/hero'
 import { bates, disclaimer, explainer, section } from '../../content/site'
+import { cues } from '../../content/transcript'
 import { Orientation } from './Orientation'
 import './hero.css'
 
 /** §00's number, title and Bates sequence come from the section register. */
 const memoSection = section('memo')
+
+/** `m:ss`, for the transcript's per-line timestamp. Not exported: this is
+ *  display formatting for a number, not prose, so it stays with the one
+ *  component that renders a cue rather than living in src/content/. */
+function formatCueTime(totalSeconds: number): string {
+  const m = Math.floor(totalSeconds / 60)
+  const s = Math.floor(totalSeconds % 60)
+  return `${m}:${String(s).padStart(2, '0')}`
+}
 
 /**
  * 00 — The memo.
@@ -183,11 +193,11 @@ export function Hero() {
           <span className="hero__explainerLabel">{explainer.label}</span>
           <span className="hero__explainerMeta">{explainer.duration}</span>
         </figcaption>
-        {/* biome-ignore lint/a11y/useMediaCaption: no caption track exists
-              for this video yet. A fabricated or empty track would be worse
-              than none, because it would claim captions that are not there.
-              This is the site's one known accessibility gap and it is
-              recorded in the README rather than hidden. */}
+        {/* biome-ignore lint/a11y/useMediaCaption: the track below renders as
+              soon as transcript.ts has cues. Until then, a fabricated or
+              empty track would claim captions that are not there, which is
+              worse than the honestly documented gap this is — recorded in
+              the README rather than hidden. */}
         <video
           className="hero__explainerPlayer"
           controls
@@ -197,6 +207,15 @@ export function Hero() {
           height={720}
         >
           <source src={explainer.src} type={explainer.type} />
+          {cues.length > 0 && (
+            <track
+              kind="captions"
+              srcLang="en"
+              label="English"
+              src="/video/architecting-candor-explainer.en.vtt"
+              default
+            />
+          )}
           {explainer.fallback}{' '}
           <a href={explainer.src} download>
             {explainer.downloadLabel}
@@ -204,6 +223,20 @@ export function Hero() {
         </video>
         <p className="hero__explainerNote">{explainer.note}</p>
       </figure>
+
+      {cues.length > 0 && (
+        <details className="hero__transcript">
+          <summary>{explainer.transcriptLabel}</summary>
+          <ol>
+            {cues.map((c) => (
+              <li key={c.start}>
+                <span className="hero__transcriptTime">{formatCueTime(c.start)}</span>
+                {c.text}
+              </li>
+            ))}
+          </ol>
+        </details>
+      )}
 
       {/* The orientation block and the five-minute version (U2), between the
           explainer and "What follows" — after the two ways the reader has

@@ -40,6 +40,7 @@ import * as signal from '../src/content/signal'
 import * as statute from '../src/content/statute'
 import * as thresholds from '../src/content/thresholds'
 import * as timeline from '../src/content/timeline'
+import * as transcript from '../src/content/transcript'
 import { collectProse, wordCount } from './lib/prose'
 
 const WORDS_PER_MINUTE = 220
@@ -57,7 +58,11 @@ const TOLERANCE_MINUTES = 1
  * `explainer.label`, `.fallback`, `.downloadLabel` and `.note` directly, even
  * though the object itself lives in site.ts alongside chrome that isn't
  * rendered as prose anywhere (`.src`, `.type`, `.poster`, `.title`, and
- * `.duration`, which is too short to pass `isProse` regardless). §09's
+ * `.duration`, which is too short to pass `isProse` regardless). It also
+ * carries transcript.ts's `cues`, which Hero.tsx renders as the on-page
+ * transcript once any exist — empty today, so it adds nothing, but a filled
+ * transcript should count toward §00's reading time the same as any other
+ * prose a reader can choose to read there. §09's
  * reading is the colophon/about furniture in site.ts plus `explainer.backLabel`
  * — the one-line "Watch the explainer ↑" back-link Colophon.tsx renders —
  * not the whole of site.ts, most of which (nav labels, meta, the citation
@@ -75,6 +80,7 @@ const SECTION_MODULES: Readonly<Record<string, readonly Record<string, unknown>[
       explainerDownloadLabel: explainer.downloadLabel,
       explainerNote: explainer.note,
     },
+    transcript,
   ],
   pincer: [pincer, timeline],
   signal: [signal],

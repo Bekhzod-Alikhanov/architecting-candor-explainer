@@ -632,6 +632,43 @@
     color: var(--text-on-ground-faint);
   }
 
+  /* The transcript disclosure. Only rendered once transcript.ts has cues —
+     see Hero.tsx — so this stays small: one open/close row and a list. */
+  .hero__transcript {
+    margin-block-start: 0.75rem;
+    border: 1px solid var(--ground-rule-soft);
+    border-radius: var(--radius-mark);
+    background: var(--ground-panel);
+  }
+
+  .hero__transcript summary {
+    padding: 0.5rem 0.75rem;
+    cursor: pointer;
+    font-family: var(--font-mono);
+    font-size: var(--text-cs-sm-14);
+    letter-spacing: 0.04em;
+    color: var(--text-on-ground-faint);
+  }
+
+  .hero__transcript ol {
+    padding: 0 0.75rem 0.75rem 2rem;
+    max-width: 74ch;
+  }
+
+  .hero__transcript li {
+    margin-block-start: 0.35rem;
+    font-size: var(--text-cs-sm);
+    line-height: 1.6;
+  }
+
+  .hero__transcriptTime {
+    margin-inline-end: 0.5em;
+    font-family: var(--font-mono);
+    font-size: var(--text-cs-sm-14);
+    font-variant-numeric: tabular-nums;
+    color: var(--instrument-on-ground);
+  }
+
   /* --- the orientation block and the five-minute version (U2) -------------
    Sits between the explainer and "what follows" as a document object, so it
    reads as the memo's own summary rather than as site chrome bolted on top

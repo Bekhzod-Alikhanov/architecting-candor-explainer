@@ -121,8 +121,8 @@ src/
                 Provenance, Deferred
   modules/      One directory per section
   lib/          grade.ts, valve.ts, tripwire.ts, lint.ts, prng.ts, countdown.ts
-  styles/       tokens.css, base.css, seam.css, components.css, print.css,
-                notfound.css
+  styles/       reset.css, tokens.css, base.css, seam.css, components.css,
+                print.css, notfound.css
 scripts/        Verification suites, Lighthouse gate, screenshot tooling, OG renderer
 docs/           reference-audit.md, design-plan.md
 404.html        A real error page, built as a second Vite entry
@@ -134,7 +134,9 @@ docs/           reference-audit.md, design-plan.md
 
 **Type.** IBM Plex Mono and IBM Plex Sans for the console register, Spectral for the legal one. Self-hosted from `public/fonts` with two weights preloaded — one per side of the seam in the hero. To refresh the faces, copy them out of the `@fontsource` devDependencies and keep the filenames.
 
-**Cascade layers.** `app-tokens → app-base → app-components → app-modules → app-print`, declared in `src/index.css`. Module stylesheets are imported from their components, so the bundler injects them in module-graph order; layers make the outcome independent of that, which is what lets the print stylesheet win without a single `!important`.
+**Cascade layers.** `app-reset → app-tokens → app-base → app-components → app-modules → app-print`, declared in `src/index.css`. Module stylesheets are imported from their components, so the bundler injects them in module-graph order; layers make the outcome independent of that, which is what lets the print stylesheet win without a single `!important`.
+
+**The reset.** `src/styles/reset.css` is Tailwind v4's `preflight.css`, vendored verbatim under the MIT licence and edited only where it looked up Tailwind's own theme, which now reads `--font-sans` and `--font-mono` straight from the token layer. Tailwind itself is gone: it generated no utility class this markup uses, and `build.cssCodeSplit: false` merges both entry stylesheets into the one sheet that serves `/`, `/linter` and `404.html`, so its preflight was being paid for twice for nothing in return. The reset stays because the layout leans on it — zeroed margins, `border: 0 solid`, headings and form controls that inherit, block-level replaced elements — and `app-reset` puts it below every author rule, which is where Tailwind's `@layer base` had it. Biome does not format `reset.css`; it is upstream's text. `scripts/diff-computed.mjs` is how the swap was checked: it walks every element of all three pages at 390 and 1440 in two builds and compares 37 computed properties each.
 
 **Routing.** Two entry points, `/` and `/linter`, resolved by a pathname switch in `src/main.tsx` rather than a routing library. Both deploy configs rewrite **only** `/linter` to the SPA shell; anything else falls through to a real 404. `/linter` sets its own canonical, title and description on mount, because both routes are served from the same `index.html` and the sitemap lists them separately.
 
@@ -161,7 +163,7 @@ captions programmatically and asks a human to. A fabricated or empty track would
 be worse than none, so there isn't one; supply a transcript and it becomes a
 `.vtt` alongside the video.
 
-**Code splitting.** Sections 02 to 07 are separate chunks, mounted by `src/components/Deferred.tsx` as the reader approaches, or immediately if they arrived at that section's anchor. §08 is deliberately eager so the checklist is printable from anywhere. Initial JS is about 93 kB gzipped across 4 chunks — react 59.6 kB, main 24.0 kB, d3 9.4 kB, modulepreload-polyfill 0.4 kB — plus 12.1 kB gzipped CSS.
+**Code splitting.** Sections 02 to 07 are separate chunks, mounted by `src/components/Deferred.tsx` as the reader approaches, or immediately if they arrived at that section's anchor. §08 is deliberately eager so the checklist is printable from anywhere. Initial JS is about 100 kB gzipped across 4 chunks — react 59.8 kB, main 30.5 kB, d3 9.4 kB, modulepreload-polyfill 0.4 kB — plus 19.3 kB gzipped CSS.
 
 ---
 
@@ -193,6 +195,14 @@ node scripts/shot.mjs <url> <out.png> [w] [h] [--mobile] [--full] [--rm]
 ```
 
 `--pdf` renders through the print stylesheet and reports the page count, which is how *"the checklist prints to one page"* is verified rather than assumed. `--print-media` applies the print rules to the live layout so they can be measured.
+
+`scripts/diff-computed.mjs` answers the other question — whether a change to the CSS *plumbing* changed anything a reader sees. Serve two builds and it walks both documents element by element at 390 and 1440, comparing 37 computed properties on each of the three pages, so a moved border colour is named rather than lost in a screenshot threshold.
+
+```bash
+pnpm exec vite preview --outDir <old-dist> --port 4174
+pnpm exec vite preview --port 4173
+node scripts/diff-computed.mjs http://localhost:4174 http://localhost:4173
+```
 
 ---
 

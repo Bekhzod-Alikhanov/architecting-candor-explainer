@@ -7,7 +7,7 @@
    so this file contains no raw values of its own.
 
    `build.cssCodeSplit: false` means this file and the app's components.css /
-   base.css land in one merged stylesheet, in the same three layers, serving
+   base.css land in one merged stylesheet, in the same layers, serving
    `/`, `/linter` AND `/404.html`. Unscoped, this file's `.btn`, `.btn--primary`
    and `body` rules loaded later in the layer and won by source order, so the
    error page's look leaked onto the app pages. Every selector below is
@@ -15,10 +15,9 @@
    here can be reached from a document that does not carry that hook.
    ========================================================================= */
 
-@import "tailwindcss";
+@layer app-reset, app-tokens, app-base, app-components;
 
-@layer app-tokens, app-base, app-components;
-
+@import "./reset.css";
 @import "./fonts.css";
 @import "./tokens.css";
 

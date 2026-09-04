@@ -3,7 +3,6 @@ import { resolve } from 'node:path'
 import { defineConfig } from 'vite'
 
 import react from '@vitejs/plugin-react'
-import tailwindcss from '@tailwindcss/vite'
 
 // Read the security headers straight from vercel.json rather than duplicating
 // the policy, so `pnpm preview` (and check:keyboard/audit:a11y against it)
@@ -52,7 +51,7 @@ const linterRoute = {
 } as const
 
 export default defineConfig(({ isSsrBuild }) => ({
-  plugins: [react(), tailwindcss(), linterRoute],
+  plugins: [react(), linterRoute],
   // Both entry points are real files in dist, so nothing needs a fallback.
   // Without this `vite preview` answers every dead URL with index.html and a
   // 200, which is neither what Vercel and Netlify do nor what /linter needs:

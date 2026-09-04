@@ -1,5 +1,3 @@
-@import "tailwindcss";
-
 /*
  * Cascade layers, in priority order.
  *
@@ -9,9 +7,15 @@
  * make the ordering explicit and independent of injection order: everything in
  * app-print beats everything in app-modules regardless of which arrived first.
  * That is also what lets print.css drop its !important block.
+ *
+ * app-reset comes first and holds the vendored preflight, which is where
+ * Tailwind used to put it: in a layer below every author rule, so anything
+ * here can be overridden without a specificity fight. fonts.css and
+ * font-fallbacks.css stay unlayered, which puts them above all of these.
  */
-@layer app-tokens, app-base, app-components, app-modules, app-print;
+@layer app-reset, app-tokens, app-base, app-components, app-modules, app-print;
 
+@import "./styles/reset.css";
 @import "./styles/fonts.css";
 @import "./styles/font-fallbacks.css";
 @import "./styles/tokens.css";

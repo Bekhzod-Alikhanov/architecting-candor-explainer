@@ -14,7 +14,8 @@
       "!public",
       "!pnpm-lock.yaml",
       "!src/styles/tokens.css",
-      "!src/styles/font-fallbacks.css"
+      "!src/styles/font-fallbacks.css",
+      "!src/styles/reset.css"
     ]
   },
   "formatter": {

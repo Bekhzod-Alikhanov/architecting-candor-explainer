@@ -18,7 +18,12 @@ import { explainer } from '../src/content/site'
 import { cues } from '../src/content/transcript'
 import { renderVtt } from './lib/vtt'
 
-const OUTPUT_PATH = join(__dirname, '..', 'public', 'video', 'architecting-candor-explainer.en.vtt')
+const OUTPUT_PATH = join(
+  __dirname,
+  '..',
+  'public',
+  ...explainer.captions.split('/').filter(Boolean),
+)
 const MAX_CHARS = 84
 const MIN_SECONDS = 1
 

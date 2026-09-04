@@ -208,13 +208,7 @@ export function Hero() {
         >
           <source src={explainer.src} type={explainer.type} />
           {cues.length > 0 && (
-            <track
-              kind="captions"
-              srcLang="en"
-              label="English"
-              src="/video/architecting-candor-explainer.en.vtt"
-              default
-            />
+            <track kind="captions" srcLang="en" label="English" src={explainer.captions} default />
           )}
           {explainer.fallback}{' '}
           <a href={explainer.downloadUrl} download>

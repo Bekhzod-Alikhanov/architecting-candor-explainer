@@ -160,7 +160,8 @@ hosting note) derives from that one value, and both host configs already allow
 
 1. Check the file starts with its index (`ffprobe -show_format` should show
    `moov` before `mdat`; if not, `ffmpeg -i in.mp4 -c copy -movflags +faststart out.mp4`).
-2. `vercel blob put public/video/architecting-candor-explainer.mp4 --content-type video/mp4 --cache-control-max-age 31536000`
+2. `vercel blob put public/video/architecting-candor-explainer.mp4 --access public --content-type video/mp4 --cache-control-max-age 31536000`
+   (`--access public` is required; the CSP only allows the public Blob host)
    and paste the returned URL into `explainer.src`.
 3. `pnpm build`; the "Download the file" link becomes `?download=1` automatically.
 4. Optionally shrink the repository: `git filter-repo --invert-paths --path public/video/architecting-candor-explainer.mp4 --force`,

@@ -13,10 +13,16 @@
 
 import { existsSync, rmSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
+import { explainer } from '../src/content/site'
 import { cues } from '../src/content/transcript'
 import { renderVtt } from './lib/vtt'
 
-const OUTPUT_PATH = join(__dirname, '..', 'public', 'video', 'architecting-candor-explainer.en.vtt')
+const OUTPUT_PATH = join(
+  __dirname,
+  '..',
+  'public',
+  ...explainer.captions.split('/').filter(Boolean),
+)
 
 const vtt = renderVtt(cues)
 
@@ -31,5 +37,5 @@ if (vtt === null) {
   }
 } else {
   writeFileSync(OUTPUT_PATH, vtt)
-  console.log(`Wrote public/video/architecting-candor-explainer.en.vtt (${cues.length} cues).`)
+  console.log(`Wrote public${explainer.captions} (${cues.length} cues).`)
 }

@@ -201,6 +201,11 @@ export const explainer = {
   src: EXPLAINER_SRC,
   type: 'video/mp4',
   /**
+   * The caption track's public path. One constant for Hero.tsx and the two
+   * VTT scripts, so the file the player asks for is the file the build writes.
+   */
+  captions: '/video/architecting-candor-explainer.en.vtt',
+  /**
    * Where "Download the file" points. A same-origin path is its own
    * download link; an absolute Blob URL needs `?download=1` — Vercel Blob's
    * attachment switch — because the cross-origin `download` attribute on

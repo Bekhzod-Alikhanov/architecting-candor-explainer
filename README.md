@@ -22,7 +22,7 @@ Its answer is a **mechanism** — a three-channel Safety Translation Layer. So t
 | **Lint a real ticket** | Paste your own incident ticket. Five categories of phrasing that would read as the firm's own findings, each with a measurement-form substitute. Runs entirely in your browser — [`/linter`](https://architecting-candor.vercel.app/linter) is shareable on its own. |
 | **Print the checklist** | §08 prints to exactly one page, so it can go to a general counsel on paper. |
 
-Ten numbered sections. Above 82rem a rail marks where you are; below that the same list opens from a control in the corner.
+Ten numbered sections. Above 82rem a rail marks where you are; below that a fixed bar along the bottom of the viewport names the section you are in and opens the same list.
 
 ---
 
@@ -42,7 +42,7 @@ The site can only be linked from the paper if every claim on it survives scrutin
 
 ### 2. Suites that fail when an argument breaks
 
-Four scripts assert the interactives still make the arguments they were built to make. They run against the content files, so a copy edit that quietly guts a claim fails loudly instead of shipping.
+Eleven scripts assert the interactives still make the arguments they were built to make, and that the generated files still match their generators. They run against the content files, so a copy edit that quietly guts a claim fails loudly instead of shipping.
 
 ```bash
 pnpm check
@@ -52,6 +52,13 @@ pnpm check
 - **`check-valve`** — at least four distinct illegal flows refused with a stated doctrinal reason (there are thirteen), every permitted flow actually permitted, nothing able to overwrite the pre-remediation state, and no causal or fault work able to escape Channel Two by any route.
 - **`check-tripwire`** — collapsing the logging tier must visibly destroy near-miss capture without changing how often counsel is engaged; bands at maximum must miss real signals; the recommended shape must read as pre-committed.
 - **`check-linter`** — all five categories exercised by the example, segments reconstruct the input exactly, word boundaries respected, measurement-language text returns clean.
+- **`check-citation`** — the generated BibTeX entry and APA string stay well-formed and keep every author, which nothing else would catch until someone pasted them into a reference manager.
+- **`check-glossary`** — no duplicate term ids, no definition for a term the prose never uses, and the matcher wraps the span it claims to.
+- **`check-reading-time`** — each section's stated "N min read" recomputed from its own content modules, within a minute.
+- **`check-breakpoints`** — every `@media` width in the CSS and every `bp.*` entry sits on the documented breakpoint scale, which CSS cannot enforce for itself.
+- **`check-fonts`** — `font-fallbacks.css` is exactly what its generator produces, and every `--font-*` stack keeps the metric-matched fallback that stops the swap reflowing.
+- **`check-colors`** — `color-fallbacks.css` matches its generator, covers every `color-mix()` in the token layer, and three of its values agree with an independently written computation.
+- **`check-vtt`** — the caption track matches `transcript.ts` (or its absence does), with cues sorted, non-overlapping and inside the video.
 
 ---
 
@@ -71,16 +78,19 @@ Requires **pnpm** and **Node 24**. No backend, no database, no API key, no envir
 | `pnpm preview` | Serve the production build |
 | `pnpm typecheck` | TypeScript, strict, no emit |
 | `pnpm lint` | Biome — lint and format check |
-| `pnpm check` | The four content-integrity suites above |
+| `pnpm check` | The eleven content-integrity suites above |
 | `pnpm read:aloud` | Every user-facing string as one document, for the tone check |
-| `pnpm og` | Regenerate `public/og.png`, `public/favicon.svg`, the PNG icon set and `public/site.webmanifest` from the token layer |
+| `pnpm og` | Regenerate `public/og.png`, `public/favicon.svg`, the PNG icon set and `public/site.webmanifest` from the token layer, and the `theme-color` hex in `index.html` and `404.html` |
+| `pnpm vtt` | Render `src/content/transcript.ts` to the caption track in `public/video/` |
+| `pnpm fonts:fallbacks` | Regenerate `src/styles/font-fallbacks.css` from the webfont metrics |
+| `pnpm colors:fallbacks` | Regenerate `src/styles/color-fallbacks.css` from the token layer |
 
 These three drive a real headless browser, so they need the production build already being served — run `pnpm build && pnpm preview` in another shell first. They are deliberately **not** part of `pnpm check`, which stays server-free.
 
 | Command | What it does |
 |---|---|
 | `pnpm check:lighthouse` | Performance and accessibility, gated at 95, on mobile **and** desktop |
-| `pnpm check:keyboard` | Drives all 22 interactives with real key events, at 1440 and again at 390 |
+| `pnpm check:keyboard` | Drives all 23 interactives with real key events, at 1440 and again at 390 |
 | `pnpm audit:a11y` | axe-core over every section, with all deferred content force-mounted |
 
 **Continuous integration.** `pnpm lint`, `pnpm typecheck`, `pnpm check` and `pnpm build` run automatically in GitHub Actions on every push to `main` and every pull request (`.github/workflows/ci.yml`). Browser-driven checks — keyboard operability, axe-core accessibility audits on both routes, and Lighthouse performance and accessibility gated at 0.90 — run in a second job against `pnpm preview` of the built artifact. Vercel's own GitHub integration posts preview URLs on pull requests; enable "Comments on Pull Requests" in the Vercel project's Git settings to see them.
@@ -108,6 +118,9 @@ That includes strings a reader never sees. The accessible names — what a scree
 | `statute.ts` | 07 · The four statutory principles and the four protections |
 | `linter-rules.ts` | 08 · Linter categories, phrases, substitutes, the ticket template |
 | `checklist.ts` | 08 · The printable implementation checklist |
+| `glossary.ts` | 09 · Every term defined inline, and the surface spellings the matcher recognises |
+| `orientation.ts` | 00 · The orientation block and the five-minute version of the argument |
+| `transcript.ts` | The explainer video's caption cues — the source `pnpm vtt` renders from |
 | `ui.ts` | Cross-cutting interface copy and every accessible name |
 
 ---
@@ -117,13 +130,16 @@ That includes strings a reader never sees. The accessible names — what a scree
 ```
 src/
   content/      All prose and data. Edit here.
-  components/   Seam, Scaffold, ArguesBlock, SectionHead, SectionNav,
-                Provenance, Deferred
+  components/   Seam, Scaffold, ArguesBlock, SectionHead, SectionTime,
+                SectionNav, Provenance, Term, Deferred, ChunkBoundary
   modules/      One directory per section
   lib/          grade.ts, valve.ts, tripwire.ts, lint.ts, prng.ts, countdown.ts
   styles/       reset.css, tokens.css, base.css, seam.css, components.css,
-                print.css, notfound.css
-scripts/        Verification suites, Lighthouse gate, screenshot tooling, OG renderer
+                print.css, notfound.css, fonts.css, font-fallbacks.css,
+                color-fallbacks.css
+  entry-server.tsx  The SSR entry scripts/prerender.mjs renders both routes with
+scripts/        Verification suites, prerender and dist checks, Lighthouse gate,
+                screenshot tooling, OG renderer
 docs/           reference-audit.md, design-plan.md
 404.html        A real error page, built as a second Vite entry
 ```
@@ -132,13 +148,15 @@ docs/           reference-audit.md, design-plan.md
 
 **Colour.** Six source values in `src/styles/tokens.css`, each taken from a physical artifact in the paper's subject, expressed in OKLCH and mixed in OKLab. **No raw hex appears anywhere else in the project, except `src/styles/color-fallbacks.css`** — the build-time `color-mix()` fallback for Safari 15.4–16.1 (see that file's header and `scripts/color-fallbacks.mjs`). The OG card and favicon are generated by reading the token file at build time for the same reason. Contrast figures in the comments are worst-case across every surface a colour sits on, computed and then confirmed with axe-core rather than estimated.
 
-**Type.** IBM Plex Mono and IBM Plex Sans for the console register, Spectral for the legal one. Self-hosted from `public/fonts` with two weights preloaded — one per side of the seam in the hero. To refresh the faces, copy them out of the `@fontsource` devDependencies and keep the filenames.
+**Type.** IBM Plex Mono and IBM Plex Sans for the console register, Spectral for the legal one. Self-hosted from `public/fonts` with three faces preloaded — one per side of the seam, plus the body weight the largest text block above the fold is set in; the comment above the preloads in `index.html` gives the measurement that fixed the set at three. The other five swap in behind the metric-matched fallbacks in `src/styles/font-fallbacks.css`. To refresh the faces, copy them out of the `@fontsource` devDependencies and keep the filenames.
 
 **Cascade layers.** `app-reset → app-tokens → app-base → app-components → app-modules → app-print`, declared in `src/index.css`. Module stylesheets are imported from their components, so the bundler injects them in module-graph order; layers make the outcome independent of that, which is what lets the print stylesheet win without a single `!important`.
 
 **The reset.** `src/styles/reset.css` is Tailwind v4's `preflight.css`, vendored verbatim under the MIT licence and edited only where it looked up Tailwind's own theme, which now reads `--font-sans` and `--font-mono` straight from the token layer. Tailwind itself is gone: it generated no utility class this markup uses, and `build.cssCodeSplit: false` merges both entry stylesheets into the one sheet that serves `/`, `/linter` and `404.html`, so its preflight was being paid for twice for nothing in return. The reset stays because the layout leans on it — zeroed margins, `border: 0 solid`, headings and form controls that inherit, block-level replaced elements — and `app-reset` puts it below every author rule, which is where Tailwind's `@layer base` had it. Biome does not format `reset.css`; it is upstream's text. `scripts/diff-computed.mjs` is how the swap was checked: it walks every element of all three pages at 390 and 1440 in two builds and compares 37 computed properties each.
 
-**Routing.** Two entry points, `/` and `/linter`, resolved by a pathname switch in `src/main.tsx` rather than a routing library. Both deploy configs rewrite **only** `/linter` to the SPA shell; anything else falls through to a real 404. `/linter` sets its own canonical, title and description on mount, because both routes are served from the same `index.html` and the sitemap lists them separately.
+**Routing.** Two entry points, `/` and `/linter`, resolved by a pathname switch in `src/main.tsx` rather than a routing library. Both deploy configs rewrite **only** `/linter` to the SPA shell; anything else falls through to a real 404. `/linter` is prerendered to its own `dist/linter/index.html` with its own head — canonical, title, description, card tags and JSON-LD — so it no longer inherits the homepage's identity from a shared document. The `useEffect` that used to set those on mount remains only as a fallback for the dev server, which serves the unprerendered shell.
+
+**Prerendering.** `pnpm build` runs the client build, an SSR build of `src/entry-server.tsx`, then `scripts/prerender.mjs` and `scripts/check-dist.mjs`. The prerenderer renders `/` and `/linter` with `react-dom/static`, drops each result into the shell's `#root`, rewrites the head from `src/content/site.ts` (title, description, canonical, card tags), injects the JSON-LD graph, the Highwire citation tags and the `<noscript>` sentence, lifts the stylesheet ahead of the script block, and writes `dist/sitemap.xml`. Every rewrite must match exactly once or the build fails — a silent miss would ship the wrong canonical, which is the bug this replaced. `src/main.tsx` hydrates when `#root` already has children and mounts fresh when it does not, so the dev server still works. `Deferred` adopts the server's markup untouched (`data-deferred="static"`) and swaps to the live section inside `startTransition` when the reader approaches it, on `hashchange`, or on focus; if that chunk fails, the static text stays on screen and a notice offers a retry, and a `vite:preloadError` reloads the page once per build while the reader is online.
 
 **The explainer video.** A 9½-minute video sits in §00 as the first "way in"
 (a text link in §09 points back up to it), self-hosted so that watching it sends
@@ -178,7 +196,7 @@ cue, at most 84 characters), `pnpm vtt` writes
 the two in step. As soon as `cues` is non-empty the player gains a
 `<track kind="captions">` and a transcript disclosure appears under it.
 
-**Code splitting.** Sections 02 to 07 are separate chunks, mounted by `src/components/Deferred.tsx` as the reader approaches, or immediately if they arrived at that section's anchor. §08 is deliberately eager so the checklist is printable from anywhere. Initial JS is about 100 kB gzipped across 4 chunks — react 59.8 kB, main 30.5 kB, d3 9.4 kB, modulepreload-polyfill 0.4 kB — plus 19.3 kB gzipped CSS.
+**Code splitting.** Sections 02 to 07 are separate chunks, mounted by `src/components/Deferred.tsx` as the reader approaches, or immediately if they arrived at that section's anchor. §08 is deliberately eager so the checklist is printable from anywhere. Initial JS is about 100 kB gzipped across 4 chunks — react 59.8 kB, main 30.8 kB, d3 9.4 kB, modulepreload-polyfill 0.4 kB — plus 20.0 kB gzipped CSS.
 
 ---
 
@@ -193,7 +211,7 @@ Measured against the **live production build**, three sampled runs per mobile fi
 | `/linter` | desktop | 100 | 100 | 100 | 100 |
 | `/linter` | mobile | 99 | 100 | 100 | 100 |
 
-`check-keyboard.mjs` drives all **22 interactives** with genuine key events dispatched through the DevTools Protocol — not synthesised React events — and asserts each instrument's own state actually changed. It mounts every deferred section first, then re-emulates a 390px viewport to reach the controls that only exist there.
+`check-keyboard.mjs` drives all **23 interactives** with genuine key events dispatched through the DevTools Protocol — not synthesised React events — and asserts each instrument's own state actually changed. It mounts every deferred section first, then re-emulates a 390px viewport to reach the controls that only exist there.
 
 `audit-a11y.mjs` forces every deferred section to mount and drives each interactive into a used state before scanning, because an untouched instrument hides most of its own markup. It reports **no axe-core violations** across WCAG 2.0/2.1 A and AA plus best-practice rules, and prints axe's *incomplete* results too — those are where a contrast fault can hide, since axe abandons the rule wherever it cannot flatten a background.
 
@@ -230,9 +248,9 @@ Fully static. Both configs are committed and either works unchanged.
 
 Both set immutable caching on hashed assets and fonts, plus `X-Content-Type-Options`, `Referrer-Policy`, `X-Frame-Options: DENY`, a `Permissions-Policy` that locks down the sensor/media APIs the page never uses, and a strict `Content-Security-Policy` (`default-src 'none'`, same-origin only for scripts, styles, fonts, media and connections). The site loads no third-party resources and has no inline scripts, so the policy costs nothing here — and it makes the linter's claim that "the page makes no network requests after it loads" enforceable by the browser rather than just true by inspection. `vite.config.ts` reads the same headers out of `vercel.json` for `pnpm preview`, so local runs see the identical policy.
 
-If the site moves to a different domain, update `meta.canonical` and `meta.linterCanonical` in `src/content/site.ts`, the `og:url` and `twitter` URLs in `index.html`, and the URLs in `public/robots.txt` and `public/sitemap.xml`.
+If the site moves to a different domain, update `meta.canonical` and `meta.linterCanonical` in `src/content/site.ts`, the `og:url` and `twitter` URLs in `index.html`, and the URLs in `public/robots.txt`. The sitemap needs no edit: `scripts/prerender.mjs` generates `dist/sitemap.xml` from those two canonicals at build time.
 
-**Structured data and citation metadata.** Both routes carry a JSON-LD `@graph` — a `WebSite`, the paper's own `ScholarlyArticle` (all six authors, the DOI as `identifier`), and a `WebPage` (`/linter` adds a `WebApplication`) — plus Highwire `citation_*` tags, generated in `scripts/prerender.mjs`'s `buildHead()` from the same `src/content/site.ts` fields the rest of the head is built from, never hand-written. The `citation_*` tags exist for Zotero and Mendeley's one-click capture on this companion page; Google Scholar indexes the paper's own record at `citation_abstract_html_url`, not this site. `pnpm og` also rasterises `public/favicon.svg` into the icon set `public/icons/` and writes `public/site.webmanifest`, and rewrites the one literal hex value in `index.html`'s `theme-color` meta from the same token — so that value, like the OG card and favicon, never drifts from `src/styles/tokens.css` by hand. `scripts/check-dist.mjs` asserts the JSON-LD parses and carries the right author count and DOI, that the citation and icon/manifest tags are present, and that every icon `site.webmanifest` names actually exists in `dist/icons/`.
+**Structured data and citation metadata.** Both routes carry a JSON-LD `@graph` — a `WebSite`, the paper's own `ScholarlyArticle` (all six authors, the DOI as `identifier`), and a `WebPage` (`/linter` adds a `WebApplication`) — plus Highwire `citation_*` tags, generated in `scripts/prerender.mjs`'s `buildHead()` from the same `src/content/site.ts` fields the rest of the head is built from, never hand-written. The `citation_*` tags exist for Zotero and Mendeley's one-click capture on this companion page; Google Scholar indexes the paper's own record at `citation_abstract_html_url`, not this site. `pnpm og` also rasterises `public/favicon.svg` into the icon set `public/icons/` and writes `public/site.webmanifest`, and rewrites the two literal hex values in the project — the `theme-color` meta in `index.html` and in `404.html` — from the same token, so they, like the OG card and favicon, never drift from `src/styles/tokens.css` by hand. `scripts/check-dist.mjs` asserts the JSON-LD parses and carries the right author count and DOI, that the citation and icon/manifest tags are present, and that every icon `site.webmanifest` names actually exists in `dist/icons/`.
 
 ---
 

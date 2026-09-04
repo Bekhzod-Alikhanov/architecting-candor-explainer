@@ -5,7 +5,7 @@ import { SectionTime } from '../../components/SectionTime'
 import { useMediaQuery } from '../../lib/useMediaQuery'
 import { bp } from '../../lib/breakpoints'
 import { memo as content, exhibitLegend, waysIn } from '../../content/hero'
-import { bates, disclaimer, explainer, section } from '../../content/site'
+import { bates, disclaimer, explainer, isAbsoluteVideoSrc, section } from '../../content/site'
 import { cues } from '../../content/transcript'
 import { Orientation } from './Orientation'
 import './hero.css'
@@ -217,11 +217,13 @@ export function Hero() {
             />
           )}
           {explainer.fallback}{' '}
-          <a href={explainer.src} download>
+          <a href={explainer.downloadUrl} download>
             {explainer.downloadLabel}
           </a>
         </video>
-        <p className="hero__explainerNote">{explainer.note}</p>
+        <p className="hero__explainerNote">
+          {isAbsoluteVideoSrc(explainer.src) ? explainer.noteBlob : explainer.note}
+        </p>
       </figure>
 
       {cues.length > 0 && (

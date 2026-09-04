@@ -170,6 +170,19 @@ export function section(id: SectionId): {
 }
 
 /**
+ * True for an absolute URL (e.g. a Vercel Blob store) rather than a
+ * same-origin path. Drives both `explainer.downloadUrl` below and which of
+ * `explainer.note` / `.noteBlob` Hero.tsx shows, from the one source — so a
+ * future move of the file off git updates both automatically instead of
+ * needing a second edit that could be forgotten.
+ */
+function isAbsoluteVideoUrl(src: string): boolean {
+  return /^https?:\/\//.test(src)
+}
+
+const EXPLAINER_SRC = '/video/architecting-candor-explainer.mp4'
+
+/**
  * The explainer video. The player itself sits in §00, as the first "way in" —
  * see hero.ts's waysIn — because the audit found it buried at the bottom of
  * §09 with nothing at the top pointing to it. §09 keeps a one-line link back
@@ -178,10 +191,22 @@ export function section(id: SectionId): {
  * Self-hosted, so watching it sends no request to anyone but this domain — the
  * same reason the linter runs in the browser. It is 87MB, so preload is off and
  * nothing is fetched until a reader presses play.
+ *
+ * `src` can also be an absolute Vercel Blob URL — see the "Moving the video
+ * off git" section of README.md — without any other change here: everything
+ * below that depends on which of the two it is (`downloadUrl`, and Hero.tsx's
+ * choice of `note` vs `noteBlob`) derives it from `src` itself.
  */
 export const explainer = {
-  src: '/video/architecting-candor-explainer.mp4',
+  src: EXPLAINER_SRC,
   type: 'video/mp4',
+  /**
+   * Where "Download the file" points. A same-origin path is its own
+   * download link; an absolute Blob URL needs `?download=1` — Vercel Blob's
+   * attachment switch — because the cross-origin `download` attribute on
+   * the `<a>` is ignored by browsers.
+   */
+  downloadUrl: isAbsoluteVideoUrl(EXPLAINER_SRC) ? `${EXPLAINER_SRC}?download=1` : EXPLAINER_SRC,
   /**
    * A dedicated poster, not og.png. The OG card is a 2400px PNG at 163KB, and
    * browsers fetch a poster eagerly even when preload is off — so pointing at
@@ -196,12 +221,25 @@ export const explainer = {
   fallback: 'Your browser cannot play this video.',
   downloadLabel: 'Download the file',
   note: 'Self-hosted and not tracked. Nothing is downloaded until you press play.',
+  /**
+   * The Blob-era variant of `note` above, for when `src` moves off git to
+   * Vercel Blob. Hero.tsx picks between the two with `isAbsoluteVideoSrc`,
+   * so the claim on screen stays true automatically rather than needing a
+   * copy edit at the same time as the config change.
+   */
+  noteBlob:
+    'Served from this site’s own storage on Vercel; no third-party player, no analytics, no cookies. Nothing is downloaded until you press play.',
   /** The §09 text link back up to the §00 player. */
   backLabel: 'Watch the explainer',
   /** The on-page transcript's disclosure summary, shown only once
    *  transcript.ts has cues — see Hero.tsx. */
   transcriptLabel: 'Transcript',
 } as const
+
+/** Re-exported so Hero.tsx can pick `explainer.note` vs `.noteBlob` from the
+ *  same predicate that derived `explainer.downloadUrl`, rather than a second,
+ *  independently-written URL check that could drift from it. */
+export const isAbsoluteVideoSrc = isAbsoluteVideoUrl
 
 /** The section rail. */
 export const navCopy = {

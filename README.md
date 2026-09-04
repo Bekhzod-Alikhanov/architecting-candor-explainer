@@ -140,28 +140,42 @@ docs/           reference-audit.md, design-plan.md
 
 **Routing.** Two entry points, `/` and `/linter`, resolved by a pathname switch in `src/main.tsx` rather than a routing library. Both deploy configs rewrite **only** `/linter` to the SPA shell; anything else falls through to a real 404. `/linter` sets its own canonical, title and description on mount, because both routes are served from the same `index.html` and the sitemap lists them separately.
 
-**The explainer video.** A 9½-minute video sits in §09 beside the paper links,
-self-hosted so that watching it sends no request to anyone but this domain — the
-same reason the linter runs in your browser. `preload="none"` and a 22 kB poster
-mean nothing is fetched until you press play; verified as zero bytes on load.
+**The explainer video.** A 9½-minute video sits in §00 as the first "way in"
+(a text link in §09 points back up to it), self-hosted so that watching it sends
+no request to anyone but this domain — the same reason the linter runs in your
+browser. `preload="none"` and a 22 kB poster mean nothing is fetched until you
+press play; verified as zero bytes on load.
 
-The 87 MB file **is committed**. That is a deliberate trade. It was briefly kept
-out of git and shipped with the deployment upload instead, which broke as soon as
-it met reality: the Vercel GitHub integration rebuilds production from the
-repository on every push, so a push produced a site where the video existed but
-nothing on the page linked to it. One large file, added once and never modified,
-is the least-bad case for git history, and it makes every build — local, CLI or
-git-triggered — produce the same site.
+The 87 MB file **is committed** for now. It was briefly kept out of git and
+shipped with the deployment upload instead, which broke as soon as it met
+reality: the Vercel GitHub integration rebuilds production from the repository
+on every push, so a push produced a site where the video existed but nothing on
+the page linked to it. `.vercelignore` still exists and is worth knowing about:
+without it the Vercel CLI falls back to `.gitignore`.
 
-`.vercelignore` still exists and is worth knowing about: without it the Vercel
-CLI falls back to `.gitignore`. That is a sharp edge to remember before adding
-anything to `.gitignore` that the deployed site actually needs.
+*Moving the video off git.* `explainer.src` in `src/content/site.ts` may be an
+absolute URL; everything that depends on it (`downloadUrl`, the on-screen
+hosting note) derives from that one value, and both host configs already allow
+`https://*.public.blob.vercel-storage.com` in `media-src`. The steps:
 
-The video has **no caption track**, which is the site's one known accessibility
-gap. axe reports it as *incomplete* rather than a violation — it cannot verify
-captions programmatically and asks a human to. A fabricated or empty track would
-be worse than none, so there isn't one; supply a transcript and it becomes a
-`.vtt` alongside the video.
+1. Check the file starts with its index (`ffprobe -show_format` should show
+   `moov` before `mdat`; if not, `ffmpeg -i in.mp4 -c copy -movflags +faststart out.mp4`).
+2. `vercel blob put public/video/architecting-candor-explainer.mp4 --content-type video/mp4 --cache-control-max-age 31536000`
+   and paste the returned URL into `explainer.src`.
+3. `pnpm build`; the "Download the file" link becomes `?download=1` automatically.
+4. Optionally shrink the repository: `git filter-repo --invert-paths --path public/video/architecting-candor-explainer.mp4 --force`,
+   force-push, everyone re-clones (`.git` drops from about 90 MB to about 1 MB),
+   and add `public/video/*.mp4` to `.gitignore`.
+
+*Captions.* The video has **no caption track yet**, the site's one known
+accessibility gap; axe reports it as *incomplete* because it cannot verify
+captions programmatically. A fabricated or empty track would be worse than none,
+so the pipeline ships unfilled: `src/content/transcript.ts` holds the cues
+(draft them with Whisper from the mp4, then an author pass — one sentence per
+cue, at most 84 characters), `pnpm vtt` writes
+`public/video/architecting-candor-explainer.en.vtt`, and `pnpm check:vtt` keeps
+the two in step. As soon as `cues` is non-empty the player gains a
+`<track kind="captions">` and a transcript disclosure appears under it.
 
 **Code splitting.** Sections 02 to 07 are separate chunks, mounted by `src/components/Deferred.tsx` as the reader approaches, or immediately if they arrived at that section's anchor. §08 is deliberately eager so the checklist is printable from anywhere. Initial JS is about 100 kB gzipped across 4 chunks — react 59.8 kB, main 30.5 kB, d3 9.4 kB, modulepreload-polyfill 0.4 kB — plus 19.3 kB gzipped CSS.
 

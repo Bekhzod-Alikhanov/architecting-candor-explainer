@@ -17,7 +17,15 @@
    elsewhere in src/ resolved into their own file's layer, right next to the
    rule that uses them — a --token reference doesn't need its own fallback
    here, since the app-tokens block above already redefines the custom
-   property it reads.
+   property it reads. Every one of those selectors is prefixed with an
+   extra `html ` type selector (see the cascade note at the top of
+   scripts/color-fallbacks.mjs) so it wins the cascade regardless of
+   import/source order, without out-specificity-ing a real :hover/:focus
+   rule that doesn't itself use color-mix(). A rule whose color-mix() sits in
+   a bare shorthand (`border`, `background`) that a sibling declaration in
+   the same original rule narrows (e.g. `border-inline-start`) carries that
+   sibling along unresolved, in its original order, so the shorthand's reset
+   doesn't undo the narrower override — see isCarryForShorthand.
    Left un-derived (depends on currentColor, which is only known at layout
    time, not at build time):
      - src/styles/base.css a { text-decoration-color }
@@ -59,130 +67,131 @@
 
 @layer app-modules {
   @supports not (color: color-mix(in oklab, red, blue)) {
-    .arch__overwrite {
+    html .arch__overwrite {
       background: #0b0f114d;
     }
 
-    .valve[data-state="refused"] {
+    html .valve[data-state="refused"] {
       background: #2d3036;
     }
 
-    .valve[data-state="allowed"] {
+    html .valve[data-state="allowed"] {
       background: #26353b;
     }
 
-    .cal__recNote {
+    html .cal__recNote {
       border: 1px solid #7a334666;
     }
 
-    [data-disposition="uncaptured"] {
+    html [data-disposition="uncaptured"] {
       fill: #e3e8e742;
     }
 
-    .stream__near[data-disposition="uncaptured"] {
+    html .stream__near[data-disposition="uncaptured"] {
       stroke: #e3e8e757;
     }
 
-    .lg--un {
+    html .lg--un {
       background: #e3e8e742;
     }
 
-    .cl__actions .btn--primary:hover {
+    html .cl__actions .btn--primary:hover {
       background: #672e3d;
       border-color: #672e3d;
     }
 
-    .cli__owner {
+    html .cli__owner {
       border: 1px solid #7a334666;
     }
 
-    .colo__links .btn--primary:hover {
+    html .colo__links .btn--primary:hover {
       background: #672e3d;
       border-color: #672e3d;
     }
 
-    .colo__disclaimer {
+    html .colo__disclaimer {
       border: 1px solid #7a334673;
     }
 
-    .hero__legend {
+    html .hero__legend {
       border: 1px solid #7a334673;
     }
 
-    .hero__cta {
+    html .hero__cta {
       border: 1px solid #3e8e966b;
     }
 
-    .lint__privacy {
+    html .lint__privacy {
       border: 1px solid #3e8e9666;
+      border-inline-start: 3px solid var(--color-instrument);
     }
 
-    .lint__mark[data-cat="fault"] {
+    html .lint__mark[data-cat="fault"] {
       background: #7a33464d;
     }
 
-    .lint__mark[data-cat="harm"] {
+    html .lint__mark[data-cat="harm"] {
       background: #7a334633;
     }
 
-    .lint__mark[data-cat="causal"] {
+    html .lint__mark[data-cat="causal"] {
       background: #8a733242;
     }
 
-    .lint__mark[data-cat="counterfactual"] {
+    html .lint__mark[data-cat="counterfactual"] {
       background: #8a733233;
     }
 
-    .tl__pending {
+    html .tl__pending {
       border: 1px solid #8a733280;
     }
 
-    .countdown {
+    html .countdown {
       border: 1px solid #60444d;
     }
 
-    .countdown[data-state="in-force"] {
+    html .countdown[data-state="in-force"] {
       border-color: #456e74;
     }
 
-    .reg__sep {
+    html .reg__sep {
       border: 1px solid #3e8e9673;
     }
 
-    .bin[data-bin="none"] {
+    html .bin[data-bin="none"] {
       background: #1b2328;
     }
 
-    .bin[data-bin="one"] .bin__key {
+    html .bin[data-bin="one"] .bin__key {
       border-color: #3e8e9673;
     }
 
-    .bin[data-bin="two"] .bin__key {
+    html .bin[data-bin="two"] .bin__key {
       border-color: #7a334680;
     }
 
-    .bin[data-bin="three"] .bin__key {
+    html .bin[data-bin="three"] .bin__key {
       border-color: #3e8e9673;
     }
 
-    .ledger__outcome[data-adverse="true"] {
+    html .ledger__outcome[data-adverse="true"] {
       border-color: #7a334680;
       background: #7a334614;
     }
 
-    .ledger__outcome[data-outcome="excluded407"], .ledger__outcome[data-outcome="withheld"] {
+    html .ledger__outcome[data-outcome="excluded407"], html .ledger__outcome[data-outcome="withheld"] {
       border-color: #3e8e9673;
     }
 
-    .ledger__flag {
+    html .ledger__flag {
       background: #7a334617;
     }
 
-    .prot__item[data-off="true"] {
+    html .prot__item[data-off="true"] {
       background: #2b2f36;
     }
 
-    .prot__summary[data-state="all-off"] {
+    html .prot__summary[data-state="all-off"] {
       background: #7a334619;
     }
   }
@@ -190,11 +199,11 @@
 
 @layer app-base {
   @supports not (color: color-mix(in oklab, red, blue)) {
-    .doc-object--scanned::before {
+    html .doc-object--scanned::before {
       background: linear-gradient(to right, #1621271c, transparent 3.5rem), repeating-linear-gradient(to bottom, transparent 0 3px, #1621270f 3px 4px);
     }
 
-    .prov--simulated {
+    html .prov--simulated {
       border: 1px solid #8a73328c;
     }
   }
@@ -202,25 +211,25 @@
 
 @layer app-components {
   @supports not (color: color-mix(in oklab, red, blue)) {
-    .scaffold__dot[data-done="true"]:not([aria-current="step"]) {
+    html .scaffold__dot[data-done="true"]:not([aria-current="step"]) {
       border-color: #3e8e9673;
     }
 
-    .btn--primary {
+    html .btn--primary {
       background: #19282d;
       border-color: #3e8e9680;
     }
 
-    .nf-page .btn--primary:hover {
+    html .nf-page .btn--primary:hover {
       background: #672e3d;
       border-color: #672e3d;
     }
 
-    .seam[data-state="live"] {
+    html .seam[data-state="live"] {
       --seam-glow: #3e8e9642;
     }
 
-    .seam[data-state="refuse"] {
+    html .seam[data-state="refuse"] {
       --seam-glow: #7a334657;
     }
   }

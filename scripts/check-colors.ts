@@ -139,6 +139,33 @@ check(
     `16% independently), got ${tint}.`,
 )
 
+// --- 4. every non-:root fallback selector is bumped by `html ` -----------
+//
+// var() is only invalid at *computed-value time*, not parse time, so an
+// equal-specificity fallback of the same layer still loses to the original
+// color-mix() rule if it doesn't come later in source order — and source
+// order isn't guaranteed for app-modules (pulled in after index.css by
+// whichever component imports them) or reachable at all for notfound.css's
+// inline app-base/app-components rules (@import must precede other rules).
+// Every pass-2 selector below the :root token block gets an extra `html `
+// type selector so it wins regardless of order; this re-derives that from
+// the committed file rather than trusting the generator ran correctly.
+const afterTokenBlock = fallbackFile.slice(fallbackFile.indexOf('@layer app-modules'))
+const selectorLines = [...afterTokenBlock.matchAll(/^[ \t]*([^@\s][^\n{]*)\{[ \t]*$/gm)].map((m) =>
+  m[1].trim(),
+)
+check(selectorLines.length > 0, 'Expected at least one non-:root fallback selector to check.')
+for (const line of selectorLines) {
+  for (const part of line.split(',')) {
+    const p = part.trim()
+    check(
+      /^html\b/i.test(p),
+      `color-fallbacks.css selector "${p}" is not prefixed with \`html \` — it can lose the ` +
+        "cascade to the original color-mix() rule when import/source order isn't guaranteed.",
+    )
+  }
+}
+
 if (failures.length) {
   console.error('\nFAILED:')
   for (const f of failures) console.error(`  · ${f}`)
@@ -146,5 +173,6 @@ if (failures.length) {
 }
 console.log(
   `color-fallbacks.css matches its generator, covers all ${tokenColorMixCount} token color-mix() ` +
-    'declarations, and three spot-checked values agree with an independent computation.\n',
+    'declarations, three spot-checked values agree with an independent computation, and every ' +
+    'non-:root fallback selector carries the `html ` specificity bump.\n',
 )

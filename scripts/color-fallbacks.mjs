@@ -37,6 +37,35 @@
  *
  * This file, and src/styles/tokens.css, are the only two places in the
  * project where a raw hex colour is allowed to appear.
+ *
+ * Cascade note — why pass-2 selectors get an `html ` prefix:
+ *
+ * A declaration containing var() is only invalid *at computed-value time*,
+ * not at parse time — so on a browser without color-mix(), the original
+ * `.btn--primary { background: color-mix(...) }` is still syntactically
+ * valid and still wins the cascade over an equal-specificity fallback of
+ * the same layer that merely comes earlier in source order. Source order
+ * alone is not reliable here: module stylesheets (app-modules) are pulled
+ * in by whichever component imports them, after index.css, so this
+ * generator cannot promise its fallback block lands after every module's
+ * own rule. And notfound.css's app-base/app-components rules are written
+ * inline, after its own @import list — CSS requires @import to precede
+ * every other rule (bar @charset and a bare `@layer name;` statement), so
+ * that file's color-fallbacks.css import can never be moved past those
+ * inline blocks to fix source order that way.
+ *
+ * The fix that works regardless of import position: every pass-2 fallback
+ * selector (i.e. everything below except the :root token block, which
+ * relies on src/index.css's color-fallbacks.css import sitting after
+ * tokens.css and does not need this) is prefixed with an extra `html `
+ * type selector — same class specificity plus one type selector, which
+ * beats the unprefixed original regardless of source order, but still
+ * loses to a *more specific* real rule such as `.btn--primary:hover` (an
+ * extra pseudo-class) that does not itself use color-mix(), so hover/focus
+ * states defined elsewhere keep working. `!important` and a dedicated
+ * higher layer were both rejected: layer order beats specificity outright,
+ * so a higher-layer base/module fallback would also override lower-layer
+ * :hover rules it has no business touching.
  */
 
 import { formatHex, formatHex8, interpolateWithPremultipliedAlpha, parse } from 'culori'
@@ -263,6 +292,22 @@ function resolveExpr(expr, defs, stack) {
   return parse(e) ?? null
 }
 
+/** Bumps a fallback selector's specificity by exactly one type selector, so
+ *  it beats the original color-mix() rule regardless of source/import
+ *  order (see the cascade note atop this file) while still losing to a
+ *  more specific real rule (e.g. `.x:hover`) that doesn't itself use
+ *  color-mix(). Applied per comma-separated selector; a selector that
+ *  already starts with `html` or `:root` is left alone (already anchored,
+ *  or already as specific as this file's own :root token block). */
+function prefixSelector(selector) {
+  return splitTopLevel(selector, ',')
+    .map((part) => {
+      const p = part.trim()
+      return /^(html\b|:root\b)/i.test(p) ? p : `html ${p}`
+    })
+    .join(', ')
+}
+
 function toCssHex(color) {
   const alpha = color.alpha === undefined ? 1 : color.alpha
   return alpha >= 1 - 1e-6 ? formatHex(color) : formatHex8(color)
@@ -354,10 +399,36 @@ function listCssFiles(dir) {
   return out
 }
 
+/** True if `otherProp` is a longhand/logical sub-property that `shorthandProp`
+ *  (a bare box-model shorthand) resets. Needed because a fallback rule only
+ *  emitting the color-mix()-bearing declaration can otherwise regress a rule
+ *  like `.lint__privacy { border: 1px solid color-mix(...); border-inline-start:
+ *  3px solid var(--color-instrument); }`: once the fallback rule outranks the
+ *  original (see the cascade note atop this file), its `border` shorthand — on
+ *  its own, without the sibling override carried along — would reset the side
+ *  `border-inline-start` had overridden, undoing it. `border` resets width/
+ *  style/color for every physical and logical side, but not border-radius,
+ *  border-image, border-collapse, or border-spacing — those aren't part of the
+ *  reset, so they're excluded here too. */
+function isCarryForShorthand(shorthandProp, otherProp) {
+  if (shorthandProp === 'border') {
+    return otherProp !== 'border' && /^border-(?!radius|image|collapse|spacing)/.test(otherProp)
+  }
+  if (shorthandProp === 'background') {
+    return otherProp !== 'background' && /^background-/.test(otherProp)
+  }
+  return false
+}
+
 /** Walks the parsed tree collecting every rule that has at least one
  *  declaration with a literal color-mix( in its value, tagged with the
  *  nearest enclosing @layer name and @media prelude (a file can wrap
- *  different parts of itself in different layers — notfound.css does). */
+ *  different parts of itself in different layers — notfound.css does).
+ *  Each returned rule's `decls` keeps every color-mix() declaration plus any
+ *  sibling declaration that a color-mix() shorthand in the same rule would
+ *  otherwise clobber (see isCarryForShorthand) — in the rule's original
+ *  order, since a shorthand followed by a narrower override only works if
+ *  the fallback reproduces that same order. */
 function findColorMixRules(nodes, ctx, out) {
   for (const node of nodes) {
     if (node.type === 'atrule') {
@@ -373,7 +444,15 @@ function findColorMixRules(nodes, ctx, out) {
     } else {
       const colorDecls = node.decls.filter((d) => d.value.includes('color-mix('))
       if (colorDecls.length > 0) {
-        out.push({ selector: node.selector, decls: colorDecls, layer: ctx.layer, media: ctx.media })
+        const shorthands = colorDecls.map((d) => d.prop)
+        const decls = node.decls
+          .filter(
+            (d) =>
+              d.value.includes('color-mix(') ||
+              shorthands.some((sh) => isCarryForShorthand(sh, d.prop)),
+          )
+          .map((d) => ({ ...d, isColorMix: d.value.includes('color-mix(') }))
+        out.push({ selector: node.selector, decls, layer: ctx.layer, media: ctx.media })
       }
     }
   }
@@ -398,11 +477,15 @@ function collectModuleFallbacks(defs) {
     for (const item of found) {
       const okDecls = []
       for (const d of item.decls) {
+        // A carried sibling (see isCarryForShorthand) has no color-mix() of
+        // its own — transformValue is a no-op passthrough for it — and isn't
+        // counted as a color-mix() resolution below; it rides along only so
+        // the fallback rule doesn't undo the override it represents.
         const value = transformValue(d.value, defs)
         if (value === null) {
           unresolved.push({ file: rel, selector: item.selector, prop: d.prop, value: d.value })
         } else {
-          okDecls.push({ prop: d.prop, value })
+          okDecls.push({ prop: d.prop, value, isColorMix: d.isColorMix })
         }
       }
       if (okDecls.length === 0) continue
@@ -419,7 +502,7 @@ function collectModuleFallbacks(defs) {
         file: rel,
         layer: item.layer,
         media: item.media,
-        selector: item.selector,
+        selector: prefixSelector(item.selector),
         decls: okDecls,
       })
     }
@@ -500,7 +583,15 @@ function renderHeader({
    elsewhere in src/ resolved into their own file's layer, right next to the
    rule that uses them — a --token reference doesn't need its own fallback
    here, since the app-tokens block above already redefines the custom
-   property it reads.`
+   property it reads. Every one of those selectors is prefixed with an
+   extra \`html \` type selector (see the cascade note at the top of
+   scripts/color-fallbacks.mjs) so it wins the cascade regardless of
+   import/source order, without out-specificity-ing a real :hover/:focus
+   rule that doesn't itself use color-mix(). A rule whose color-mix() sits in
+   a bare shorthand (\`border\`, \`background\`) that a sibling declaration in
+   the same original rule narrows (e.g. \`border-inline-start\`) carries that
+   sibling along unresolved, in its original order, so the shorthand's reset
+   doesn't undo the narrower override — see isCarryForShorthand.`
   return `/* ============================================================================
    COLOR-MIX() FALLBACKS — generated, do not hand-edit.
    Regenerate: pnpm colors:fallbacks
@@ -532,7 +623,10 @@ export function render() {
     tokenResolved: tokens.resolved.size,
     tokenTotal: tokens.colorMixDeclCount,
     tokenUnresolved: tokens.unresolved,
-    moduleResolved: modules.resolved.reduce((n, e) => n + e.decls.length, 0),
+    moduleResolved: modules.resolved.reduce(
+      (n, e) => n + e.decls.filter((d) => d.isColorMix).length,
+      0,
+    ),
     moduleUnresolved: modules.unresolved,
   })
 

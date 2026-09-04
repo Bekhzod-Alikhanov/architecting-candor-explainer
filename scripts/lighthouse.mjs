@@ -38,7 +38,10 @@ const url = process.argv[2] ?? 'http://localhost:4173'
 /** Both must clear this, on both form factors. CI gates at 0.90 with one run
  *  because shared runners are noisy; local default stays 0.95 with 3 mobile
  *  samples. Override with LH_FLOOR in CI. */
-const FLOOR = Number(process.env.LH_FLOOR ?? 0.95)
+// `||`, not `??`: an LH_FLOOR set to the empty string is a misconfigured
+// workflow, and `??` would let it through as Number('') === 0 — a gate that
+// passes anything.
+const FLOOR = Number(process.env.LH_FLOOR || 0.95)
 const GATED = ['performance', 'accessibility']
 /** Reported but not gated: useful signal, not acceptance criteria. */
 const REPORTED = ['best-practices', 'seo']

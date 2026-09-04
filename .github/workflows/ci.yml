@@ -65,5 +65,11 @@ jobs:
       - run: pnpm check:keyboard http://localhost:4173
       - run: pnpm audit:a11y http://localhost:4173
       - run: pnpm audit:a11y http://localhost:4173/linter
+      # LH_FLOOR=0.90 is a smoke check, not the standard this site is held to.
+      # `vite preview` serves HTTP/1.1, so Lighthouse's simulation queues the
+      # whole request list over six connections and scores performance several
+      # points below what the same build measures on production, which is
+      # HTTP/2 (~100). The intended long-term gate is 0.95 against the Vercel
+      # preview URL; this run only catches a collapse.
       - run: LH_RUNS=1 LH_FLOOR=0.90 pnpm check:lighthouse http://localhost:4173
       - run: LH_RUNS=1 LH_FLOOR=0.90 pnpm check:lighthouse http://localhost:4173/linter

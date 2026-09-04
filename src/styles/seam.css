@@ -75,23 +75,36 @@
   /* --- draggable variant, used in the hero -------------------------------- */
 
   /* The seam's own box is the pointer target (Seam.tsx attaches
-     onPointerDown to it), but that box is only 12px wide — under WCAG 2.2's
-     24px minimum. Widen the hit-tested box, not the seam: box-sizing is
-     reset to content-box here (the rest of the app is border-box, see
+     onPointerDown to it), but that box is only 12px wide — under the minimum
+     --target-min states. Widen the hit-tested box, not the seam: box-sizing
+     is reset to content-box here (the rest of the app is border-box, see
      src/styles/base.css) so the padding actually grows the border box
      instead of just eating into it, and the matching negative margin pulls
      that growth back out of the flex row, so neighbouring panes still only
      reserve 12px. Both pseudo-elements below are centred with `left: 50%;
      translate: -50%` against this box, so they stay put — the tick pattern
-     is untouched. */
+     is untouched.
+
+     The padding is derived from the token rather than written as 6px so the
+     target grows with it: half the difference on each side makes the border
+     box exactly --target-min wide. */
   .seam--draggable {
+    --seam-hit: var(--target-min);
     width: max(var(--seam-width), 12px);
     background: transparent;
     cursor: col-resize;
     touch-action: none;
     box-sizing: content-box;
-    padding-inline: 6px;
-    margin-inline: -6px;
+    padding-inline: calc((var(--seam-hit) - 12px) / 2);
+    margin-inline: calc(-1 * (var(--seam-hit) - 12px) / 2);
+  }
+
+  /* A finger is not a mouse pointer: on touch the same seam gets the coarse
+     target size, still without moving the panes it sits between. */
+  @media (pointer: coarse) {
+    .seam--draggable {
+      --seam-hit: var(--target-min-coarse);
+    }
   }
 
   .seam--draggable::after {

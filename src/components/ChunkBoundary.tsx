@@ -61,8 +61,10 @@ export class ChunkBoundary extends Component<ChunkBoundaryProps, ChunkBoundarySt
     if (!this.state.failed) return this.props.children
 
     const { id, n, title, seq, onRetry } = this.props
+    // role="status", like Deferred's stalled notice: this replaces a section
+    // the reader was scrolling towards, and the swap is otherwise silent.
     return (
-      <section className="sect page" id={id}>
+      <section className="sect page" id={id} role="status">
         <div className="sect-head">
           <span className="sect-num" aria-hidden="true">
             {n}

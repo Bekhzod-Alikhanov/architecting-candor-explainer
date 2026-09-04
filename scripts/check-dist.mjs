@@ -102,6 +102,23 @@ const checkCitationTags = (html, rel) => {
   if (doiTags !== 1) fail(`${rel}: ${doiTags} citation_doi tags, expected 1`)
 }
 
+/**
+ * The stylesheet ahead of the script block.
+ *
+ * It is the one render-blocking resource in either document, and `vite build`
+ * appends it last — after the module script and its preloads. prerender.mjs
+ * lifts it to just after the font preloads; this is the assertion that it
+ * still does, because the symptom of it silently stopping is a slower first
+ * paint and nothing else.
+ */
+const checkHeadOrder = (html, rel) => {
+  const sheet = html.indexOf('<link rel="stylesheet"')
+  const script = html.indexOf('<script type="module"')
+  if (sheet === -1) fail(`${rel}: no stylesheet link`)
+  else if (script === -1) fail(`${rel}: no module script`)
+  else if (sheet > script) fail(`${rel}: the stylesheet is linked after the module script`)
+}
+
 const checkManifestLinks = (html, rel) => {
   has(html, '<link rel="manifest" href="/site.webmanifest" />', 'no manifest link', rel)
   has(
@@ -148,6 +165,15 @@ if (home) {
     'index.html',
   )
   has(html, `<title>${meta.title}`, 'title is not the homepage title', 'index.html')
+  // index.html's hand-written description had drifted from site.ts. Both
+  // pages' descriptions now come from the content module, so both are checked
+  // against it.
+  has(
+    html,
+    `<meta name="description" content="${esc(meta.description)}" />`,
+    'description is not meta.description',
+    'index.html',
+  )
 
   // Derived from the list the prerender itself renders from, so adding a
   // seventh deferred section does not need this number changed by hand.
@@ -186,6 +212,7 @@ if (home) {
   checkArticle(readJsonLd(html, 'index.html'), 'index.html')
   checkCitationTags(html, 'index.html')
   checkManifestLinks(html, 'index.html')
+  checkHeadOrder(html, 'index.html')
 }
 
 // --- /linter -----------------------------------------------------------------
@@ -246,6 +273,7 @@ if (linter) {
   }
   checkCitationTags(html, rel)
   checkManifestLinks(html, rel)
+  checkHeadOrder(html, rel)
 }
 
 // --- the error page ----------------------------------------------------------

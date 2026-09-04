@@ -129,18 +129,22 @@ function writeManifest() {
 }
 
 /**
- * index.html's one literal hex value, kept in step with --color-ground so the
- * README's "no hex outside tokens.css" claim stays true of the whole repo,
- * not just src/.
+ * The two literal hex values outside src/styles/tokens.css, kept in step with
+ * --color-ground so the README's "no hex outside tokens.css" claim stays true
+ * of the whole repo, not just src/. A meta attribute cannot reference a custom
+ * property, so index.html and 404.html each carry one — and 404.html is the
+ * page nobody looks at, which is exactly how its copy went stale.
  */
 function rewriteThemeColor() {
-  const file = join(ROOT, 'index.html')
-  const html = readFileSync(file, 'utf8')
   const ground = colour('ground')
-  const pattern = /<meta name="theme-color" content="#[0-9a-fA-F]{6}" \/>/
-  if (!pattern.test(html)) throw new Error('theme-color <meta> not found in index.html')
-  writeFileSync(file, html.replace(pattern, `<meta name="theme-color" content="${ground}" />`))
-  console.log(`index.html   theme-color=${ground}`)
+  for (const name of ['index.html', '404.html']) {
+    const file = join(ROOT, name)
+    const html = readFileSync(file, 'utf8')
+    const pattern = /<meta name="theme-color" content="#[0-9a-fA-F]{6}" \/>/
+    if (!pattern.test(html)) throw new Error(`theme-color <meta> not found in ${name}`)
+    writeFileSync(file, html.replace(pattern, `<meta name="theme-color" content="${ground}" />`))
+    console.log(`${name.padEnd(12)} theme-color=${ground}`)
+  }
 }
 
 /** Lift every custom property out of the token layer. */

@@ -17,7 +17,15 @@
  * the only place any of this site's prose lives.
  */
 
-import { mkdirSync, readFileSync, renameSync, rmSync, statSync, writeFileSync } from 'node:fs'
+import {
+  existsSync,
+  mkdirSync,
+  readFileSync,
+  renameSync,
+  rmSync,
+  statSync,
+  writeFileSync,
+} from 'node:fs'
 import { join, resolve } from 'node:path'
 import { pathToFileURL } from 'node:url'
 import { esc } from './build-shared.mjs'
@@ -140,6 +148,26 @@ function buildHead(route) {
   /** Extra tags, inserted before </head>. */
   const tags = []
 
+  if (route !== '/linter') {
+    // index.html's descriptions are authored by hand and had drifted from
+    // meta.description, so the served page and src/content disagreed about
+    // what this site is. Swapped from the content module for the same reason
+    // /linter's are: one source, checked by check-dist.mjs.
+    swaps.push(
+      ['description', metaTag('name', 'description'), tag('name', 'description', meta.description)],
+      [
+        'og:description',
+        metaTag('property', 'og:description'),
+        tag('property', 'og:description', meta.description),
+      ],
+      [
+        'twitter:description',
+        metaTag('name', 'twitter:description'),
+        tag('name', 'twitter:description', meta.description),
+      ],
+    )
+  }
+
   if (route === '/linter') {
     // The route was being served the homepage's identity: its title, its
     // description, and a canonical pointing at /. The sitemap lists /linter as
@@ -250,6 +278,40 @@ function swap(html, pattern, replacement, what) {
   return html.replace(pattern, () => replacement)
 }
 
+/**
+ * The stylesheet, moved to the front of the queue.
+ *
+ * `vite build` appends its block — module script, modulepreloads, stylesheet —
+ * to the end of the head, in that order. The stylesheet is the only
+ * render-blocking resource in the document, and it was being discovered after
+ * four things the first paint does not need. This lifts it to just after the
+ * last font preload, so the two resources the paint actually waits on are the
+ * first two the parser sees.
+ *
+ * Both halves refuse to guess, for the same reason swap() does: a silent miss
+ * would leave the stylesheet last and nothing would say so.
+ */
+function hoistStylesheet(html, route) {
+  const sheets = [...html.matchAll(/\n[ \t]*<link rel="stylesheet"[^>]*>/g)]
+  if (sheets.length !== 1) {
+    throw new Error(
+      `prerender: ${sheets.length} stylesheet links in the ${route} template, expected exactly 1`,
+    )
+  }
+  const fonts = [...html.matchAll(/<link\s[^>]*\bas="font"[^>]*\/>/g)]
+  if (!fonts.length) {
+    throw new Error(`prerender: ${route} has no font preloads to place the stylesheet after`)
+  }
+  const [sheet] = sheets
+  const last = fonts.at(-1)
+  const at = last.index + last[0].length
+  if (sheet.index < at) {
+    throw new Error(`prerender: ${route} already links the stylesheet before the font preloads`)
+  }
+  const without = html.slice(0, sheet.index) + html.slice(sheet.index + sheet[0].length)
+  return `${without.slice(0, at)}\n    ${sheet[0].trim()}${without.slice(at)}`
+}
+
 console.log(`\nprerender`)
 
 for (const { route, out, note } of ROUTES) {
@@ -278,31 +340,47 @@ for (const { route, out, note } of ROUTES) {
     html = swap(html, /\n?\s*<\/head>/, `\n${extra}\n  </head>`, `${route} </head>`)
   }
 
+  html = hoistStylesheet(html, route)
+
   /*
-   * The hydration bundle, demoted.
+   * The hydration bundle, demoted — on the homepage only.
    *
    * A module script is deferred but still fetched at high priority, which was
    * right while it was the only thing that could draw the page. It is not any
-   * more: the document arrives complete, and 98 kB of JavaScript competing for
+   * more: the homepage arrives complete, and 98 kB of JavaScript competing for
    * a phone's bandwidth now delays the paint of markup that needs none of it.
    * Measured on Lighthouse's throttled mobile profile: first paint 2.9s → 2.3s,
    * with total blocking time unchanged at single-digit milliseconds.
+   *
+   * /linter is the exception, because there the page *is* the script. Its
+   * textarea is prerendered and looks ready to type into, but it is a
+   * controlled input: whatever is typed before hydration is wiped the moment
+   * React mounts and re-asserts an empty value. Delaying that mount widens the
+   * window in which a reader can lose what they typed, so the priorities on
+   * that route are left alone.
    */
-  html = swap(
-    html,
-    /<script type="module" crossorigin/,
-    '<script type="module" fetchpriority="low" crossorigin',
-    `${route} module script`,
-  )
-  const beforePreloads = html
-  html = html.replaceAll(
-    '<link rel="modulepreload" crossorigin',
-    '<link rel="modulepreload" fetchpriority="low" crossorigin',
-  )
-  // Same reasoning as swap(): a rewrite that quietly matched nothing would
-  // leave the preloads competing with the paint again, and nothing would say so.
-  if (html === beforePreloads) {
-    throw new Error(`prerender: ${route} has no modulepreload links to demote`)
+  if (route === '/') {
+    html = swap(
+      html,
+      /<script type="module" crossorigin/,
+      '<script type="module" fetchpriority="low" crossorigin',
+      `${route} module script`,
+    )
+    const beforePreloads = html
+    html = html.replaceAll(
+      '<link rel="modulepreload" crossorigin',
+      '<link rel="modulepreload" fetchpriority="low" crossorigin',
+    )
+    // Same reasoning as swap(): a rewrite that quietly matched nothing would
+    // leave the preloads competing with the paint again, and nothing would say so.
+    if (html === beforePreloads) {
+      throw new Error(`prerender: ${route} has no modulepreload links to demote`)
+    }
+  } else {
+    // The guard the demotion above carries, kept for this branch too: if Vite
+    // stops emitting the script in this shape, the route that most needs it
+    // early should not go quiet about it.
+    swap(html, /<script type="module" crossorigin/, '', `${route} module script`)
   }
 
   html = swap(
@@ -350,6 +428,14 @@ console.log(`  sitemap.xml        2 urls, lastmod ${lastmod}`)
 // build's internal shape for no reason, so it moves next to the SSR bundle
 // check-dist.mjs already reads — which also keeps that script re-runnable
 // against a finished dist.
-renameSync(join(DIST, '.vite', 'manifest.json'), MANIFEST_KEEP)
+// Checked rather than left to renameSync's ENOENT: this script rewrites the
+// template in place, so running it twice against a finished dist would
+// otherwise fail here, several steps after the point where it stopped making
+// sense.
+const manifestSrc = join(DIST, '.vite', 'manifest.json')
+if (!existsSync(manifestSrc)) {
+  throw new Error('prerender is not re-runnable on a finished dist; run pnpm build')
+}
+renameSync(manifestSrc, MANIFEST_KEEP)
 rmSync(join(DIST, '.vite'), { recursive: true, force: true })
 console.log('')

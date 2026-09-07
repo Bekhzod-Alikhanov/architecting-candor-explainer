@@ -144,7 +144,7 @@ export const channelNames: Readonly<Record<ChannelMap, string>> = {
 export const regimeCopy = {
   headline: 'Every structural choice in the architecture has already been tested somewhere else.',
   standfirst:
-    'Aviation and healthcare confronted this problem long before machine learning, and resolved it through deliberate institutional design rather than professional norms. Read together, the regimes reveal a common logic: preserve original facts, protect only a bounded process of evaluative analysis, and return verified findings to operations as corrective action.',
+    'Aviation and healthcare met this problem long before machine learning, and resolved it by institutional design rather than professional norms. Read together, they share one logic: preserve the original facts, protect only a bounded process of evaluative analysis, and return verified findings to operations as corrective action.',
   /** Not in the standfirst. The target row's own "Source of protection" cell
    *  says "work-product" (hyphenated), which is not a listed form — the
    *  match instead comes from the healthcare regime's own "protects" cell:
@@ -177,11 +177,8 @@ export const regimeCopy = {
 export const regimeArgues = {
   label: 'What the comparison argues',
   body: [
-    'The three functions recur in every one of these regimes, and no regime protects everything.',
-    'Each preserves the original operational facts for regulators and injured parties. Each protects a bounded evaluative process with prespecified conditions of entry. And each returns verified findings to operations as corrective requirements, rather than leaving the protected process as an informational dead end.',
-    'The architecture is not novel. What is novel is applying it to a class of system whose records are generated automatically, and doing it before an accident forces the question.',
-    'One difference matters more than any similarity. Every regime above rests on a statute; the Safety Translation Layer rests on privilege doctrine, which is forum-specific and which no court has yet applied to this device.',
-    'That is the gap section 07 asks Congress to close. Until it does, a firm building this architecture is relying on the durability of a common-law protection rather than on a rule written for the purpose.',
+    'The same three functions recur in every regime, and none of them protects everything. Each preserves the original facts for regulators and injured parties, protects a bounded evaluative process with prespecified conditions of entry, and returns verified findings to operations as corrective requirements rather than leaving the protected process as a dead end.',
+    'So the architecture is not novel. What is novel is applying it to systems whose records are generated automatically, before an accident forces the question — and doing it without a statute. Every regime above rests on one; the Safety Translation Layer rests on privilege doctrine, which is forum-specific and which no court has yet applied to this device. That is the gap section 07 asks Congress to close.',
   ],
 } as const
 

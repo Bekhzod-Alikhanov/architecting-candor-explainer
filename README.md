@@ -28,7 +28,7 @@ Ten numbered sections. Above 82rem a rail marks where you are; below that a fixe
 
 ## Scope
 
-The site is the whole argument, not a landing page for it: ten numbered sections, about 13,500 words, roughly an hour end to end — with a five-minute path through it signposted from the top.
+The site is the whole argument, not a landing page for it: ten numbered sections, about 13,200 words, roughly an hour end to end — with a five-minute path through it signposted from the top.
 
 | § | Section | Read | What it holds |
 |---|---|---|---|

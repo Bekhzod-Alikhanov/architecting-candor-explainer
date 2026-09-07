@@ -270,10 +270,7 @@ export const routeSteps = [
 export const routeArgues = {
   label: 'What the routing game argues',
   body: [
-    'The instinct the Pinto taught is not merely unhelpful now; it is close to inert. An AI system writes much of its own record automatically, so the decision not to document arrives after the document already exists.',
-    'Suppression buys very little in discovery, and what it costs is the human record: the finding that named the threshold, the account of the conditions the failure arose in, the analysis that would have said what to change.',
-    'The instrumentation survives and says what happened. It cannot say what to fix.',
-    'What the architecture withholds is only what the law has always permitted a company to withhold, which is the legal advice itself. The facts stay discoverable.',
-    'That is not a concession extracted from the design; it is the condition on which the design works. A firm that has preserved and produced its factual record in the ordinary course can credibly say that its privileged channel holds judgment rather than concealed facts.',
+    'The instinct the Pinto taught is close to inert. An AI system writes much of its own record automatically, so the decision not to document arrives after the document exists. Suppression buys very little in discovery, and what it costs is the human record: the finding that named the threshold, the account of the conditions, the analysis that would have said what to change. The instrumentation says what happened. It cannot say what to fix.',
+    'The architecture withholds only the legal advice itself, which the law has always let a company withhold. Facts stay discoverable — not as a concession but as the condition on which the design works.',
   ],
 } as const

@@ -86,7 +86,7 @@ export const pincer = {
   /** The bind, stated plainly. */
   bind: {
     label: 'The bind',
-    body: 'A structural tension now runs across the Atlantic, in which American litigation rules tend to reward less documentation while European regulatory obligations reward more. The same record that makes a failure intelligible to engineers may become evidence of notice, of defect, of an available precaution, or of an inadequate mitigation.',
+    body: 'A structural tension now runs across the Atlantic: American litigation rules reward less documentation, European regulatory obligations reward more. The same record that makes a failure intelligible to engineers may become evidence of notice, of defect, of an available precaution, or of an inadequate mitigation.',
     cite: 'Paper, §1.1',
   },
 } as const

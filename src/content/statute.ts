@@ -122,9 +122,7 @@ export const statuteCopy = {
 export const statuteArgues = {
   label: 'What the ask argues',
   body: [
-    'Nothing in this legislation would shield a fact. Raw telemetry stays discoverable to injured parties and to regulators, which is the third principle and the one that makes the other three defensible.',
-    'What the statute protects is a bounded evaluative process, and what it buys with that protection is the ability to move safety findings between firms without each transfer becoming an act of self-incrimination.',
-    'The paper is careful about the order. Legislation is not a prerequisite to the internal benefits of the three-channel approach, and a firm that waits for Congress before building the architecture has misread the argument.',
-    'Codification does something the architecture alone cannot: it converts a private discipline into public infrastructure, and turns one firm’s expensive lesson into an industry-wide safety commons that no market incentive produces on its own.',
+    'Nothing in this legislation would shield a fact. Raw telemetry stays discoverable to injured parties and to regulators — the third principle, and the one that makes the other three defensible. What the statute protects is a bounded evaluative process, and what that buys is the ability to move safety findings between firms without each transfer becoming an act of self-incrimination.',
+    'The paper is careful about the order. Legislation is not a prerequisite to the internal benefits of the three channels, and a firm that waits for Congress has misread the argument. But codification does something the architecture alone cannot: it turns one firm’s expensive lesson into an industry-wide safety commons that no market incentive produces on its own.',
   ],
 } as const

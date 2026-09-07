@@ -40,7 +40,7 @@ export const orientation = {
 
   what: {
     label: 'What this is',
-    body: "A companion to Architecting Candor, a paper from the Arcadia Impact AI Governance Taskforce, August 2026. It does not summarise the paper's mechanism; it runs it. Every case, statute, date and figure on this page traces to the paper, and anything the paper does not supply is marked on the screen that shows it.",
+    body: "A companion to Architecting Candor (Arcadia Impact AI Governance Taskforce, August 2026). It does not summarise the paper's mechanism; it runs it. Every case, statute, date and figure traces to the paper, and anything the paper does not supply is marked on the screen that shows it.",
   },
 
   who: {

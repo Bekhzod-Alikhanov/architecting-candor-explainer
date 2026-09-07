@@ -107,14 +107,11 @@ export const about = {
    *  defined directly where the third block below names itself: "synchronic". */
   terms: ['synchronic'] as const satisfies readonly GlossaryId[],
   blocks: [
-    'This is a companion to a paper, not a substitute for it. Everything substantive here comes from Architecting Candor (Arcadia Impact AI Governance Taskforce, August 2026).',
-    'Where the page states a case holding, a statute, a date or a figure, it traces to that paper. Where it needed a number the paper does not supply, it says so on the screen rather than in a footnote.',
-    'It is a dated snapshot pinned to the August 2026 paper. The paper describes its own analysis as synchronic, capturing a legal and regulatory landscape moving faster than any single document can track, and that applies with more force to a web page.',
+    'This is a companion to a paper, not a substitute for it. Everything substantive here — every case holding, statute, date and figure — comes from Architecting Candor (Arcadia Impact AI Governance Taskforce, August 2026). Where the page needed a number the paper does not supply, it says so on the screen rather than in a footnote.',
+    'It is a dated snapshot. The paper describes its own analysis as synchronic, capturing a legal and regulatory landscape moving faster than any single document can track, and that applies with more force to a web page.',
     'Case law moves. Regulations commence. The countdown on this page will expire. Read the doctrinal positions here as a snapshot of the period in which the paper was written.',
-    'The interactives are illustrative reconstructions. The incident in Route the Record did not happen; the artifacts in its deck were written for this page; the event stream in the calibrator is generated in your browser from a fixed seed.',
-    'None of it is drawn from any real firm, product or matter. Screens containing simulated or illustrative values are marked as such.',
-    'The architecture the paper proposes can be implemented under existing law, but no court has yet passed on its central device. Privilege rules also vary by state and across EU Member States, including for communications with in-house counsel.',
-    'Nothing here is legal advice, and a firm should assess the governing privilege rules in each jurisdiction with its own counsel before relying on any of it.',
+    'The interactives are illustrative reconstructions. The incident in Route the Record did not happen; the artifacts in its deck were written for this page; the event stream in the calibrator is generated in your browser from a fixed seed. None of it is drawn from any real firm, product or matter, and screens holding simulated or illustrative values say so.',
+    'The architecture can be implemented under existing law, but no court has yet passed on its central device, and privilege rules vary by state and across EU Member States — including for communications with in-house counsel. Nothing here is legal advice: a firm should assess the governing rules in each jurisdiction with its own counsel before relying on any of it.',
     'The linter runs entirely in your browser. Nothing you paste into it is transmitted anywhere, and the page makes no network requests after it loads.',
   ],
 } as const

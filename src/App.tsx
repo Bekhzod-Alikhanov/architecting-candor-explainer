@@ -4,7 +4,7 @@ import { Colophon } from './modules/colophon/Colophon'
 import { Deferred } from './components/Deferred'
 import { TakeItToYourGC } from './modules/gc/TakeItToYourGC'
 import { SectionNav } from './components/SectionNav'
-import { section, disclaimer, paper } from './content/site'
+import { section, disclaimer, paper, builtBy } from './content/site'
 import { rubric } from './content/hero'
 import { skipLink } from './content/ui'
 
@@ -111,6 +111,10 @@ export function App() {
       <footer className="shell__foot">
         <p>{disclaimer.short}</p>
         <p>{paper.citation}</p>
+        {/* Last line on the site. The paper's six authors are credited in
+            full by §09's contribution statement; this says who built the
+            page, which has no CRediT row. */}
+        <p>{builtBy.note}</p>
       </footer>
     </>
   )

@@ -26,6 +26,31 @@ Ten numbered sections. Above 82rem a rail marks where you are; below that a fixe
 
 ---
 
+## Scope
+
+The site is the whole argument, not a landing page for it: ten numbered sections, about 13,500 words, roughly an hour end to end — with a five-minute path through it signposted from the top.
+
+| § | Section | Read | What it holds |
+|---|---|---|---|
+| 00 | The memo | 3 min | The paradox in one incident record, shown twice across the seam. Ways in, the orientation card, and the 9-minute explainer video. |
+| 01 | The pincer | 7 min | The two forces, a boundary timeline of the cases that set them, and a live countdown to the EU AI Act's 9 December 2026 commencement. |
+| 02 | Where the signal dies | 6 min | Three mechanisms of translation loss from §2.1, walked through one handoff record across Carlile's syntactic, semantic and pragmatic boundaries. |
+| 03 | Route the record | 11 min | Fifteen artifacts, four channels, two opposed scoreboards. Every privilege outcome names the authority it rests on. |
+| 04 | The architecture, operable | 9 min | Figure 1 as a machine. Thirteen distinct refusals from the one-way valve, each with its doctrinal reason. |
+| 05 | Calibrate the tripwire | 4 min | Seven threshold bands against a seeded quarter of synthetic traffic. Collapse the logging tier and watch near-miss capture go with it. |
+| 06 | Four regimes, one logic | 5 min | The paper's Table 1 as a comparator — four precedent regimes and the Safety Translation Layer as the target row, not a fifth precedent. |
+| 07 | The ask | 4 min | The four statutory principles from §4.2.2. Switch a protection off and the interface says what breaks. |
+| 08 | Take it to your GC | 8 min | The implementation checklist, printing to exactly one page so it can go to counsel on paper. |
+| 09 | The paper | 4 min | Citation with DOI, copy-as-APA and copy-as-BibTeX, CRediT contribution statement, the twelve-term glossary, and the honesty notes. |
+
+Plus the standalone **[incident ticket linter](https://architecting-candor.vercel.app/linter)**, which is its own prerendered route with its own citation card, shareable without the essay around it.
+
+**By the numbers.** Three HTML routes (`/`, `/linter`, `404`) prerendered at build time · 23 keyboard-operable interactives · 12 glossary terms defined inline and listed in §09 · 5 linter rule categories · 11 content-integrity suites that fail the build when an argument breaks · Lighthouse 100/100/100/100 on desktop and 97+ on mobile, both routes · zero third-party requests, zero cookies, zero analytics.
+
+**Deliberately out of scope.** It does not summarise the paper — read the paper for the argument in prose. There is no light theme (the dark console against the light document *is* the concept, and the print stylesheet covers paper). No account, no backend, no telemetry: the linter and the calibrator both run entirely in the reader's browser. Nothing on it is legal advice. And the explainer video still has no caption track — the one known WCAG 1.2.2 gap, noted again under Accessibility below.
+
+---
+
 ## The discipline this repository is really about
 
 The site can only be linked from the paper if every claim on it survives scrutiny. Two mechanisms enforce that, and both are the interesting part of this codebase.
@@ -261,6 +286,12 @@ The site is a dated snapshot pinned to the August 2026 paper. The paper describe
 The interactives are illustrative reconstructions. The incident they follow did not happen, the artifacts were written for this page, and the event stream is generated in the browser from a fixed seed. None of it is drawn from any real firm, product or matter.
 
 Nothing on the site is legal advice. Firms should consult counsel before relying on any legal principle described.
+
+---
+
+## Who built this
+
+The paper has six authors, credited in full in the contribution statement in §09. This site — design, build, content adaptation and the check suites — is by **Bekhzodkhon (Beck) Alikhanov**, a co-author of the paper, for the Arcadia Impact AI Governance Taskforce.
 
 ---
 

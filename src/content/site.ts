@@ -89,6 +89,18 @@ export const disclaimer = {
 } as const
 
 /** The "About this page" block. A dated snapshot, and it says so. */
+/**
+ * The builder's line, at the very end of §09.
+ *
+ * The paper has six authors and the contribution statement above credits all
+ * of them; this page had one, and the CRediT rows have no row for it. One
+ * sentence, after the disclaimer, so it reads as a colophon note rather than
+ * a byline competing with the paper's.
+ */
+export const builtBy = {
+  note: 'This explainer was designed and built by Bekhzodkhon (Beck) Alikhanov, a co-author of the paper.',
+} as const
+
 export const about = {
   heading: 'About this page',
   /** §09 has no standfirst for SectionHead to define this against, so it is

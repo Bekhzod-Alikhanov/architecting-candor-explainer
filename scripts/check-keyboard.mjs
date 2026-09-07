@@ -9,26 +9,17 @@
  * own state changed as a result.
  */
 
-import { spawn } from 'node:child_process'
-import { existsSync, mkdtempSync, rmSync } from 'node:fs'
+import { mkdtempSync, rmSync } from 'node:fs'
 import { join } from 'node:path'
 import { tmpdir } from 'node:os'
+import { findBrowser, launchChrome, launchFailure } from './lib/chrome.mjs'
 
 const url = process.argv[2] ?? 'http://localhost:4173'
 /** The ten-section count below is the homepage's. /linter is one page with one
  *  section, so the assertion is scoped to the route that has ten. */
 const isHome = new URL(url).pathname.replace(/\/+$/, '') === ''
 
-const BROWSER = [
-  process.env.BROWSER_PATH,
-  'C:/Program Files/Google/Chrome/Application/chrome.exe',
-  'C:/Program Files (x86)/Google/Chrome/Application/chrome.exe',
-  'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe',
-  '/usr/bin/google-chrome',
-  '/usr/bin/chromium',
-]
-  .filter(Boolean)
-  .find((p) => existsSync(p))
+const BROWSER = findBrowser()
 if (!BROWSER) {
   console.error('No Chrome or Edge binary found.')
   process.exit(1)
@@ -51,20 +42,7 @@ const KEYS = {
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms))
 const port = 9950 + Math.floor(Math.random() * 40)
 const profile = mkdtempSync(join(tmpdir(), 'kb-'))
-const proc = spawn(
-  BROWSER,
-  [
-    '--headless=new',
-    '--disable-gpu',
-    '--hide-scrollbars',
-    '--no-first-run',
-    '--no-default-browser-check',
-    `--user-data-dir=${profile}`,
-    `--remote-debugging-port=${port}`,
-    'about:blank',
-  ],
-  { stdio: 'ignore' },
-)
+const proc = launchChrome(BROWSER, { port, profile })
 
 const failures = []
 const results = []
@@ -102,7 +80,7 @@ try {
     }
     if (!wsUrl) await sleep(100)
   }
-  if (!wsUrl) throw new Error('DevTools endpoint did not come up')
+  if (!wsUrl) throw launchFailure(proc, BROWSER)
 
   const ws = new WebSocket(wsUrl)
   await new Promise((r) => ws.addEventListener('open', r, { once: true }))

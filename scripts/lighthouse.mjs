@@ -26,10 +26,10 @@
  * and one dependency fewer.
  */
 
-import { spawn } from 'node:child_process'
-import { existsSync, mkdtempSync, rmSync } from 'node:fs'
+import { mkdtempSync, rmSync } from 'node:fs'
 import { join } from 'node:path'
 import { tmpdir } from 'node:os'
+import { findBrowser, launchChrome, launchFailure } from './lib/chrome.mjs'
 import lighthouse from 'lighthouse'
 import desktopConfig from 'lighthouse/core/config/desktop-config.js'
 
@@ -48,17 +48,7 @@ const REPORTED = ['best-practices', 'seo']
 /** Mobile samples. Override with LH_RUNS for a quick single-run check. */
 const MOBILE_RUNS = Number(process.env.LH_RUNS ?? 3)
 
-const CHROME = [
-  'C:/Program Files/Google/Chrome/Application/chrome.exe',
-  'C:/Program Files (x86)/Google/Chrome/Application/chrome.exe',
-  'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe',
-  'C:/Program Files/Microsoft/Edge/Application/msedge.exe',
-  '/usr/bin/google-chrome',
-  '/usr/bin/chromium',
-]
-  .filter((p) => !process.env.BROWSER_PATH || p === process.env.BROWSER_PATH)
-  .concat(process.env.BROWSER_PATH ? [process.env.BROWSER_PATH] : [])
-  .find((p) => existsSync(p))
+const CHROME = findBrowser()
 if (!CHROME) {
   console.error('No Chrome or Edge binary found.')
   process.exit(1)
@@ -72,19 +62,7 @@ const median = (xs) => [...xs].sort((a, b) => a - b)[Math.floor(xs.length / 2)]
 async function withBrowser(fn) {
   const port = 9600 + Math.floor(Math.random() * 300)
   const profile = mkdtempSync(join(tmpdir(), 'lh-'))
-  const chrome = spawn(
-    CHROME,
-    [
-      '--headless=new',
-      '--disable-gpu',
-      '--no-first-run',
-      '--no-default-browser-check',
-      `--user-data-dir=${profile}`,
-      `--remote-debugging-port=${port}`,
-      'about:blank',
-    ],
-    { stdio: 'ignore' },
-  )
+  const chrome = launchChrome(CHROME, { port, profile })
   try {
     let up = false
     for (let i = 0; i < 80 && !up; i++) {
@@ -96,7 +74,7 @@ async function withBrowser(fn) {
       }
       if (!up) await sleep(100)
     }
-    if (!up) throw new Error('Chrome DevTools endpoint did not come up')
+    if (!up) throw launchFailure(chrome, CHROME)
     return await fn(port)
   } finally {
     chrome.kill()

@@ -10,25 +10,15 @@
  * instrument hides most of its own markup.
  */
 
-import { spawn } from 'node:child_process'
-import { readFileSync, existsSync, mkdtempSync, rmSync } from 'node:fs'
+import { readFileSync, mkdtempSync, rmSync } from 'node:fs'
 import { join, resolve } from 'node:path'
 import { tmpdir } from 'node:os'
+import { findBrowser, launchChrome, launchFailure } from './lib/chrome.mjs'
 
 const ROOT = resolve(import.meta.dirname, '..')
 const url = process.argv[2] ?? 'http://localhost:4173'
 
-const CHROME = [
-  'C:/Program Files/Google/Chrome/Application/chrome.exe',
-  'C:/Program Files (x86)/Google/Chrome/Application/chrome.exe',
-  'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe',
-  'C:/Program Files/Microsoft/Edge/Application/msedge.exe',
-  '/usr/bin/google-chrome',
-  '/usr/bin/chromium',
-]
-  .filter((p) => !process.env.BROWSER_PATH || p === process.env.BROWSER_PATH)
-  .concat(process.env.BROWSER_PATH ? [process.env.BROWSER_PATH] : [])
-  .find((p) => existsSync(p))
+const CHROME = findBrowser()
 if (!CHROME) {
   console.error('No Chrome or Edge binary found.')
   process.exit(1)
@@ -39,20 +29,7 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms))
 
 const port = 9800 + Math.floor(Math.random() * 150)
 const profile = mkdtempSync(join(tmpdir(), 'axe-'))
-const chrome = spawn(
-  CHROME,
-  [
-    '--headless=new',
-    '--disable-gpu',
-    '--hide-scrollbars',
-    '--no-first-run',
-    '--no-default-browser-check',
-    `--user-data-dir=${profile}`,
-    `--remote-debugging-port=${port}`,
-    'about:blank',
-  ],
-  { stdio: 'ignore' },
-)
+const chrome = launchChrome(CHROME, { port, profile })
 
 try {
   let wsUrl = null
@@ -65,7 +42,7 @@ try {
     }
     if (!wsUrl) await sleep(100)
   }
-  if (!wsUrl) throw new Error('Chrome DevTools endpoint did not come up')
+  if (!wsUrl) throw launchFailure(chrome, CHROME)
 
   const ws = new WebSocket(wsUrl)
   await new Promise((r) => ws.addEventListener('open', r, { once: true }))
